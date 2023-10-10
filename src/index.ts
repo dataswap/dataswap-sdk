@@ -4,6 +4,7 @@ export type {
     DatasetOverviewType,
     DatasetProofType,
     DatasetReplicasType,
+    DatasetCreateInfo,
 } from "./shared/types/dataset"
 
 export type {
