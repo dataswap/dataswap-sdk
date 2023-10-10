@@ -1,5 +1,4 @@
-export interface DatasetOverviewType {
-    id: number
+export interface DatasetCreateInfo {
     name: string
     description?: string
     size: string
@@ -13,6 +12,10 @@ export interface DatasetOverviewType {
     isPublic?: string
     replicasRequiredNumber?: string
     replicasCountries?: Array<string>
+}
+
+export interface DatasetOverviewType extends DatasetCreateInfo {
+    id: number
     createdHeight: string
     createdTime: string
     submitter: string
