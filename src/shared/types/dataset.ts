@@ -9,9 +9,10 @@ export interface DatasetCreateInfo {
     ownername?: string
     ownercountry?: string
     ownerwebsite?: string
-    isPublic?: string
+    isPublic?: boolean
     replicasRequiredNumber?: string
     replicasCountries?: Array<string>
+    dpFee?: number
 }
 
 export interface DatasetProofCreateInfo {
