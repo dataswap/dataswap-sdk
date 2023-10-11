@@ -5,6 +5,9 @@ export type {
     DatasetProofType,
     DatasetReplicasType,
     DatasetCreateInfo,
+    DatasetProofCreateInfo,
+    DatasetChallengeCreateInfo,
+    DatasetDisputeCreateInfo,
 } from "./shared/types/dataset"
 
 export type {

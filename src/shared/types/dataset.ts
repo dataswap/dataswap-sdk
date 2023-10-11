@@ -14,15 +14,33 @@ export interface DatasetCreateInfo {
     replicasCountries?: Array<string>
 }
 
-export interface DatasetOverviewType extends DatasetCreateInfo {
+export interface DatasetProofCreateInfo {
+    rootHash?: string
+    leafHashesCount?: number
+    completed?: string
+}
+
+export interface DatasetChallengeCreateInfo {
+    mockDa?: string
+    challenge: string
+    estimatedDaFee?: number
+}
+
+export interface DatasetDisputeCreateInfo {
+    mockSubmitter?: string
+    mockResult?: boolean
+    disputeProof: string
+}
+
+export interface DatasetOverviewType
+    extends DatasetCreateInfo,
+        DatasetProofCreateInfo {
     id: number
     createdHeight: string
     createdTime: string
     submitter: string
     state: string
     operate: string
-    rootHash?: string
-    completed?: string
     proofs?: any
     proofChallenge?: any
     disputes?: any
