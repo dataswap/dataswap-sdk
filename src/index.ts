@@ -13,4 +13,6 @@ export type {
 export type {
     MatchingOverviewType,
     MatchingBidType,
+    MatchingCreateInfo,
+    MatchingBidCreateInfo,
 } from "./shared/types/matching"
