@@ -1,6 +1,6 @@
 export interface MatchingCreateInfo {
     mockSubmitter?: string
-    auctionPeriod: Array<string>
+    auctionPeriod: Array<any>
     initialPrice: number
     storageCompletePeriod: number
     storageLifecycle: number
