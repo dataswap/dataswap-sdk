@@ -18,7 +18,7 @@ export interface DatasetCreateInfo {
 export interface DatasetProofCreateInfo {
     rootHash?: string
     leafHashesCount?: number
-    completed?: string
+    completed?: boolean
 }
 
 export interface DatasetChallengeCreateInfo {

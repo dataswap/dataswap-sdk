@@ -1,12 +1,7 @@
-export interface MatchingOverviewType {
-    id: number
-    datasetId: string
-    replicaId: string
-    size: string
-    createdTime: string
-    submitter: string
+export interface MatchingCreateInfo {
+    mockSubmitter?: string
     auctionPeriod: Array<string>
-    initialPrice: string
+    initialPrice: number
     storageCompletePeriod: number
     storageLifecycle: number
     dataTransferType: string
@@ -14,14 +9,25 @@ export interface MatchingOverviewType {
     dpBandwidthSpeed: string
     spLocation: string
     spBandwidthSpeed: string
+}
+
+export interface MatchingOverviewType extends MatchingCreateInfo {
+    id: number
+    datasetId: string
+    replicaId: string
+    size: string
+    createdTime: string
+    submitter: string
     state: string
     operate: string
     bids?: any
     winner?: any
 }
 
-export interface MatchingBidType {
+export interface MatchingBidCreateInfo {
     bidder: string
-    bid: string
+    bid: number
+}
+export interface MatchingBidType extends MatchingBidCreateInfo {
     bidTime: string
 }
