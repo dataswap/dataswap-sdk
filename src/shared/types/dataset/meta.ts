@@ -12,9 +12,9 @@ export interface DatasetCreateInfo extends DatasetOwnerInfo {
     source: string
     accessMethod: string
     version: string
-    isPublic: string
+    isPublic: boolean
     requiredReplicasCountries?: Array<string>
-    dpFee: string
+    dpFee: number
 }
 
 export interface DatasetMetaInfo extends DatasetCreateInfo {

@@ -1,18 +1,18 @@
-export type leafHash = {
+export type DatasetLeafHash = {
     cid: string
     size: number
 }
 
-export type LeafHashesMap = {
-    [hash: string]: leafHash
+export type DatasetLeafHashesMap = {
+    [hash: string]: DatasetLeafHash
 }
 
 export interface DatasetProofCreateInfo {
     rootHash?: string
     leafHashesCount?: number
-    allProofsSubmitted?: string
+    allProofsSubmitted?: boolean
 }
 
 export interface DatasetProofInfo extends DatasetProofCreateInfo {
-    leafHashes?: LeafHashesMap
+    leafHashes?: DatasetLeafHashesMap
 }

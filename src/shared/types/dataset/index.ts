@@ -1,6 +1,6 @@
 import { DatasetMetaInfo } from "./meta"
 import { DatasetProofInfo } from "./proof"
-import { DatasetChallengeInfo } from "./challenge"
+import { DatasetChallengesInfo } from "./challenge"
 import { DatasetDipputesInfo } from "./dispute"
 import { DatasetReplicasInfo } from "./replicas"
 import { State } from "../state"
@@ -14,7 +14,7 @@ export interface DatasetInfo extends State, Operate {
     mappingFilesProof: DatasetProofInfo
     proofSubmitter: string
 
-    proofChallenge: DatasetChallengeInfo
+    proofChallenge: DatasetChallengesInfo
     disputes: DatasetDipputesInfo
     replicas: DatasetReplicasInfo
 }

@@ -1,14 +1,14 @@
 import { Operate } from "../operate"
 
-export interface Challenge extends Operate, DatasetChallengeCreateInfo {}
+export interface DatasetChallenge extends Operate, DatasetChallengeCreateInfo {}
 
-export type ChallengesMap = {
-    [da: string]: Challenge
+export type DatasetChallengesMap = {
+    [da: string]: DatasetChallenge
 }
 
-export interface DatasetChallengeInfo {
+export interface DatasetChallengesInfo {
     ChallengeCount: number
-    challenges?: ChallengesMap
+    challenges?: DatasetChallengesMap
 }
 
 export interface DatasetChallengeCreateInfo {
