@@ -1,6 +1,6 @@
 {
-  "name": "@dataswapjs/dataswap-sdk",
-  "version": "0.1.8",
+  "name": "@dataswapjs/dataswapjs",
+  "version": "0.1.0",
   "description": "dataswap sdk",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dataswap/dataswap-sdk.git"
+    "url": "git+https://github.com/dataswap/dataswapjs.git"
   },
   "keywords": [
     "dataswap",
@@ -21,9 +21,9 @@
   "author": "waynewyang",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/dataswap/dataswap-sdk/issues"
+    "url": "https://github.com/dataswap/dataswapjs/issues"
   },
-  "homepage": "https://github.com/dataswap/dataswap-sdk#readme",
+  "homepage": "https://github.com/dataswap/dataswapjs#readme",
   "dependencies": {
     "@types/node": "20.6.2"
   },
