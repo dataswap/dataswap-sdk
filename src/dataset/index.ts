@@ -3,8 +3,8 @@ import { DatasetProofInfo } from "./proof"
 import { DatasetChallengesInfo } from "./challenge"
 import { DatasetDipputesInfo } from "./dispute"
 import { DatasetReplicasInfo } from "./replicas"
-import { State } from "../state"
-import { Operate } from "../operate"
+import { State } from "../basic/state/types"
+import { Operate } from "../basic/operate/types"
 
 export interface DatasetInfo extends State, Operate {
     metadata: DatasetMetaInfo

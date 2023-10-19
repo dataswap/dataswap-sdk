@@ -1,5 +1,5 @@
-import { State } from "../state"
-import { Operate } from "../operate"
+import { State } from "../basic/state/types"
+import { Operate } from "../basic/operate/types"
 
 export interface DatasetReplica extends State, Operate {
     country: string

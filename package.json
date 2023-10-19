@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build":"rm -rf ./dist;npx tsc",
+    "build": "rm -rf ./dist;npx tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -25,7 +25,14 @@
   },
   "homepage": "https://github.com/dataswap/dataswapjs#readme",
   "dependencies": {
-    "@types/node": "20.6.2"
+    "@types/lodash": "^4.14.199",
+    "@types/node": "20.6.2",
+    "@unipackage/datastore": "^0.1.0",
+    "@unipackage/ddd": "^0.1.0",
+    "@unipackage/filecoin": "^0.1.5",
+    "@unipackage/net": "^0.1.0",
+    "@unipackage/utils": "^0.1.1",
+    "fp-ts": "^2.16.1"
   },
   "devDependencies": {
     "typescript": "^5.2.2"

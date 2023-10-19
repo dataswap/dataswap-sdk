@@ -1,4 +1,4 @@
-import { Operate } from "../operate"
+import { Operate } from "../basic/operate/types"
 
 export interface DatasetChallenge extends Operate, DatasetChallengeCreateInfo {}
 

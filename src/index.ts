@@ -13,50 +13,46 @@ export type {
 } from "./shared/types/matchingDraft"
 
 //New type
-export type { DatasetInfo } from "./shared/types/dataset"
+export type { DatasetInfo } from "./dataset"
 
 export type {
     DatasetCreateInfo,
     DatasetMetaInfo,
     DatasetOwnerInfo,
-} from "./shared/types/dataset/meta"
+} from "./dataset/meta"
 
 export type {
     DatasetProofCreateInfo,
     DatasetProofInfo,
-    DatasetLeafHash,
-    DatasetLeafHashesMap,
-} from "./shared/types/dataset/proof"
+    Leaves,
+} from "./dataset/proof"
 
 export type {
     DatasetChallengeCreateInfo,
     DatasetChallengesInfo,
     DatasetChallenge,
     DatasetChallengesMap,
-} from "./shared/types/dataset/challenge"
+} from "./dataset/challenge"
 
 export type {
     DatasetDisputeCreateInfo,
     DatasetDipputesInfo,
     DatasetDispute,
     DatasetDisputesMap,
-} from "./shared/types/dataset/dispute"
+} from "./dataset/dispute"
 
 export type {
     DatasetReplicasInfo,
     DatasetReplica,
     DatasetReplicasMap,
-} from "./shared/types/dataset/replicas"
+} from "./dataset/replicas"
 
-export type { MatchingInfo } from "./shared/types/matching"
+export type { MatchingInfo } from "./matching"
 
-export type {
-    MatchingCreateInfo,
-    MatchingMetaInfo,
-} from "./shared/types/matching/meta"
+export type { MatchingCreateInfo, MatchingMetaInfo } from "./matching/meta"
 
 export type {
     MatchingBid,
     MatchingBidCreateInfo,
     MatchingBidsMap,
-} from "./shared/types/matching/bid"
+} from "./matching/bid"
