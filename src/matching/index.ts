@@ -1,5 +1,5 @@
-import { State } from "../basic/state/types"
-import { Operate } from "../basic/operate/types"
+import { State } from "../shared/state/types"
+import { Operate } from "../shared/operate/types"
 
 import { MatchingMetaInfo } from "./meta"
 import { MatchingBidsMap } from "./bid"

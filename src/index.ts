@@ -13,46 +13,46 @@ export type {
 } from "./shared/types/matchingDraft"
 
 //New type
-export type { DatasetInfo } from "./dataset"
+// export type { DatasetInfo } from "./dataset/types"
 
-export type {
-    DatasetCreateInfo,
-    DatasetMetaInfo,
-    DatasetOwnerInfo,
-} from "./dataset/meta"
+// export type {
+//     DatasetCreateInfo,
+//     DatasetMetaInfo,
+//     DatasetOwnerInfo,
+// } from "./base/metadata/types"
 
-export type {
-    DatasetProofCreateInfo,
-    DatasetProofInfo,
-    Leaves,
-} from "./dataset/proof"
+// export type {
+//     DatasetProofCreateInfo,
+//     DatasetProofInfo,
+//     Leaves,
+// } from "./base/proof/types"
 
-export type {
-    DatasetChallengeCreateInfo,
-    DatasetChallengesInfo,
-    DatasetChallenge,
-    DatasetChallengesMap,
-} from "./dataset/challenge"
+// export type {
+//     DatasetChallengeCreateInfo,
+//     DatasetChallengesInfo,
+//     DatasetChallenge,
+//     DatasetChallengesMap,
+// } from "./dataset/challenge"
 
-export type {
-    DatasetDisputeCreateInfo,
-    DatasetDipputesInfo,
-    DatasetDispute,
-    DatasetDisputesMap,
-} from "./dataset/dispute"
+// export type {
+//     DatasetDisputeCreateInfo,
+//     DatasetDipputesInfo,
+//     DatasetDispute,
+//     DatasetDisputesMap,
+// } from "./base/dispute/types"
 
-export type {
-    DatasetReplicasInfo,
-    DatasetReplica,
-    DatasetReplicasMap,
-} from "./dataset/replicas"
+// export type {
+//     DatasetReplicasInfo,
+//     DatasetReplica,
+//     DatasetReplicasMap,
+// } from "./dataset/replicas"
 
-export type { MatchingInfo } from "./matching"
+// export type { MatchingInfo } from "./matching"
 
-export type { MatchingCreateInfo, MatchingMetaInfo } from "./matching/meta"
+// export type { MatchingCreateInfo, MatchingMetaInfo } from "./matching/meta"
 
-export type {
-    MatchingBid,
-    MatchingBidCreateInfo,
-    MatchingBidsMap,
-} from "./matching/bid"
+// export type {
+//     MatchingBid,
+//     MatchingBidCreateInfo,
+//     MatchingBidsMap,
+// } from "./matching/bid"

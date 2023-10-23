@@ -1,10 +1,10 @@
-export interface DatasetOwnerInfo {
+export interface DatasetOwner {
     ownerName: string
     ownerCountry: string
     ownerWebsite: string
 }
 
-export interface DatasetCreateInfo extends DatasetOwnerInfo {
+export interface DatasetCreateInfo extends DatasetOwner {
     name: string
     description: string
     size: string
@@ -13,12 +13,11 @@ export interface DatasetCreateInfo extends DatasetOwnerInfo {
     accessMethod: string
     version: string
     isPublic: boolean
-    requiredReplicasCountries?: Array<string>
     dpFee: number
+    replicasCount: number
 }
 
-export interface DatasetMetaInfo extends DatasetCreateInfo {
-    id: number
+export interface DatasetMetaData extends DatasetCreateInfo {
     createdHeight: string
     createdTime: string
     submitter: string
