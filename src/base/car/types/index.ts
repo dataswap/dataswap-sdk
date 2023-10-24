@@ -12,4 +12,5 @@ export interface Car {
     hash: Hash
     cid: Cid
     size: number
+    msgCid: Cid
 }

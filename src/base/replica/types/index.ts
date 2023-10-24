@@ -4,7 +4,11 @@ export interface Replica {
     datasetId: number
     carId: number
     id: number
-    matchingId: number
-    claimId: string
-    state: State
+    validMatchingId?: number
+    matchings?: {
+        [matchingId: number]: {
+            claimId: string
+            state: State
+        }
+    }
 }

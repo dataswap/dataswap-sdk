@@ -1,3 +1,5 @@
+import { Cid } from "@unipackage/filecoin"
+
 export interface DatasetOwner {
     ownerName: string
     ownerCountry: string
@@ -21,4 +23,5 @@ export interface DatasetMetaData extends DatasetCreateInfo {
     createdHeight: string
     createdTime: string
     submitter: string
+    msgCid: Cid
 }

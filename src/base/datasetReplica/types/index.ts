@@ -1,5 +1,5 @@
 import { State } from "../../../shared/state/types"
-import { Address } from "@unipackage/filecoin"
+import { Address, Cid } from "@unipackage/filecoin"
 
 export interface Geolocation {
     regionCode: number
@@ -14,9 +14,10 @@ export interface ReplicaRequirement {
 }
 
 export interface DatasetReplica {
-    id: number
     datasetID: number
+    id: number
     replicaRequirement: ReplicaRequirement
-    state: State //TODO
-    matchingIds: number[]
+    msgCid: Cid
+    state: State
+    matchingIds?: number[]
 }
