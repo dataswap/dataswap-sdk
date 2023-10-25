@@ -11,11 +11,18 @@ export interface DisputeResult {
 }
 
 export interface DisputeTarget {
-    disputeChallengeId?: number //challenge
+    canAccess: {
+        source: boolean
+        mappingFiles: boolean
+    }
+    challengeId?: number //challenge
     randomSeed?: number // proof
 }
 
 export interface DatasetDispute {
+    id: number
+    datasetId: number
+    proofId: number
     type: DisputeType
     target: DisputeTarget
     msgCid: Cid

@@ -14,8 +14,9 @@ export interface ReplicaRequirement {
 }
 
 export interface DatasetReplica {
-    datasetID: number
     id: number
+    datasetID: number
+    datasetInternalId: number
     replicaRequirement: ReplicaRequirement
     msgCid: Cid
     state: State

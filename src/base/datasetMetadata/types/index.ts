@@ -20,8 +20,10 @@ export interface DatasetCreateInfo extends DatasetOwner {
 }
 
 export interface DatasetMetaData extends DatasetCreateInfo {
+    id: number
     createdHeight: string
     createdTime: string
     submitter: string
     msgCid: Cid
+    datasetId?: number
 }

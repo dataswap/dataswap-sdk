@@ -9,6 +9,8 @@ export interface Proof {
 }
 
 export interface DatasetProof {
+    id: number
+    datasetId: number
     submitter: string
     mappingFilesAccessMethod?: string
 
