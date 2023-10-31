@@ -5,9 +5,9 @@ export interface Challenge {
     datasetId: number
     proofId: number
     submitter: Address
-    msgCid: Cid
     randomSeed: number
     challenge: string
+    msgCid: Cid
 }
 
 export interface DatasetChallenges {

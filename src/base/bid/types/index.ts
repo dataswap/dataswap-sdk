@@ -5,5 +5,6 @@ export interface Bid {
     matchingId: number
     bidder: Address
     bid: number
-    msgCid: Cid
+    isWinner?: boolean
+    msgCid?: Cid
 }

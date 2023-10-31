@@ -4,9 +4,10 @@ export interface MatchingTarget {
     id: number
     datasetId: number
     datasetReplicaId: number
+    matchingId?: number
     carIds: string
     size: number
     dataType: DataType
-    associatedMappingFilesMatchingID: number
-    matchingId?: number
+    associatedMappingFilesMatchingID?: number
+    completed: boolean
 }

@@ -1,7 +1,8 @@
-export interface MatchingCreateInfo {
-    targetDataType?: string
-    associatedMappingFilesMatchingID?: number
-    BidSelectionRule?: string
+import { Cid } from "@unipackage/filecoin"
+
+export interface MatchingMetadata {
+    id: number
+    bidSelectionRule?: string
     biddingThreshold: number
     biddingDelayBlockCount?: number
     auctionPeriod: Array<any>
@@ -12,13 +13,8 @@ export interface MatchingCreateInfo {
     dpBandwidthSpeed: string
     spLocation: string
     spBandwidthSpeed: string
-}
-
-export interface MatchingMetaInfo extends MatchingCreateInfo {
-    id: number
-    datasetId: string
-    replicaId: string
-    size: string
     createdTime: string
     submitter: string
+    msgCid: Cid
+    matchingId?: number
 }
