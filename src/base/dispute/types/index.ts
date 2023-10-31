@@ -28,8 +28,3 @@ export interface DatasetDispute {
     msgCid: Cid
     result?: DisputeResult
 }
-
-export interface DatasetDisputes {
-    count: number
-    [id: number]: DatasetDispute
-}

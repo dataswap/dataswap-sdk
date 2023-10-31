@@ -9,8 +9,3 @@ export interface Challenge {
     challenge: string
     msgCid: Cid
 }
-
-export interface DatasetChallenges {
-    count: number
-    [id: number]: Challenge
-}
