@@ -1,3 +1,4 @@
+import { Cid } from "@unipackage/filecoin"
 import { State } from "../../../shared/state/types"
 
 export interface Replica {
@@ -9,7 +10,9 @@ export interface Replica {
     matchings?: {
         [matchingId: number]: {
             claimId: string
+            msgCid: Cid
             state: State
         }
     }
+    state: State
 }
