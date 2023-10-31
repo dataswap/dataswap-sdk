@@ -9,6 +9,10 @@ export enum EscrowType {
 }
 
 export enum EscrowOperateType {
-    Deposit,
-    Withdraw,
+    Collateral,
+    CollateralWithdraw,
+    CollateralBurned,
+    Payment,
+    PaymentRefund,
+    PaymentWithdraw,
 }

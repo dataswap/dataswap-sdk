@@ -1,4 +1,4 @@
-import { Address } from "@unipackage/filecoin"
+import { Address, Cid } from "@unipackage/filecoin"
 import { EscrowType, EscrowOperateType } from "../../../shared/types/escrowType"
 
 export interface EscrowOperate {
@@ -7,4 +7,5 @@ export interface EscrowOperate {
     owner: Address
     operate: EscrowOperateType
     amount: Address
+    msgCid: Cid
 }
