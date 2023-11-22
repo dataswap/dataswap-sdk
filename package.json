@@ -28,10 +28,10 @@
     "@types/lodash": "^4.14.199",
     "@types/node": "20.6.2",
     "@unipackage/datastore": "^0.1.0",
-    "@unipackage/ddd": "^0.1.0",
-    "@unipackage/filecoin": "^0.1.5",
-    "@unipackage/net": "^0.1.0",
-    "@unipackage/utils": "^0.1.1",
+    "@unipackage/ddd": "^0.1.4",
+    "@unipackage/filecoin": "^0.1.6",
+    "@unipackage/net": "^0.1.2",
+    "@unipackage/utils": "^0.1.4",
     "fp-ts": "^2.16.1"
   },
   "devDependencies": {
