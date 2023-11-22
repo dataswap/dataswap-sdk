@@ -81,16 +81,14 @@ export class DatasetMetadataEvm extends Web3Evm {
         if (!res.ok && !res.data) {
             return { ok: false, error: res.error }
         }
-        let params = {
-            //TODO: to be delete
-            datasetId: 0,
+        let params: any = {
             ...res.data!.params,
             msgCid: msg.MsgCid,
             submitter: msg.Msg.From,
+            to: msg.Msg.To,
             createdBlockNumber: msg.Height,
         }
         if (res.data!.method === "submitDatasetMetadata") {
-            //TODO: to be update
             params.datasetId = msg.MsgRct?.Return
         }
 
