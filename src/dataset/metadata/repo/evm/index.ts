@@ -2,10 +2,12 @@ import {
     Web3Evm,
     withMethods,
     EvmOutput,
+    EvmDecodeOutPut,
     isEvmTransactionOptions,
     EvmTransactionOptions,
 } from "@unipackage/net"
-import { DatasetMetadataBasic } from "../../type"
+import { DatasetMetadataBasic, DatasetMetadata } from "../../type"
+import { Message } from "@unipackage/filecoin"
 
 interface DatasetMetadataCallEvm {
     datasetsCount(id: number): Promise<EvmOutput<number>>
@@ -73,4 +75,32 @@ export interface DatasetMetadataEvm
     "send",
     isEvmTransactionOptions
 )
-export class DatasetMetadataEvm extends Web3Evm {}
+export class DatasetMetadataEvm extends Web3Evm {
+    decodeMessage(msg: Message): EvmOutput<EvmDecodeOutPut> {
+        const res = this.decodeTxInput(msg.Msg.Params)
+        if (!res.ok && !res.data) {
+            return { ok: false, error: res.error }
+        }
+        let params = {
+            //TODO: to be delete
+            datasetId: 0,
+            ...res.data!.params,
+            msgCid: msg.MsgCid,
+            submitter: msg.Msg.From,
+            createdBlockNumber: msg.Height,
+        }
+        if (res.data!.method === "submitDatasetMetadata") {
+            //TODO: to be update
+            params.datasetId = msg.MsgRct?.Return
+        }
+
+        return {
+            ok: true,
+            data: {
+                method: res.data!.method,
+                params: params,
+                return: msg.MsgRct?.Return,
+            },
+        }
+    }
+}

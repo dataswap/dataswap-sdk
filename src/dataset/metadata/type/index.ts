@@ -13,7 +13,7 @@ export interface DatasetMetadataBasic {
     isPublic: boolean
 }
 
-export interface DatasetMetadata extends DatasetMetadataBasic, EntityInterface {
+export interface DatasetMetadata extends DatasetMetadataBasic {
     msgCid: Cid
     submitter: string
     createdBlockNumber: number
