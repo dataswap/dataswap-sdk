@@ -6,7 +6,7 @@ import {
     isEvmTransactionOptions,
     EvmTransactionOptions,
 } from "@unipackage/net"
-import { DatasetMetadataBasic, DatasetMetadata } from "../../type"
+import { DatasetMetadataBasic } from "../../type"
 import { Message } from "@unipackage/filecoin"
 
 interface DatasetMetadataCallEvm {
@@ -99,7 +99,6 @@ export class DatasetMetadataEvm extends Web3Evm {
             data: {
                 method: res.data!.method,
                 params: params,
-                return: msg.MsgRct?.Return,
             },
         }
     }
