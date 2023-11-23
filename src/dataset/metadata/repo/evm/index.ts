@@ -2,18 +2,18 @@ import {
     Web3Evm,
     withMethods,
     EvmOutput,
-    EvmDecodeOutPut,
     isEvmTransactionOptions,
     EvmTransactionOptions,
 } from "@unipackage/net"
-import { DatasetMetadataBasic } from "../../type"
-import { Message } from "@unipackage/filecoin"
+import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
+import { DataswapMessage } from "../../../../message/types"
+import { DatasetMetadata } from "../../types"
 
 interface DatasetMetadataCallEvm {
     datasetsCount(id: number): Promise<EvmOutput<number>>
-    getDatasetMetadata(id: number): Promise<EvmOutput<DatasetMetadataBasic>>
+    getDatasetMetadata(id: number): Promise<EvmOutput<DatasetMetadata>>
     getDatasetMetadataSubmitter(id: number): Promise<EvmOutput<string>>
-    getDatasetState(id: number): Promise<EvmOutput<DatasetMetadataBasic>>
+    getDatasetState(id: number): Promise<EvmOutput<String>>
     governanceAddress(): Promise<EvmOutput<string>>
     hasDatasetMetadata(accessMethod: string): Promise<EvmOutput<boolean>>
 }
@@ -49,7 +49,7 @@ interface DatasetMetadataSendEvm {
     ): Promise<EvmOutput<void>>
 }
 
-export interface DatasetMetadataEvm
+export interface DatasetMetadataOriginEvm
     extends DatasetMetadataCallEvm,
         DatasetMetadataSendEvm {}
 
@@ -75,29 +75,45 @@ export interface DatasetMetadataEvm
     "send",
     isEvmTransactionOptions
 )
-export class DatasetMetadataEvm extends Web3Evm {
-    decodeMessage(msg: Message): EvmOutput<EvmDecodeOutPut> {
-        const res = this.decodeTxInput(msg.Msg.Params)
-        if (!res.ok && !res.data) {
-            return { ok: false, error: res.error }
+export class DatasetMetadataOriginEvm extends Web3Evm {}
+
+export class DatasetMetadataEvm extends DatasetMetadataOriginEvm {
+    async getDatasetMetadata(id: number): Promise<EvmOutput<DatasetMetadata>> {
+        const metaRes = await super.getDatasetMetadata(id)
+        if (metaRes.ok && metaRes.data) {
+            return { ok: true, data: new DatasetMetadata(metaRes.data) }
         }
-        let params: any = {
-            ...res.data!.params,
-            msgCid: msg.MsgCid,
-            submitter: msg.Msg.From,
-            to: msg.Msg.To,
-            createdBlockNumber: msg.Height,
+        return metaRes
+    }
+
+    decodeMessage(msg: Message): EvmOutput<DataswapMessage> {
+        const decoder = new ContractMessageDecoder(this)
+        const decodeRes = decoder.decode(msg)
+        if (!decodeRes.ok && !decodeRes.data) {
+            return { ok: false, error: decodeRes.error }
         }
-        if (res.data!.method === "submitDatasetMetadata") {
-            params.datasetId = msg.MsgRct?.Return
+
+        let result: DataswapMessage = decodeRes.data as DataswapMessage
+        switch (decodeRes.data!.method) {
+            case "submitDatasetMetadata":
+                result.datasetId = msg.MsgRct?.Return
+                break
+            case "approveDataset" ||
+                "approveDatasetMetadata" ||
+                "rejectDataset" ||
+                "rejectDatasetMetadata":
+                result.datasetId = result.params.datasetId
+                break
+            default:
+                return {
+                    ok: false,
+                    error: "Not support method!",
+                }
         }
 
         return {
             ok: true,
-            data: {
-                method: res.data!.method,
-                params: params,
-            },
+            data: result,
         }
     }
 }
