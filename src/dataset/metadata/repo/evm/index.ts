@@ -81,7 +81,13 @@ export class DatasetMetadataEvm extends DatasetMetadataOriginEvm {
     async getDatasetMetadata(id: number): Promise<EvmOutput<DatasetMetadata>> {
         const metaRes = await super.getDatasetMetadata(id)
         if (metaRes.ok && metaRes.data) {
-            return { ok: true, data: new DatasetMetadata(metaRes.data) }
+            return {
+                ok: true,
+                data: new DatasetMetadata({
+                    ...metaRes.data,
+                    datasetId: id,
+                }),
+            }
         }
         return metaRes
     }

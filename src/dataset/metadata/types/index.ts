@@ -10,6 +10,10 @@ export interface DatasetMetadata extends EntityInterface {
     accessMethod: string
     version: number
     isPublic: boolean
+    submitter?: string
+    createdBlockNumber?: number
+    datasetId?: number
+    status?: string
 }
 
 export class DatasetMetadata extends Entity<DatasetMetadata> {}
