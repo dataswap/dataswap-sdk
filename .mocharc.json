@@ -1,4 +1,6 @@
 { 
     "loader" :  "ts-node/esm",
-    "require": "./test/fixtures.cjs"
+    "spec": "test/**/*.test.ts",
+    "exclude": ["node_modules"],
+    "require": "./test/fixtures.ts"
 }

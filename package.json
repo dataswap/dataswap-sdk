@@ -31,7 +31,9 @@
     "@unipackage/filecoin": "^0.1.0",
     "@unipackage/net": "^0.1.7",
     "@unipackage/utils": "^0.1.4",
-    "fp-ts": "^2.16.1"
+    "fp-ts": "^2.16.1",
+    "lodash": "^4.17.21",
+    "nock": "^13.4.0"
   },
   "devDependencies": {
     "@babel/runtime": "^7.23.4",
