@@ -1,4 +1,4 @@
-import { DatasetMetadataEvm } from "../dist/dataset/metadata/repo/evm"
+import { DatasetMetadataEvm } from "../src/dataset/metadata/repo/evm"
 import { describe } from "mocha"
 import { expect } from "chai"
 import DatasetsDeployment from "../deployments/localnet/Datasets.json"
@@ -15,7 +15,7 @@ describe("datasetMetadata", () => {
         let metadata = new DatasetMetadataEvm(
             DatasetsDeployment.abi,
             DatasetsDeployment.address,
-            "http://14.198.182.244:1234/rpc/v1"
+            "http://14.198.182.245:1234/rpc/v1"
         )
         let meta = await metadata.getDatasetMetadata(1)
         console.log("meta title:", meta.data)
