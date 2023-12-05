@@ -7,13 +7,17 @@
     "forceConsistentCasingInFileNames": true,
     "esModuleInterop": true,
     "module": "commonjs",
-    "moduleResolution": "node",  
+    "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": false,
     "experimentalDecorators": true,
     "jsx": "react",
     "incremental": false,
   },
-  "include": ["src/**/*","test/**/*"],
-  "exclude": ["node_modules"],
+  "include": [
+    "src/**/*"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
 }

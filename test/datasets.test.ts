@@ -11,13 +11,12 @@ describe("RankingHolder", () => {
 })
 
 describe("datasetMetadata", () => {
-    it("getDatasetMetadata", async () => {
+    it("getDatasetMetadata1", async () => {
         let metadata = new DatasetMetadataEvm(
             DatasetsDeployment.abi,
             DatasetsDeployment.address,
             "http://14.198.182.245:1234/rpc/v1"
         )
         let meta = await metadata.getDatasetMetadata(1)
-        console.log("meta title:", meta.data)
     })
 })
