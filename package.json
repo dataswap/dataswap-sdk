@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/dataswap/dataswapjs#readme",
   "dependencies": {
+    "@dataswapcore/abi": "^0.1.3",
     "@types/lodash": "^4.14.199",
     "@unipackage/datastore": "^0.1.3",
     "@unipackage/ddd": "^0.1.5",

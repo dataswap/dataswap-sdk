@@ -10,7 +10,7 @@ import { DataswapMessage } from "../../../../message/types"
 import { DatasetMetadata } from "../../types"
 
 interface DatasetMetadataCallEvm {
-    datasetsCount(id: number): Promise<EvmOutput<number>>
+    datasetsCount(): Promise<EvmOutput<number>>
     getDatasetMetadata(id: number): Promise<EvmOutput<DatasetMetadata>>
     getDatasetMetadataSubmitter(id: number): Promise<EvmOutput<string>>
     getDatasetState(id: number): Promise<EvmOutput<String>>
@@ -37,21 +37,21 @@ interface DatasetMetadataSendEvm {
     ): Promise<EvmOutput<void>>
     submitDatasetMetadata(
         title: string,
+        industry: string,
         name: string,
         description: string,
-        sizeInBytes: number,
-        industry: string,
         source: string,
         accessMethod: string,
-        version: number,
+        sizeInBytes: number,
         isPublic: boolean,
+        version: number,
         options: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 }
 
 export interface DatasetMetadataOriginEvm
     extends DatasetMetadataCallEvm,
-        DatasetMetadataSendEvm {}
+    DatasetMetadataSendEvm { }
 
 @withMethods(
     [
@@ -75,7 +75,7 @@ export interface DatasetMetadataOriginEvm
     "send",
     isEvmTransactionOptions
 )
-export class DatasetMetadataOriginEvm extends Web3Evm {}
+export class DatasetMetadataOriginEvm extends Web3Evm { }
 
 export class DatasetMetadataEvm extends DatasetMetadataOriginEvm {
     async getDatasetMetadata(id: number): Promise<EvmOutput<DatasetMetadata>> {

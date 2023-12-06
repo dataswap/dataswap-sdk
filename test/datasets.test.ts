@@ -1,22 +1,49 @@
-import { DatasetMetadataEvm } from "../src/dataset/metadata/repo/evm"
 import { describe } from "mocha"
 import { expect } from "chai"
-import DatasetsDeployment from "../deployments/localnet/Datasets.json"
+import * as utils from "./utils"
+import { ethers } from 'ethers'
+describe("datasetsMetadata", () => {
+    it("submitDatasetMetadata", async function () {
+        let metadataContract = utils.getDatasetsMetadataContract()
+        let random: string = utils.generateRandomString(7);
 
-describe("RankingHolder", () => {
-    it("getDatasetMetadata", async () => {
-        expect(55).to.equal(55)
-        await console.log("meta title:")
-    })
-})
+        const expectTitle = "title-" + random;
+        const expectIndustry = "industry-" + random;
+        const expectName = "dataset-" + random;
+        const expectDescription = "description-" + random;
+        const expectSource = "aws://sdfa.com-" + random;
+        const expectAccessMethod = "dataswap.com/test-" + random;
+        const expectSizeInBytes = 5120000;
+        const expectIsPublic = true;
+        const expectVersion = 1;
 
-describe("datasetMetadata", () => {
-    it("getDatasetMetadata1", async () => {
-        let metadata = new DatasetMetadataEvm(
-            DatasetsDeployment.abi,
-            DatasetsDeployment.address,
-            "http://14.198.182.245:1234/rpc/v1"
+        let metadataSubmitter = utils.getAccountAddress("PRIVATE_KEY_METADATASUBMITTER")
+        let metadataSubmitterKey = utils.getAccountPrivateKey("PRIVATE_KEY_METADATASUBMITTER")
+
+        this.timeout(100000)
+        let tx = await metadataContract.submitDatasetMetadata(
+            expectTitle,
+            expectIndustry,
+            expectName,
+            expectDescription,
+            expectSource,
+            expectAccessMethod,
+            expectSizeInBytes,
+            expectIsPublic,
+            expectVersion,
+            {
+                from: metadataSubmitter,
+                privateKey: metadataSubmitterKey,
+            }
         )
-        let meta = await metadata.getDatasetMetadata(1)
+
+        console.log("submit metadata:", tx)
+
+    })
+
+    it("getDatasetMetadata", async () => {
+        let metadataContract = utils.getDatasetsMetadataContract()
+        let meta = await metadataContract.getDatasetMetadata(1)
+        console.log("get metadata:", meta)
     })
 })
