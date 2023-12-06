@@ -71,6 +71,15 @@ jobs:
         git clone https://github.com/dataswap/core.git
         cd core && yarn install && yarn hardhat compile
         npx hardhat deploy --network localnet
+        export CarstoreAddress=$(npx hardhat getProxyAddress --type localnet --name Carstore)
+        export DatacapsAddress=$(npx hardhat getProxyAddress --type localnet --name Datacaps)
+        export DatasetsAddress=$(npx hardhat getProxyAddress --type localnet --name Datasets)
+        export DatasetsChallengeAddress=$(npx hardhat getProxyAddress --type localnet --name DatasetsChallenge)
+        export DatasetsProofAddress=$(npx hardhat getProxyAddress --type localnet --name DatasetsProof)
+        export DatasetsRequirementAddress=$(npx hardhat getProxyAddress --type localnet --name DatasetsRequirement)
+        export EscrowAddress=$(npx hardhat getProxyAddress --type localnet --name Escrow)
+        export FilecoinAddress=$(npx hardhat getProxyAddress --type localnet --name Filecoin)
+        export FilplusAddress=$(npx hardhat getProxyAddress --type localnet --name Filplus)
     - name: Create Datcap pool
       run: |
         export Root_Address=$(docker exec localnet lotus msig inspect f080 |grep t0100 |awk '{print $2}') 
@@ -83,9 +92,11 @@ jobs:
 
     - name: Test
       env:
+        NETWORK_RPC_URL: $${{secrets.LOCALNET_RPC_URL}}
         PRIVATE_KEY_BIDDER: ${{secrets.PRIVATE_KEY_BIDDER}}
         PRIVATE_KEY_DATASETAUDITOR: ${{secrets.PRIVATE_KEY_DATASETAUDITOR}}
         PRIVATE_KEY_METADATASUBMITTER: ${{secrets.PRIVATE_KEY_METADATASUBMITTER}}
         PRIVATE_KEY_PROOFSUBMITTER: ${{secrets.PRIVATE_KEY_PROOFSUBMITTER}}
       run: |
-        echo "ok!"
+        export
+        yarn test

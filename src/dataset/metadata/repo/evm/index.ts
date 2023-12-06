@@ -66,6 +66,7 @@ export interface DatasetMetadataOriginEvm
 )
 @withMethods(
     [
+        "initDependencies",
         "approveDataset",
         "approveDatasetMetadata",
         "rejectDataset",
