@@ -84,7 +84,17 @@ export class DatasetMetadataEvm extends DatasetMetadataOriginEvm {
             return {
                 ok: true,
                 data: new DatasetMetadata({
-                    ...metaRes.data,
+                    title: metaRes.data[0],
+                    industry: metaRes.data[1],
+                    name: metaRes.data[2],
+                    description: metaRes.data[3],
+                    source: metaRes.data[4],
+                    accessMethod: metaRes.data[5],
+                    submitter: metaRes.data[6],
+                    createdBlockNumber: Number(metaRes.data[7]),
+                    sizeInBytes: Number(metaRes.data[8]),
+                    isPublic: metaRes.data[9],
+                    version: Number(metaRes.data[10]),
                     datasetId: id,
                 }),
             }

@@ -1,7 +1,6 @@
-import { DatasetMetadataEvm } from "../src/dataset/metadata/repo/evm"
 import { expect } from "chai"
-import DatasetsDeployment from "@dataswapcore/abi/v0.1/module/dataset/Datasets.json"
 import { ethers } from 'ethers'
+import { AbiFunctionFragment } from "web3";
 
 export function getEnvVariable(variableName: string): string | undefined {
     // 确保你在 Node.js 环境中
@@ -22,14 +21,19 @@ export function generateRandomString(length: number): string {
         .substr(0, length);
 }
 
-export function getDatasetsMetadataContract(): DatasetMetadataEvm {
-    let datasetsAddress = getEnvVariable("DatasetsAddress");
-    expect(datasetsAddress).to.not.equal(undefined)
+export function getContract<T>(contractName: string, abi: AbiFunctionFragment[], init: new (contractABI: AbiFunctionFragment[], contractAddress: string, providerUrl?: string) => T): T {
+    let contractAddress = getEnvVariable(contractName + 'Address');
+    if (contractAddress === undefined) {
+        return undefined as T
+    }
     let url = getEnvVariable("NETWORK_RPC_URL");
-    expect(url).to.not.equal(undefined)
-    let contract = new DatasetMetadataEvm(
-        DatasetsDeployment.abi,
-        datasetsAddress as string,
+    if (url === undefined) {
+        return undefined as T
+    }
+
+    let contract = new init(
+        abi,
+        contractAddress as string,
         url
     )
     return contract
@@ -37,7 +41,9 @@ export function getDatasetsMetadataContract(): DatasetMetadataEvm {
 
 export function getAccountAddress(variableName: string): string {
     let key = getEnvVariable(variableName);
-    expect(key).to.not.equal(undefined)
+    if (key === undefined) {
+        return ''
+    }
     let privateKey = key as string
     const wallet = new ethers.Wallet(privateKey)
     return wallet.address;
@@ -45,6 +51,8 @@ export function getAccountAddress(variableName: string): string {
 
 export function getAccountPrivateKey(variableName: string): string {
     let key = getEnvVariable(variableName);
-    expect(key).to.not.equal(undefined)
+    if (key === undefined) {
+        return ''
+    }
     return key as string
 }
