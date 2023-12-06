@@ -101,5 +101,4 @@ jobs:
         export FilecoinAddress=$(npx hardhat getProxyAddress --type localnet --name Filecoin)
         export FilplusAddress=$(npx hardhat getProxyAddress --type localnet --name Filplus)
         cd ..
-        export
         yarn test
