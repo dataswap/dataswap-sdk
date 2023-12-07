@@ -6,7 +6,12 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "rm -rf ./dist;npx tsc",
-    "test": "mocha test/**/*.test.ts"
+    "test": "mocha test/**/*.test.ts",
+    "localnet-setup": "./scripts/localnet.sh setup",
+    "localnet-start": "./scripts/localnet.sh start",
+    "localnet-restart": "./scripts/localnet.sh restart",
+    "localnet-stop": "./scripts/localnet.sh stop",
+    "localnet-clear": "./scripts/localnet.sh clear"
   },
   "repository": {
     "type": "git",
@@ -44,6 +49,7 @@
     "@types/sinon": "^17.0.2",
     "chai": "^4.3.10",
     "cross-env": "^7.0.3",
+    "hardhat": "^2.19.2",
     "mocha": "^10.2.0",
     "nyc": "^15.1.0",
     "sinon": "^17.0.1",
