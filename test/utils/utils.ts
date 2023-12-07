@@ -1,4 +1,3 @@
-import { expect } from "chai"
 import { ethers } from 'ethers'
 import { AbiFunctionFragment } from "web3";
 
@@ -24,11 +23,11 @@ export function generateRandomString(length: number): string {
 export function getContract<T>(contractName: string, abi: AbiFunctionFragment[], init: new (contractABI: AbiFunctionFragment[], contractAddress: string, providerUrl?: string) => T): T {
     let contractAddress = getEnvVariable(contractName + 'Address');
     if (contractAddress === undefined) {
-        return undefined as T
+        throw new Error("get evn variable " + contractName + "Address" + " faild")
     }
     let url = getEnvVariable("NETWORK_RPC_URL");
     if (url === undefined) {
-        return undefined as T
+        throw new Error("get rpc url evn variable faild")
     }
 
     let contract = new init(
@@ -42,7 +41,7 @@ export function getContract<T>(contractName: string, abi: AbiFunctionFragment[],
 export function getAccountAddress(variableName: string): string {
     let key = getEnvVariable(variableName);
     if (key === undefined) {
-        return ''
+        throw new Error("get evn variable " + variableName + " faild")
     }
     let privateKey = key as string
     const wallet = new ethers.Wallet(privateKey)
@@ -52,7 +51,7 @@ export function getAccountAddress(variableName: string): string {
 export function getAccountPrivateKey(variableName: string): string {
     let key = getEnvVariable(variableName);
     if (key === undefined) {
-        return ''
+        throw new Error("get evn variable " + variableName + " faild")
     }
     return key as string
 }
