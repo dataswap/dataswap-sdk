@@ -1,3 +1,5 @@
 node_modules
 dist
+.localnet
 yarn.lock
+package-lock.json
