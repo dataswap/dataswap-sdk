@@ -10,8 +10,6 @@ Please make sure to install the following before working with codebase:
 
 [Node.js (16+)](https://nodejs.org/en/download)
 
-[Hardhat](https://hardhat.org/hardhat-runner/docs/getting-started#installation)
-
 ## Usage
 
 ```shell
