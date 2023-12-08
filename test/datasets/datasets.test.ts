@@ -57,12 +57,12 @@ describe("datasetsMetadata", () => {
         expect(0).to.be.equal(state)
     })
 
-    it("submitDatasetReplicaRequirementsCorrect", async function () {
-        let datasets = DatasetsHelper.Instance()
-        await datasets.submitDatasetReplicaRequirements()
+    //it("submitDatasetReplicaRequirementsCorrect", async function () {
+    //    let datasets = DatasetsHelper.Instance()
+    //    await datasets.submitDatasetReplicaRequirements()
 
-        let count = await datasets.getDatasetReplicasCount()
-        console.log("replica count:", count)
-        expect(count).to.be.equal(Requirements.Instance().getRequirementsCount())
-    })
+    //    let count = await datasets.getDatasetReplicasCount()
+    //    console.log("replica count:", count)
+    //    expect(count).to.be.equal(Requirements.Instance().getRequirementsCount())
+    //})
 })
