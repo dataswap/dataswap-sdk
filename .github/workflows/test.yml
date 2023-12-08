@@ -54,7 +54,7 @@ jobs:
 
     - name: deploy localnet
       run: |
-        docker run -d -p 1234:1234  --name localnet siriusyim/lotus-devnet:0.3.0
+        docker run -d -p 1234:1234  --name localnet dataswap/lotus-devnet:0.3.0
         sleep 90
         docker exec localnet /usr/local/bin/lotus wallet list
     - name: Install dependencies
