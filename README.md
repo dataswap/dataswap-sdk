@@ -10,6 +10,8 @@ Please make sure to install the following before working with codebase:
 
 [Node.js (16+)](https://nodejs.org/en/download)
 
+[TypeScript](https://www.typescriptlang.org/download)
+
 ## Usage
 
 ```shell
