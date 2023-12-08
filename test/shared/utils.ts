@@ -2,15 +2,13 @@ import { ethers } from 'ethers'
 import { AbiFunctionFragment } from "web3";
 
 export function getEnvVariable(variableName: string): string | undefined {
-    // 确保你在 Node.js 环境中
     if (typeof process !== 'undefined' && process.env) {
-        // 获取环境变量
         const envVariable = process.env[variableName];
         if (envVariable !== undefined) {
-            return String(envVariable); // 将环境变量转换为字符串类型并返回
+            return String(envVariable);
         }
     }
-    return undefined; // 如果环境变量未定义或未找到，返回 undefined
+    return undefined;
 }
 
 export function generateRandomString(length: number): string {
@@ -18,6 +16,12 @@ export function generateRandomString(length: number): string {
         .toString(36)
         .replace(/[^a-zA-Z0-9]+/g, '')
         .substr(0, length);
+}
+
+export function getRandomInt(min: number, max: number): number {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 export function getContract<T>(contractName: string, abi: AbiFunctionFragment[], init: new (contractABI: AbiFunctionFragment[], contractAddress: string, providerUrl?: string) => T): T {

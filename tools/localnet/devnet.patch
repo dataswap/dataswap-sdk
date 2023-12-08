@@ -1,0 +1,277 @@
+diff --git a/Dockerfile b/Dockerfile
+index 00930fb0f..6a7813110 100644
+--- a/Dockerfile
++++ b/Dockerfile
+@@ -2,7 +2,7 @@
+ FROM golang:1.20.7-bullseye AS lotus-builder
+ MAINTAINER Lotus Development Team
+ 
+-RUN apt-get update && apt-get install -y ca-certificates build-essential clang ocl-icd-opencl-dev ocl-icd-libopencl1 jq libhwloc-dev
++RUN apt-get update && apt-get install -y ca-certificates build-essential clang ocl-icd-opencl-dev ocl-icd-libopencl1 jq libhwloc-dev tmux
+ 
+ ENV XDG_CACHE_HOME="/tmp"
+ 
+@@ -12,6 +12,9 @@ ENV RUSTUP_HOME=/usr/local/rustup \
+     PATH=/usr/local/cargo/bin:$PATH \
+     RUST_VERSION=1.63.0
+ 
++WORKDIR /hdd_6110A1X5FRLH
++COPY filecoin-proof-parameters-devnet/* /var/tmp/filecoin-proof-parameters/
++
+ RUN set -eux; \
+     dpkgArch="$(dpkg --print-architecture)"; \
+     case "${dpkgArch##*-}" in \
+@@ -44,7 +47,7 @@ RUN make clean deps
+ ARG RUSTFLAGS=""
+ ARG GOFLAGS=""
+ 
+-RUN make buildall
++RUN make 2k 
+ 
+ #####################################
+ FROM ubuntu:20.04 AS lotus-base
+@@ -94,43 +97,43 @@ ENTRYPOINT ["/docker-lotus-entrypoint.sh"]
+ CMD ["-help"]
+ 
+ #####################################
+-FROM lotus-base AS lotus-all-in-one
++FROM lotus-base AS lotus-devnet
+ 
++RUN apt-get update && apt-get install -y tmux
+ ENV FILECOIN_PARAMETER_CACHE /var/tmp/filecoin-proof-parameters
+-ENV LOTUS_MINER_PATH /var/lib/lotus-miner
+-ENV LOTUS_PATH /var/lib/lotus
+-ENV LOTUS_WORKER_PATH /var/lib/lotus-worker
+-ENV WALLET_PATH /var/lib/lotus-wallet
++ENV LOTUS_MINER_PATH /root/.lotusminer
++ENV LOTUS_PATH /root/.lotus 
++ENV LOTUS_WORKER_PATH /root/.lotusworker
+ 
+ COPY --from=lotus-builder /opt/filecoin/lotus          /usr/local/bin/
+ COPY --from=lotus-builder /opt/filecoin/lotus-seed     /usr/local/bin/
+ COPY --from=lotus-builder /opt/filecoin/lotus-shed     /usr/local/bin/
+-COPY --from=lotus-builder /opt/filecoin/lotus-wallet   /usr/local/bin/
+-COPY --from=lotus-builder /opt/filecoin/lotus-gateway  /usr/local/bin/
+ COPY --from=lotus-builder /opt/filecoin/lotus-miner    /usr/local/bin/
+ COPY --from=lotus-builder /opt/filecoin/lotus-worker   /usr/local/bin/
+-COPY --from=lotus-builder /opt/filecoin/lotus-stats    /usr/local/bin/
+-COPY --from=lotus-builder /opt/filecoin/lotus-fountain /usr/local/bin/
++COPY scripts/devnet.bash /usr/local/bin/
+ 
+ RUN mkdir /var/tmp/filecoin-proof-parameters
+ RUN mkdir /var/lib/lotus
+ RUN mkdir /var/lib/lotus-miner
+ RUN mkdir /var/lib/lotus-worker
+-RUN mkdir /var/lib/lotus-wallet
+ RUN chown fc: /var/tmp/filecoin-proof-parameters
+ RUN chown fc: /var/lib/lotus
+ RUN chown fc: /var/lib/lotus-miner
+ RUN chown fc: /var/lib/lotus-worker
+-RUN chown fc: /var/lib/lotus-wallet
++
++ENV PRAMETERS_HOME=/hdd_6110A1X5FRLH
++COPY ${PRAMETERS_HOME}/filecoin-proof-parameters-devnet/* /var/tmp/filecoin-proof-parameters/
+ 
+ 
+ VOLUME /var/tmp/filecoin-proof-parameters
+ VOLUME /var/lib/lotus
+ VOLUME /var/lib/lotus-miner
+ VOLUME /var/lib/lotus-worker
+-VOLUME /var/lib/lotus-wallet
+ 
+ EXPOSE 1234
+ EXPOSE 2345
+ EXPOSE 3456
+ EXPOSE 1777
++
++
++CMD ["/usr/local/bin/devnet.bash"]
+diff --git a/cmd/lotus-miner/run.go b/cmd/lotus-miner/run.go
+index 93dfea2fc..edb1a7a10 100644
+--- a/cmd/lotus-miner/run.go
++++ b/cmd/lotus-miner/run.go
+@@ -148,7 +148,7 @@ var runCmd = &cli.Command{
+ 
+ 			node.ApplyIf(func(s *node.Settings) bool { return cctx.IsSet("miner-api") },
+ 				node.Override(new(dtypes.APIEndpoint), func() (dtypes.APIEndpoint, error) {
+-					return multiaddr.NewMultiaddr("/ip4/127.0.0.1/tcp/" + cctx.String("miner-api"))
++					return multiaddr.NewMultiaddr("/ip4/0.0.0.0/tcp/" + cctx.String("miner-api"))
+ 				})),
+ 			node.Override(new(v1api.RawFullNodeAPI), nodeApi),
+ 		)
+diff --git a/cmd/lotus/daemon.go b/cmd/lotus/daemon.go
+index 7271a6e53..30172a601 100644
+--- a/cmd/lotus/daemon.go
++++ b/cmd/lotus/daemon.go
+@@ -358,7 +358,7 @@ var DaemonCmd = &cli.Command{
+ 
+ 			node.ApplyIf(func(s *node.Settings) bool { return cctx.IsSet("api") },
+ 				node.Override(node.SetApiEndpointKey, func(lr repo.LockedRepo) error {
+-					apima, err := multiaddr.NewMultiaddr("/ip4/127.0.0.1/tcp/" +
++					apima, err := multiaddr.NewMultiaddr("/ip4/0.0.0.0/tcp/" +
+ 						cctx.String("api"))
+ 					if err != nil {
+ 						return err
+diff --git a/node/config/def.go b/node/config/def.go
+index dd36803a0..76f4f535f 100644
+--- a/node/config/def.go
++++ b/node/config/def.go
+@@ -43,7 +43,7 @@ func (b *BatchFeeConfig) FeeForSectors(nSectors int) abi.TokenAmount {
+ func defCommon() Common {
+ 	return Common{
+ 		API: API{
+-			ListenAddress: "/ip4/127.0.0.1/tcp/1234/http",
++			ListenAddress: "/ip4/0.0.0.0/tcp/1234/http",
+ 			Timeout:       Duration(30 * time.Second),
+ 		},
+ 		Logging: Logging{
+@@ -108,7 +108,7 @@ func DefaultFullNode() *FullNode {
+ 		},
+ 		Cluster: *DefaultUserRaftConfig(),
+ 		Fevm: FevmConfig{
+-			EnableEthRPC:                 false,
++			EnableEthRPC:                 true,
+ 			EthTxHashMappingLifetimeDays: 0,
+ 			Events: Events{
+ 				DisableRealTimeFilterAPI: false,
+@@ -274,7 +274,7 @@ func DefaultStorageMiner() *StorageMiner {
+ 		},
+ 	}
+ 
+-	cfg.Common.API.ListenAddress = "/ip4/127.0.0.1/tcp/2345/http"
++	cfg.Common.API.ListenAddress = "/ip4/0.0.0.0/tcp/2345/http"
+ 	cfg.Common.API.RemoteListenAddress = "127.0.0.1:2345"
+ 	return cfg
+ }
+diff --git a/scripts/devnet.bash b/scripts/devnet.bash
+index a53cbc7b9..508cd2316 100755
+--- a/scripts/devnet.bash
++++ b/scripts/devnet.bash
+@@ -1,19 +1,18 @@
+ #!/usr/bin/env bash
+ 
+-session="lotus-interop"
++session="lotus-devnet"
+ wdaemon="daemon"
+ wminer="miner"
+ wsetup="setup"
+ wpledging="pledging"
+ wcli="cli"
+ wshell="cli"
+-faucet="http://t01000.miner.interopnet.kittyhawk.wtf"
+ 
+ 
+ PLEDGE_COUNT="${1:-20}"
+ 
+ if [ -z "$BRANCH" ]; then
+-  BRANCH="interopnet"
++  BRANCH="devnet"
+ fi
+ 
+ if [ -z "$BUILD" ]; then
+@@ -24,7 +23,7 @@ if [ -z "$DEVNET" ]; then
+   DEVNET="yes"
+ fi
+ 
+-BASEDIR=$(mktemp -d -t "lotus-interopnet.XXXX")
++BASEDIR="/root"
+ 
+ if [ "$BUILD" == "yes" ]; then
+   git clone --branch "$BRANCH" https://github.com/filecoin-project/lotus.git "${BASEDIR}/build"
+@@ -52,12 +51,16 @@ cat > "${BASEDIR}/scripts/env.fish" <<EOF
+ set -x PATH ${BASEDIR}/bin \$PATH
+ set -x LOTUS_PATH ${BASEDIR}/.lotus
+ set -x LOTUS_MINER_PATH ${BASEDIR}/.lotusminer
++set -x LOTUS_API_LISTENADDRESS "/ip4/0.0.0.0/tcp/1234/http"
++set -x LOTUS_FEVM_ENABLEETHRPC true
+ EOF
+ 
+ cat > "${BASEDIR}/scripts/env.bash" <<EOF
+ export PATH=${BASEDIR}/bin:\$PATH
+ export LOTUS_PATH=${BASEDIR}/.lotus
+ export LOTUS_MINER_PATH=${BASEDIR}/.lotusminer
++export LOTUS_API_LISTENADDRESS="/ip4/0.0.0.0/tcp/1234/http"
++export LOTUS_FEVM_ENABLEETHRPC=true
+ EOF
+ 
+ cat > "${BASEDIR}/scripts/create_miner.bash" <<EOF
+@@ -147,51 +150,49 @@ chmod +x "${BASEDIR}/scripts/create_miner.bash"
+ chmod +x "${BASEDIR}/scripts/pledge_sectors.bash"
+ chmod +x "${BASEDIR}/scripts/monitor.bash"
+ 
++export LOTUS_PATH="${BASEDIR}/.lotus"
++export LOTUS_MINER_PATH="${BASEDIR}/.lotusminer"
++
++
++
+ if [ "$BUILD" == "yes" ]; then
+   bash "${BASEDIR}/scripts/build.bash"
+ else
+-  cp ./lotus ${BASEDIR}/bin/
+-  cp ./lotus-miner ${BASEDIR}/bin/
+-  cp ./lotus-seed ${BASEDIR}/bin/
+-  cp ./lotus-shed ${BASEDIR}/bin/
++  cp /usr/local/bin/lotus ${BASEDIR}/bin/
++  cp /usr/local/bin/lotus-miner ${BASEDIR}/bin/
++  cp /usr/local/bin/lotus-seed ${BASEDIR}/bin/
++  cp /usr/local/bin/lotus-shed ${BASEDIR}/bin/
+ fi
+ 
+-tmux new-session -d -s $session -n $wsetup
+-
+-tmux set-environment -t $session BASEDIR "$BASEDIR"
+-
+-tmux new-window -t $session -n $wcli
+-tmux new-window -t $session -n $wdaemon
+-tmux new-window -t $session -n $wminer
+-tmux new-window -t $session -n $wpledging
+-
+-tmux kill-window -t $session:$wsetup
+-
+ case $(basename $SHELL) in
+   fish ) shell=fish ;;
+   *    ) shell=bash ;;
+ esac
+ 
+-tmux send-keys -t $session:$wdaemon   "source ${BASEDIR}/scripts/env.$shell" C-m
+-tmux send-keys -t $session:$wminer    "source ${BASEDIR}/scripts/env.$shell" C-m
+-tmux send-keys -t $session:$wcli      "source ${BASEDIR}/scripts/env.$shell" C-m
+-tmux send-keys -t $session:$wpledging "source ${BASEDIR}/scripts/env.$shell" C-m
+-tmux send-keys -t $session:$wshell "source ${BASEDIR}/scripts/env.$shell" C-m
++source ${BASEDIR}/scripts/env.$shell
++
++lotus-seed pre-seal --sector-size 2KiB --num-sectors 2
++lotus-seed genesis new devnet.json
++lotus-seed genesis set-signers --threshold=1 --signers $(lotus-shed keyinfo new bls) devnet.json
++lotus-seed genesis add-miner devnet.json ~/.genesis-sectors/pre-seal-t01000.json
++nohup lotus daemon --lotus-make-genesis=dev.gen --genesis-template=devnet.json --bootstrap=false 2>&1 > ${BASEDIR}/daemon.log &
+ 
+-tmux send-keys -t $session:$wdaemon "lotus-seed pre-seal --sector-size 2KiB --num-sectors 2" C-m
+-tmux send-keys -t $session:$wdaemon "lotus-seed genesis new devnet.json" C-m
+-tmux send-keys -t $session:$wdaemon "lotus-seed genesis add-miner devnet.json ~/.genesis-sectors/pre-seal-t01000.json" C-m
+-tmux send-keys -t $session:$wdaemon "lotus daemon --api 48010 --lotus-make-genesis=dev.gen --genesis-template=devnet.json --bootstrap=false 2>&1 | tee -a ${BASEDIR}/daemon.log" C-m
+ 
+ export LOTUS_PATH="${BASEDIR}/.lotus"
+ ${BASEDIR}/bin/lotus wait-api
+ 
+-tmux send-keys -t $session:$wminer   "${BASEDIR}/scripts/create_miner.bash" C-m
+-tmux send-keys -t $session:$wminer   "lotus-miner run --miner-api 48020 --nosync 2>&1 | tee -a ${BASEDIR}/miner.log" C-m
+-tmux send-keys -t $session:$wcli     "${BASEDIR}/scripts/monitor.bash" C-m
+-tmux send-keys -t $session:$wpleding "${BASEDIR}/scripts/pledge_sectors.bash" C-m
++${BASEDIR}/scripts/create_miner.bash
++nohup lotus-miner run --miner-api 2345 --nosync 2>&1 > ${BASEDIR}/miner.log &
++
++cp ${BASEDIR}/.lotus/token /var/lib/lotus/
++cp ${BASEDIR}/.lotusminer/token /var/lib/lotus-miner/
+ 
+-tmux select-window -t $session:$wcli
++lotus wallet import bls-*
++lotus send f410fbhdn52o3lz67fmmcqpam7t3rj7w3newxjclinsi 100
++lotus send f410fcwzis33wz3sofrlh466gog5xahlthgzqezasapy 100
++lotus send f410fhuebctou6znv3xghmceeesoz2gxegxpoopw46jq 100
++lotus send f410fiblucsjagpjs5m7r6evkdk5ebzd2leru46j3wli 100
++lotus send f410fzkkc6d6tsgc5s4or2whbkfsf4wlpy7x7l6g2p6i 100
+ 
+-tmux attach-session -t $session
++${BASEDIR}/scripts/monitor.bash
+ 

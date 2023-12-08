@@ -13,7 +13,7 @@ interface DatasetMetadataCallEvm {
     datasetsCount(): Promise<EvmOutput<number>>
     getDatasetMetadata(id: number): Promise<EvmOutput<DatasetMetadata>>
     getDatasetMetadataSubmitter(id: number): Promise<EvmOutput<string>>
-    getDatasetState(id: number): Promise<EvmOutput<String>>
+    getDatasetState(id: number): Promise<EvmOutput<number>>
     governanceAddress(): Promise<EvmOutput<string>>
     hasDatasetMetadata(accessMethod: string): Promise<EvmOutput<boolean>>
 }

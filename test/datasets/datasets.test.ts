@@ -1,12 +1,17 @@
 import { expect } from "chai"
 import { describe } from "mocha"
-import * as utils from "../utils/utils"
+import * as utils from "../shared/utils"
 import { DatasetsHelper } from "./datasetshelper"
-import { Accounts } from "../utils/accounts"
+import { Accounts } from "../shared/accounts"
+import { Requirements } from "../shared/requirements"
 
 describe("datasetsMetadata", () => {
     it("submitDatasetMetadataCorrect", async function () {
         let datasets = DatasetsHelper.Instance()
+        let [governance,] = Accounts.Instance().getGovernance()
+        let expectGovernance = await datasets.governanceAddress()
+        expect(governance).to.be.equal(expectGovernance)
+
         let random: string = utils.generateRandomString(7);
         const title = "title-" + random;
         const industry = "industry-" + random;
@@ -19,7 +24,8 @@ describe("datasetsMetadata", () => {
         const version = 1;
 
         this.timeout(100000)
-        let datasetId = await datasets.submitDatasetMetadata(
+
+        await datasets.submitDatasetMetadata(
             title,
             industry,
             name,
@@ -31,7 +37,7 @@ describe("datasetsMetadata", () => {
             version
         )
 
-        let metaData = await datasets.getDatasetMetadata(datasetId)
+        let metaData = await datasets.getDatasetMetadata()
         expect(title).to.be.equal(metaData.title)
         expect(industry).to.be.equal(metaData.industry)
         expect(name).to.be.equal(metaData.name)
@@ -42,9 +48,21 @@ describe("datasetsMetadata", () => {
         expect(isPublic).to.be.equal(metaData.isPublic)
         expect(version).to.be.equal(metaData.version)
 
+        expect(true).to.be.equal(await datasets.hasDatasetMetadata(metaData.accessMethod))
+
         let [client,] = Accounts.Instance().getClient()
-        let submitter = await datasets.getDatasetMetadataSubmitter(datasetId)
+        let submitter = await datasets.getDatasetMetadataSubmitter()
         expect(submitter).to.be.equal(client)
+        let state = await datasets.getDatasetState()
+        expect(0).to.be.equal(state)
     })
 
+    it("submitDatasetReplicaRequirementsCorrect", async function () {
+        let datasets = DatasetsHelper.Instance()
+        await datasets.submitDatasetReplicaRequirements()
+
+        let count = await datasets.getDatasetReplicasCount()
+        console.log("replica count:", count)
+        expect(count).to.be.equal(Requirements.Instance().getRequirementsCount())
+    })
 })

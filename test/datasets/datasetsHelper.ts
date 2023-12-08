@@ -6,9 +6,11 @@ import DatasetsAbi from "@dataswapcore/abi/v0.1/module/dataset/Datasets.json"
 import DatasetsRequirementAbi from "@dataswapcore/abi/v0.1/module/dataset/DatasetsRequirement.json"
 import DatasetsProofAbi from "@dataswapcore/abi/v0.1/module/dataset/DatasetsProof.json"
 import DatasetsChallengeAbi from "@dataswapcore/abi/v0.1/module/dataset/DatasetsChallenge.json"
-import * as utils from "../utils/utils"
-import { Accounts } from "../utils/accounts"
+import * as utils from "../shared/utils"
+import { Accounts } from "../shared/accounts"
+import { Requirements } from "../shared/requirements"
 import { DatasetMetadata } from "../../src/dataset/metadata/types/index"
+import { DatasetRequirement } from "../../src/dataset/requirement/types"
 
 export class DatasetsHelper {
     private static instance: DatasetsHelper;
@@ -20,6 +22,7 @@ export class DatasetsHelper {
 
     private targetDatasetId: number
     private accounts: Accounts
+    private requirements: Requirements
 
     constructor() {
         this.metadata = utils.getContract('Datasets', DatasetsAbi.abi, DatasetMetadataEvm)
@@ -28,6 +31,7 @@ export class DatasetsHelper {
         this.challenge = utils.getContract('DatasetsChallenge', DatasetsChallengeAbi.abi, DatasetChallengeEvm)
         this.targetDatasetId = 0
         this.accounts = Accounts.Instance()
+        this.requirements = Requirements.Instance()
     }
 
     public static Instance(): DatasetsHelper {
@@ -37,14 +41,59 @@ export class DatasetsHelper {
         return DatasetsHelper.instance;
     }
 
-    async getDatasetMetadata(datasetId: number): Promise<DatasetMetadata> {
-        let call = await this.metadata.getDatasetMetadata(datasetId)
+    async getDatasetMetadata(): Promise<DatasetMetadata> {
+        let call = await this.metadata.getDatasetMetadata(this.targetDatasetId)
         return call.data as DatasetMetadata
     }
 
-    async getDatasetMetadataSubmitter(datasetId: number): Promise<string> {
-        let call = await this.metadata.getDatasetMetadataSubmitter(datasetId)
+    async getDatasetMetadataSubmitter(): Promise<string> {
+        let call = await this.metadata.getDatasetMetadataSubmitter(this.targetDatasetId)
         return call.data as string
+    }
+
+    async getDatasetState(): Promise<number> {
+        let call = await this.metadata.getDatasetState(this.targetDatasetId)
+        return Number(call.data)
+    }
+
+    async governanceAddress(): Promise<string> {
+        let call = await this.metadata.governanceAddress()
+        return call.data as string
+    }
+
+    async hasDatasetMetadata(accessMethod: string): Promise<boolean> {
+        let call = await this.metadata.hasDatasetMetadata(accessMethod)
+        return call.data as boolean
+    }
+    async approveDataset() {
+        let [governance, governanceKey] = this.accounts.getGovernance()
+        let tx = await this.metadata.approveDataset(this.targetDatasetId, {
+            from: governance,
+            privateKey: governanceKey,
+        })
+    }
+    async approveDatasetMetadata() {
+        let [governance, governanceKey] = this.accounts.getGovernance()
+        let tx = await this.metadata.approveDatasetMetadata(this.targetDatasetId, {
+            from: governance,
+            privateKey: governanceKey,
+        })
+    }
+
+    async rejectDataset() {
+        let [governance, governanceKey] = this.accounts.getGovernance()
+        let tx = await this.metadata.rejectDataset(this.targetDatasetId, {
+            from: governance,
+            privateKey: governanceKey,
+        })
+    }
+
+    async rejectDatasetMetadata() {
+        let [governance, governanceKey] = this.accounts.getGovernance()
+        let tx = await this.metadata.rejectDatasetMetadata(this.targetDatasetId, {
+            from: governance,
+            privateKey: governanceKey,
+        })
     }
 
     async submitDatasetMetadata(
@@ -57,7 +106,7 @@ export class DatasetsHelper {
         sizeInBytes: number,
         isPublic: boolean,
         version: number
-    ): Promise<number> {
+    ) {
         let [client, clientkey] = this.accounts.getClient()
         let tx = await this.metadata.submitDatasetMetadata(
             title,
@@ -77,10 +126,62 @@ export class DatasetsHelper {
         await tx
         let call = await this.metadata.datasetsCount()
         this.targetDatasetId = Number(call.data)
-        return this.targetDatasetId
     }
 
     getTargetDatasetId(): number {
         return this.targetDatasetId
     }
+
+    async getDatasetReplicasCount(): Promise<number> {
+        let call = await this.requirement.getDatasetReplicasCount(this.targetDatasetId)
+        return Number(call.data)
+    }
+
+    async getDatasetReplicaRequirement(index: number): Promise<DatasetRequirement> {
+        let call = await this.requirement.getDatasetReplicaRequirement(this.targetDatasetId, index)
+        return call.data as DatasetRequirement
+    }
+
+    async getDatasetPreCollateralRequirements(): Promise<number> {
+        let call = await this.requirement.getDatasetPreCollateralRequirements(this.targetDatasetId)
+        return Number(call.data)
+    }
+
+    async submitDatasetReplicaRequirements() {
+        let [client, clientkey] = this.accounts.getClient()
+
+
+        let dataPreparers = this.requirements.getDataPreparers()
+        let [dp,] = Accounts.Instance().getProofSubmitter()
+        dataPreparers[0][0] = dp
+
+        let storageProviders = this.requirements.getStorageProviders()
+        let [sp,] = Accounts.Instance().getBidder()
+        storageProviders[0][0] = sp
+
+        let regions = this.requirements.getRegions()
+        let countrys = this.requirements.getCountrys()
+        let citys = this.requirements.getCitys()
+        console.log("data preparers:", dataPreparers)
+        console.log("storage providers:", storageProviders)
+        console.log("regions:", regions)
+        console.log("countrys:", countrys)
+        console.log("citys:", citys)
+
+        let call = await this.requirement.submitDatasetReplicaRequirements(
+            this.targetDatasetId,
+            dataPreparers,
+            storageProviders,
+            regions,
+            countrys,
+            citys,
+            {
+                from: client,
+                privateKey: clientkey,
+            })
+
+        return Number(call.data)
+    }
+
+
 }
