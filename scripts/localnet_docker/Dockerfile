@@ -30,10 +30,12 @@ RUN set -eux; \
     cargo --version; \
     rustc --version;
 
+#COPY ./lotus/ /opt/filecoin
 RUN git clone -b v1.25.0 https://github.com/filecoin-project/lotus.git /opt/filecoin
 WORKDIR /opt/filecoin
 
 RUN scripts/docker-git-state-check.sh
+
 COPY ./devnet.patch /opt/filecoin
 RUN git apply ./devnet.patch
 RUN git diff
@@ -99,19 +101,22 @@ CMD ["-help"]
 #####################################
 FROM lotus-base AS lotus-devnet
 
-RUN apt-get update && apt-get install -y tmux
+RUN apt-get update && apt-get install -y tmux curl git
 
 ENV FILECOIN_PARAMETER_CACHE /var/tmp/filecoin-proof-parameters
 ENV LOTUS_MINER_PATH /root/.lotusminer
 ENV LOTUS_PATH /root/.lotus 
 ENV LOTUS_WORKER_PATH /root/.lotusworker
+ENV LOCALNET_RPC_URL http://127.0.0.1:1234/rpc/v1
+ENV PRIVATE_KEY=0x0a3570f105ea5d06c355ea1a7a1fea441e90e44984896779b6c44c2ca5a8e16b
 
 COPY --from=lotus-builder /opt/filecoin/lotus          /usr/local/bin/
 COPY --from=lotus-builder /opt/filecoin/lotus-seed     /usr/local/bin/
 COPY --from=lotus-builder /opt/filecoin/lotus-shed     /usr/local/bin/
 COPY --from=lotus-builder /opt/filecoin/lotus-miner    /usr/local/bin/
 COPY --from=lotus-builder /opt/filecoin/lotus-worker   /usr/local/bin/
-COPY --from=lotus-builder /opt/filecoin/scripts/devnet.bash /usr/local/bin/
+COPY ./devnet.bash    /usr/local/bin/
+COPY ./devnet-entry.bash /usr/local/bin/
 
 RUN mkdir /var/tmp/filecoin-proof-parameters
 RUN mkdir /var/lib/lotus
@@ -122,7 +127,8 @@ RUN chown fc: /var/lib/lotus
 RUN chown fc: /var/lib/lotus-miner
 RUN chown fc: /var/lib/lotus-worker
 
-#COPY ./filecoin-proof-parameters-devnet/* /var/tmp/filecoin-proof-parameters/
+COPY ./filecoin-proof-parameters/* /var/tmp/filecoin-proof-parameters/
+RUN lotus fetch-params 2k
 
 VOLUME /var/tmp/filecoin-proof-parameters
 VOLUME /var/lib/lotus
@@ -132,4 +138,6 @@ VOLUME /var/lib/lotus-worker
 EXPOSE 1234
 EXPOSE 2345
 
-CMD ["/usr/local/bin/devnet.bash"]
+RUN /usr/local/bin/devnet.bash
+
+CMD ["/usr/local/bin/devnet-entry.bash"]
