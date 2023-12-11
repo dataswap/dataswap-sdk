@@ -38,10 +38,6 @@ jobs:
 
   Test:
     runs-on: ubuntu-latest
-    env:
-      ROOT_Address: ""
-      Filecoin_Contract_ETHAddress: ""
-      Filecoin_Contract_Address: ""
     strategy:
       matrix:
         node-version: [18.x]
@@ -54,51 +50,17 @@ jobs:
 
     - name: deploy localnet
       run: |
-        docker run -d -p 1234:1234  --name localnet dataswap/lotus-devnet:0.3.0
+        docker run -d -p 1234:1234  --name localnet dataswap/lotus-devnet:0.4.0
         sleep 90
         docker exec localnet /usr/local/bin/lotus wallet list
-    - name: Install dependencies
-      env:
-        PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
-        NETWORK_NAME: ${{ secrets.NETWORK_NAME }}
-        LOCALNET_RPC_URL: ${{ secrets.LOCALNET_RPC_URL }}
-        CALIBRATION_RPC_URL: ${{secrets.CALIBRATION_RPC_URL}}
-        FILECOIN_MAINNET_RPC_URL: ${{secrets.FILECOIN_MAINNET_RPC_URL}}
-        DEPLOYER_ADDRESS: ${{ secrets.DEPLOYER_ADDRESS }}
-      run: |
-        npm install --save-dev hardhat
-        npm install --save-dev ts-node
-        git clone https://github.com/dataswap/core.git
-        cd core && yarn install && yarn hardhat compile
-        npx hardhat deploy --network localnet
-
-    - name: Create Datcap pool
-      run: |
-        export Root_Address=$(docker exec localnet lotus msig inspect f080 |grep t0100 |awk '{print $2}') 
-        export Filecoin_Contract_ETHAddress=$(cd core && npx hardhat getProxyAddress --type localnet --name Filecoin)
-        export Filecoin_Contract_Address=$(docker exec localnet lotus evm stat $Filecoin_Contract_ETHAddress |grep "ID address" |awk '{print $3}')
-        echo "ROOT_Address : $Root_Address"
-        echo "Filecoin_Contract_Address : $Filecoin_Contract_Address"
-        docker exec localnet lotus-shed verifreg add-verifier $Root_Address $Filecoin_Contract_Address 10000000
-        docker exec localnet lotus filplus list-notaries
 
     - name: Test
       env:
-        NETWORK_RPC_URL: ${{secrets.LOCALNET_RPC_URL}}
-        PRIVATE_KEY_BIDDER: ${{secrets.PRIVATE_KEY_BIDDER}}
-        PRIVATE_KEY_DATASETAUDITOR: ${{secrets.PRIVATE_KEY_DATASETAUDITOR}}
-        PRIVATE_KEY_METADATASUBMITTER: ${{secrets.PRIVATE_KEY_METADATASUBMITTER}}
-        PRIVATE_KEY_PROOFSUBMITTER: ${{secrets.PRIVATE_KEY_PROOFSUBMITTER}}
+        NETWORK_RPC_URL: ${{vars.NETWORK_RPC_URL}}
       run: |
-        cd core
-        export CarstoreAddress=$(npx hardhat getProxyAddress --type localnet --name Carstore)
-        export DatacapsAddress=$(npx hardhat getProxyAddress --type localnet --name Datacaps)
-        export DatasetsAddress=$(npx hardhat getProxyAddress --type localnet --name Datasets)
-        export DatasetsChallengeAddress=$(npx hardhat getProxyAddress --type localnet --name DatasetsChallenge)
-        export DatasetsProofAddress=$(npx hardhat getProxyAddress --type localnet --name DatasetsProof)
-        export DatasetsRequirementAddress=$(npx hardhat getProxyAddress --type localnet --name DatasetsRequirement)
-        export EscrowAddress=$(npx hardhat getProxyAddress --type localnet --name Escrow)
-        export FilecoinAddress=$(npx hardhat getProxyAddress --type localnet --name Filecoin)
-        export FilplusAddress=$(npx hardhat getProxyAddress --type localnet --name Filplus)
-        cd ..
+        docker exec localnet cat /root/contract >> ./contract
+        docker exec localnet cat /root/env >> ./env
+        source ./contract
+        source ./env
+        export
         yarn test
