@@ -2,10 +2,10 @@ import { DatasetMetadataEvm } from "../../src/dataset/metadata/repo/evm"
 import { DatasetRequirementEvm } from "../../src/dataset/requirement/repo/evm"
 import { DatasetProofEvm } from "../../src/dataset/proof/repo/evm"
 import { DatasetChallengeEvm } from "../../src/dataset/challenge/repo/evm"
-import DatasetsAbi from "@dataswapcore/abi/v0.1/module/dataset/Datasets.json"
-import DatasetsRequirementAbi from "@dataswapcore/abi/v0.1/module/dataset/DatasetsRequirement.json"
-import DatasetsProofAbi from "@dataswapcore/abi/v0.1/module/dataset/DatasetsProof.json"
-import DatasetsChallengeAbi from "@dataswapcore/abi/v0.1/module/dataset/DatasetsChallenge.json"
+import DatasetsAbi from "@dataswapcore/contracts/abi/v0.8/Datasets.json"
+import DatasetsRequirementAbi from "@dataswapcore/contracts/abi/v0.8/DatasetsRequirement.json"
+import DatasetsProofAbi from "@dataswapcore/contracts/abi/v0.8/DatasetsProof.json"
+import DatasetsChallengeAbi from "@dataswapcore/contracts/abi/v0.8/DatasetsChallenge.json"
 import * as utils from "../shared/utils"
 import { Accounts } from "../shared/accounts"
 import { Requirements } from "../shared/requirements"
@@ -25,10 +25,10 @@ export class DatasetsHelper {
     private requirements: Requirements
 
     constructor() {
-        this.metadata = utils.getContract('Datasets', DatasetsAbi.abi, DatasetMetadataEvm)
-        this.requirement = utils.getContract('DatasetsRequirement', DatasetsRequirementAbi.abi, DatasetRequirementEvm)
-        this.proof = utils.getContract('DatasetsProof', DatasetsProofAbi.abi, DatasetProofEvm)
-        this.challenge = utils.getContract('DatasetsChallenge', DatasetsChallengeAbi.abi, DatasetChallengeEvm)
+        this.metadata = utils.getContract('Datasets', DatasetsAbi, DatasetMetadataEvm)
+        this.requirement = utils.getContract('DatasetsRequirement', DatasetsRequirementAbi, DatasetRequirementEvm)
+        this.proof = utils.getContract('DatasetsProof', DatasetsProofAbi, DatasetProofEvm)
+        this.challenge = utils.getContract('DatasetsChallenge', DatasetsChallengeAbi, DatasetChallengeEvm)
         this.targetDatasetId = 0
         this.accounts = Accounts.Instance()
         this.requirements = Requirements.Instance()
@@ -97,6 +97,7 @@ export class DatasetsHelper {
     }
 
     async submitDatasetMetadata(
+        dataClientId: number,
         title: string,
         industry: string,
         name: string,
@@ -109,6 +110,7 @@ export class DatasetsHelper {
     ) {
         let [client, clientkey] = this.accounts.getClient()
         let tx = await this.metadata.submitDatasetMetadata(
+            dataClientId,
             title,
             industry,
             name,

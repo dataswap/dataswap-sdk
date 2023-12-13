@@ -36,6 +36,7 @@ interface DatasetMetadataSendEvm {
         options: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
     submitDatasetMetadata(
+        client: number,
         title: string,
         industry: string,
         name: string,

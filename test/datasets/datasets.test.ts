@@ -1,7 +1,7 @@
 import { expect } from "chai"
 import { describe } from "mocha"
 import * as utils from "../shared/utils"
-import { DatasetsHelper } from "./datasetshelper"
+import { DatasetsHelper } from "./datasetsHelper"
 import { Accounts } from "../shared/accounts"
 import { Requirements } from "../shared/requirements"
 
@@ -13,6 +13,7 @@ describe("datasetsMetadata", () => {
         expect(governance).to.be.equal(expectGovernance)
 
         let random: string = utils.generateRandomString(7);
+        const dataClientId = 100
         const title = "title-" + random;
         const industry = "industry-" + random;
         const name = "dataset-" + random;
@@ -25,7 +26,8 @@ describe("datasetsMetadata", () => {
 
         this.timeout(100000)
 
-        await datasets.submitDatasetMetadata(
+        let tx = await datasets.submitDatasetMetadata(
+            dataClientId,
             title,
             industry,
             name,
