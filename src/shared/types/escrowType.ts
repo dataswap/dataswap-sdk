@@ -4,8 +4,8 @@ export enum EscrowType {
     DataAuditCollateral, // The data auditor collateral, for dispute
     DataPrepareCollateral, // The data preparer collateral,for dispute
     DataAuditFee, // The data auditor calculate fees.
-    DataPrepareFeeByClient, // The data preparer calculate fees paid by SC.
-    DataPrepareFeeByProvider, // The data preparer calculate fees paid by SP.
+    DataPrepareFeeByClient, // The data preparer calculate fees paid by storage client.
+    DataPrepareFeeByProvider // The data preparer calculate fees paid by storage provider.
 }
 
 export enum EscrowOperateType {
