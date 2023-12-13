@@ -32,11 +32,11 @@
   "dependencies": {
     "@dataswapcore/abi": "^0.1.3",
     "@types/lodash": "^4.14.199",
-    "@unipackage/datastore": "^0.1.3",
-    "@unipackage/ddd": "^0.1.5",
-    "@unipackage/filecoin": "^0.1.12",
-    "@unipackage/net": "^0.1.11",
-    "@unipackage/utils": "^0.1.7",
+    "@unipackage/datastore": "0.1.3",
+    "@unipackage/ddd": "0.1.5",
+    "@unipackage/filecoin": "0.1.12",
+    "@unipackage/net": "0.1.11",
+    "@unipackage/utils": "0.1.7",
     "fp-ts": "^2.16.1",
     "lodash": "^4.17.21",
     "nock": "^13.4.0"
