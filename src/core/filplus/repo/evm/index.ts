@@ -1,0 +1,310 @@
+import {
+    Evm,
+    withCallMethod,
+    withSendMethod,
+    EvmOutput
+} from "@unipackage/net"
+import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
+import { DataswapMessage } from "../../../../message/types"
+
+/**
+ * Interface for EVM calls related to  Filplus.
+ */
+interface FilplusCallEvm {
+    /**
+     * @notice Get dataset rule max replicas in countries 
+     * @param countryCode The country code 
+     */
+    getDatasetRuleMaxReplicasInCountry(
+        countryCode: number
+    ): Promise<EvmOutput<number>>
+
+    /**
+     * @notice Get dataset rule min regions per dataset
+     */
+    datasetRuleMinRegionsPerDataset(): Promise<EvmOutput<number>>
+
+    /**
+     * @notice Get dataset rule default max replicas per country
+     */
+    datasetRuleDefaultMaxReplicasPerCountry(): Promise<EvmOutput<number>>
+
+    /**
+     * @notice Get dataset rule max replicas per city
+     */
+    datasetRuleMaxReplicasPerCity(): Promise<EvmOutput<number>>
+
+    /**
+     * @notice Get dataset rule max proportion of mapping files to dataset
+     */
+    datasetRuleMaxProportionOfMappingFilesToDataset(): Promise<EvmOutput<number>>
+
+    /**
+     * @notice Get dataset rule min SPs per dataset
+     */
+    datasetRuleMinSPsPerDataset(): Promise<EvmOutput<number>>
+
+    /**
+     * @notice Get dataset rule max replicas per SP
+     */
+    datasetRuleMaxReplicasPerSP(): Promise<EvmOutput<number>>
+
+    /**
+     * @notice Get dataset rule min total replicas per dataset
+     */
+    datasetRuleMinTotalReplicasPerDataset(): Promise<EvmOutput<number>>
+
+    /**
+     * @notice Get dataset rule max total replicas per dataset
+     */
+    datasetRuleMaxTotalReplicasPerDataset(): Promise<EvmOutput<number>>
+
+    /**
+     * @notice Get datacap rules max allocated size per time
+     */
+    datacapRulesMaxAllocatedSizePerTime(): Promise<EvmOutput<number>>
+
+    /**
+     * @notice Get datacap rules max remaining percentage for next
+     */
+    datacapRulesMaxRemainingPercentageForNext(): Promise<EvmOutput<number>>
+
+
+    /**
+     * @notice Check if the storage area complies with filplus rules.
+     * @param regions The geolocation regions
+     * @param countrys The geolocation countrys 
+     * @param citys The geolocation citys
+     */
+    isCompliantRuleGeolocation(
+        regions: number[],
+        countrys: number[],
+        citys: number[][]
+    ): Promise<EvmOutput<boolean>>
+
+
+    /**
+     * @notice Check if the mappingFiles percentage in the dataset complies with filplus rules.
+     * @param mappingFilesSize The mapping files size
+     * @param sourceSize The source size
+     *  */
+    isCompliantRuleMaxProportionOfMappingFilesToDataset(
+        mappingFilesSize: number,
+        sourceSize: number
+    ): Promise<EvmOutput<boolean>>
+
+    /**
+     * @notice Check if the total number of storage replicas complies with filplus rules.
+     * @param dataPreparers The data preparers
+     * @param storageProviders The storage providers
+     * @param regions The regions
+     * @param countrys The countrys
+     * @param citys The citys
+     */
+    isCompliantRuleTotalReplicasPerDataset(
+        dataPreparers: Buffer[][],
+        storageProviders: Buffer[][],
+        regions: number[],
+        countrys: number[],
+        citys: number[][]
+    ): Promise<EvmOutput<boolean>>
+
+    /**
+     * @notice Check if the storage provider for each dataset complies with filplus rules `datasetRuleMinSPsPerDataset`.
+     * @param requirementValue The requiement value
+     * @param totalExists The total exists number
+     * @param uniqueExists The unique exists number
+     */
+    isCompliantRuleMinSPsPerDataset(
+        requirementValue: number,
+        totalExists: number,
+        uniqueExists: number
+    ): Promise<EvmOutput<boolean>>
+
+    /**
+     * @notice Check if the storage provider for each dataset complies with filplus rules `datasetRuleMaxReplicasPerSP`.
+     * @param value The current vale
+     */
+    isCompliantRuleMaxReplicasPerSP(
+        value: number
+    ): Promise<EvmOutput<boolean>>
+}
+
+/**
+ * Interface for EVM transactions related to  Filplus.
+ */
+interface FilplusSendEvm {
+    /**
+      * @notice Set dataset rule min regions per dataset
+      * @param newValue The set value
+      */
+    setDatasetRuleMinRegionsPerDataset(newValue: number): Promise<EvmOutput<void>>
+
+    /**
+     * @notice Set dataset rule default max replicas per country
+     * @param newValue The set value
+     */
+    setDatasetRuleDefaultMaxReplicasPerCountry(
+        newValue: number
+    ): Promise<EvmOutput<void>>
+
+    /**
+     * @notice Set dataset rule max replicas in country
+     * @param countryCode The country code
+     * @param newValue The set value
+     */
+    setDatasetRuleMaxReplicasInCountry(
+        countryCode: number,
+        newValue: number
+    ): Promise<EvmOutput<void>>
+
+    /**
+    * @notice Set dataset rule max replicas per city
+    * @param newValue The set value
+    */
+    setDatasetRuleMaxReplicasPerCity(newValue: number): Promise<EvmOutput<void>>
+
+    /** 
+     * @notice Set maximum proportion of dataset mapping files
+     * @param newValue The set value
+     */
+    setDatasetRuleMaxProportionOfMappingFilesToDataset(
+        newValue: number
+    ): Promise<EvmOutput<void>>
+
+    /** 
+     * @notice Set dataset rule min SPs per dataset
+     * @param newValue The set value
+     */
+    setDatasetRuleMinSPsPerDataset(newValue: number): Promise<EvmOutput<void>>
+
+    /** 
+     * @notice Set dataset rule max replicas per SP
+     * @param newValue The set value
+     */
+    setDatasetRuleMaxReplicasPerSP(newValue: number): Promise<EvmOutput<void>>
+
+    /** 
+     * @notice Set dataset rule min total replicas per dataset
+     * @param newValue The set value
+     */
+    setDatasetRuleMinTotalReplicasPerDataset(
+        newValue: number
+    ): Promise<EvmOutput<void>>
+
+    /** 
+     * @notice Set dataset rule max total replicas per dataset
+     * @param newValue The set value
+     */
+    setDatasetRuleMaxTotalReplicasPerDataset(
+        newValue: number
+    ): Promise<EvmOutput<void>>
+
+    /** 
+     * @notice Set datacap rule max allocated size per time
+     * @param newValue The set value
+     */
+    setDatacapRulesMaxAllocatedSizePerTime(newValue: number): Promise<EvmOutput<void>>
+
+    /** 
+     * @notice Set datacap rule max remaining percentage for next
+     * @param newValue The set value
+     */
+    setDatacapRulesMaxRemainingPercentageForNext(
+        newValue: number
+    ): Promise<EvmOutput<void>>
+}
+
+/**
+ * Combined interface for EVM calls and transactions related to  Filplus.
+ */
+export interface FilplusOriginEvm
+    extends FilplusCallEvm,
+    FilplusSendEvm { }
+
+/**
+ * Implementation of  FilplusOriginEvm with specific EVM methods.
+ */
+@withCallMethod(
+    [
+        "getDatasetRuleMaxReplicasInCountry",
+        "datasetRuleMinRegionsPerDataset",
+        "datasetRuleDefaultMaxReplicasPerCountry",
+        "datasetRuleMaxReplicasPerCity",
+        "datasetRuleMaxProportionOfMappingFilesToDataset",
+        "datasetRuleMinSPsPerDataset",
+        "datasetRuleMaxReplicasPerSP",
+        "datasetRuleMinTotalReplicasPerDataset",
+        "datasetRuleMaxTotalReplicasPerDataset",
+        "datacapRulesMaxAllocatedSizePerTime",
+        "datacapRulesMaxRemainingPercentageForNext",
+        "isCompliantRuleGeolocation",
+        "isCompliantRuleMaxProportionOfMappingFilesToDataset",
+        "isCompliantRuleTotalReplicasPerDataset",
+        "isCompliantRuleMinSPsPerDataset",
+        "isCompliantRuleMaxReplicasPerSP"
+    ]
+)
+@withSendMethod(
+    [
+        "setDatasetRuleMinRegionsPerDataset",
+        "setDatasetRuleDefaultMaxReplicasPerCountry",
+        "setDatasetRuleMaxReplicasInCountry",
+        "setDatasetRuleMaxReplicasPerCity",
+        "setDatasetRuleMaxProportionOfMappingFilesToDataset",
+        "setDatasetRuleMinSPsPerDataset",
+        "setDatasetRuleMaxReplicasPerSP",
+        "setDatasetRuleMinTotalReplicasPerDataset",
+        "setDatasetRuleMaxTotalReplicasPerDataset",
+        "setDatacapRulesMaxAllocatedSizePerTime",
+        "setDatacapRulesMaxRemainingPercentageForNext"
+    ]
+)
+export class FilplusOriginEvm extends Evm { }
+
+/**
+ * Extended class for  FilplusOriginEvm with additional message decoding.
+ */
+export class FilplusEvm extends FilplusOriginEvm {
+
+
+    /**
+     * Decode a DataswapMessage from an EVM message.
+     *
+     * @param msg - Message to decode.
+     * @returns EvmOutput containing the decoded DataswapMessage.
+     */
+    decodeMessage(msg: Message): EvmOutput<DataswapMessage> {
+        const decoder = new ContractMessageDecoder(this)
+        const decodeRes = decoder.decode(msg)
+        if (!decodeRes.ok && !decodeRes.data) {
+            return { ok: false, error: decodeRes.error }
+        }
+
+        let result: DataswapMessage = decodeRes.data as DataswapMessage
+        switch (decodeRes.data!.method) {
+            case "setDatasetRuleMinRegionsPerDataset":
+            case "setDatasetRuleDefaultMaxReplicasPerCountry":
+            case "setDatasetRuleMaxReplicasInCountry":
+            case "setDatasetRuleMaxReplicasPerCity":
+            case "setDatasetRuleMaxProportionOfMappingFilesToDataset":
+            case "setDatasetRuleMinSPsPerDataset":
+            case "setDatasetRuleMaxReplicasPerSP":
+            case "setDatasetRuleMinTotalReplicasPerDataset":
+            case "setDatasetRuleMaxTotalReplicasPerDataset":
+            case "setDatacapRulesMaxAllocatedSizePerTime":
+            case "setDatacapRulesMaxRemainingPercentageForNext":
+                break
+            default:
+                return {
+                    ok: false,
+                    error: "Not support method!",
+                }
+        }
+
+        return {
+            ok: true,
+            data: result,
+        }
+    }
+}
