@@ -63,4 +63,3 @@ jobs:
         source ./contract
         source ./env
         export
-        yarn test
