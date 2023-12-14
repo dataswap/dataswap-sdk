@@ -35,7 +35,7 @@ export class DatasetsHelper {
         )),
             (this.requirement = new DatasetRequirementEvm(
                 new EvmEngine(
-                    DatasetsAbi,
+                    DatasetsRequirementAbi,
                     utils.getEnvVariable(
                         "DatasetsRequirementAddress"
                     ) as string,
@@ -44,14 +44,14 @@ export class DatasetsHelper {
             )),
             (this.proof = new DatasetProofEvm(
                 new EvmEngine(
-                    DatasetsAbi,
+                    DatasetsProofAbi,
                     utils.getEnvVariable("DatasetsProofAddress") as string,
                     utils.getEnvVariable("NETWORK_RPC_URL") as string
                 )
             ))
         this.challenge = new DatasetChallengeEvm(
             new EvmEngine(
-                DatasetsAbi,
+                DatasetsChallengeAbi,
                 utils.getEnvVariable("DatasetsChallengeAddress") as string,
                 utils.getEnvVariable("NETWORK_RPC_URL") as string
             )
