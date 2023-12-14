@@ -26,10 +26,26 @@ export class DatasetsHelper {
     private requirements: Requirements
 
     constructor() {
-        this.metadata = utils.getContract('Datasets', DatasetsAbi, DatasetMetadataEvm)
-        this.requirement = utils.getContract('DatasetsRequirement', DatasetsRequirementAbi, DatasetRequirementEvm)
-        this.proof = utils.getContract('DatasetsProof', DatasetsProofAbi, DatasetProofEvm)
-        this.challenge = utils.getContract('DatasetsChallenge', DatasetsChallengeAbi, DatasetChallengeEvm)
+        this.metadata = utils.getContract(
+            "Datasets",
+            DatasetsAbi,
+            DatasetMetadataEvm
+        )
+        this.requirement = utils.getContract(
+            "DatasetsRequirement",
+            DatasetsRequirementAbi,
+            DatasetRequirementEvm
+        )
+        this.proof = utils.getContract(
+            "DatasetsProof",
+            DatasetsProofAbi,
+            DatasetProofEvm
+        )
+        this.challenge = utils.getContract(
+            "DatasetsChallenge",
+            DatasetsChallengeAbi,
+            DatasetChallengeEvm
+        )
         this.targetDatasetId = 0
         this.accounts = Accounts.Instance()
         this.requirements = Requirements.Instance()
@@ -117,26 +133,29 @@ export class DatasetsHelper {
         isPublic: boolean,
         version: number
     ) {
-        let [client, clientkey] = this.accounts.getClient()
-        let tx = await this.metadata.submitDatasetMetadata(
-            dataClientId,
-            title,
-            industry,
-            name,
-            description,
-            source,
-            accessMethod,
-            sizeInBytes,
-            isPublic,
-            version,
-            {
-                from: client,
-                privateKey: clientkey,
-            }
-        )
-        await tx
-        let call = await this.metadata.datasetsCount()
-        this.targetDatasetId = Number(call.data)
+        try {
+            let [client, clientkey] = this.accounts.getClient()
+            let tx = await this.metadata.submitDatasetMetadata(
+                dataClientId,
+                title,
+                industry,
+                name,
+                description,
+                source,
+                accessMethod,
+                sizeInBytes,
+                isPublic,
+                version,
+                {
+                    from: client,
+                    privateKey: clientkey,
+                }
+            )
+            let call = await this.metadata.datasetsCount()
+            this.targetDatasetId = Number(call.data)
+        } catch (error) {
+            console.error(error)
+        }
     }
 
     getTargetDatasetId(): number {
