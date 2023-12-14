@@ -7,11 +7,12 @@ import {
 } from "@unipackage/net"
 import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
 import { DataswapMessage } from "../../../../message/types"
-import { DatasetMetadata } from "../../types"
+import { DatasetMetadata, newDatasetMetadata } from "../../types"
+import { decodeReternData } from "../../../../shared/decodeReturnData"
 
 interface DatasetMetadataCallEvm {
     datasetsCount(): Promise<EvmOutput<number>>
-    getDatasetMetadata(id: number): Promise<EvmOutput<DatasetMetadata>>
+    getDatasetMetadata(id: number): Promise<EvmOutput<any>>
     getDatasetMetadataSubmitter(id: number): Promise<EvmOutput<string>>
     getDatasetState(id: number): Promise<EvmOutput<number>>
     governanceAddress(): Promise<EvmOutput<string>>
@@ -83,22 +84,11 @@ export class DatasetMetadataEvm extends DatasetMetadataOriginEvm {
     async getDatasetMetadata(id: number): Promise<EvmOutput<DatasetMetadata>> {
         const metaRes = await super.getDatasetMetadata(id)
         if (metaRes.ok && metaRes.data) {
+            let dataRes = decodeReternData(newDatasetMetadata(), metaRes.data as unknown[])
+            dataRes.datasetId = id
             return {
                 ok: true,
-                data: new DatasetMetadata({
-                    title: metaRes.data[0],
-                    industry: metaRes.data[1],
-                    name: metaRes.data[2],
-                    description: metaRes.data[3],
-                    source: metaRes.data[4],
-                    accessMethod: metaRes.data[5],
-                    submitter: metaRes.data[6],
-                    createdBlockNumber: Number(metaRes.data[7]),
-                    sizeInBytes: Number(metaRes.data[8]),
-                    isPublic: metaRes.data[9],
-                    version: Number(metaRes.data[10]),
-                    datasetId: id,
-                }),
+                data: dataRes,
             }
         }
         return metaRes

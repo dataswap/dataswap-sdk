@@ -26,7 +26,7 @@ describe("datasetsMetadata", () => {
 
         this.timeout(100000)
 
-        let tx = await datasets.submitDatasetMetadata(
+        await datasets.submitDatasetMetadata(
             dataClientId,
             title,
             industry,
@@ -40,15 +40,16 @@ describe("datasetsMetadata", () => {
         )
 
         let metaData = await datasets.getDatasetMetadata()
+        //console.log("metadata:", metaData)
         expect(title).to.be.equal(metaData.title)
         expect(industry).to.be.equal(metaData.industry)
         expect(name).to.be.equal(metaData.name)
         expect(description).to.be.equal(metaData.description)
         expect(source).to.be.equal(metaData.source)
         expect(accessMethod).to.be.equal(metaData.accessMethod)
-        expect(sizeInBytes).to.be.equal(metaData.sizeInBytes)
+        expect(sizeInBytes).to.be.equal(Number(metaData.sizeInBytes))
         expect(isPublic).to.be.equal(metaData.isPublic)
-        expect(version).to.be.equal(metaData.version)
+        expect(version).to.be.equal(Number(metaData.version))
 
         expect(true).to.be.equal(await datasets.hasDatasetMetadata(metaData.accessMethod))
 
