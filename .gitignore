@@ -3,4 +3,3 @@ dist
 .localnet
 .env
 yarn.lock
-package-lock.json

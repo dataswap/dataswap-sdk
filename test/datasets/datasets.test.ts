@@ -40,7 +40,7 @@ describe("datasetsMetadata", () => {
         )
 
         let metaData = await datasets.getDatasetMetadata()
-        //console.log("metadata:", metaData)
+        console.log("metadata:", metaData)
         expect(title).to.be.equal(metaData.title)
         expect(industry).to.be.equal(metaData.industry)
         expect(name).to.be.equal(metaData.name)
