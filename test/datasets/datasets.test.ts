@@ -26,7 +26,7 @@ describe("datasetsMetadata", () => {
 
         this.timeout(100000)
 
-        await datasets.submitDatasetMetadata(
+        let tx = await datasets.submitDatasetMetadata(
             dataClientId,
             title,
             industry,
@@ -38,6 +38,7 @@ describe("datasetsMetadata", () => {
             isPublic,
             version
         )
+
 
         let metaData = await datasets.getDatasetMetadata()
         console.log("metadata:", metaData)

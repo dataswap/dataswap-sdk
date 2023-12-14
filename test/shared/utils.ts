@@ -1,7 +1,8 @@
-import { Evm } from "@unipackage/net"
+import { IEVMEngine } from "@unipackage/net"
 import { ethers } from "ethers"
 import { AbiFunctionFragment } from "web3"
 import { EvmEngine } from "../../src/shared/types/evmEngineType"
+
 
 export function getEnvVariable(variableName: string): string | undefined {
     if (typeof process !== "undefined" && process.env) {
@@ -24,6 +25,26 @@ export function getRandomInt(min: number, max: number): number {
     min = Math.ceil(min)
     max = Math.floor(max)
     return Math.floor(Math.random() * (max - min + 1)) + min
+}
+
+export function getContract<T>(
+    contractName: string,
+    abi: AbiFunctionFragment[],
+    init: new (engine: IEVMEngine) => T
+): T {
+    let contractAddress = getEnvVariable(contractName + "Address")
+    if (contractAddress === undefined) {
+        throw new Error(
+            "get evn variable " + contractName + "Address" + " faild"
+        )
+    }
+    let url = getEnvVariable("NETWORK_RPC_URL")
+    if (url === undefined) {
+        throw new Error("get rpc url evn variable faild")
+    }
+    let engine = new EvmEngine(abi, contractAddress, url)
+    let contract = new init(engine)
+    return contract
 }
 
 export function getAccountAddress(variableName: string): string {

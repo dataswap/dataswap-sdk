@@ -26,36 +26,10 @@ export class DatasetsHelper {
     private requirements: Requirements
 
     constructor() {
-        ;(this.metadata = new DatasetMetadataEvm(
-            new EvmEngine(
-                DatasetsAbi,
-                utils.getEnvVariable("DatasetsAddress") as string,
-                utils.getEnvVariable("NETWORK_RPC_URL") as string
-            )
-        )),
-            (this.requirement = new DatasetRequirementEvm(
-                new EvmEngine(
-                    DatasetsRequirementAbi,
-                    utils.getEnvVariable(
-                        "DatasetsRequirementAddress"
-                    ) as string,
-                    utils.getEnvVariable("NETWORK_RPC_URL") as string
-                )
-            )),
-            (this.proof = new DatasetProofEvm(
-                new EvmEngine(
-                    DatasetsProofAbi,
-                    utils.getEnvVariable("DatasetsProofAddress") as string,
-                    utils.getEnvVariable("NETWORK_RPC_URL") as string
-                )
-            ))
-        this.challenge = new DatasetChallengeEvm(
-            new EvmEngine(
-                DatasetsChallengeAbi,
-                utils.getEnvVariable("DatasetsChallengeAddress") as string,
-                utils.getEnvVariable("NETWORK_RPC_URL") as string
-            )
-        )
+        this.metadata = utils.getContract('Datasets', DatasetsAbi, DatasetMetadataEvm)
+        this.requirement = utils.getContract('DatasetsRequirement', DatasetsRequirementAbi, DatasetRequirementEvm)
+        this.proof = utils.getContract('DatasetsProof', DatasetsProofAbi, DatasetProofEvm)
+        this.challenge = utils.getContract('DatasetsChallenge', DatasetsChallengeAbi, DatasetChallengeEvm)
         this.targetDatasetId = 0
         this.accounts = Accounts.Instance()
         this.requirements = Requirements.Instance()
