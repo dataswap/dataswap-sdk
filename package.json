@@ -34,12 +34,11 @@
     "@dataswapcore/contracts": "^0.1.2",
     "@unipackage/datastore": "^0.1.5",
     "@unipackage/ddd": "^0.1.5",
-    "@unipackage/filecoin": "^0.1.16",
+    "@unipackage/filecoin": "^0.2.0",
     "@unipackage/net": "^1.1.0",
     "@unipackage/utils": "^1.1.1"
   },
   "devDependencies": {
-    "nock": "^13.4.0",
     "@babel/runtime": "^7.23.4",
     "@types/chai": "^4.3.11",
     "@types/mocha": "^10.0.6",
@@ -49,6 +48,7 @@
     "cross-env": "^7.0.3",
     "hardhat": "^2.19.2",
     "mocha": "^10.2.0",
+    "nock": "^13.4.0",
     "nyc": "^15.1.0",
     "sinon": "^17.0.1",
     "ts-mocha": "^10.0.0",
