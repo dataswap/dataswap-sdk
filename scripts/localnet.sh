@@ -6,7 +6,7 @@ ENV_FILE=".env"
 function setup() {
     echo "\r\n================================= setup start =========================================\r\n"
 
-    docker run -d -p 1234:1234 --name ${DOCKER_NAME} dataswap/lotus-devnet:0.4.0
+    docker run -d -p 1234:1234 --name ${DOCKER_NAME} dataswap/lotus-devnet:0.1.2
     docker exec ${DOCKER_NAME} /usr/local/bin/lotus wallet list
     docker exec ${DOCKER_NAME} cat /root/env >  ${ENV_FILE}
     docker exec ${DOCKER_NAME} cat /root/contract >> ${ENV_FILE}
