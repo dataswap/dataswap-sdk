@@ -1,5 +1,5 @@
 import {
-    Web3Evm,
+    Evm,
     withMethods,
     EvmOutput,
     isEvmTransactionOptions,
@@ -53,7 +53,7 @@ interface DatasetMetadataSendEvm {
 
 export interface DatasetMetadataOriginEvm
     extends DatasetMetadataCallEvm,
-    DatasetMetadataSendEvm { }
+        DatasetMetadataSendEvm {}
 
 @withMethods(
     [
@@ -78,13 +78,16 @@ export interface DatasetMetadataOriginEvm
     "send",
     isEvmTransactionOptions
 )
-export class DatasetMetadataOriginEvm extends Web3Evm { }
+export class DatasetMetadataOriginEvm extends Evm {}
 
 export class DatasetMetadataEvm extends DatasetMetadataOriginEvm {
     async getDatasetMetadata(id: number): Promise<EvmOutput<DatasetMetadata>> {
         const metaRes = await super.getDatasetMetadata(id)
         if (metaRes.ok && metaRes.data) {
-            let dataRes = decodeReternData(newDatasetMetadata(), metaRes.data as unknown[])
+            let dataRes = decodeReternData(
+                newDatasetMetadata(),
+                metaRes.data as unknown[]
+            )
             dataRes.datasetId = id
             return {
                 ok: true,

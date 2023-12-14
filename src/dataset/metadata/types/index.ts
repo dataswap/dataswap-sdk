@@ -1,6 +1,6 @@
-import { Entity, EntityInterface } from "@unipackage/ddd"
+import { Entity } from "@unipackage/ddd"
 
-export interface DatasetMetadata extends EntityInterface {
+export interface DatasetMetadata {
     title: string
     industry: string
     name: string
@@ -16,22 +16,22 @@ export interface DatasetMetadata extends EntityInterface {
     status?: string
 }
 
-export class DatasetMetadata extends Entity<DatasetMetadata> { }
+export class DatasetMetadata extends Entity<DatasetMetadata> {}
 
 export function newDatasetMetadata(): DatasetMetadata {
     return new DatasetMetadata({
-        title: '',
-        industry: '',
-        name: '',
-        description: '',
-        source: '',
-        accessMethod: '',
-        submitter: '',
+        title: "",
+        industry: "",
+        name: "",
+        description: "",
+        source: "",
+        accessMethod: "",
+        submitter: "",
         createdBlockNumber: 0,
         sizeInBytes: 0,
         isPublic: false,
         version: 0,
         datasetId: 0,
-        status: ''
+        status: "",
     })
 }

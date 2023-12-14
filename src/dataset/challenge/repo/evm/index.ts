@@ -1,5 +1,5 @@
 import {
-    Web3Evm,
+    Evm,
     withMethods,
     EvmOutput,
     isEvmTransactionOptions,
@@ -101,7 +101,7 @@ export interface DatasetChallengeOriginEvm
     "call"
 )
 @withMethods(["submitDatasetChallengeProofs"], "send", isEvmTransactionOptions)
-export class DatasetChallengeOriginEvm extends Web3Evm {}
+export class DatasetChallengeOriginEvm extends Evm {}
 
 /**
  * Extended class for DatasetChallengeOriginEvm with additional message decoding.
