@@ -6,7 +6,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "rm -rf ./dist;npx tsc",
-    "test": "mocha test/**/*.test.ts",
+    "build:test": "rm -rf ./dist-test;tsc -p tsconfig.test.json;",
+    "test": "npm run build:test;mocha",
     "localnet-setup": "./scripts/localnet.sh setup",
     "localnet-start": "./scripts/localnet.sh start",
     "localnet-restart": "./scripts/localnet.sh restart",
