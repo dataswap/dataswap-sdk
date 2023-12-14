@@ -11,9 +11,10 @@ import { Accounts } from "../shared/accounts"
 import { Requirements } from "../shared/requirements"
 import { DatasetMetadata } from "../../src/dataset/metadata/types/index"
 import { DatasetRequirement } from "../../src/dataset/requirement/types"
+import { EvmEngine } from "../../src/shared/types/evmEngineType"
 
 export class DatasetsHelper {
-    private static instance: DatasetsHelper;
+    private static instance: DatasetsHelper
 
     private metadata: DatasetMetadataEvm
     private requirement: DatasetRequirementEvm
@@ -25,10 +26,36 @@ export class DatasetsHelper {
     private requirements: Requirements
 
     constructor() {
-        this.metadata = utils.getContract('Datasets', DatasetsAbi, DatasetMetadataEvm)
-        this.requirement = utils.getContract('DatasetsRequirement', DatasetsRequirementAbi, DatasetRequirementEvm)
-        this.proof = utils.getContract('DatasetsProof', DatasetsProofAbi, DatasetProofEvm)
-        this.challenge = utils.getContract('DatasetsChallenge', DatasetsChallengeAbi, DatasetChallengeEvm)
+        ;(this.metadata = new DatasetMetadataEvm(
+            new EvmEngine(
+                DatasetsAbi,
+                utils.getEnvVariable("DatasetsAddress") as string,
+                utils.getEnvVariable("NETWORK_RPC_URL") as string
+            )
+        )),
+            (this.requirement = new DatasetRequirementEvm(
+                new EvmEngine(
+                    DatasetsAbi,
+                    utils.getEnvVariable(
+                        "DatasetsRequirementAddress"
+                    ) as string,
+                    utils.getEnvVariable("NETWORK_RPC_URL") as string
+                )
+            )),
+            (this.proof = new DatasetProofEvm(
+                new EvmEngine(
+                    DatasetsAbi,
+                    utils.getEnvVariable("DatasetsProofAddress") as string,
+                    utils.getEnvVariable("NETWORK_RPC_URL") as string
+                )
+            ))
+        this.challenge = new DatasetChallengeEvm(
+            new EvmEngine(
+                DatasetsAbi,
+                utils.getEnvVariable("DatasetsChallengeAddress") as string,
+                utils.getEnvVariable("NETWORK_RPC_URL") as string
+            )
+        )
         this.targetDatasetId = 0
         this.accounts = Accounts.Instance()
         this.requirements = Requirements.Instance()
@@ -36,9 +63,9 @@ export class DatasetsHelper {
 
     public static Instance(): DatasetsHelper {
         if (!DatasetsHelper.instance) {
-            DatasetsHelper.instance = new DatasetsHelper();
+            DatasetsHelper.instance = new DatasetsHelper()
         }
-        return DatasetsHelper.instance;
+        return DatasetsHelper.instance
     }
 
     async getDatasetMetadata(): Promise<DatasetMetadata> {
@@ -47,7 +74,9 @@ export class DatasetsHelper {
     }
 
     async getDatasetMetadataSubmitter(): Promise<string> {
-        let call = await this.metadata.getDatasetMetadataSubmitter(this.targetDatasetId)
+        let call = await this.metadata.getDatasetMetadataSubmitter(
+            this.targetDatasetId
+        )
         return call.data as string
     }
 
@@ -74,10 +103,13 @@ export class DatasetsHelper {
     }
     async approveDatasetMetadata() {
         let [governance, governanceKey] = this.accounts.getGovernance()
-        let tx = await this.metadata.approveDatasetMetadata(this.targetDatasetId, {
-            from: governance,
-            privateKey: governanceKey,
-        })
+        let tx = await this.metadata.approveDatasetMetadata(
+            this.targetDatasetId,
+            {
+                from: governance,
+                privateKey: governanceKey,
+            }
+        )
     }
 
     async rejectDataset() {
@@ -90,10 +122,13 @@ export class DatasetsHelper {
 
     async rejectDatasetMetadata() {
         let [governance, governanceKey] = this.accounts.getGovernance()
-        let tx = await this.metadata.rejectDatasetMetadata(this.targetDatasetId, {
-            from: governance,
-            privateKey: governanceKey,
-        })
+        let tx = await this.metadata.rejectDatasetMetadata(
+            this.targetDatasetId,
+            {
+                from: governance,
+                privateKey: governanceKey,
+            }
+        )
     }
 
     async submitDatasetMetadata(
@@ -135,30 +170,38 @@ export class DatasetsHelper {
     }
 
     async getDatasetReplicasCount(): Promise<number> {
-        let call = await this.requirement.getDatasetReplicasCount(this.targetDatasetId)
+        let call = await this.requirement.getDatasetReplicasCount(
+            this.targetDatasetId
+        )
         return Number(call.data)
     }
 
-    async getDatasetReplicaRequirement(index: number): Promise<DatasetRequirement> {
-        let call = await this.requirement.getDatasetReplicaRequirement(this.targetDatasetId, index)
+    async getDatasetReplicaRequirement(
+        index: number
+    ): Promise<DatasetRequirement> {
+        let call = await this.requirement.getDatasetReplicaRequirement(
+            this.targetDatasetId,
+            index
+        )
         return call.data as DatasetRequirement
     }
 
     async getDatasetPreCollateralRequirements(): Promise<number> {
-        let call = await this.requirement.getDatasetPreCollateralRequirements(this.targetDatasetId)
+        let call = await this.requirement.getDatasetPreCollateralRequirements(
+            this.targetDatasetId
+        )
         return Number(call.data)
     }
 
     async submitDatasetReplicaRequirements() {
         let [client, clientkey] = this.accounts.getClient()
 
-
         let dataPreparers = this.requirements.getDataPreparers()
-        let [dp,] = Accounts.Instance().getProofSubmitter()
+        let [dp] = Accounts.Instance().getProofSubmitter()
         dataPreparers[0][0] = dp
 
         let storageProviders = this.requirements.getStorageProviders()
-        let [sp,] = Accounts.Instance().getBidder()
+        let [sp] = Accounts.Instance().getBidder()
         storageProviders[0][0] = sp
 
         let regions = this.requirements.getRegions()
@@ -180,10 +223,9 @@ export class DatasetsHelper {
             {
                 from: client,
                 privateKey: clientkey,
-            })
+            }
+        )
 
         return Number(call.data)
     }
-
-
 }
