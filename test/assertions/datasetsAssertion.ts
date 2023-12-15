@@ -4,14 +4,8 @@ import { DatasetsHelper } from "../helpers/datasetsHelper"
 import { DatasetMetadata } from "../../src/dataset/metadata/types/index"
 
 export class DatasetsAssertion {
-    private datasetsHelper: DatasetsHelper
-
-    constructor(datasetsHelper: DatasetsHelper) {
-        this.datasetsHelper = datasetsHelper
-    }
-
     async getDatasetMetadataAssertion(data: DatasetMetadata) {
-        let metaData = await this.datasetsHelper.getDatasetMetadata()
+        let metaData = await DatasetsHelper.Instance().getDatasetMetadata()
         expect(data.title).to.be.equal(metaData.title)
         expect(data.industry).to.be.equal(metaData.industry)
         expect(data.name).to.be.equal(metaData.name)
@@ -24,22 +18,22 @@ export class DatasetsAssertion {
     }
 
     async getDatasetMetadataSubmitterAssertion(client: string) {
-        let submitter = await this.datasetsHelper.getDatasetMetadataSubmitter()
+        let submitter = await DatasetsHelper.Instance().getDatasetMetadataSubmitter()
         expect(submitter).to.be.equal(client)
     }
 
     async hasDatasetMetadataAssertion(accessMethod: string) {
-        let has = await this.datasetsHelper.hasDatasetMetadata(accessMethod)
+        let has = await DatasetsHelper.Instance().hasDatasetMetadata(accessMethod)
         expect(true).to.be.equal(has)
     }
 
     async getDatasetStateAssertion(stat: number) {
-        let state = await this.datasetsHelper.getDatasetState()
+        let state = await DatasetsHelper.Instance().getDatasetState()
         expect(stat).to.be.equal(state)
     }
 
     async governanceAddressAssertion(governance: string) {
-        let expectGovernance = await this.datasetsHelper.governanceAddress()
+        let expectGovernance = await DatasetsHelper.Instance().governanceAddress()
         expect(governance).to.be.equal(expectGovernance)
     }
 }

@@ -8,7 +8,7 @@ describe("datasetsMetadata", () => {
     it("submitDatasetMetadataCorrect", async function () {
         let datasetsHelper = DatasetsHelper.Instance()
         let generators = new Generator()
-        let datasetsAssertion = new DatasetsAssertion(datasetsHelper)
+        let datasetsAssertion = new DatasetsAssertion()
 
         let [governance,] = Accounts.Instance().getGovernance()
         await datasetsAssertion.governanceAddressAssertion(governance)
