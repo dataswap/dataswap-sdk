@@ -8,7 +8,6 @@ import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
 import { DataswapMessage } from "../../../../message/types"
 import { Fund } from "../../types"
 import { EscrowType } from "../../../../shared/types/escrowType"
-import { decodeReternData } from "../../../../shared/decodeReturnData"
 
 /**
  * Interface for EVM calls related to Escrow.
@@ -202,29 +201,6 @@ export class EscrowOriginEvm extends Evm { }
  * Extended class for EscrowOriginEvm with additional message decoding.
  */
 export class EscrowEvm extends EscrowOriginEvm {
-    async getOwnerFund(type: EscrowType, owner: string, id: number): Promise<EvmOutput<Fund>> {
-        const metaRes = await super.getOwnerFund(type, owner, id)
-        if (metaRes.ok && metaRes.data) {
-            let dataRes = decodeReternData(new Fund(), metaRes.data as any)
-            return {
-                ok: true,
-                data: dataRes
-            }
-        }
-        return metaRes
-    }
-
-    async getBeneficiaryFund(type: EscrowType, owner: string, id: number, beneficiary: string): Promise<EvmOutput<Fund>> {
-        const metaRes = await super.getBeneficiaryFund(type, owner, id, beneficiary)
-        if (metaRes.ok && metaRes.data) {
-            let dataRes = decodeReternData(new Fund(), metaRes.data as any)
-            return {
-                ok: true,
-                data: dataRes
-            }
-        }
-        return metaRes
-    }
 
     /**
      * Decode a DataswapMessage from an EVM message.

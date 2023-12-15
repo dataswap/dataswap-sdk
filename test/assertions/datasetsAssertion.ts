@@ -1,7 +1,7 @@
 import { expect } from "chai"
 
 import { DatasetsHelperInstance } from "../helpers/datasetsHelper"
-import { DatasetMetadata } from "../../src/dataset/metadata/types/index"
+import { DatasetMetadata } from "../../src/module/dataset/metadata/types/index"
 
 export class DatasetsAssertion {
     async getDatasetMetadataAssertion(data: DatasetMetadata) {
