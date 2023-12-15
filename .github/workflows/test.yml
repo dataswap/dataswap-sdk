@@ -2,7 +2,7 @@ name: Dataswap build & Test
 on:
     workflow_dispatch:
     push:
-        branches: ["dev"]
+        branches: ["main"]
     pull_request:
         branches: ["main"]
 jobs:
