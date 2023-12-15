@@ -35,7 +35,7 @@
     "@unipackage/datastore": "^0.1.5",
     "@unipackage/ddd": "^0.1.5",
     "@unipackage/filecoin": "^0.2.0",
-    "@unipackage/net": "^1.1.0",
+    "@unipackage/net": "^1.1.1",
     "@unipackage/utils": "^1.1.1"
   },
   "devDependencies": {

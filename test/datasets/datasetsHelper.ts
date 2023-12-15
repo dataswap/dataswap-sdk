@@ -11,7 +11,6 @@ import { Accounts } from "../shared/accounts"
 import { Requirements } from "../shared/requirements"
 import { DatasetMetadata } from "../../src/dataset/metadata/types/index"
 import { DatasetRequirement } from "../../src/dataset/requirement/types"
-import { EvmEngine } from "../../src/shared/types/evmEngineType"
 
 export class DatasetsHelper {
     private static instance: DatasetsHelper
