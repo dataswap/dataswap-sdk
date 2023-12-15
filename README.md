@@ -29,19 +29,19 @@ git clone https://github.com/dataswap/dataswapjs.git
 ### dependencies
 
 ```shell
-yarn install
+npm install
 ```
 
 ### Build
 
 ```shell
-yarn build
+npm run build
 ```
 
 ### Test
 
 ```shell
-yarn test
+npm run test
 ```
 
 ## Network configure
@@ -57,32 +57,32 @@ Configure test private key information to .env file. eg: .env.localnet.example
 #### Localnet Setup
 
 ```shell
-yarn localnet-setup
-source .localnet/.environment
+npm run localnet:setup
+source .env
 ```
 
 #### Localnet start
 
 ```shell
-yarn localnet-start
+npm run localnet:start
 ```
 
 #### Localnet restart
 
 ```shell
-yarn localnet-restart
+npm run localnet:restart
 ```
 
 #### Localnet stop
 
 ```shell
-yarn localnet-stop
+npm run localnet:stop
 ```
 
 #### Localnet clear
 
 ```shell
-yarn localnet-clear
+npm run localnet:clear
 ```
 
 ### Network
