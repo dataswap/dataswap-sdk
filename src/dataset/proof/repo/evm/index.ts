@@ -1,5 +1,5 @@
 import {
-    Web3Evm,
+    Evm,
     withMethods,
     EvmOutput,
     isEvmTransactionOptions,
@@ -107,7 +107,7 @@ export interface DatasetProofOriginEvm
     "send",
     isEvmTransactionOptions
 )
-export class DatasetProofOriginEvm extends Web3Evm {}
+export class DatasetProofOriginEvm extends Evm {}
 
 export class DatasetProofEvm extends DatasetProofOriginEvm {
     decodeMessage(msg: Message): EvmOutput<DataswapMessage> {

@@ -1,5 +1,5 @@
 import {
-    Web3Evm,
+    Evm,
     withMethods,
     EvmOutput,
     isEvmTransactionOptions,
@@ -7,13 +7,14 @@ import {
 } from "@unipackage/net"
 import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
 import { DataswapMessage } from "../../../../message/types"
-import { DatasetMetadata } from "../../types"
+import { DatasetMetadata, newDatasetMetadata } from "../../types"
+import { decodeReternData } from "../../../../shared/decodeReturnData"
 
 interface DatasetMetadataCallEvm {
-    datasetsCount(id: number): Promise<EvmOutput<number>>
-    getDatasetMetadata(id: number): Promise<EvmOutput<DatasetMetadata>>
+    datasetsCount(): Promise<EvmOutput<number>>
+    getDatasetMetadata(id: number): Promise<EvmOutput<any>>
     getDatasetMetadataSubmitter(id: number): Promise<EvmOutput<string>>
-    getDatasetState(id: number): Promise<EvmOutput<String>>
+    getDatasetState(id: number): Promise<EvmOutput<number>>
     governanceAddress(): Promise<EvmOutput<string>>
     hasDatasetMetadata(accessMethod: string): Promise<EvmOutput<boolean>>
 }
@@ -36,15 +37,16 @@ interface DatasetMetadataSendEvm {
         options: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
     submitDatasetMetadata(
+        client: number,
         title: string,
+        industry: string,
         name: string,
         description: string,
-        sizeInBytes: number,
-        industry: string,
         source: string,
         accessMethod: string,
-        version: number,
+        sizeInBytes: number,
         isPublic: boolean,
+        version: number,
         options: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 }
@@ -66,6 +68,7 @@ export interface DatasetMetadataOriginEvm
 )
 @withMethods(
     [
+        "initDependencies",
         "approveDataset",
         "approveDatasetMetadata",
         "rejectDataset",
@@ -75,18 +78,20 @@ export interface DatasetMetadataOriginEvm
     "send",
     isEvmTransactionOptions
 )
-export class DatasetMetadataOriginEvm extends Web3Evm {}
+export class DatasetMetadataOriginEvm extends Evm {}
 
 export class DatasetMetadataEvm extends DatasetMetadataOriginEvm {
     async getDatasetMetadata(id: number): Promise<EvmOutput<DatasetMetadata>> {
         const metaRes = await super.getDatasetMetadata(id)
         if (metaRes.ok && metaRes.data) {
+            let dataRes = decodeReternData(
+                newDatasetMetadata(),
+                metaRes.data as unknown[]
+            )
+            dataRes.datasetId = id
             return {
                 ok: true,
-                data: new DatasetMetadata({
-                    ...metaRes.data,
-                    datasetId: id,
-                }),
+                data: dataRes,
             }
         }
         return metaRes

@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "./dist",
+    "outDir": "./dist-test",
     "declaration": true,
     "target": "ES2015",
     "strict": true,
@@ -15,7 +15,7 @@
     "incremental": false,
   },
   "include": [
-    "src/**/*"
+    "test/**/*"
   ],
   "exclude": [
     "node_modules"

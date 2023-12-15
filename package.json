@@ -6,7 +6,13 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "rm -rf ./dist;npx tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build:test": "rm -rf ./dist-test;tsc -p tsconfig.test.json;",
+    "test": "npm run build:test;mocha",
+    "localnet-setup": "./scripts/localnet.sh setup",
+    "localnet-start": "./scripts/localnet.sh start",
+    "localnet-restart": "./scripts/localnet.sh restart",
+    "localnet-stop": "./scripts/localnet.sh stop",
+    "localnet-clear": "./scripts/localnet.sh clear"
   },
   "repository": {
     "type": "git",
@@ -25,16 +31,29 @@
   },
   "homepage": "https://github.com/dataswap/dataswapjs#readme",
   "dependencies": {
-    "@types/lodash": "^4.14.199",
-    "@types/node": "20.6.2",
-    "@unipackage/datastore": "^0.1.0",
-    "@unipackage/ddd": "^0.1.4",
-    "@unipackage/filecoin": "^0.1.8",
-    "@unipackage/net": "^0.1.7",
-    "@unipackage/utils": "^0.1.4",
-    "fp-ts": "^2.16.1"
+    "@dataswapcore/contracts": "^0.1.2",
+    "@unipackage/datastore": "^0.1.5",
+    "@unipackage/ddd": "^0.1.5",
+    "@unipackage/filecoin": "^0.2.0",
+    "@unipackage/net": "^1.1.1",
+    "@unipackage/utils": "^1.1.1"
   },
   "devDependencies": {
-    "typescript": "^5.2.2"
+    "@babel/runtime": "^7.23.4",
+    "@types/chai": "^4.3.11",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.10.0",
+    "@types/sinon": "^17.0.2",
+    "chai": "^4.3.10",
+    "cross-env": "^7.0.3",
+    "hardhat": "^2.19.2",
+    "mocha": "^10.2.0",
+    "nock": "^13.4.0",
+    "nyc": "^15.1.0",
+    "sinon": "^17.0.1",
+    "ts-mocha": "^10.0.0",
+    "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.3.2"
   }
 }
