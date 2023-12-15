@@ -1,63 +1,47 @@
-import { expect } from "chai"
 import { describe } from "mocha"
-import * as utils from "../shared/utils"
-import { DatasetsHelper } from "./datasetsHelper"
+import { Generator } from "../shared/generator"
+import { DatasetsHelper } from "../helpers/datasetsHelper"
+import { DatasetsAssertion } from "../assertions/datasetsAssertion"
 import { Accounts } from "../shared/accounts"
-import { Requirements } from "../shared/requirements"
 
 describe("datasetsMetadata", () => {
     it("submitDatasetMetadataCorrect", async function () {
-        let datasets = DatasetsHelper.Instance()
-        let [governance,] = Accounts.Instance().getGovernance()
-        let expectGovernance = await datasets.governanceAddress()
-        expect(governance).to.be.equal(expectGovernance)
+        let datasetsHelper = DatasetsHelper.Instance()
+        let generators = new Generator()
+        let datasetsAssertion = new DatasetsAssertion(datasetsHelper)
 
-        let random: string = utils.generateRandomString(7);
-        const dataClientId = 100
-        const title = "title-" + random;
-        const industry = "industry-" + random;
-        const name = "dataset-" + random;
-        const description = "description-" + random;
-        const source = "aws://sdfa.com-" + random;
-        const accessMethod = "dataswap.com/test-" + random;
-        const sizeInBytes = 5120000;
-        const isPublic = true;
-        const version = 1;
+        let [governance,] = Accounts.Instance().getGovernance()
+        await datasetsAssertion.governanceAddressAssertion(governance)
+
+        let genMeta = generators.generatorDatasetMetadata();
+
 
         this.timeout(100000)
+        const dataClientId = 100
 
-        let tx = await datasets.submitDatasetMetadata(
+        let tx = await datasetsHelper.submitDatasetMetadata(
             dataClientId,
-            title,
-            industry,
-            name,
-            description,
-            source,
-            accessMethod,
-            sizeInBytes,
-            isPublic,
-            version
+            genMeta.title,
+            genMeta.industry,
+            genMeta.name,
+            genMeta.description,
+            genMeta.source,
+            genMeta.accessMethod,
+            genMeta.sizeInBytes,
+            genMeta.isPublic,
+            genMeta.version
         )
 
-
-        let metaData = await datasets.getDatasetMetadata()
-        expect(title).to.be.equal(metaData.title)
-        expect(industry).to.be.equal(metaData.industry)
-        expect(name).to.be.equal(metaData.name)
-        expect(description).to.be.equal(metaData.description)
-        expect(source).to.be.equal(metaData.source)
-        expect(accessMethod).to.be.equal(metaData.accessMethod)
-        expect(sizeInBytes).to.be.equal(Number(metaData.sizeInBytes))
-        expect(isPublic).to.be.equal(metaData.isPublic)
-        expect(version).to.be.equal(Number(metaData.version))
-
-        expect(true).to.be.equal(await datasets.hasDatasetMetadata(metaData.accessMethod))
-
+        await tx
         let [client,] = Accounts.Instance().getClient()
-        let submitter = await datasets.getDatasetMetadataSubmitter()
-        expect(submitter).to.be.equal(client)
-        let state = await datasets.getDatasetState()
-        expect(0).to.be.equal(state)
+        await Promise.all(
+            [
+                datasetsAssertion.getDatasetStateAssertion(0),
+                datasetsAssertion.getDatasetMetadataAssertion(genMeta),
+                datasetsAssertion.getDatasetMetadataSubmitterAssertion(client),
+                datasetsAssertion.hasDatasetMetadataAssertion(genMeta.accessMethod)
+            ]
+        )
     })
 
     //it("submitDatasetReplicaRequirementsCorrect", async function () {
