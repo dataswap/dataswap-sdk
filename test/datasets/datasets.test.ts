@@ -1,12 +1,11 @@
 import { describe } from "mocha"
 import { Generator } from "../shared/generator"
-import { DatasetsHelper } from "../helpers/datasetsHelper"
+import { DatasetsHelperInstance } from "../helpers/datasetsHelper"
 import { DatasetsAssertion } from "../assertions/datasetsAssertion"
 import { Accounts } from "../shared/accounts"
 
 describe("datasetsMetadata", () => {
     it("submitDatasetMetadataCorrect", async function () {
-        let datasetsHelper = DatasetsHelper.Instance()
         let generators = new Generator()
         let datasetsAssertion = new DatasetsAssertion()
 
@@ -19,7 +18,7 @@ describe("datasetsMetadata", () => {
         this.timeout(100000)
         const dataClientId = 100
 
-        let tx = await datasetsHelper.submitDatasetMetadata(
+        let tx = await DatasetsHelperInstance.submitDatasetMetadata(
             dataClientId,
             genMeta.title,
             genMeta.industry,

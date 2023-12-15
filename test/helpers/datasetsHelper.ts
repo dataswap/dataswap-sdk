@@ -12,7 +12,8 @@ import { Requirements } from "../shared/requirements"
 import { DatasetMetadata } from "../../src/dataset/metadata/types/index"
 import { DatasetRequirement } from "../../src/dataset/requirement/types"
 
-export class DatasetsHelper {
+
+class DatasetsHelper {
     private static instance: DatasetsHelper
 
     private metadata: DatasetMetadataEvm
@@ -221,3 +222,5 @@ export class DatasetsHelper {
         return Number(call.data)
     }
 }
+
+export const DatasetsHelperInstance = DatasetsHelper.Instance()
