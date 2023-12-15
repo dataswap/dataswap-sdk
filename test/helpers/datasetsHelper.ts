@@ -1,7 +1,7 @@
-import { DatasetMetadataEvm } from "../../src/dataset/metadata/repo/evm"
-import { DatasetRequirementEvm } from "../../src/dataset/requirement/repo/evm"
-import { DatasetProofEvm } from "../../src/dataset/proof/repo/evm"
-import { DatasetChallengeEvm } from "../../src/dataset/challenge/repo/evm"
+import { DatasetMetadataEvm } from "../../src/module/dataset/metadata/repo/evm"
+import { DatasetRequirementEvm } from "../../src/module/dataset/requirement/repo/evm"
+import { DatasetProofEvm } from "../../src/module/dataset/proof/repo/evm"
+import { DatasetChallengeEvm } from "../../src/module/dataset/challenge/repo/evm"
 import DatasetsAbi from "@dataswapcore/contracts/abi/v0.8/Datasets.json"
 import DatasetsRequirementAbi from "@dataswapcore/contracts/abi/v0.8/DatasetsRequirement.json"
 import DatasetsProofAbi from "@dataswapcore/contracts/abi/v0.8/DatasetsProof.json"
@@ -9,8 +9,8 @@ import DatasetsChallengeAbi from "@dataswapcore/contracts/abi/v0.8/DatasetsChall
 import * as utils from "../shared/utils"
 import { Accounts } from "../shared/accounts"
 import { Requirements } from "../shared/requirements"
-import { DatasetMetadata } from "../../src/dataset/metadata/types/index"
-import { DatasetRequirement } from "../../src/dataset/requirement/types"
+import { DatasetMetadata } from "../../src/module/dataset/metadata/types/index"
+import { DatasetRequirement } from "../../src/module/dataset/requirement/types"
 
 
 class DatasetsHelper {
@@ -213,6 +213,7 @@ class DatasetsHelper {
             regions,
             countrys,
             citys,
+            BigInt(0),
             {
                 from: client,
                 privateKey: clientkey,
