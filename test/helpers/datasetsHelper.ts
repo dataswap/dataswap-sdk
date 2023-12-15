@@ -26,25 +26,25 @@ class DatasetsHelper {
     private requirements: Requirements
 
     constructor() {
-        this.metadata = utils.getContract(
+        this.metadata = utils.createContractEvm(
+            DatasetMetadataEvm,
             "Datasets",
-            DatasetsAbi,
-            DatasetMetadataEvm
+            DatasetsAbi
         )
-        this.requirement = utils.getContract(
+        this.requirement = utils.createContractEvm(
+            DatasetRequirementEvm,
             "DatasetsRequirement",
-            DatasetsRequirementAbi,
-            DatasetRequirementEvm
+            DatasetsRequirementAbi
         )
-        this.proof = utils.getContract(
+        this.proof = utils.createContractEvm(
+            DatasetProofEvm,
             "DatasetsProof",
-            DatasetsProofAbi,
-            DatasetProofEvm
+            DatasetsProofAbi
         )
-        this.challenge = utils.getContract(
+        this.challenge = utils.createContractEvm(
+            DatasetChallengeEvm,
             "DatasetsChallenge",
-            DatasetsChallengeAbi,
-            DatasetChallengeEvm
+            DatasetsChallengeAbi
         )
         this.targetDatasetId = 0
         this.accounts = Accounts.Instance()

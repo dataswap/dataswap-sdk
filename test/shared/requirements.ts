@@ -1,5 +1,4 @@
 import { ethers } from 'ethers'
-import { Accounts } from './accounts'
 import * as utils from './utils'
 const REQUIREMENTS_COUNT = 5
 const REQUIREMENTS_MAX_ACTOR_COUNT = 5

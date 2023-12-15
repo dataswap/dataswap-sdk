@@ -27,10 +27,11 @@ export function getRandomInt(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
-export function getContract<T>(
+export function createContractEvm<T>(
+    init: new (engine: IEVMEngine) => T,
     contractName: string,
     abi: AbiFunctionFragment[],
-    init: new (engine: IEVMEngine) => T
+    url?: string
 ): T {
     let contractAddress = getEnvVariable(contractName + "Address")
     if (contractAddress === undefined) {
@@ -38,9 +39,11 @@ export function getContract<T>(
             "get evn variable " + contractName + "Address" + " faild"
         )
     }
-    let url = getEnvVariable("NETWORK_RPC_URL")
-    if (url === undefined) {
-        throw new Error("get rpc url evn variable faild")
+    if (!url) {
+        url = getEnvVariable("NETWORK_RPC_URL")
+        if (url === undefined) {
+            throw new Error("get rpc url evn variable faild")
+        }
     }
     let engine = new EvmEngine(abi, contractAddress, url)
     let contract = new init(engine)

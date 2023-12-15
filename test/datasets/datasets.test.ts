@@ -32,6 +32,7 @@ describe("datasetsMetadata", () => {
         )
 
         await tx
+
         let [client,] = Accounts.Instance().getClient()
         await Promise.all(
             [

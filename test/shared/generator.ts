@@ -1,4 +1,4 @@
-import * as utils from "../shared/utils"
+import * as utils from "./utils"
 import { DatasetMetadata } from "../../src/dataset/metadata/types/index"
 
 export class Generator {
