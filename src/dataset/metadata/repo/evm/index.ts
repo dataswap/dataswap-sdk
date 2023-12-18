@@ -7,12 +7,11 @@ import {
 } from "@unipackage/net"
 import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
 import { DataswapMessage } from "../../../../message/types"
-import { DatasetMetadata, newDatasetMetadata } from "../../types"
-import { decodeReternData } from "../../../../shared/decodeReturnData"
+import { DatasetMetadata } from "../../types"
 
 interface DatasetMetadataCallEvm {
     datasetsCount(): Promise<EvmOutput<number>>
-    getDatasetMetadata(id: number): Promise<EvmOutput<any>>
+    getDatasetMetadata(id: number): Promise<EvmOutput<DatasetMetadata>>
     getDatasetMetadataSubmitter(id: number): Promise<EvmOutput<string>>
     getDatasetState(id: number): Promise<EvmOutput<number>>
     governanceAddress(): Promise<EvmOutput<string>>
@@ -77,14 +76,12 @@ export class DatasetMetadataEvm extends DatasetMetadataOriginEvm {
     async getDatasetMetadata(id: number): Promise<EvmOutput<DatasetMetadata>> {
         const metaRes = await super.getDatasetMetadata(id)
         if (metaRes.ok && metaRes.data) {
-            let dataRes = decodeReternData(
-                newDatasetMetadata(),
-                metaRes.data as unknown[]
-            )
-            dataRes.datasetId = id
             return {
                 ok: true,
-                data: dataRes,
+                data: new DatasetMetadata({
+                    ...metaRes.data,
+                    datasetId: id,
+                }),
             }
         }
         return metaRes

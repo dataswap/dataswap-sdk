@@ -17,21 +17,3 @@ export interface DatasetMetadata {
 }
 
 export class DatasetMetadata extends Entity<DatasetMetadata> {}
-
-export function newDatasetMetadata(): DatasetMetadata {
-    return new DatasetMetadata({
-        title: "",
-        industry: "",
-        name: "",
-        description: "",
-        source: "",
-        accessMethod: "",
-        submitter: "",
-        createdBlockNumber: 0,
-        sizeInBytes: 0,
-        isPublic: false,
-        version: 0,
-        datasetId: 0,
-        status: "",
-    })
-}
