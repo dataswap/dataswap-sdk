@@ -1,8 +1,8 @@
 import {
     Evm,
-    withMethods,
+    withCallMethod,
+    withSendMethod,
     EvmOutput,
-    isEvmTransactionOptions,
     EvmTransactionOptions,
 } from "@unipackage/net"
 import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
@@ -80,33 +80,26 @@ export interface DatasetProofOriginEvm
     extends DatasetProofCallEvm,
         DatasetProofSendEvm {}
 
-@withMethods(
-    [
-        "getDatasetAppendCollateral",
-        "getDatasetProof",
-        "getDatasetCars",
-        "getDatasetProofCount",
-        "getDatasetProofSubmitter",
-        "getDatasetCarsCount",
-        "getDatasetSize",
-        "getDatasetCollateralRequirement",
-        "isDatasetContainsCar",
-        "isDatasetContainsCars",
-        "isDatasetProofSubmitter",
-        "isDatasetProofallCompleted",
-    ],
-    "call"
-)
-@withMethods(
-    [
-        "submitDatasetProofRoot",
-        "submitDatasetProof",
-        "submitDatasetProofCompleted",
-        "appendDatasetCollateral",
-    ],
-    "send",
-    isEvmTransactionOptions
-)
+@withCallMethod([
+    "getDatasetAppendCollateral",
+    "getDatasetProof",
+    "getDatasetCars",
+    "getDatasetProofCount",
+    "getDatasetProofSubmitter",
+    "getDatasetCarsCount",
+    "getDatasetSize",
+    "getDatasetCollateralRequirement",
+    "isDatasetContainsCar",
+    "isDatasetContainsCars",
+    "isDatasetProofSubmitter",
+    "isDatasetProofallCompleted",
+])
+@withSendMethod([
+    "submitDatasetProofRoot",
+    "submitDatasetProof",
+    "submitDatasetProofCompleted",
+    "appendDatasetCollateral",
+])
 export class DatasetProofOriginEvm extends Evm {}
 
 export class DatasetProofEvm extends DatasetProofOriginEvm {

@@ -1,6 +1,7 @@
 import {
     Evm,
-    withMethods,
+    withCallMethod,
+    withSendMethod,
     EvmOutput,
     isEvmTransactionOptions,
     EvmTransactionOptions,
@@ -36,16 +37,13 @@ export interface DatasetRequirementOriginEvm
     extends DatasetRequirementCallEvm,
         DatasetRequirementSendEvm {}
 
-@withMethods(
-    [
-        "getDatasetChallengeProofs",
-        "getDatasetChallengeProofsCount",
-        "getChallengeCount",
-        "isDatasetChallengeProofDuplicate",
-    ],
-    "call"
-)
-@withMethods(["submitDatasetChallengeProofs"], "send", isEvmTransactionOptions)
+@withCallMethod([
+    "getDatasetChallengeProofs",
+    "getDatasetChallengeProofsCount",
+    "getChallengeCount",
+    "isDatasetChallengeProofDuplicate",
+])
+@withSendMethod(["submitDatasetChallengeProofs"])
 export class DatasetRequirementOriginEvm extends Evm {}
 
 export class DatasetRequirementEvm extends DatasetRequirementOriginEvm {

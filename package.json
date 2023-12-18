@@ -35,8 +35,8 @@
     "@unipackage/datastore": "^0.1.5",
     "@unipackage/ddd": "^0.1.5",
     "@unipackage/filecoin": "^0.2.0",
-    "@unipackage/net": "^1.1.1",
-    "@unipackage/utils": "^1.1.1"
+    "@unipackage/net": "^2.0.0",
+    "@unipackage/utils": "^1.4.0"
   },
   "devDependencies": {
     "@babel/runtime": "^7.23.4",

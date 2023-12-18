@@ -1,8 +1,8 @@
 import {
     Evm,
-    withMethods,
+    withCallMethod,
+    withSendMethod,
     EvmOutput,
-    isEvmTransactionOptions,
     EvmTransactionOptions,
 } from "@unipackage/net"
 import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
@@ -91,16 +91,13 @@ export interface DatasetChallengeOriginEvm
 /**
  * Implementation of DatasetChallengeOriginEvm with specific EVM methods.
  */
-@withMethods(
-    [
-        "getDatasetChallengeProofs",
-        "getDatasetChallengeProofsCount",
-        "getChallengeCount",
-        "isDatasetChallengeProofDuplicate",
-    ],
-    "call"
-)
-@withMethods(["submitDatasetChallengeProofs"], "send", isEvmTransactionOptions)
+@withCallMethod([
+    "getDatasetChallengeProofs",
+    "getDatasetChallengeProofsCount",
+    "getChallengeCount",
+    "isDatasetChallengeProofDuplicate",
+])
+@withSendMethod(["submitDatasetChallengeProofs"])
 export class DatasetChallengeOriginEvm extends Evm {}
 
 /**

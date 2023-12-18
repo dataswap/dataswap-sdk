@@ -1,8 +1,8 @@
 import {
     Evm,
-    withMethods,
+    withCallMethod,
+    withSendMethod,
     EvmOutput,
-    isEvmTransactionOptions,
     EvmTransactionOptions,
 } from "@unipackage/net"
 import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
@@ -55,29 +55,22 @@ export interface DatasetMetadataOriginEvm
     extends DatasetMetadataCallEvm,
         DatasetMetadataSendEvm {}
 
-@withMethods(
-    [
-        "datasetsCount",
-        "getDatasetMetadata",
-        "getDatasetMetadataSubmitter",
-        "getDatasetState",
-        "governanceAddress",
-        "hasDatasetMetadata",
-    ],
-    "call"
-)
-@withMethods(
-    [
-        "initDependencies",
-        "approveDataset",
-        "approveDatasetMetadata",
-        "rejectDataset",
-        "rejectDatasetMetadata",
-        "submitDatasetMetadata",
-    ],
-    "send",
-    isEvmTransactionOptions
-)
+@withCallMethod([
+    "datasetsCount",
+    "getDatasetMetadata",
+    "getDatasetMetadataSubmitter",
+    "getDatasetState",
+    "governanceAddress",
+    "hasDatasetMetadata",
+])
+@withSendMethod([
+    "initDependencies",
+    "approveDataset",
+    "approveDatasetMetadata",
+    "rejectDataset",
+    "rejectDatasetMetadata",
+    "submitDatasetMetadata",
+])
 export class DatasetMetadataOriginEvm extends Evm {}
 
 export class DatasetMetadataEvm extends DatasetMetadataOriginEvm {
