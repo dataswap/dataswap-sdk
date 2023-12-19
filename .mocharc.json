@@ -1,4 +1,5 @@
 {
+    "loader": "ts-node/esm",
     "spec": "dist-test/**/*.test.js",
     "exclude": [
         "node_modules"

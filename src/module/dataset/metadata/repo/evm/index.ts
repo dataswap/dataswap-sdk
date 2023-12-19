@@ -8,8 +8,10 @@ import {
 import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
 import { DataswapMessage } from "../../../../../message/types"
 import { DatasetMetadata } from "../../types"
+import { EvmEx } from "../../../../../shared/types/evmEngineType"
 
 interface DatasetMetadataCallEvm {
+    datasetsProof(): Promise<EvmOutput<string>>
     /**
      * Get dataset usedSizeInBytes.
      * @param datasetId The ID of the dataset to get used size.
@@ -59,6 +61,10 @@ interface DatasetMetadataCallEvm {
 }
 
 interface DatasetMetadataSendEvm {
+    initDependencies(
+        datasetsProof: string,
+        options: EvmTransactionOptions
+    ): Promise<EvmOutput<void>>
     /**
     /* This function changes the state of the dataset to DatasetApproved and emits the DatasetApproved event.
     /* @param datasetId The ID of the dataset to approve.
@@ -125,7 +131,7 @@ interface DatasetMetadataSendEvm {
         isPublic: boolean,
         version: number,
         options: EvmTransactionOptions
-    ): Promise<EvmOutput<void>>
+    ): Promise<EvmOutput<any>>
 
     /**
      * Update dataset usedSizeInBytes. only called by matching contract. TODO: Need to add permission control 
@@ -146,6 +152,7 @@ export interface DatasetMetadataOriginEvm
  * Implementation of DatasetMetadataOriginEvm with specific EVM methods.
  */
 @withCallMethod([
+    "datasetsProof",
     "getDatasetUsedSize",
     "getDatasetMetadata",
     "getDatasetMetadataSubmitter",
@@ -164,7 +171,7 @@ export interface DatasetMetadataOriginEvm
     "submitDatasetMetadata",
     "addDatasetUsedSize",
 ])
-export class DatasetMetadataOriginEvm extends Evm { }
+export class DatasetMetadataOriginEvm extends EvmEx { }
 
 /**
  * Extended class for DatasetMetadataOriginEvm with additional message decoding.

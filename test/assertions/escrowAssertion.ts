@@ -5,13 +5,16 @@ import { EscrowEvm } from "../../src/core/escrow/repo/evm"
 import { Fund } from "../../src/core/escrow/types"
 import { handleEvmError } from "../shared/error"
 import { Accounts } from "../shared/accounts"
+import { IAccounts } from "../interfaces/environments/IAccounts"
 
 
 export class EscrowAssertion {
     private escrow: EscrowEvm
+    private accounts: IAccounts
 
-    constructor(escrow: EscrowEvm) {
+    constructor(escrow: EscrowEvm, accounts: IAccounts) {
         this.escrow = escrow
+        this.accounts = accounts
     }
 
     async getOwnerFundAssertion(type: EscrowType, owner: string, id: number, expectFund: Fund) {
@@ -37,7 +40,7 @@ export class EscrowAssertion {
         expectFund.total += fund.data.total
         expectFund.collateraled += fund.data.collateraled
 
-        let [governance, governanceKey] = Accounts.Instance().getGovernance()
+        let [governance, governanceKey] = this.accounts.getGovernance()
 
         await handleEvmError(this.escrow.collateral(type, owner, id, amount, {
             from: governance,
@@ -56,7 +59,7 @@ export class EscrowAssertion {
         expectFund.total += fund.data.total
         expectFund.locked += fund.data.locked
 
-        let [governance, governanceKey] = Accounts.Instance().getGovernance()
+        let [governance, governanceKey] = this.accounts.getGovernance()
         await handleEvmError(this.escrow.payment(type, owner, id, amount, {
             from: governance,
             privateKey: governanceKey,
@@ -81,7 +84,7 @@ export class EscrowAssertion {
         expectBeneficiaryFund.locked += beneficiaryFund.data.locked
 
 
-        let [governance, governanceKey] = Accounts.Instance().getGovernance()
+        let [governance, governanceKey] = this.accounts.getGovernance()
         await handleEvmError(this.escrow.paymentSingleBeneficiary(type, owner, id, beneficiary, amount, {
             from: governance,
             privateKey: governanceKey,
@@ -106,7 +109,7 @@ export class EscrowAssertion {
         let amount: bigint = BigInt(100)
 
         await this.paymentAssertion(type, owner, id, amount)
-        let [governance, governanceKey] = Accounts.Instance().getGovernance()
+        let [governance, governanceKey] = this.accounts.getGovernance()
 
         let fund = await handleEvmError(this.escrow.getOwnerFund(type, owner, id))
         fund.data.locked -= amount

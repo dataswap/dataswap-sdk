@@ -4,6 +4,7 @@ import {
     EvmOutput
 } from "@unipackage/net"
 import { DealState } from "../../../../shared/types/filecoinType"
+import { EvmEx } from "../../../../shared/types/evmEngineType"
 
 /**
  * Interface for EVM calls related to  Filecoin.
@@ -51,7 +52,7 @@ export interface FilecoinOriginEvm
         "getReplicaClaimData"
     ]
 )
-export class FilecoinOriginEvm extends Evm { }
+export class FilecoinOriginEvm extends EvmEx { }
 
 /**
  * Extended class for  FilecoinOriginEvm with additional message decoding.

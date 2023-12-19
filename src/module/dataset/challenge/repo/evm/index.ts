@@ -8,6 +8,7 @@ import {
 import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
 import { DataswapMessage } from "../../../../../message/types"
 import { DatasetChallenge } from "../../types"
+import { EvmEx } from "../../../../../shared/types/evmEngineType"
 
 /**
  * Interface for EVM calls related to DatasetChallenge.
@@ -23,7 +24,7 @@ interface DatasetChallengeCallEvm {
     getDatasetChallengeProofs(
         datasetId: number,
         auditor: string
-    ): EvmOutput<DatasetChallenge>
+    ): Promise<EvmOutput<DatasetChallenge>>
 
     /**
      * Get the count of proofs for a dataset challenge.
@@ -31,7 +32,7 @@ interface DatasetChallengeCallEvm {
      * @param datasetId - ID of the dataset.
      * @returns EvmOutput containing the number of proofs.
      */
-    getDatasetChallengeProofsCount(datasetId: number): EvmOutput<number>
+    getDatasetChallengeProofsCount(datasetId: number): Promise<EvmOutput<number>>
 
     /**
      * Get the count of challenges for a dataset.
@@ -39,7 +40,7 @@ interface DatasetChallengeCallEvm {
      * @param datasetId - ID of the dataset.
      * @returns EvmOutput containing the number of challenges.
      */
-    getChallengeSubmissionCount(datasetId: number): EvmOutput<number>
+    getChallengeSubmissionCount(datasetId: number): Promise<EvmOutput<number>>
 
     /**
      * Check if a dataset challenge proof is duplicate.
@@ -53,7 +54,7 @@ interface DatasetChallengeCallEvm {
         datasetId: number,
         auditor: string,
         randomSeed: number
-    ): EvmOutput<boolean>
+    ): Promise<EvmOutput<boolean>>
 }
 
 /**
@@ -78,7 +79,7 @@ interface DatasetChallengeSendEvm {
         siblings: string[][],
         paths: string[],
         options: EvmTransactionOptions
-    ): EvmOutput<void>
+    ): Promise<EvmOutput<void>>
 }
 
 /**
@@ -98,7 +99,7 @@ export interface DatasetChallengeOriginEvm
     "isDatasetChallengeProofDuplicate",
 ])
 @withSendMethod(["submitDatasetChallengeProofs"])
-export class DatasetChallengeOriginEvm extends Evm { }
+export class DatasetChallengeOriginEvm extends EvmEx { }
 
 /**
  * Extended class for DatasetChallengeOriginEvm with additional message decoding.

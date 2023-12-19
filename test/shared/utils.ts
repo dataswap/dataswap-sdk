@@ -1,7 +1,5 @@
-import { IEVMEngine } from "@unipackage/net"
+import { EvmOutput } from "@unipackage/net"
 import { ethers } from "ethers"
-import { AbiFunctionFragment } from "web3"
-import { EvmEngine } from "../../src/shared/types/evmEngineType"
 
 
 export function getEnvVariable(variableName: string): string | undefined {
@@ -27,27 +25,22 @@ export function getRandomInt(min: number, max: number): number {
     return Math.floor(Math.random() * (max - min + 1)) + min
 }
 
-export function createContractEvm<T>(
-    init: new (engine: IEVMEngine) => T,
-    contractName: string,
-    abi: AbiFunctionFragment[],
-    url?: string
-): T {
+export function getContractAddress(contractName: string): string {
     let contractAddress = getEnvVariable(contractName + "Address")
     if (contractAddress === undefined) {
         throw new Error(
             "get evn variable " + contractName + "Address" + " faild"
         )
     }
-    if (!url) {
-        url = getEnvVariable("NETWORK_RPC_URL")
-        if (url === undefined) {
-            throw new Error("get rpc url evn variable faild")
-        }
+    return contractAddress
+}
+
+export function getNetworkRpcURL(): string {
+    let url = getEnvVariable("NETWORK_RPC_URL")
+    if (url === undefined) {
+        throw new Error("get rpc url evn variable faild")
     }
-    let engine = new EvmEngine(abi, contractAddress, url)
-    let contract = new init(engine)
-    return contract
+    return url
 }
 
 export function getAccountAddress(variableName: string): string {
@@ -66,4 +59,12 @@ export function getAccountPrivateKey(variableName: string): string {
         throw new Error("get evn variable " + variableName + " faild")
     }
     return key as string
+}
+
+export function convertToBigIntArray(numbers: number[]): BigInt[] {
+    return numbers.map((num) => BigInt(num));
+}
+
+export function convertToNumberArray(bigIntegers: BigInt[] | number[]): number[] {
+    return bigIntegers.map((bigInt) => Number(bigInt));
 }

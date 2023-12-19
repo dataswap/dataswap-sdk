@@ -7,6 +7,7 @@ import {
 } from "@unipackage/net"
 import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
 import { DataswapMessage } from "../../../../message/types"
+import { EvmEx } from "../../../../shared/types/evmEngineType"
 
 /**
  * Interface for EVM calls related to  Filplus.
@@ -278,7 +279,7 @@ export interface FilplusOriginEvm
         "setDatacapRulesMaxRemainingPercentageForNext"
     ]
 )
-export class FilplusOriginEvm extends Evm { }
+export class FilplusOriginEvm extends EvmEx { }
 
 /**
  * Extended class for  FilplusOriginEvm with additional message decoding.

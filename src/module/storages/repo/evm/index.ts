@@ -7,6 +7,7 @@ import {
 } from "@unipackage/net"
 import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
 import { DataswapMessage } from "../../../../message/types"
+import { EvmEx } from "../../../../shared/types/evmEngineType"
 
 
 /**
@@ -116,7 +117,7 @@ export interface StoragesOriginEvm
         "submitStorageClaimIds"
     ]
 )
-export class StoragesOriginEvm extends Evm { }
+export class StoragesOriginEvm extends EvmEx { }
 
 /**
  * Extended class for  StoragesOriginEvm with additional message decoding.

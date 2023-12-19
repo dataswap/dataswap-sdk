@@ -14,7 +14,9 @@ import { EscrowType } from "../../../../shared/types/escrowType"
  * Interface for EVM calls related to Escrow.
  */
 interface EscrowCallEvm {
-
+    datasetsProof(): Promise<EvmOutput<string>>
+    storages(): Promise<EvmOutput<string>>
+    datacaps(): Promise<EvmOutput<string>>
     /**
      * @notice Get owner fund.
      * @param type The Escrow type for the credited funds.
@@ -57,6 +59,12 @@ interface EscrowCallEvm {
  * Interface for EVM transactions related to Escrow.
  */
 interface EscrowSendEvm {
+    initDependencies(
+        datasetsProof: string,
+        storages: string,
+        datacaps: string,
+        options: EvmTransactionOptions
+    ): Promise<EvmOutput<void>>
 
     /**
      * Records the sent amount as credit for future withdrawals.
@@ -195,6 +203,9 @@ export interface EscrowOriginEvm
  */
 @withCallMethod(
     [
+        "datasetsProof",
+        "storages",
+        "datacaps",
         "getOwnerFund",
         "getBeneficiariesList",
         "getBeneficiaryFund"
@@ -202,6 +213,7 @@ export interface EscrowOriginEvm
 )
 @withSendMethod(
     [
+        "initDependencies",
         "collateral",
         "collateralRedeem",
         "withdraw",

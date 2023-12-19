@@ -9,6 +9,7 @@ import {
 import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
 import { DataswapMessage } from "../../../../../message/types"
 import { MatchingMetadata, MatchingState, BidSelectionRule } from "../../types"
+import { EvmEx } from "../../../../../shared/types/evmEngineType"
 
 interface MatchingMetadataCallEvm {
     /**
@@ -98,7 +99,7 @@ export interface MatchingMetadataOriginEvm
     "resumeMatching",
 ])
 
-export class MatchingMetadataOriginEvm extends Evm { }
+export class MatchingMetadataOriginEvm extends EvmEx { }
 
 /**
  * Extended class for MatchingMetadataEvm with additional message decoding.

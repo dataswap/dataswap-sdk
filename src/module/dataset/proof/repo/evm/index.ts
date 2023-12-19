@@ -8,14 +8,16 @@ import {
 import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
 import { DataswapMessage } from "../../../../../message/types"
 import { DataType } from "../../../../../shared/types/dataType"
+import { EvmEx } from "../../../../../shared/types/evmEngineType"
 
 interface DatasetProofCallEvm {
+    datasetsChallenge(): Promise<EvmOutput<string>>
     /**
      * Get dataset need append collateral funds
      * @param datasetId The ID of the dataset for which to get the append collateral.
      * @returns The collateral that need to append to dataset.
      */
-    getDatasetAppendCollateral(datasetId: number): EvmOutput<bigint>
+    getDatasetAppendCollateral(datasetId: number): Promise<EvmOutput<bigint>>
 
     /**
      *  Get dataset source Hashs
@@ -30,7 +32,7 @@ interface DatasetProofCallEvm {
         dataType: DataType,
         index: number,
         len: number
-    ): EvmOutput<string[]>
+    ): Promise<EvmOutput<string[]>>
 
     /**
      * Get dataset proof count.
@@ -41,14 +43,14 @@ interface DatasetProofCallEvm {
     getDatasetProofCount(
         datasetId: number,
         dataType: DataType
-    ): EvmOutput<number>
+    ): Promise<EvmOutput<number>>
 
     /**
      * Get dataset proof's submitter. 
      * @param datasetId The ID of the dataset for which to get the submitter of the proof.
      * @returns The address of the submitter of the proof.
      */
-    getDatasetProofSubmitter(datasetId: number): EvmOutput<string>
+    getDatasetProofSubmitter(datasetId: number): Promise<EvmOutput<string>>
 
     /**
      * Get dataset size. 
@@ -56,28 +58,28 @@ interface DatasetProofCallEvm {
      * @param dataType The data type of the proof.
      * @returns The size of the dataset.
      */
-    getDatasetSize(datasetId: number, dataType: DataType): EvmOutput<number>
+    getDatasetSize(datasetId: number, dataType: DataType): Promise<EvmOutput<number>>
 
     /**
      * Retrieves the collateral requirement for a dataset identified by its ID.
      * @param datasetId - The ID of the dataset.
      * @returns The collateral requirement for the dataset.
      */
-    getDatasetCollateralRequirement(datasetId: number): EvmOutput<bigint>
+    getDatasetCollateralRequirement(datasetId: number): Promise<EvmOutput<bigint>>
 
     /**
      * Retrieves the fees requirement for data auditors associated with a dataset identified by its ID.
      * @param datasetId - The ID of the dataset.
      * @returns The fees requirement for data auditors.
      */
-    getDatasetDataAuditorFeesRequirement(datasetId: number): EvmOutput<bigint>
+    getDatasetDataAuditorFeesRequirement(datasetId: number): Promise<EvmOutput<bigint>>
 
     /**
     * Retrieves the fees paid to data auditors for a dataset identified by its ID.
     * @param datasetId - The ID of the dataset.
     * @returns The fees paid to data auditors for the dataset.
     */
-    getDatasetDataAuditorFees(datasetId: number): EvmOutput<bigint>
+    getDatasetDataAuditorFees(datasetId: number): Promise<EvmOutput<bigint>>
 
     /**
      * Checks if a specific car is present in a dataset identified by its ID.
@@ -88,7 +90,7 @@ interface DatasetProofCallEvm {
     isDatasetProofallCompleted(
         datasetId: number,
         dataType: DataType
-    ): EvmOutput<boolean>
+    ): Promise<EvmOutput<boolean>>
 
     /**
      * Checks if a specific car is present in a dataset identified by its ID.
@@ -96,7 +98,7 @@ interface DatasetProofCallEvm {
      * @param id - The ID of the car to check.
      * @returns True if the car is present; otherwise, false.
      */
-    isDatasetContainsCar(datasetId: number, id: number): EvmOutput<boolean>
+    isDatasetContainsCar(datasetId: number, id: number): Promise<EvmOutput<boolean>>
 
     /**
      * Checks if multiple cars are present in a dataset identified by its ID.
@@ -104,7 +106,7 @@ interface DatasetProofCallEvm {
      * @param ids - An array of car IDs to check.
      * @returns True if all specified cars are present; otherwise, false.
      */
-    isDatasetContainsCars(datasetId: number, ids: number[]): EvmOutput<boolean>
+    isDatasetContainsCars(datasetId: number, ids: number[]): Promise<EvmOutput<boolean>>
 
     /**
      * Checks if a specific address is the proof submitter for a dataset identified by its ID.
@@ -115,11 +117,15 @@ interface DatasetProofCallEvm {
     isDatasetProofSubmitter(
         datasetId: number,
         submitter: string
-    ): EvmOutput<boolean>
+    ): Promise<EvmOutput<boolean>>
 
 }
 
 interface DatasetProofSendEvm {
+    initDependencies(
+        datasetsChallenge: string,
+        options: EvmTransactionOptions
+    ): Promise<EvmOutput<void>>
     /**
      * Submit proof root for a dataset
      * @param datasetId The ID of the dataset for which to submit proof.
@@ -134,7 +140,7 @@ interface DatasetProofSendEvm {
         mappingFilesAccessMethod: string,
         rootHash: string,
         options: EvmTransactionOptions
-    ): EvmOutput<void>
+    ): Promise<EvmOutput<void>>
 
     /**
      * Submit proof for a dataset 
@@ -154,7 +160,7 @@ interface DatasetProofSendEvm {
         leafSizes: number[],
         completed: boolean,
         options: EvmTransactionOptions
-    ): EvmOutput<void>
+    ): Promise<EvmOutput<void>>
 
     /**
      *  Submit proof completed for a dataset.
@@ -164,7 +170,7 @@ interface DatasetProofSendEvm {
     submitDatasetProofCompleted(
         datasetId: number,
         options: EvmTransactionOptions
-    ): EvmOutput<void>
+    ): Promise<EvmOutput<void>>
 
     /**
      * Append dataset escrow funds. include datacap collateral and dataset auditor calculate fees 
@@ -178,7 +184,7 @@ interface DatasetProofSendEvm {
         datacapCollateral: bigint,
         dataAuditorFees: bigint,
         options: EvmTransactionOptions
-    ): EvmOutput<void>
+    ): Promise<EvmOutput<void>>
 }
 /**
  * Combined interface for EVM calls and transactions related to DatasetProof contract.
@@ -190,6 +196,7 @@ export interface DatasetProofOriginEvm
  * Implementation of DatasetProofOriginEvm with specific EVM methods.
  */
 @withCallMethod([
+    "datasetsChallenge",
     "getDatasetAppendCollateral",
     "getDatasetProof",
     "getDatasetProofCount",
@@ -204,12 +211,13 @@ export interface DatasetProofOriginEvm
     "isDatasetProofSubmitter",
 ])
 @withSendMethod([
+    "initDependencies",
     "submitDatasetProofRoot",
     "submitDatasetProof",
     "submitDatasetProofCompleted",
     "appendDatasetFunds",
 ])
-export class DatasetProofOriginEvm extends Evm { }
+export class DatasetProofOriginEvm extends EvmEx { }
 
 /**
  * Extended class for DatasetProofEvm with additional message decoding.
