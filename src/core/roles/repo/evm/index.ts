@@ -1,7 +1,9 @@
 import {
     Evm,
     withSendMethod,
-    EvmOutput
+    EvmOutput,
+    withCallMethod,
+    EvmTransactionOptions
 } from "@unipackage/net"
 import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
 import { DataswapMessage } from "../../../../message/types"
@@ -9,17 +11,7 @@ import { DataswapMessage } from "../../../../message/types"
 /**
  * Interface for EVM calls related to  Roles.
  */
-interface RolesCallEvm { }
-
-/**
- * Interface for EVM transactions related to  Roles.
- */
-interface RolesSendEvm {
-    /**
-     * @dev The new owner accepts the ownership transfer.
-     */
-    acceptOwnership(): Promise<EvmOutput<void>>
-
+interface RolesCallEvm {
     /**
      * @dev Revert with a standard message if `_msgSender()` is missing `role`.
      * Overriding this function changes the behavior of the {onlyRole} modifier.
@@ -34,11 +26,23 @@ interface RolesSendEvm {
      * @dev Returns the address of the current owner.
      */
     owner(): Promise<EvmOutput<Buffer>>
+}
+
+/**
+ * Interface for EVM transactions related to  Roles.
+ */
+interface RolesSendEvm {
+    /**
+     * @dev The new owner accepts the ownership transfer.
+     * @param options The options of transaction.
+     */
+    acceptOwnership(options: EvmTransactionOptions): Promise<EvmOutput<void>>
 
     /** 
      * @dev Returns the address of the pending owner.
+     * @param options The options of transaction.
      */
-    pendingOwner(): Promise<EvmOutput<Buffer>>
+    pendingOwner(options: EvmTransactionOptions): Promise<EvmOutput<Buffer>>
 
     /**
      * @dev Leaves the contract without owner. It will not be possible to call
@@ -46,20 +50,24 @@ interface RolesSendEvm {
      *
      * NOTE: Renouncing ownership will leave the contract without an owner,
      * thereby disabling any functionality that is only available to the owner.
+     * @param options The options of transaction.
      */
-    renounceOwnership(): Promise<EvmOutput<void>>
+    renounceOwnership(options: EvmTransactionOptions): Promise<EvmOutput<void>>
 
     /**
      * @dev Starts the ownership transfer of the contract to a new account. Replaces the pending transfer if there is one.
      * Can only be called by the current owner.
+     * @param newOwner The transfer to account.
+     * @param options The options of transaction.
      */
-    transferOwnership(newOwner: Buffer): Promise<EvmOutput<void>>
+    transferOwnership(newOwner: Buffer, options: EvmTransactionOptions): Promise<EvmOutput<void>>
 
     /**
-     *  @notice grantDataswapContractRole function to grant the dataswap contract role for dataswap contract. TODO: Move to governance
-     *  @param contracts The contracts address of grant dataswap role
+     * @notice grantDataswapContractRole function to grant the dataswap contract role for dataswap contract. TODO: Move to governance
+     * @param contracts The contracts address of grant dataswap role
+     * @param options The options of transaction.
      */
-    grantDataswapContractRole(contracts: Buffer[]): Promise<EvmOutput<void>>
+    grantDataswapContractRole(contracts: Buffer[], options: EvmTransactionOptions): Promise<EvmOutput<void>>
 }
 
 /**
@@ -72,7 +80,12 @@ export interface RolesOriginEvm
 /**
  * Implementation of  RolesOriginEvm with specific EVM methods.
  */
-
+@withCallMethod(
+    [
+        "checkRole",
+        "owner"
+    ]
+)
 @withSendMethod(
     [
         "acceptOwnership",
@@ -108,8 +121,6 @@ export class RolesEvm extends RolesOriginEvm {
         let result: DataswapMessage = decodeRes.data as DataswapMessage
         switch (decodeRes.data!.method) {
             case "acceptOwnership":
-            case "checkRole":
-            case "owner":
             case "pendingOwner":
             case "renounceOwnership":
             case "transferOwnership":

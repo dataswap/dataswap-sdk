@@ -2,7 +2,8 @@ import {
     Evm,
     withCallMethod,
     withSendMethod,
-    EvmOutput
+    EvmOutput,
+    EvmTransactionOptions
 } from "@unipackage/net"
 import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
 import { DataswapMessage } from "../../../../message/types"
@@ -73,14 +74,16 @@ interface DatacapsSendEvm {
     /**
      * @notice Add collateral funds for allocating datacap chunk
      * @param matchingId The ID of the matching
+     * @param options The options of transaction.
      */
-    addDatacapChunkCollateral(matchingId: number): Promise<EvmOutput<void>>
+    addDatacapChunkCollateral(matchingId: number, options: EvmTransactionOptions): Promise<EvmOutput<void>>
 
     /**
      * @dev Requests the allocation of matched datacap for a matching process.
      * @param matchingId The ID of the matching process.
+     * @param options The options of transaction.
      */
-    requestAllocateDatacap(matchingId: number): Promise<EvmOutput<number>>
+    requestAllocateDatacap(matchingId: number, options: EvmTransactionOptions): Promise<EvmOutput<number>>
 }
 
 /**

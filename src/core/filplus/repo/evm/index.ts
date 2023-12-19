@@ -2,7 +2,8 @@ import {
     Evm,
     withCallMethod,
     withSendMethod,
-    EvmOutput
+    EvmOutput,
+    EvmTransactionOptions
 } from "@unipackage/net"
 import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
 import { DataswapMessage } from "../../../../message/types"
@@ -137,81 +138,98 @@ interface FilplusSendEvm {
     /**
       * @notice Set dataset rule min regions per dataset
       * @param newValue The set value
+      * @param options The options of transaction.
       */
-    setDatasetRuleMinRegionsPerDataset(newValue: number): Promise<EvmOutput<void>>
+    setDatasetRuleMinRegionsPerDataset(newValue: number, options: EvmTransactionOptions): Promise<EvmOutput<void>>
 
     /**
      * @notice Set dataset rule default max replicas per country
      * @param newValue The set value
+     * @param options The options of transaction.
      */
     setDatasetRuleDefaultMaxReplicasPerCountry(
-        newValue: number
+        newValue: number,
+        options: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 
     /**
      * @notice Set dataset rule max replicas in country
      * @param countryCode The country code
      * @param newValue The set value
+     * @param options The options of transaction.
      */
     setDatasetRuleMaxReplicasInCountry(
         countryCode: number,
-        newValue: number
+        newValue: number,
+        options: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 
     /**
     * @notice Set dataset rule max replicas per city
     * @param newValue The set value
+    * @param options The options of transaction.
     */
-    setDatasetRuleMaxReplicasPerCity(newValue: number): Promise<EvmOutput<void>>
+    setDatasetRuleMaxReplicasPerCity(newValue: number, options: EvmTransactionOptions): Promise<EvmOutput<void>>
 
     /** 
      * @notice Set maximum proportion of dataset mapping files
      * @param newValue The set value
+     * @param options The options of transaction.
      */
     setDatasetRuleMaxProportionOfMappingFilesToDataset(
-        newValue: number
+        newValue: number,
+        options: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 
     /** 
      * @notice Set dataset rule min SPs per dataset
      * @param newValue The set value
+     * @param options The options of transaction.
      */
-    setDatasetRuleMinSPsPerDataset(newValue: number): Promise<EvmOutput<void>>
+    setDatasetRuleMinSPsPerDataset(newValue: number, options: EvmTransactionOptions): Promise<EvmOutput<void>>
 
     /** 
      * @notice Set dataset rule max replicas per SP
      * @param newValue The set value
+     * @param options The options of transaction.
      */
-    setDatasetRuleMaxReplicasPerSP(newValue: number): Promise<EvmOutput<void>>
+    setDatasetRuleMaxReplicasPerSP(newValue: number, options: EvmTransactionOptions): Promise<EvmOutput<void>>
 
     /** 
      * @notice Set dataset rule min total replicas per dataset
      * @param newValue The set value
+     * @param options The options of transaction.
      */
     setDatasetRuleMinTotalReplicasPerDataset(
-        newValue: number
+        newValue: number,
+        options: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 
     /** 
      * @notice Set dataset rule max total replicas per dataset
      * @param newValue The set value
+     * @param options The options of transaction.
      */
     setDatasetRuleMaxTotalReplicasPerDataset(
-        newValue: number
+        newValue: number,
+        options: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 
     /** 
      * @notice Set datacap rule max allocated size per time
      * @param newValue The set value
+     * @param options The options of transaction.
      */
-    setDatacapRulesMaxAllocatedSizePerTime(newValue: number): Promise<EvmOutput<void>>
+    setDatacapRulesMaxAllocatedSizePerTime(newValue: number, options: EvmTransactionOptions): Promise<EvmOutput<void>>
 
     /** 
      * @notice Set datacap rule max remaining percentage for next
      * @param newValue The set value
+     * @param options The options of transaction.
      */
     setDatacapRulesMaxRemainingPercentageForNext(
-        newValue: number
+        newValue: number,
+        options: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 }
 

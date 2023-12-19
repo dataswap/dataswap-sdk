@@ -2,7 +2,8 @@ import {
     Evm,
     withCallMethod,
     withSendMethod,
-    EvmOutput
+    EvmOutput,
+    EvmTransactionOptions
 } from "@unipackage/net"
 import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
 import { DataswapMessage } from "../../../../message/types"
@@ -77,12 +78,14 @@ interface StoragesSendEvm {
      * @param provider A provider of storage provider of matching.
      * @param ids An array of content identifiers of the matched data.
      * @param claimIds An array of IDs of successful Filecoin storage deals.
+     * @param options The options of transaction.
      */
     submitStorageClaimIds(
         matchingId: number,
         provider: number,
         ids: number[],
-        claimIds: number[]
+        claimIds: number[],
+        options: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 }
 
