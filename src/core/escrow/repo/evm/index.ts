@@ -2,7 +2,8 @@ import {
     Evm,
     withCallMethod,
     withSendMethod,
-    EvmOutput
+    EvmOutput,
+    EvmTransactionOptions
 } from "@unipackage/net"
 import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
 import { DataswapMessage } from "../../../../message/types"
@@ -63,12 +64,14 @@ interface EscrowSendEvm {
      * @param owner The destination address for the credited funds.
      * @param id The business id associated with the credited funds.
      * @param amount The collateral funds.
+     * @param options The options of transaction.
      */
     collateral(
         type: EscrowType,
         owner: string,
         id: number,
-        amount: BigInt
+        amount: BigInt,
+        options: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 
     /**
@@ -76,11 +79,13 @@ interface EscrowSendEvm {
      * @param type The Escrow type for the credited funds.
      * @param owner The destination address for the credited funds.
      * @param id The business id associated with the credited funds.
+     * @param options The options of transaction.
      */
     collateralRedeem(
         type: EscrowType,
         owner: string,
-        id: number
+        id: number,
+        options: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 
     /**
@@ -88,11 +93,13 @@ interface EscrowSendEvm {
      * @param type The Escrow type for the credited funds.
      * @param owner The destination address for the credited funds.
      * @param id The business id associated with the credited funds.
+     * @param options The options of transaction.
      */
     withdraw(
         type: EscrowType,
         owner: string,
-        id: number
+        id: number,
+        options: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 
     /**
@@ -101,12 +108,14 @@ interface EscrowSendEvm {
      * @param owner The destination address for the credited funds.
      * @param id The business id associated with the credited funds.
      * @param amount The payment funds.
+     * @param options The options of transaction.
      */
     payment(
         type: EscrowType,
         owner: string,
         id: number,
-        amount: BigInt
+        amount: BigInt,
+        options: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 
     /**
@@ -116,13 +125,15 @@ interface EscrowSendEvm {
      * @param id The business id associated with the credited funds.
      * @param beneficiary The beneficiary address for the payment credited funds.
      * @param amount The payment funds.
+     * @param options The options of transaction.
      */
     paymentSingleBeneficiary(
         type: EscrowType,
         owner: string,
         id: number,
         beneficiary: string,
-        amount: BigInt
+        amount: BigInt,
+        options: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 
     /**
@@ -131,12 +142,14 @@ interface EscrowSendEvm {
      * @param owner The destination address for the credited funds.
      * @param id The business id associated with the credited funds.
      * @param beneficiary The beneficiary address for the payment credited funds.
+     * @param options The options of transaction.
      */
     paymentWithdraw(
         type: EscrowType,
         owner: string,
         id: number,
-        beneficiary: string
+        beneficiary: string,
+        options: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 
     /**
@@ -145,12 +158,14 @@ interface EscrowSendEvm {
      * @param owner The destination address for the credited funds.
      * @param id The business id associated with the credited funds.
      * @param amount The transfer funds.
+     * @param options The options of transaction.
      */
     paymentTransfer(
         type: EscrowType,
         owner: string,
         id: number,
-        amount: BigInt
+        amount: BigInt,
+        options: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 
     /**
@@ -158,11 +173,13 @@ interface EscrowSendEvm {
      * @param type The Escrow type for the credited funds.
      * @param owner The destination address for the credited funds.
      * @param id The business id associated with the credited funds.
+     * @param options The options of transaction.
      */
     paymentRefund(
         type: EscrowType,
         owner: string,
-        id: number
+        id: number,
+        options: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 }
 
