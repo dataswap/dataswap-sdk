@@ -1,6 +1,7 @@
+import { IAccounts } from "../interfaces/environments/IAccounts"
 import * as utils from "./utils"
 
-export class Accounts {
+export class Accounts implements IAccounts {
     private client: string
     private clientKey: string
     private datasetAuditor: string
@@ -12,9 +13,7 @@ export class Accounts {
     private governance: string
     private governanceKey: string
 
-    private static instance: Accounts;
-
-    private constructor() {
+    constructor() {
         this.client = utils.getAccountAddress("PRIVATE_KEY_METADATASUBMITTER")
         this.clientKey = utils.getAccountPrivateKey("PRIVATE_KEY_METADATASUBMITTER")
         this.datasetAuditor = utils.getAccountAddress("PRIVATE_KEY_DATASETAUDITOR")
@@ -25,13 +24,6 @@ export class Accounts {
         this.bidderKey = utils.getAccountPrivateKey("PRIVATE_KEY_BIDDER")
         this.governance = utils.getAccountAddress("PRIVATE_KEY")
         this.governanceKey = utils.getAccountPrivateKey("PRIVATE_KEY")
-    }
-
-    public static Instance(): Accounts {
-        if (!Accounts.instance) {
-            Accounts.instance = new Accounts();
-        }
-        return Accounts.instance;
     }
 
     getClient(): [string, string] {
@@ -54,3 +46,5 @@ export class Accounts {
         return [this.governance, this.governanceKey]
     }
 }
+
+

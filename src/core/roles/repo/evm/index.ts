@@ -7,6 +7,7 @@ import {
 } from "@unipackage/net"
 import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
 import { DataswapMessage } from "../../../../message/types"
+import { EvmEx } from "../../../../shared/types/evmEngineType"
 
 /**
  * Interface for EVM calls related to  Roles.
@@ -26,7 +27,16 @@ interface RolesCallEvm {
      * @dev Returns the address of the current owner.
      */
     owner(): Promise<EvmOutput<Buffer>>
+
+    /**
+     * @notice Checks whether the given account has the specified role.
+     * @param role The role to check.
+     * @param account The account for which to check the role.
+     * @returns A Promise resolving to the EvmOutput<boolean> indicating whether the account has the specified role.
+     */
+    hasRole(role: string, account: string): Promise<EvmOutput<boolean>>
 }
+
 
 /**
  * Interface for EVM transactions related to  Roles.
@@ -67,7 +77,16 @@ interface RolesSendEvm {
      * @param contracts The contracts address of grant dataswap role
      * @param options The options of transaction.
      */
-    grantDataswapContractRole(contracts: Buffer[], options: EvmTransactionOptions): Promise<EvmOutput<void>>
+    grantDataswapContractRole(contracts: string[], options: EvmTransactionOptions): Promise<EvmOutput<void>>
+
+    /**
+     * @notice Grants the specified role to the given account.
+     * @param role The role to be granted.
+     * @param account The account to which the role will be granted.
+     * @param options The options of transaction.
+     * @returns A Promise resolving to the EvmOutput<void> indicating the success of the transaction.
+     */
+    grantRole(role: string, account: string, options: EvmTransactionOptions): Promise<EvmOutput<void>>
 }
 
 /**
@@ -82,22 +101,22 @@ export interface RolesOriginEvm
  */
 @withCallMethod(
     [
+        "hasRole",
         "checkRole",
         "owner"
     ]
 )
 @withSendMethod(
     [
+        "grantRole",
         "acceptOwnership",
-        "checkRole",
-        "owner",
         "pendingOwner",
         "renounceOwnership",
         "transferOwnership",
         "grantDataswapContractRole"
     ]
 )
-export class RolesOriginEvm extends Evm { }
+export class RolesOriginEvm extends EvmEx { }
 
 /**
  * Extended class for  RolesOriginEvm with additional message decoding.

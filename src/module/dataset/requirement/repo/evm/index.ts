@@ -8,6 +8,7 @@ import {
 import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
 import { DataswapMessage } from "../../../../../message/types"
 import { DatasetRequirement } from "../../types"
+import { EvmEx } from "../../../../../shared/types/evmEngineType"
 
 interface DatasetRequirementCallEvm {
     /**
@@ -15,7 +16,7 @@ interface DatasetRequirementCallEvm {
      * @param datasetId The ID of the dataset to get the count of replicas of dataset.
      * @returns The count of replicas of dataset.
      */
-    getDatasetReplicasCount(datasetId: number): EvmOutput<number>
+    getDatasetReplicasCount(datasetId: number): Promise<EvmOutput<number>>
     /**
      *  Get dataset replica requirement
      * @param datasetId The ID of the dataset to get the requirement of replica.
@@ -25,13 +26,13 @@ interface DatasetRequirementCallEvm {
     getDatasetReplicaRequirement(
         datasetId: number,
         index: number
-    ): EvmOutput<DatasetRequirement>
+    ): Promise<EvmOutput<DatasetRequirement>>
     /**
      *  Get dataset pre conditional
      * @param datasetId The ID of the dataset to get the pre collateral of datasets.
      * @returns The pre collateral's amount of dataset.
      */
-    getDatasetPreCollateralRequirements(datasetId: number): EvmOutput<bigint>
+    getDatasetPreCollateralRequirements(datasetId: number): Promise<EvmOutput<bigint>>
 }
 
 interface DatasetRequirementSendEvm {
@@ -55,7 +56,7 @@ interface DatasetRequirementSendEvm {
         citys: number[][],
         _amount: bigint,
         options: EvmTransactionOptions
-    ): EvmOutput<void>
+    ): Promise<EvmOutput<void>>
 }
 /**
  * Combined interface for EVM calls and transactions related to DatasetRequirement contract.
@@ -73,7 +74,7 @@ export interface DatasetRequirementOriginEvm
     "getDatasetPreCollateralRequirements",
 ])
 @withSendMethod(["submitDatasetReplicaRequirements"])
-export class DatasetRequirementOriginEvm extends Evm { }
+export class DatasetRequirementOriginEvm extends EvmEx { }
 
 /**
  * Extended class for DatasetRequirementEvm with additional message decoding.

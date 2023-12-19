@@ -9,8 +9,14 @@ import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
 import { DataswapMessage } from "../../../../../message/types"
 import { MatchingTarget } from "../../types"
 import { DataType } from "../../../../../shared/types/dataType"
+import { EvmEx } from "../../../../../shared/types/evmEngineType"
 
 interface MatchingTargetCallEvm {
+
+    matchings(): Promise<EvmOutput<string>>
+
+    matchingsBids(): Promise<EvmOutput<string>>
+
     /**
      * Retrieves the target associated with a matching identified by its ID.
      * @param matchingId - The ID of the matching.
@@ -126,6 +132,8 @@ export interface MatchingTargetOriginEvm
  * Implementation of MatchingTargetOriginEvm with specific EVM methods.
  */
 @withCallMethod([
+    "matchings",
+    "matchingsBids",
     "getMatchingTarget",
     "isMatchingContainsCar",
     "isMatchingContainsCars",
@@ -137,7 +145,7 @@ export interface MatchingTargetOriginEvm
     "createTarget",
     "publishMatching",
 ])
-export class MatchingTargetOriginEvm extends Evm { }
+export class MatchingTargetOriginEvm extends EvmEx { }
 
 /**
  * Extended class for MatchingTargetEvm with additional message decoding.

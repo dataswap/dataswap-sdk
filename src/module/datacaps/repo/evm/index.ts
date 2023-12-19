@@ -7,6 +7,7 @@ import {
 } from "@unipackage/net"
 import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
 import { DataswapMessage } from "../../../../message/types"
+import { EvmEx } from "../../../../shared/types/evmEngineType"
 
 /**
  * Interface for EVM calls related to  Datacaps.
@@ -114,7 +115,7 @@ export interface DatacapsOriginEvm
         "requestAllocateDatacap"
     ]
 )
-export class DatacapsOriginEvm extends Evm { }
+export class DatacapsOriginEvm extends EvmEx { }
 
 /**
  * Extended class for  DatacapsOriginEvm with additional message decoding.

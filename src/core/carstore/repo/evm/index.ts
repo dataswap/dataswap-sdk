@@ -5,6 +5,7 @@ import {
 } from "@unipackage/net"
 import { Car, CarReplica } from "../../types"
 import { State } from "../../../../shared/types/carstoreType";
+import { EvmEx } from "../../../../shared/types/evmEngineType";
 
 /**
  * Interface for EVM calls related to Carstore.
@@ -206,7 +207,7 @@ export interface CarstoreOriginEvm
         "carsCount"
     ]
 )
-export class CarstoreOriginEvm extends Evm { }
+export class CarstoreOriginEvm extends EvmEx { }
 
 /**
  * Extended class for CarstoreOriginEvm with additional message decoding.
