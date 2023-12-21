@@ -1,7 +1,9 @@
-{ 
-    "loader" : "ts-node/esm",
+{
     "spec": "dist-test/**/*.test.js",
-    "exclude": ["node_modules"],
+    "exclude": [
+        "node_modules"
+    ],
     "project": "./tsconfig.test.json",
-    "require": "./test/fixtures.ts"
+    "timeout": 50000,
+    "require": "dist-test/test/fixtures.js"
 }

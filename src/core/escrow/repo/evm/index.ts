@@ -1,5 +1,4 @@
 import {
-    Evm,
     withCallMethod,
     withSendMethod,
     EvmOutput,
@@ -8,6 +7,7 @@ import {
 import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
 import { DataswapMessage } from "../../../../message/types"
 import { Fund } from "../../types"
+import { EvmEx } from "../../../../shared/types/evmEngineType"
 import { EscrowType } from "../../../../shared/types/escrowType"
 
 /**
@@ -70,8 +70,8 @@ interface EscrowSendEvm {
         type: EscrowType,
         owner: string,
         id: number,
-        amount: BigInt,
-        options: EvmTransactionOptions
+        amount: bigint,
+        options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 
     /**
@@ -85,7 +85,7 @@ interface EscrowSendEvm {
         type: EscrowType,
         owner: string,
         id: number,
-        options: EvmTransactionOptions
+        options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 
     /**
@@ -99,7 +99,7 @@ interface EscrowSendEvm {
         type: EscrowType,
         owner: string,
         id: number,
-        options: EvmTransactionOptions
+        options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 
     /**
@@ -114,8 +114,8 @@ interface EscrowSendEvm {
         type: EscrowType,
         owner: string,
         id: number,
-        amount: BigInt,
-        options: EvmTransactionOptions
+        amount: bigint,
+        options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 
     /**
@@ -132,8 +132,8 @@ interface EscrowSendEvm {
         owner: string,
         id: number,
         beneficiary: string,
-        amount: BigInt,
-        options: EvmTransactionOptions
+        amount: bigint,
+        options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 
     /**
@@ -149,7 +149,7 @@ interface EscrowSendEvm {
         owner: string,
         id: number,
         beneficiary: string,
-        options: EvmTransactionOptions
+        options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 
     /**
@@ -164,8 +164,8 @@ interface EscrowSendEvm {
         type: EscrowType,
         owner: string,
         id: number,
-        amount: BigInt,
-        options: EvmTransactionOptions
+        amount: bigint,
+        options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 
     /**
@@ -179,7 +179,7 @@ interface EscrowSendEvm {
         type: EscrowType,
         owner: string,
         id: number,
-        options: EvmTransactionOptions
+        options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 }
 
@@ -212,7 +212,7 @@ export interface EscrowOriginEvm
         "paymentRefund"
     ]
 )
-export class EscrowOriginEvm extends Evm { }
+export class EscrowOriginEvm extends EvmEx { }
 
 /**
  * Extended class for EscrowOriginEvm with additional message decoding.
