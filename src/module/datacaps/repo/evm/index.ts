@@ -17,19 +17,19 @@ interface DatacapsCallEvm {
      * @param matchingId The ID of the matching
      * @return The updated collateral funds required
      */
-    getDatacapChunkCollateralFunds(matchingId: number): Promise<EvmOutput<BigInt>>
+    getDatacapChunkCollateralFunds(matchingId: number): Promise<EvmOutput<bigint>>
 
     /**
      * @notice Get the updated burn funds for datacap chunk based on real-time business data
      * @param matchingId The ID of the matching
      * @return The updated burn funds required
      */
-    getDatacapChunkBurnFunds(matchingId: number): Promise<EvmOutput<BigInt>>
+    getDatacapChunkBurnFunds(matchingId: number): Promise<EvmOutput<bigint>>
 
     /**
      * @notice Get collateral funds requirement for allocate chunk datacap
      */
-    getCollateralRequirement(): Promise<EvmOutput<BigInt>>
+    getCollateralRequirement(): Promise<EvmOutput<bigint>>
 
     /**
      * @dev Gets the allocated matched datacap for a storage.

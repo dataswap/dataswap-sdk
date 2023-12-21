@@ -1,10 +1,11 @@
 export enum EscrowType {
     DatacapCollateral, // The storage client collateral.
     DatacapChunkCollateral, // The storage provider collateral.
-    DataAuditCollateral, // The data auditor collateral, for dispute
+    DataAuditCollateral, // The dataset auditor collateral, for dispute
     DataPrepareCollateral, // The data preparer collateral,for dispute
-    DataAuditFee, // The data auditor calculate fees.
-    DataPrepareFeeByClient, // The data preparer calculate fees paid by storage client.
+    DatasetAuditFee, // The dataset auditor calculate fees.
+    TotalDataPrepareFeeByClient, // The data preparer calculate fees of dataset paid by storage client.
+    DataPrepareFeeByClient, // The data preparer calculate fees of matching paid by storage client.
     DataPrepareFeeByProvider // The data preparer calculate fees paid by storage provider.
 }
 
