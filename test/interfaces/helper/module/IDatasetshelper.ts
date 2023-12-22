@@ -7,4 +7,5 @@ export interface IDatasetsHelper extends IHelper {
     fundsNotEnoughDatasetWorkflow(): Promise<number>
     proofSubmittedDatasetWorkflow(dataType: number): Promise<number>
     aprovedDatasetWorkflow(): Promise<number>
+    getDatasetProofRoot(datasetId: number): string | undefined
 }
