@@ -1,5 +1,5 @@
-import { IAccounts } from "../interfaces/environments/IAccounts"
-import * as utils from "./utils"
+import { IAccounts } from "../../interfaces/setup/IAccounts"
+import * as utils from "../../shared/utils"
 
 export class Accounts implements IAccounts {
     private client: string

@@ -1,5 +1,5 @@
-import { IContractsManager } from "../../interfaces/environments/IContractsManater"
-import { IAccounts } from "../../interfaces/environments/IAccounts"
+import { IContractsManager } from "../../interfaces/setup/IContractsManater"
+import { IAccounts } from "../../interfaces/setup/IAccounts"
 
 export class TestSetup {
     protected accounts: IAccounts

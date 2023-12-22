@@ -3,9 +3,9 @@ import { BasicHelper } from "./basicHelper"
 import { DataType, DatasetState } from "../../../src/shared/types/datasetType"
 import { expect } from "chai"
 import { handleEvmError } from "../../shared/error"
-import { IGenerator } from "../../interfaces/environments/IGenerator"
-import { IAccounts } from "../../interfaces/environments/IAccounts"
-import { IContractsManager } from "../../interfaces/environments/IContractsManater"
+import { IGenerator } from "../../interfaces/setup/IGenerator"
+import { IAccounts } from "../../interfaces/setup/IAccounts"
+import { IContractsManager } from "../../interfaces/setup/IContractsManater"
 
 
 export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {

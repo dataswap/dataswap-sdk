@@ -1,9 +1,9 @@
 import { TestBase } from "../../../abstract/TestBase";
 import { DatasetsHelper } from "../../../../helpers/module/datasetsHelper"
-import { IContractsManager } from "../../../../interfaces/environments/IContractsManater";
-import { IAccounts } from "../../../../interfaces/environments/IAccounts";
+import { IContractsManager } from "../../../../interfaces/setup/IContractsManater";
+import { IAccounts } from "../../../../interfaces/setup/IAccounts";
 import { IDatasetsHelper } from "../../../../interfaces/helper/module/IDatasetshelper";
-import { IGenerator } from "../../../../interfaces/environments/IGenerator";
+import { IGenerator } from "../../../../interfaces/setup/IGenerator";
 
 
 export abstract class DatasetsTestBase extends TestBase {

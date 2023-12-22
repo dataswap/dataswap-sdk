@@ -1,10 +1,10 @@
 import { Wallet } from 'ethers';
-import * as utils from "./utils"
+import * as utils from "../../shared/utils"
 import { ethers } from 'ethers'
-import { DatasetMetadata } from "../../src/module/dataset/metadata/types/index"
-import { IGenerator } from "../interfaces/environments/IGenerator"
-import { DatasetRequirements } from "../../src/shared/types/datasetType"
-import { DataType } from "../../src/shared/types/datasetType"
+import { DatasetMetadata } from "../../../src/module/dataset/metadata/types/index"
+import { IGenerator } from "../../interfaces/setup/IGenerator"
+import { DatasetRequirements } from "../../../src/shared/types/datasetType"
+import { DataType } from "../../../src/shared/types/datasetType"
 
 function getRequirementActors(count: number, elementCountInActor: number): string[][] {
     let actors: string[][] = []
