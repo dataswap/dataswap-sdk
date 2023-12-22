@@ -7,6 +7,7 @@ import { IGenerator } from './interfaces/setup/IGenerator';
 import { Generator } from './testkits/setup/generator';
 import { IDatasetsHelper } from './interfaces/helper/module/IDatasetshelper';
 import { DatasetsHelper } from './helpers/module/datasetsHelper';
+import { DataswapTestSetup } from './testkits/setup/dataswapTestSetup';
 
 
 function setup() {
@@ -46,7 +47,7 @@ export function getDatasetsHelper(): IDatasetsHelper {
     return datasetHelperInstance;
 }
 
-export function mochaGlobalSetup() {
+export async function mochaGlobalSetup() {
     setup()
     console.log(`@@@@ Mocha add hooks finished @@@@`)
     generatorInstance = new Generator();
@@ -57,4 +58,6 @@ export function mochaGlobalSetup() {
         generatorInstance,
         contractsManagerInstance
     )
+    let testSetup = new DataswapTestSetup(contractsManagerInstance)
+    await testSetup.run()
 }
