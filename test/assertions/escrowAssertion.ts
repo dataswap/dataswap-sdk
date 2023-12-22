@@ -1,4 +1,5 @@
 import { assert } from "chai"
+import { isEqual } from 'lodash';
 import { equal } from "@unipackage/utils"
 import { EscrowType } from "../../src/shared/types/escrowType"
 import { EscrowEvm } from "../../src/core/escrow/repo/evm"
@@ -25,7 +26,7 @@ export class EscrowAssertion {
 
     async getBeneficiariesListAssertion(type: EscrowType, owner: string, id: number, expectBeneficiaries: string[]) {
         let beneficiaries = await handleEvmError(this.escrow.getBeneficiariesList(type, owner, id))
-        assert.isTrue(equal(beneficiaries.data, expectBeneficiaries), "Beneficiaries List should be expect beneficiaries list")
+        assert.isTrue(equal(beneficiaries.data.slice().sort(), expectBeneficiaries.slice().sort()), "Beneficiaries List should be expect beneficiaries list")
     }
 
     async getBeneficiaryFundAssertion(type: EscrowType, owner: string, id: number, beneficiary: string, expectFund: Fund) {
@@ -90,17 +91,25 @@ export class EscrowAssertion {
             privateKey: governanceKey,
             value: amount
         }))
-
         expectFund.total += amount
         expectFund.locked += amount
         expectBeneficiaryFund.total += amount
         expectBeneficiaryFund.locked += amount
 
+        // For test getBeneficiariesList multiple beneficiaries
+        await handleEvmError(this.escrow.paymentSingleBeneficiary(type, owner, id, governance, amount, {
+            from: governance,
+            privateKey: governanceKey,
+            value: amount
+        }))
+        expectFund.total += amount
+        expectFund.locked += amount
+
         await Promise.all(
             [
                 this.getOwnerFundAssertion(type, owner, id, expectFund),
                 this.getBeneficiaryFundAssertion(type, owner, id, beneficiary, expectBeneficiaryFund),
-                this.getBeneficiariesListAssertion(type, owner, id, [beneficiary])
+                this.getBeneficiariesListAssertion(type, owner, id, [governance, beneficiary])
             ]
         )
     }

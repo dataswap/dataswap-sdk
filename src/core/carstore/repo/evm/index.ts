@@ -1,11 +1,10 @@
 import {
-    Evm,
     withCallMethod,
     EvmOutput
 } from "@unipackage/net"
 import { Car, CarReplica } from "../../types"
-import { State } from "../../../../shared/types/carstoreType";
-import { EvmEx } from "../../../../shared/types/evmEngineType";
+import { State } from "../../../../shared/types/carstoreType"
+import { EvmEx } from "../../../../shared/types/evmEngineType"
 
 /**
  * Interface for EVM calls related to Carstore.
@@ -96,7 +95,7 @@ interface CarstoreCallEvm {
      * @param id Car ID which to get car hash.
      * @return The hash of the car.
      */
-    getCarHash(id: number): Promise<EvmOutput<Buffer>>
+    getCarHash(id: number): Promise<EvmOutput<string>>
 
     /**
      * @notice Get the hashs of cars based on an array of car IDs.
@@ -105,14 +104,14 @@ interface CarstoreCallEvm {
      */
     getCarsHashs(
         ids: number[]
-    ): Promise<EvmOutput<Buffer[]>>
+    ): Promise<EvmOutput<string[]>>
 
     /**
      * @notice Get the car's id based on the car's hash.
      * @param hash The hash which to get car id.
      * @return The id of the car.
      */
-    getCarId(hash: Buffer): Promise<EvmOutput<number>>
+    getCarId(hash: string): Promise<EvmOutput<number>>
 
     /**
      * @notice Get the ids of cars based on an array of car hashs.
@@ -120,7 +119,7 @@ interface CarstoreCallEvm {
      * @return The ids of cars.
      */
     getCarsIds(
-        hashs: Buffer[]
+        hashs: string[]
     ): Promise<EvmOutput<number[]>>
 
     /**
@@ -128,14 +127,14 @@ interface CarstoreCallEvm {
      * @param hash Car Hash to check.
      * @return True if the car exists, false otherwise.
      */
-    hasCarHash(hash: Buffer): Promise<EvmOutput<Boolean>>
+    hasCarHash(hash: string): Promise<EvmOutput<boolean>>
 
     /**
      * @notice Check if a car exists based on its ID.
      * @param id Car ID to check.
      * @return True if the car exists, false otherwise.
      */
-    hasCar(id: number): Promise<EvmOutput<Boolean>>
+    hasCar(id: number): Promise<EvmOutput<boolean>>
 
     /**
      * @notice Check if a replica exists within a car based on its matching ID.
@@ -146,7 +145,7 @@ interface CarstoreCallEvm {
     hasCarReplica(
         id: number,
         matchingId: number
-    ): Promise<EvmOutput<Boolean>>
+    ): Promise<EvmOutput<boolean>>
 
     /**
      * @notice Check if a car exists based on its Hashs.
@@ -154,14 +153,14 @@ interface CarstoreCallEvm {
      * @param hashs  Array of car Hashs to check.
      * @return True if the car exists, false otherwise.
      */
-    hasCarsHashs(hashs: Buffer[]): Promise<EvmOutput<Boolean>>
+    hasCarsHashs(hashs: string[]): Promise<EvmOutput<boolean>>
 
     /**
      * @notice Check if multiple cars exist based on their IDs.
      * @param ids Array of car IDs to check.
      * @return True if all specified cars exist, false if any one does not exist.
      */
-    hasCars(ids: Buffer[]): Promise<EvmOutput<Boolean>>
+    hasCars(ids: string[]): Promise<EvmOutput<boolean>>
 
     /**
      * @returns The cars count
