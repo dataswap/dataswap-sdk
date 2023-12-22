@@ -37,7 +37,7 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
             let clientId = 100
 
             // Submit dataset metadata transaction
-            let tx = await this.contractsManager.DatasetMetadataEvm().submitDatasetMetadata(
+            let tx = await handleEvmError(this.contractsManager.DatasetMetadataEvm().submitDatasetMetadata(
                 clientId,
                 datasetMetadata.title,
                 datasetMetadata.industry,
@@ -52,11 +52,7 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
                     from: client,
                     privateKey: clientkey,
                 }
-            )
-            // Handle transaction failure
-            if (!tx.ok) {
-                console.log("submit metadata failed, tx:", tx)
-            }
+            ))
 
             // Get transaction receipt and event arguments
             const receipt = await this.contractsManager.DatasetMetadataEvm().getTransactionReceipt(
@@ -71,7 +67,7 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
             let requirments = this.generator.generateDatasetRequirements(replicasCount, elementCountInReplica, duplicateIndex, duplicateCount)
 
             // Submit dataset replica requirements transaction
-            tx = await this.contractsManager.DatasetRequirementEvm().submitDatasetReplicaRequirements(
+            await handleEvmError(this.contractsManager.DatasetRequirementEvm().submitDatasetReplicaRequirements(
                 datasetId,
                 requirments.dataPreparers,
                 requirments.storageProviders,
@@ -83,14 +79,10 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
                     from: client,
                     privateKey: clientkey,
                 }
-            )
-            // Handle transaction failure
-            if (!tx.ok) {
-                console.log("submit requirements failed, tx:", tx)
-            }
+            ))
 
             // Get updated dataset state
-            let datasetState = await this.contractsManager.DatasetMetadataEvm().getDatasetState(datasetId)
+            let datasetState = await handleEvmError(this.contractsManager.DatasetMetadataEvm().getDatasetState(datasetId))
 
             // Assertions for dataset state and metadata
             expect(BigInt(DatasetState.MetadataSubmitted)).to.equal(datasetState.data)
@@ -113,15 +105,15 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
 
             let [governance, governanceKey] = this.accounts.getGovernance()
 
-            await this.contractsManager.DatasetMetadataEvm().approveDatasetMetadata(
+            await handleEvmError(this.contractsManager.DatasetMetadataEvm().approveDatasetMetadata(
                 datasetId,
                 {
                     from: governance,
                     privateKey: governanceKey,
                 }
-            )
+            ))
             // Get updated dataset state
-            let datasetState = await this.contractsManager.DatasetMetadataEvm().getDatasetState(datasetId)
+            let datasetState = await handleEvmError(this.contractsManager.DatasetMetadataEvm().getDatasetState(datasetId))
 
             // Assertions for dataset state and metadata
             expect(BigInt(DatasetState.MetadataApproved)).to.equal(datasetState.data)
@@ -143,14 +135,14 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
 
         let [governance, governanceKey] = this.accounts.getGovernance()
 
-        this.contractsManager.DatasetMetadataEvm().rejectDatasetMetadata(
+        await handleEvmError(this.contractsManager.DatasetMetadataEvm().rejectDatasetMetadata(
             datasetId,
             {
                 from: governance,
                 privateKey: governanceKey
-            })
+            }))
         // Get updated dataset state
-        let datasetState = await this.contractsManager.DatasetMetadataEvm().getDatasetState(datasetId)
+        let datasetState = await handleEvmError(this.contractsManager.DatasetMetadataEvm().getDatasetState(datasetId))
 
         // Assertions for dataset state and metadata
         expect(BigInt(DatasetState.MetadataRejected)).to.equal(datasetState.data)
@@ -164,11 +156,11 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
             this.metadataApprovedDatasetWorkflow,
         )
 
-        let [dp, dpKey] = this.accounts.getGovernance()
+        let [datasetPreparer, datasetPreparerKey] = this.accounts.getGovernance()
 
 
         // Get updated dataset state
-        let datasetState = await this.contractsManager.DatasetMetadataEvm().getDatasetState(datasetId)
+        let datasetState = await handleEvmError(this.contractsManager.DatasetMetadataEvm().getDatasetState(datasetId))
 
         // Assertions for dataset state and metadata
         expect(BigInt(DatasetState.MetadataRejected)).to.equal(datasetState.data)
@@ -177,12 +169,10 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
     }
 
     async proofSubmittedDatasetWorkflow(dataType: number): Promise<number> {
-
         return 0
     }
 
     async aprovedDatasetWorkflow(): Promise<number> {
-
         return 0
     }
 }

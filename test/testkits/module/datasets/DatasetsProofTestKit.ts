@@ -17,7 +17,6 @@ export class SubmitDatasetProofRootSuccessTestKit extends DatasetsTestBase {
 
     async optionalBefore(): Promise<number> {
         try {
-            console.log("ApproveDatasetMetadataSuccessTestKit optionalBefore")
             return await this.datasetsHelper.metadataApprovedDatasetWorkflow()
             //return [datasetId]
         } catch (error) {
@@ -27,7 +26,7 @@ export class SubmitDatasetProofRootSuccessTestKit extends DatasetsTestBase {
 
     async action(datasetId: number): Promise<number> {
         try {
-            let [dp, dpkey] = this.accounts.getProofSubmitter()
+            let [datasetPreparer, datasetPreparerKey] = this.accounts.getProofSubmitter()
             let [rootHash, , , mappingFilesAccessMethod] = this.generator.generateDatasetProof(0, this.dataType)
 
             await handleEvmError(this.contractsManager.DatasetProofEvm().submitDatasetProofRoot(
@@ -36,13 +35,13 @@ export class SubmitDatasetProofRootSuccessTestKit extends DatasetsTestBase {
                 mappingFilesAccessMethod,
                 rootHash,
                 {
-                    from: dp,
-                    privateKey: dpkey,
+                    from: datasetPreparer,
+                    privateKey: datasetPreparerKey,
                 }
             ))
 
-            let call = await handleEvmError(this.contractsManager.DatasetProofEvm().getDatasetProofSubmitter(datasetId))
-            expect(dp).to.equal(call.data)
+            let proofSubmitterOnChain = await handleEvmError(this.contractsManager.DatasetProofEvm().getDatasetProofSubmitter(datasetId))
+            expect(datasetPreparer).to.equal(proofSubmitterOnChain.data)
             return datasetId
         } catch (error) {
             throw error

@@ -22,7 +22,7 @@ export class SubmitMetadataSuccessTestKit extends DatasetsTestBase {
             let clientId = 100
 
             // Submit dataset metadata transaction
-            let tx = await this.contractsManager.DatasetMetadataEvm().submitDatasetMetadata(
+            let tx = await handleEvmError(this.contractsManager.DatasetMetadataEvm().submitDatasetMetadata(
                 clientId,
                 datasetMetadata.title,
                 datasetMetadata.industry,
@@ -37,11 +37,7 @@ export class SubmitMetadataSuccessTestKit extends DatasetsTestBase {
                     from: client,
                     privateKey: clientkey,
                 }
-            )
-            // Handle transaction failure
-            if (!tx.ok) {
-                throw tx.error
-            }
+            ))
 
             // Get transaction receipt and event arguments
             const receipt = await this.contractsManager.DatasetMetadataEvm().getTransactionReceipt(
@@ -52,10 +48,8 @@ export class SubmitMetadataSuccessTestKit extends DatasetsTestBase {
 
             let datasetId = Number(ret.data.datasetId)
 
-            let metadataOnChain = await this.contractsManager.DatasetMetadataEvm().getDatasetMetadata(datasetId)
-            if (!metadataOnChain.ok) {
-                throw metadataOnChain.error
-            }
+            let metadataOnChain = await handleEvmError(this.contractsManager.DatasetMetadataEvm().getDatasetMetadata(datasetId))
+
             expect(datasetMetadata.title).to.equal(metadataOnChain.data!.title)
             //expect(true).to.equal(equal(datasetMetadata, metadataOnChain.data!))
             return datasetId
@@ -65,8 +59,6 @@ export class SubmitMetadataSuccessTestKit extends DatasetsTestBase {
     }
 }
 
-
-
 export class SubmitRequirementSuccessTestKit extends DatasetsTestBase {
     private dependentTestKit: SubmitMetadataSuccessTestKit
     constructor(_accounts: IAccounts, _generator: IGenerator, _contractsManager: IContractsManager, _datasetHelper?: IDatasetsHelper) {
@@ -75,7 +67,6 @@ export class SubmitRequirementSuccessTestKit extends DatasetsTestBase {
     }
 
     async optionalBefore(): Promise<number> {
-        console.log("SubmitRequirementSuccessTestKit optionalBefore")
         try {
             return await this.dependentTestKit.run()
         } catch (error) {
@@ -91,7 +82,7 @@ export class SubmitRequirementSuccessTestKit extends DatasetsTestBase {
             let requirments = this.generator.generateDatasetRequirements(5, 3)
 
             // Submit dataset replica requirements transaction
-            let tx = await this.contractsManager.DatasetRequirementEvm().submitDatasetReplicaRequirements(
+            let tx = await handleEvmError(this.contractsManager.DatasetRequirementEvm().submitDatasetReplicaRequirements(
                 datasetId,
                 requirments.dataPreparers,
                 requirments.storageProviders,
@@ -103,36 +94,24 @@ export class SubmitRequirementSuccessTestKit extends DatasetsTestBase {
                     from: client,
                     privateKey: clientkey,
                 }
-            )
-            // Handle transaction failure
-            if (!tx.ok) {
-                throw tx.error
-            }
-
+            ))
 
             // Get updated dataset state
-            let call = await this.contractsManager.DatasetMetadataEvm().getDatasetState(datasetId)
-            if (!call.ok) {
-                throw call.error
-            }
-            expect(BigInt(DatasetState.MetadataSubmitted)).to.equal(call.data)
+            let datasetStateOnChain = await handleEvmError(this.contractsManager.DatasetMetadataEvm().getDatasetState(datasetId))
 
-            call = await this.contractsManager.DatasetRequirementEvm().getDatasetReplicasCount(datasetId)
-            if (!call.ok) {
-                throw call.error
-            }
+            expect(BigInt(DatasetState.MetadataSubmitted)).to.equal(datasetStateOnChain.data)
+
+            let replicasCountOnChain = await handleEvmError(this.contractsManager.DatasetRequirementEvm().getDatasetReplicasCount(datasetId))
 
             // Assertions for dataset state and metadata
-            expect(BigInt(5)).to.equal(call.data)
-            let ret = await this.contractsManager.DatasetRequirementEvm().getDatasetReplicaRequirement(datasetId, 0)
-            if (!ret.ok) {
-                throw ret.error
-            }
-            expect(true).to.equal(equal(ret.data?.dataPreparers as string[], requirments.dataPreparers[0]))
-            expect(true).to.equal(equal(ret.data?.storageProviders as string[], requirments.storageProviders[0]))
-            expect(true).to.equal(equal(Number(ret.data?.regionCode), requirments.regionCodes[0]))
-            expect(true).to.equal(equal(Number(ret.data?.countryCode), requirments.countryCodes[0]))
-            expect(true).to.equal(equal(utils.convertToNumberArray(ret.data!.cityCodes), requirments.cityCodes[0]))
+            expect(BigInt(5)).to.equal(replicasCountOnChain.data)
+            let requiementOnChain = await handleEvmError(this.contractsManager.DatasetRequirementEvm().getDatasetReplicaRequirement(datasetId, 0))
+
+            expect(true).to.equal(equal(requiementOnChain.data?.dataPreparers as string[], requirments.dataPreparers[0]))
+            expect(true).to.equal(equal(requiementOnChain.data?.storageProviders as string[], requirments.storageProviders[0]))
+            expect(true).to.equal(equal(Number(requiementOnChain.data?.regionCode), requirments.regionCodes[0]))
+            expect(true).to.equal(equal(Number(requiementOnChain.data?.countryCode), requirments.countryCodes[0]))
+            expect(true).to.equal(equal(utils.convertToNumberArray(requiementOnChain.data!.cityCodes), requirments.cityCodes[0]))
             return datasetId
         } catch (error) {
             throw error
@@ -147,7 +126,6 @@ export class ApproveDatasetMetadataSuccessTestKit extends DatasetsTestBase {
 
     async optionalBefore(): Promise<number> {
         try {
-            console.log("ApproveDatasetMetadataSuccessTestKit optionalBefore")
             return await this.datasetsHelper.metadataSubmittedDatasetWorkflow(5, 3)
             //return [datasetId]
         } catch (error) {
@@ -167,8 +145,8 @@ export class ApproveDatasetMetadataSuccessTestKit extends DatasetsTestBase {
                 }
             ))
 
-            let call = await handleEvmError(this.contractsManager.DatasetMetadataEvm().getDatasetState(datasetId))
-            expect(BigInt(DatasetState.MetadataApproved)).to.equal(call.data)
+            let datasetStateOnChain = await handleEvmError(this.contractsManager.DatasetMetadataEvm().getDatasetState(datasetId))
+            expect(BigInt(DatasetState.MetadataApproved)).to.equal(datasetStateOnChain.data)
             return datasetId
         } catch (error) {
             throw error
