@@ -77,7 +77,7 @@ interface DatasetChallengeSendEvm {
         randomSeed: number,
         leaves: string[],
         siblings: string[][],
-        paths: string[],
+        paths: number[],
         options: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 }

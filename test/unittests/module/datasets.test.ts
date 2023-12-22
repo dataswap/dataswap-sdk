@@ -3,7 +3,7 @@ import { SubmitDatasetProofRootSuccessTestKit } from "../../testkits/module/data
 import { DataType } from "../../../src/shared/types/datasetType"
 import { getAccounts, getContractsManager, getGenerator, getDatasetsHelper } from "../../fixtures"
 
-describe("Datasets", async () => {
+describe("datasets", async () => {
     before(function () {
         this.sharedData = {}
         this.sharedData.datasetId = 0
