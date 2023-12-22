@@ -1,17 +1,9 @@
-import { TestSetup } from "./TestSetup"
-import { IContractsManager } from "../../interfaces/setup/IContractsManater"
-import { IAccounts } from "../../interfaces/setup/IAccounts"
-
-export abstract class TestBase extends TestSetup {
-    constructor(_accounts: IAccounts, _contractsManager: IContractsManager) {
-        super(_accounts, _contractsManager)
-    }
+export abstract class TestBase {
     async optionalBefore(): Promise<number> { return 0 }
 
     private async before(id?: number): Promise<number> {
         try {
             if (!id) {
-                await super.setup()
                 return await this.optionalBefore()
             }
             return id

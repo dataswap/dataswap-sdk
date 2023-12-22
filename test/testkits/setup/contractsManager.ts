@@ -67,7 +67,7 @@ export class ContractsManager implements IContractsManager {
      * @param contractAddress The address of the contract to grant the role.
      * @param role The role to grant.
      */
-    private async _setupContractRole(contractAddress: string, role: string): Promise<void> {
+    private async _grantRole(contractAddress: string, role: string): Promise<void> {
         try {
             let [governance, governanceKey] = this.accounts.getGovernance()
             const roleBytes = ethers.utils.toUtf8Bytes(role)
@@ -105,23 +105,11 @@ export class ContractsManager implements IContractsManager {
         try {
             for (const [_, address] of this.contractsAddresses) {
                 try {
-                    await this._setupContractRole(address, "DATASWAP");
+                    await this._grantRole(address, "DATASWAP");
                 } catch (error) {
                     throw error;
                 }
             }
-
-            let [client,] = this.accounts.getClient()
-            await this._setupContractRole(client, "CC");
-
-            let [bidder,] = this.accounts.getBidder()
-            await this._setupContractRole(bidder, "SP");
-
-            let [datasetAuditor,] = this.accounts.getDatasetAuditor()
-            await this._setupContractRole(datasetAuditor, "DA");
-
-            let [datasetPreparer,] = this.accounts.getProofSubmitter()
-            await this._setupContractRole(datasetPreparer, "DP");
         } catch (error) {
             throw error
         }
@@ -133,21 +121,24 @@ export class ContractsManager implements IContractsManager {
     public async setupAccountsRoles(): Promise<void> {
         try {
             let [client,] = this.accounts.getClient()
-            await this._setupContractRole(client, "CC");
+            await this._grantRole(client, "CC");
 
             let [bidder,] = this.accounts.getBidder()
-            await this._setupContractRole(bidder, "SP");
+            await this._grantRole(bidder, "SP");
 
             let [datasetAuditor,] = this.accounts.getDatasetAuditor()
-            await this._setupContractRole(datasetAuditor, "DA");
+            await this._grantRole(datasetAuditor, "DA");
 
             let [datasetPreparer,] = this.accounts.getProofSubmitter()
-            await this._setupContractRole(datasetPreparer, "DP");
+            await this._grantRole(datasetPreparer, "DP");
         } catch (error) {
             throw error
         }
     }
-
+    /**
+     * Set up dependencies for the Datasets contract.
+     * @returns A promise that resolves when the dependencies are set up.
+     */
     private async setupDatasetsDependencies(): Promise<void> {
         try {
             let [governance, governanceKey] = this.accounts.getGovernance()
@@ -172,7 +163,10 @@ export class ContractsManager implements IContractsManager {
             throw error
         }
     }
-
+    /**
+     * Set up dependencies for the DatasetsProof contract.
+     * @returns A promise that resolves when the dependencies are set up.
+     */
     private async setupDatasetsProofDependencies(): Promise<void> {
         try {
             let [governance, governanceKey] = this.accounts.getGovernance()
@@ -198,6 +192,10 @@ export class ContractsManager implements IContractsManager {
             throw error
         }
     }
+    /**
+     * Set up dependencies for the MatchingsBids contract.
+     * @returns A promise that resolves when the dependencies are set up.
+     */
     private async setupMatchingsBidsDependencies(): Promise<void> {
         try {
             let [governance, governanceKey] = this.accounts.getGovernance()
@@ -235,7 +233,10 @@ export class ContractsManager implements IContractsManager {
             throw error
         }
     }
-
+    /**
+     * Set up dependencies for the MatchingsTarget contract.
+     * @returns A promise that resolves when the dependencies are set up.
+     */
     private async setupMatchingsTargetDependencies(): Promise<void> {
         try {
             let [governance, governanceKey] = this.accounts.getGovernance()
@@ -273,6 +274,10 @@ export class ContractsManager implements IContractsManager {
             throw error
         }
     }
+    /**
+     * Set up dependencies for the Escrow contract.
+     * @returns A promise that resolves when the dependencies are set up.
+     */
     private async setupEscrowDependencies(): Promise<void> {
         try {
             let [governance, governanceKey] = this.accounts.getGovernance()
@@ -341,57 +346,101 @@ export class ContractsManager implements IContractsManager {
     private getEvmInstance(contractName: string): any {
         return this.contractsEvms.get(contractName)
     }
-
+    /**
+     * Get an instance of the Carstore contract Evm.
+     * @returns An instance of the Carstore contract Evm.
+     */
     public CarstoreEvm(): CarstoreEvm {
         return this.getEvmInstance("Carstore") as CarstoreEvm
     }
+    /**
+     * Get an instance of the Datacaps contract Evm.
+     * @returns An instance of the Datacaps contract Evm.
+     */
     public DatacapsEvm(): DatacapsEvm {
         return this.getEvmInstance("Datacaps") as DatacapsEvm
     }
+    /**
+     * Get an instance of the Datasets contract Evm.
+     * @returns An instance of the Datasets contract Evm.
+     */
     public DatasetMetadataEvm(): DatasetMetadataEvm {
         return this.getEvmInstance("Datasets") as DatasetMetadataEvm
     }
-
+    /**
+     * Get an instance of the DatasetsChallenge contract Evm.
+     * @returns An instance of the DatasetsChallenge contract Evm.
+     */
     public DatasetChallengeEvm(): DatasetChallengeEvm {
         return this.getEvmInstance("DatasetsChallenge") as DatasetChallengeEvm
     }
-
+    /**
+     * Get an instance of the DatasetsProof contract Evm.
+     * @returns An instance of the DatasetsProof contract Evm.
+     */
     public DatasetProofEvm(): DatasetProofEvm {
         return this.getEvmInstance("DatasetsProof") as DatasetProofEvm
     }
-
+    /**
+     * Get an instance of the DatasetsRequirement contract Evm.
+     * @returns An instance of the DatasetsRequirement contract Evm.
+     */
     public DatasetRequirementEvm(): DatasetRequirementEvm {
         return this.getEvmInstance("DatasetsRequirement") as DatasetRequirementEvm
     }
-
+    /**
+     * Get an instance of the Escrow contract Evm.
+     * @returns An instance of the Escrow contract Evm.
+     */
     public EscrowEvm(): EscrowEvm {
         return this.getEvmInstance("Escrow") as EscrowEvm
     }
-
+    /**
+     * Get an instance of the Filecoin contract Evm.
+     * @returns An instance of the Filecoin contract Evm.
+     */
     public FilecoinEvm(): FilecoinEvm {
         return this.getEvmInstance("Filecoin") as FilecoinEvm
     }
-
+    /**
+     * Get an instance of the Filplus contract Evm.
+     * @returns An instance of the Filplus contract Evm.
+     */
     public FilplusEvm(): FilplusEvm {
         return this.getEvmInstance("Filplus") as FilplusEvm
     }
-
+    /**
+     * Get an instance of the Matchingscontract Evm.
+     * @returns An instance of the Matchings contract Evm.
+     */
     public MatchingMetadataEvm(): MatchingMetadataEvm {
         return this.getEvmInstance("Matchings") as MatchingMetadataEvm
     }
-
+    /**
+     * Get an instance of the MatchingsBids contract Evm.
+     * @returns An instance of the MatchingsBids contract Evm.
+     */
     public MatchingBidsEvm(): MatchingBidsEvm {
         return this.getEvmInstance("MatchingsBids") as MatchingBidsEvm
     }
-
+    /**
+     * Get an instance of the MatchingsTarget contract Evm.
+     * @returns An instance of the MatchingsTarget contract Evm.
+     */
     public MatchingTargetEvm(): MatchingTargetEvm {
         return this.getEvmInstance("MatchingsTarget") as MatchingTargetEvm
     }
-
+    /**
+     * Get an instance of the Roles contract Evm.
+     * @returns An instance of the Roles contract Evm.
+     */
     public RolesEvm(): RolesEvm {
         return this.getEvmInstance("Roles") as RolesEvm
     }
-
+    /**
+     * Get an instance of the Storages contract Evm.
+     * @returns An instance of the Storages contract Evm.
+     */
     public StoragesEvm(): StoragesEvm {
         return this.getEvmInstance("Storages") as StoragesEvm
     }

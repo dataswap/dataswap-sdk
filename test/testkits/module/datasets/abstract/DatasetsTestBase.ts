@@ -7,17 +7,20 @@ import { IGenerator } from "../../../../interfaces/setup/IGenerator";
 
 
 export abstract class DatasetsTestBase extends TestBase {
-    protected datasetsHelper: IDatasetsHelper
+    protected accounts: IAccounts
     protected generator: IGenerator
+    protected contractsManager: IContractsManager
+    protected datasetsHelper: IDatasetsHelper
 
     constructor(_accounts: IAccounts, _generator: IGenerator, _contractsManager: IContractsManager, _datasetsHelper?: IDatasetsHelper) {
-        super(_accounts, _contractsManager)
+        super()
         if (_datasetsHelper) {
             this.datasetsHelper = _datasetsHelper
         } else {
             this.datasetsHelper = new DatasetsHelper(_accounts, _generator, _contractsManager)
         }
-
+        this.accounts = _accounts
         this.generator = _generator
+        this.contractsManager = _contractsManager
     }
 }
