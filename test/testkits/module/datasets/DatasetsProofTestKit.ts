@@ -3,10 +3,10 @@ import { DatasetsTestBase } from "./abstract/DatasetsTestBase";
 import { DataType } from "../../../../src/shared/types/datasetType";
 import { expect } from "chai"
 import { handleEvmError } from "../../../shared/error";
-import { IContractsManager } from "../../../interfaces/environments/IContractsManater";
+import { IContractsManager } from "../../../interfaces/setup/IContractsManater";
 import { IDatasetsHelper } from "../../../interfaces/helper/module/IDatasetshelper";
-import { IAccounts } from "../../../interfaces/environments/IAccounts";
-import { IGenerator } from "../../../interfaces/environments/IGenerator";
+import { IAccounts } from "../../../interfaces/setup/IAccounts";
+import { IGenerator } from "../../../interfaces/setup/IGenerator";
 
 export class SubmitDatasetProofRootSuccessTestKit extends DatasetsTestBase {
     private dataType: DataType

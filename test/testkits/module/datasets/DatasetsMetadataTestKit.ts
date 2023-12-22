@@ -5,10 +5,10 @@ import { DatasetState } from "../../../../src/shared/types/datasetType";
 import { equal } from "@unipackage/utils"
 import * as utils from "../../../shared/utils"
 import { handleEvmError } from "../../../shared/error";
-import { IContractsManager } from "../../../interfaces/environments/IContractsManater";
+import { IContractsManager } from "../../../interfaces/setup/IContractsManater";
 import { IDatasetsHelper } from "../../../interfaces/helper/module/IDatasetshelper";
-import { IAccounts } from "../../../interfaces/environments/IAccounts";
-import { IGenerator } from "../../../interfaces/environments/IGenerator";
+import { IAccounts } from "../../../interfaces/setup/IAccounts";
+import { IGenerator } from "../../../interfaces/setup/IGenerator";
 
 export class SubmitMetadataSuccessTestKit extends DatasetsTestBase {
     constructor(_accounts: IAccounts, _generator: IGenerator, _contractsManager: IContractsManager) {

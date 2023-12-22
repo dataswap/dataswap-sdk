@@ -1,7 +1,7 @@
 import { describe } from "mocha"
 
 import * as utils from "../../../shared/utils"
-import { Accounts } from "../../../shared/accounts"
+import { Accounts } from "../../../testkits/setup/accounts"
 import { EscrowType } from "../../../../src/shared/types/escrowType"
 import { EscrowAssertion } from "../../../assertions/escrowAssertion"
 import { getAccounts, getContractsManager, getGenerator } from "../../../fixtures"

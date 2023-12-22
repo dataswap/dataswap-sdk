@@ -1,6 +1,6 @@
 import { TestSetup } from "./TestSetup"
-import { IContractsManager } from "../../interfaces/environments/IContractsManater"
-import { IAccounts } from "../../interfaces/environments/IAccounts"
+import { IContractsManager } from "../../interfaces/setup/IContractsManater"
+import { IAccounts } from "../../interfaces/setup/IAccounts"
 
 export abstract class TestBase extends TestSetup {
     constructor(_accounts: IAccounts, _contractsManager: IContractsManager) {

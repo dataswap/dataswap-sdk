@@ -1,10 +1,10 @@
 import dotenv from 'dotenv';
-import { IContractsManager } from './interfaces/environments/IContractsManater';
-import { ContractsManager } from './shared/contractsManager';
-import { IAccounts } from './interfaces/environments/IAccounts';
-import { Accounts } from './shared/accounts';
-import { IGenerator } from './interfaces/environments/IGenerator';
-import { Generator } from './shared/generator';
+import { IContractsManager } from './interfaces/setup/IContractsManater';
+import { ContractsManager } from './testkits/setup/contractsManager';
+import { IAccounts } from './interfaces/setup/IAccounts';
+import { Accounts } from './testkits/setup/accounts';
+import { IGenerator } from './interfaces/setup/IGenerator';
+import { Generator } from './testkits/setup/generator';
 import { IDatasetsHelper } from './interfaces/helper/module/IDatasetshelper';
 import { DatasetsHelper } from './helpers/module/datasetsHelper';
 
