@@ -2,21 +2,17 @@ import { describe } from "mocha"
 
 import * as utils from "../../../shared/utils"
 import { Accounts } from "../../../shared/accounts"
-import { Generator } from "../../../shared/generator"
-import { EscrowEvm } from "../../../../src/core/escrow/repo/evm"
 import { EscrowType } from "../../../../src/shared/types/escrowType"
 import { EscrowAssertion } from "../../../assertions/escrowAssertion"
-import EscrowAbi from "@dataswapcore/contracts/abi/v0.8/Escrow.json"
-import { ContractsManager } from "../../../shared/contractsManager"
-
+import { getAccounts, getContractsManager, getGenerator } from "../../../fixtures"
 describe("escrow", () => {
     let escrowAssertion: EscrowAssertion
 
     before(function () {
         this.sharedData = {}
-        this.sharedData.generator = new Generator()
-        this.sharedData.accounts = new Accounts()
-        this.sharedData.contractsManager = new ContractsManager(this.sharedData.accounts)
+        this.sharedData.generator = getGenerator()
+        this.sharedData.accounts = getAccounts()
+        this.sharedData.contractsManager = getContractsManager()
         let escrow = this.sharedData.contractsManager.EscrowEvm()
         escrowAssertion = new EscrowAssertion(escrow, this.sharedData.accounts)
     })

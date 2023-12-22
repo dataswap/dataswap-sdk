@@ -1,24 +1,16 @@
 import { SubmitMetadataSuccessTestKit, SubmitRequirementSuccessTestKit, ApproveDatasetMetadataSuccessTestKit } from "../../testkits/module/datasets/DatasetsMetadataTestKit"
 import { SubmitDatasetProofRootSuccessTestKit } from "../../testkits/module/datasets/DatasetsProofTestKit"
 import { DataType } from "../../../src/shared/types/datasetType"
-import { DatasetsHelper } from "../../helpers/module/datasetsHelper"
-import { Generator } from "../../shared/generator"
-import { Accounts } from "../../shared/accounts"
-import { ContractsManager } from "../../shared/contractsManager"
+import { getAccounts, getContractsManager, getGenerator, getDatasetsHelper } from "../../fixtures"
 
 describe("Datasets", async () => {
     before(function () {
         this.sharedData = {}
         this.sharedData.datasetId = 0
-        this.sharedData = {}
-        this.sharedData.accounts = new Accounts()
-        this.sharedData.generator = new Generator()
-        this.sharedData.contractsManager = new ContractsManager(this.sharedData.accounts)
-        this.sharedData.datasetHelper = new DatasetsHelper(
-            this.sharedData.accounts,
-            this.sharedData.generator,
-            this.sharedData.contractsManager
-        )
+        this.sharedData.accounts = getAccounts()
+        this.sharedData.generator = getGenerator()
+        this.sharedData.contractsManager = getContractsManager()
+        this.sharedData.datasetHelper = getDatasetsHelper()
     })
 
     it("SubmitDatasetsMetadataSuccess", async function () {
