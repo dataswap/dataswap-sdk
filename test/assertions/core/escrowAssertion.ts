@@ -1,12 +1,12 @@
 import { assert } from "chai"
 import { isEqual } from 'lodash';
 import { equal } from "@unipackage/utils"
-import { EscrowType } from "../../src/shared/types/escrowType"
-import { EscrowEvm } from "../../src/core/escrow/repo/evm"
-import { Fund } from "../../src/core/escrow/types"
-import { handleEvmError } from "../shared/error"
-import { Accounts } from "../testkits/setup/accounts"
-import { IAccounts } from "../interfaces/setup/IAccounts"
+import { EscrowType } from "../../../src/shared/types/escrowType"
+import { EscrowEvm } from "../../../src/core/escrow/repo/evm"
+import { Fund } from "../../../src/core/escrow/types"
+import { handleEvmError } from "../../shared/error"
+import { Accounts } from "../../testkits/setup/accounts"
+import { IAccounts } from "../../interfaces/setup/IAccounts"
 
 
 export class EscrowAssertion {
