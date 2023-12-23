@@ -3,7 +3,7 @@ import { describe } from "mocha"
 import * as utils from "../../../shared/utils"
 import { Accounts } from "../../../testkits/setup/accounts"
 import { EscrowType } from "../../../../src/shared/types/escrowType"
-import { EscrowAssertion } from "../../../assertions/escrowAssertion"
+import { EscrowAssertion } from "../../../assertions/core/escrowAssertion"
 import { getAccounts, getContractsManager, getGenerator } from "../../../fixtures"
 describe("escrow", () => {
     let escrowAssertion: EscrowAssertion

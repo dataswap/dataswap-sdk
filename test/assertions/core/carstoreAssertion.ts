@@ -1,9 +1,9 @@
 import { assert } from "chai"
 import { equal } from "@unipackage/utils"
-import { handleEvmError } from "../shared/error"
-import { State } from "../../src/shared/types/carstoreType"
-import { CarstoreEvm } from "../../src/core/carstore/repo/evm"
-import { Car, CarReplica } from "../../src/core/carstore/types"
+import { handleEvmError } from "../../shared/error"
+import { State } from "../../../src/shared/types/carstoreType"
+import { CarstoreEvm } from "../../../src/core/carstore/repo/evm"
+import { Car, CarReplica } from "../../../src/core/carstore/types"
 
 
 export class CarstoreAssertion {
