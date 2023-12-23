@@ -1,6 +1,7 @@
 import { DatasetMetadata } from "../../../src/module/dataset/metadata/types"
 import { DatasetRequirements } from "../../../src/shared/types/datasetType"
 import { DataType } from "../../../src/shared/types/datasetType"
+import { BidSelectionRule } from "../../../src/module/matching/metadata/types"
 
 export interface IGenerator {
     generateDatasetMetadata(accessMethod?: string): DatasetMetadata
@@ -14,5 +15,14 @@ export interface IGenerator {
     generateDatasetChallengeProof(root: string): [randomSeed: number, leaves: string[], siblings: string[][], paths: number[]]
     generatorAddress(): Promise<string>
     generatorEthAccount(): Promise<[string, string]>
+    generatorMatchingInfo(datasetId: number, index: number): [
+        bidSelectionRule: BidSelectionRule,
+        biddingDelayBlockCount: number,
+        biddingPeriodBlockCount: number,
+        storageCompletionPeriodBlocks: number,
+        biddingThreshold: bigint,
+        replicaIndex: number,
+        additionalInfo: string,
+    ]
 }
 

@@ -269,7 +269,7 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
 
     async aprovedDatasetWorkflow(): Promise<number> {
         let datasetId = await this.completeDependentWorkflow(
-            DatasetState.MetadataSubmitted,
+            DatasetState.DatasetProofSubmitted,
             this.proofSubmittedDatasetWorkflow,
         )
         let rootHash = this.getDatasetProofRoot(datasetId)

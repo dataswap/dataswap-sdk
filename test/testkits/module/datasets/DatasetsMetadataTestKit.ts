@@ -100,6 +100,8 @@ export class SubmitRequirementSuccessTestKit extends DatasetsTestBase {
 
             expect(BigInt(DatasetState.MetadataSubmitted)).to.equal(datasetStateOnChain.data)
 
+            this.datasetsHelper.updateWorkflowTargetState(datasetId, DatasetState.MetadataSubmitted)
+
             let replicasCountOnChain = await handleEvmError(this.contractsManager.DatasetRequirementEvm().getDatasetReplicasCount(datasetId))
 
             // Assertions for dataset state and metadata
@@ -146,6 +148,7 @@ export class ApproveDatasetMetadataSuccessTestKit extends DatasetsTestBase {
 
             let datasetStateOnChain = await handleEvmError(this.contractsManager.DatasetMetadataEvm().getDatasetState(datasetId))
             expect(BigInt(DatasetState.MetadataApproved)).to.equal(datasetStateOnChain.data)
+            this.datasetsHelper.updateWorkflowTargetState(datasetId, DatasetState.MetadataApproved)
             return datasetId
         } catch (error) {
             throw error
