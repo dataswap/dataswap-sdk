@@ -137,8 +137,11 @@ const challengeProof = {
 }
 
 export class Generator implements IGenerator {
+    private datasetsNextReplicaIndexMap: Map<number, number>
     private nonce = 0
-
+    constructor() {
+        this.datasetsNextReplicaIndexMap = new Map<number, number>()
+    }
     generateDatasetMetadata(accessMethod?: string): DatasetMetadata {
         let random: string = utils.generateRandomString(7)
         let ret = new DatasetMetadata({
@@ -205,10 +208,24 @@ export class Generator implements IGenerator {
         biddingPeriodBlockCount: number,
         storageCompletionPeriodBlocks: number,
         biddingThreshold: bigint,
-        replicaIndex: number,
         additionalInfo: string,
     ] {
-        return [BidSelectionRule.HighestBid, 10, 300, 10000, BigInt(1000000000), index, "none"]
+        return [BidSelectionRule.HighestBid, 10, 300, 10000, BigInt(1000000000), "none"]
+    }
+
+    datasetNextReplicaIndex(datasetId: number, max: number): number {
+        let next = this.datasetsNextReplicaIndexMap.get(datasetId)
+        if (!next) {
+            this.datasetsNextReplicaIndexMap.set(datasetId, 1)
+            return 0
+        } else {
+            if (next + 1 >= max) {
+                this.datasetsNextReplicaIndexMap.set(datasetId, 0)
+            } else {
+                this.datasetsNextReplicaIndexMap.set(datasetId, next + 1)
+            }
+        }
+        return next
     }
 }
 
