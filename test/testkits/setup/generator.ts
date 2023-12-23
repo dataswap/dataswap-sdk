@@ -5,6 +5,7 @@ import { DatasetMetadata } from "../../../src/module/dataset/metadata/types/inde
 import { IGenerator } from "../../interfaces/setup/IGenerator"
 import { DatasetRequirements } from "../../../src/shared/types/datasetType"
 import { DataType } from "../../../src/shared/types/datasetType"
+import { BidSelectionRule } from '../../../src/module/matching/metadata/types';
 
 function getRequirementActors(count: number, elementCountInActor: number): string[][] {
     let actors: string[][] = []
@@ -195,6 +196,19 @@ export class Generator implements IGenerator {
     async generatorEthAccount(): Promise<[string, string]> {
         let wallet = Wallet.createRandom(++this.nonce)
         return [await wallet.getAddress(), wallet.privateKey]
+    }
+
+
+    generatorMatchingInfo(datasetId: number, index: number): [
+        bidSelectionRule: BidSelectionRule,
+        biddingDelayBlockCount: number,
+        biddingPeriodBlockCount: number,
+        storageCompletionPeriodBlocks: number,
+        biddingThreshold: bigint,
+        replicaIndex: number,
+        additionalInfo: string,
+    ] {
+        return [BidSelectionRule.HighestBid, 10, 300, 10000, BigInt(1000000000), index, "none"]
     }
 }
 

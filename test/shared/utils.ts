@@ -68,3 +68,26 @@ export function convertToBigIntArray(numbers: number[]): BigInt[] {
 export function convertToNumberArray(bigIntegers: BigInt[] | number[]): number[] {
     return bigIntegers.map((bigInt) => Number(bigInt));
 }
+
+
+export function splitNumbers(ids: number[]): { starts: number[], ends: number[] } {
+    if (ids.length === 0) {
+        return { starts: [], ends: [] };
+    }
+
+    const result = {
+        starts: [ids[0]],
+        ends: [] as number[]
+    };
+
+    for (let i = 1; i < ids.length; i++) {
+        if (ids[i] !== ids[i - 1] + 1) {
+            result.ends.push(ids[i - 1]);
+            result.starts.push(ids[i]);
+        }
+    }
+
+    result.ends.push(ids[ids.length - 1]);
+
+    return result;
+}
