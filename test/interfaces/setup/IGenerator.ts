@@ -21,8 +21,8 @@ export interface IGenerator {
         biddingPeriodBlockCount: number,
         storageCompletionPeriodBlocks: number,
         biddingThreshold: bigint,
-        replicaIndex: number,
         additionalInfo: string,
     ]
+    datasetNextReplicaIndex(datasetId: number, max: number): number
 }
 

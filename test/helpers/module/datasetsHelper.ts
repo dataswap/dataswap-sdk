@@ -310,4 +310,5 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
     getDatasetProofRoot(datasetId: number): string | undefined {
         return this.datasetsProofRootsMap.get(datasetId)
     }
+
 }
