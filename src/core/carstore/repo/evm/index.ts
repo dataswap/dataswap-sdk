@@ -3,7 +3,7 @@ import {
     EvmOutput
 } from "@unipackage/net"
 import { Car, CarReplica } from "../../types"
-import { State } from "../../../../shared/types/carstoreType"
+import { CarReplicaState } from "../../../../shared/types/carstoreType"
 import { EvmEx } from "../../../../shared/types/evmEngineType"
 
 /**
@@ -88,7 +88,7 @@ interface CarstoreCallEvm {
     getCarReplicaState(
         id: number,
         matchingId: number
-    ): Promise<EvmOutput<State>>
+    ): Promise<EvmOutput<CarReplicaState>>
 
     /**
      * @notice Get the hash of car based on the car id.

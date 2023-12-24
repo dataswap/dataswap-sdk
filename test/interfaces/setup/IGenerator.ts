@@ -1,6 +1,6 @@
 import { DatasetMetadata } from "../../../src/module/dataset/metadata/types"
 import { DatasetRequirements } from "../../../src/shared/types/datasetType"
-import { DataType } from "../../../src/shared/types/datasetType"
+import { DataType } from "../../../src/shared/types/dataType"
 import { BidSelectionRule } from "../../../src/module/matching/metadata/types"
 
 export interface IGenerator {

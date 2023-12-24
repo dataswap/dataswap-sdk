@@ -1,109 +1,109 @@
 import { assert } from "chai"
 import { equal } from "@unipackage/utils"
 import { handleEvmError } from "../../shared/error"
-import { State } from "../../../src/shared/types/carstoreType"
+import { CarReplicaState } from "../../../src/shared/types/carstoreType"
 import { CarstoreEvm } from "../../../src/core/carstore/repo/evm"
 import { Car, CarReplica } from "../../../src/core/carstore/types"
+import { ICarstoreAssertion } from "../../interfaces/assertions/core/ICarstoreAssertion"
 
-
-export class CarstoreAssertion {
+export class CarstoreAssertion implements ICarstoreAssertion {
     private Carstore: CarstoreEvm
 
     constructor(Carstore: CarstoreEvm) {
         this.Carstore = Carstore
     }
 
-    async getCarAssertion(id: number, expectCar: Car) {
+    async getCarAssertion(id: number, expectCar: Car): Promise<void> {
         let car = await handleEvmError(this.Carstore.getCar(id))
         assert.isTrue(equal(car.data, expectCar), "Car should be expect car")
     }
 
-    async getCarSizeAssertion(id: number, expectSize: number) {
+    async getCarSizeAssertion(id: number, expectSize: number): Promise<void> {
         let size = await handleEvmError(this.Carstore.getCarSize(id))
         assert.isTrue(equal(size.data, expectSize), "Car size should be expect car size")
     }
 
-    async getCarsSizeAssertion(ids: number[], expectSize: number) {
+    async getCarsSizeAssertion(ids: number[], expectSize: number): Promise<void> {
         let size = await handleEvmError(this.Carstore.getCarsSize(ids))
         assert.isTrue(equal(size.data, expectSize), "Cars size should be expect cars size")
     }
 
-    async getCarDatasetIdAssertion(id: number, expectDatasetId: number) {
+    async getCarDatasetIdAssertion(id: number, expectDatasetId: number): Promise<void> {
         let datasetId = await handleEvmError(this.Carstore.getCarDatasetId(id))
         assert.isTrue(equal(datasetId.data, expectDatasetId), "datasetId should be expect datasetId")
     }
 
-    async getCarMatchingIdsAssertion(id: number, expectMatchingIds: number) {
+    async getCarMatchingIdsAssertion(id: number, expectMatchingIds: number): Promise<void> {
         let matchingIds = await handleEvmError(this.Carstore.getCarMatchingIds(id))
         assert.isTrue(equal(matchingIds.data, expectMatchingIds), "matchingIds should be expect matchingIds")
     }
 
-    async getCarReplicaAssertion(id: number, matchingId: number, expectCarReplica: CarReplica) {
+    async getCarReplicaAssertion(id: number, matchingId: number, expectCarReplica: CarReplica): Promise<void> {
         let carReplica = await handleEvmError(this.Carstore.getCarReplica(id, matchingId))
         assert.isTrue(equal(carReplica.data, expectCarReplica), "carReplica should be expect carReplica")
     }
 
-    async getCarReplicasCountAssertion(id: number, expectCount: number) {
+    async getCarReplicasCountAssertion(id: number, expectCount: number): Promise<void> {
         let count = await handleEvmError(this.Carstore.getCarReplicasCount(id))
         assert.isTrue(equal(count.data, expectCount), "carReplica count should be expect carReplica count")
     }
 
-    async getCarReplicaFilecoinClaimIdAssertion(id: number, matchingId: number, expectClaimId: number) {
+    async getCarReplicaFilecoinClaimIdAssertion(id: number, matchingId: number, expectClaimId: number): Promise<void> {
         let claimId = await handleEvmError(this.Carstore.getCarReplicaFilecoinClaimId(id, matchingId))
         assert.isTrue(equal(claimId.data, expectClaimId), "carReplica claimId should be expect carReplica claimId")
     }
 
-    async getCarReplicaStateAssertion(id: number, matchingId: number, expectState: State) {
+    async getCarReplicaStateAssertion(id: number, matchingId: number, expectState: CarReplicaState): Promise<void> {
         let state = await handleEvmError(this.Carstore.getCarReplicaState(id, matchingId))
         assert.isTrue(equal(state.data, expectState), "carReplica state should be expect carReplica state")
     }
 
-    async getCarHashAssertion(id: number, expectHash: string) {
+    async getCarHashAssertion(id: number, expectHash: string): Promise<void> {
         let hash = await handleEvmError(this.Carstore.getCarHash(id))
         assert.isTrue(equal(hash.data, expectHash), "car hash should be expect car hash")
     }
 
-    async getCarsHashsAssertion(ids: number[], expectHashs: string[]) {
+    async getCarsHashsAssertion(ids: number[], expectHashs: string[]): Promise<void> {
         let hashs = await handleEvmError(this.Carstore.getCarsHashs(ids))
         assert.isTrue(equal(hashs.data, expectHashs), "car hashs should be expect car hashs")
     }
 
-    async getCarIdAssertion(hash: string, expectId: number) {
+    async getCarIdAssertion(hash: string, expectId: number): Promise<void> {
         let id = await handleEvmError(this.Carstore.getCarId(hash))
         assert.isTrue(equal(id.data, expectId), "car id should be expect car id")
     }
 
-    async getCarsIdsAssertion(hashs: string[], expectIds: number[]) {
+    async getCarsIdsAssertion(hashs: string[], expectIds: number[]): Promise<void> {
         let ids = await handleEvmError(this.Carstore.getCarsIds(hashs))
         assert.isTrue(equal(ids.data, expectIds), "car ids should be expect car ids")
     }
 
-    async carsCountAssertion(expectCount: number) {
+    async carsCountAssertion(expectCount: number): Promise<void> {
         let count = await handleEvmError(this.Carstore.carsCount())
         assert.isTrue(equal(count.data, expectCount), "cars count should be expect cars count")
     }
 
-    async hasCarHashAssertion(hash: string, expectHas: boolean) {
+    async hasCarHashAssertion(hash: string, expectHas: boolean): Promise<void> {
         let has = await handleEvmError(this.Carstore.hasCarHash(hash))
         assert.isTrue(equal(has.data, expectHas), "has car hash should be expect value")
     }
 
-    async hasCarAssertion(id: number, expectHas: boolean) {
+    async hasCarAssertion(id: number, expectHas: boolean): Promise<void> {
         let has = await handleEvmError(this.Carstore.hasCar(id))
         assert.isTrue(equal(has.data, expectHas), "has car should be expect value")
     }
 
-    async hasCarReplicaAssertion(id: number, matchingId: number, expectHas: boolean) {
+    async hasCarReplicaAssertion(id: number, matchingId: number, expectHas: boolean): Promise<void> {
         let has = await handleEvmError(this.Carstore.hasCarReplica(id, matchingId))
         assert.isTrue(equal(has.data, expectHas), "has car replica should be expect value")
     }
 
-    async hasCarsHashsAssertion(hashs: string[], expectHas: boolean) {
+    async hasCarsHashsAssertion(hashs: string[], expectHas: boolean): Promise<void> {
         let has = await handleEvmError(this.Carstore.hasCarsHashs(hashs))
         assert.isTrue(equal(has.data, expectHas), "has cars hashs should be expect value")
     }
 
-    async hasCarsAssertion(ids: string[], expectHas: boolean) {
+    async hasCarsAssertion(ids: string[], expectHas: boolean): Promise<void> {
         let has = await handleEvmError(this.Carstore.hasCars(ids))
         assert.isTrue(equal(has.data, expectHas), "has cars should be expect value")
     }

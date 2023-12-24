@@ -1,6 +1,6 @@
 import { SubmitMetadataSuccessTestKit, SubmitRequirementSuccessTestKit, ApproveDatasetMetadataSuccessTestKit } from "../../testkits/module/datasets/DatasetsMetadataTestKit"
 import { SubmitDatasetProofRootSuccessTestKit } from "../../testkits/module/datasets/DatasetsProofTestKit"
-import { DataType } from "../../../src/shared/types/datasetType"
+import { DataType } from "../../../src/shared/types/dataType"
 import { getAccounts, getContractsManager, getGenerator, getDatasetsHelper } from "../../fixtures"
 
 describe("datasets", async () => {

@@ -9,6 +9,7 @@ import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
 import { DataswapMessage } from "../../../../../message/types"
 import { DatasetMetadata } from "../../types"
 import { EvmEx } from "../../../../../shared/types/evmEngineType"
+import { DatasetState } from "../../../../../shared/types/datasetType"
 
 interface DatasetMetadataCallEvm {
     datasetsProof(): Promise<EvmOutput<string>>
@@ -41,7 +42,7 @@ interface DatasetMetadataCallEvm {
      * @param datasetId The ID of the dataset to get state of dataset. 
      * @returns The state of dataset.
      */
-    getDatasetState(datasetId: number): Promise<EvmOutput<number>>
+    getDatasetState(datasetId: number): Promise<EvmOutput<DatasetState>>
     /**
      *  Get governance address
      * @return The address of governance 

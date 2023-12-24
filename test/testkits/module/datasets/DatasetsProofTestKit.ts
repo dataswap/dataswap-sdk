@@ -1,5 +1,5 @@
 import { DatasetsTestBase } from "./abstract/DatasetsTestBase";
-import { DataType } from "../../../../src/shared/types/datasetType";
+import { DataType } from "../../../../src/shared/types/dataType";
 import { expect } from "chai"
 import { handleEvmError } from "../../../shared/error";
 import { IContractsManager } from "../../../interfaces/setup/IContractsManater";

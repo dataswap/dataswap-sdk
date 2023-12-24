@@ -4,7 +4,7 @@ import { ethers } from 'ethers'
 import { DatasetMetadata } from "../../../src/module/dataset/metadata/types/index"
 import { IGenerator } from "../../interfaces/setup/IGenerator"
 import { DatasetRequirements } from "../../../src/shared/types/datasetType"
-import { DataType } from "../../../src/shared/types/datasetType"
+import { DataType } from '../../../src/shared/types/dataType';
 import { BidSelectionRule } from '../../../src/module/matching/metadata/types';
 
 function getRequirementActors(count: number, elementCountInActor: number): string[][] {
