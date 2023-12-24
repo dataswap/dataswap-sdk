@@ -1,5 +1,5 @@
 import { IHelper } from "./IHelpler"
-import { DataType } from "../../../../src/shared/types/datasetType"
+import { DataType } from "../../../../src/shared/types/dataType"
 
 export interface IMatchingsHelper extends IHelper {
     getAssociatedMappingFilesMatchingId(matchingId: number): number | undefined

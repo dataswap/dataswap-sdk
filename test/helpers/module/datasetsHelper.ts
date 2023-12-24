@@ -1,6 +1,7 @@
 import { IDatasetsHelper } from "../../interfaces/helper/module/IDatasetshelper"
 import { BasicHelper } from "./basicHelper"
-import { DataType, DatasetState } from "../../../src/shared/types/datasetType"
+import { DatasetState } from "../../../src/shared/types/datasetType"
+import { DataType } from "../../../src/shared/types/dataType"
 import { expect } from "chai"
 import { handleEvmError } from "../../shared/error"
 import { IGenerator } from "../../interfaces/setup/IGenerator"

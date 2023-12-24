@@ -1,6 +1,6 @@
 import { Entity } from "@unipackage/ddd"
 import { ValueFields } from "@unipackage/utils"
-import { State } from "../../../shared/types/carstoreType";
+import { CarReplicaState } from "../../../shared/types/carstoreType";
 
 export interface Car {
     hash: string; // car hash
@@ -12,7 +12,7 @@ export interface Car {
 }
 
 export interface CarReplica {
-    state: State; // Current state of the replica
+    state: CarReplicaState; // Current state of the replica
     filecoinClaimId: number; // ID of the Filecoin claim associated with the replica's storage
 }
 
@@ -33,7 +33,7 @@ export class CarReplica extends Entity<CarReplica> {
     constructor(data?: ValueFields<CarReplica>) {
         super({
             filecoinClaimId: data?.filecoinClaimId || 0,
-            state: data?.state || State.None
+            state: data?.state || CarReplicaState.None
         })
     }
 }

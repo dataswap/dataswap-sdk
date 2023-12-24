@@ -8,11 +8,6 @@ export enum DatasetState {
     DatasetApproved // Dataset has been approved.
 }
 
-export enum DataType {
-    Source, // Matching is associated with a dataset
-    MappingFiles // Matching is associated with mapping files
-}
-
 export interface DatasetRequirements {
     dataPreparers: string[][]
     storageProviders: string[][]
