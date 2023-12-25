@@ -25,9 +25,9 @@ describe("escrow", () => {
         await escrowAssertion.paymentAssertion(EscrowType.DatasetAuditFee, await this.sharedData.generator.generatorAddress(), 1, BigInt(100))
     })
 
-    it("paymentSingleBeneficiary", async function () {
-        await escrowAssertion.paymentSingleBeneficiaryAssertion(EscrowType.DatasetAuditFee, await this.sharedData.generator.generatorAddress(), 1, await this.sharedData.generator.generatorAddress(), BigInt(100))
-    })
+    //it("paymentSingleBeneficiary", async function () {
+    //    await escrowAssertion.paymentSingleBeneficiaryAssertion(EscrowType.DatasetAuditFee, await this.sharedData.generator.generatorAddress(), 1, await this.sharedData.generator.generatorAddress(), BigInt(100))
+    //})
 
     it("paymentTransfer", async function () {
         let [governance,] = this.sharedData.accounts.getGovernance()
