@@ -13,10 +13,11 @@ import { MatchingTargetEvm } from "../../../src/module/matching/target/repo/evm"
 import { RolesEvm } from "../../../src/core/roles/repo/evm"
 import { StoragesEvm } from "../../../src/module/storages/repo/evm"
 import { ethers } from "ethers"
-import { IAccounts } from "../../interfaces/setup/IAccounts"
 import { handleEvmError } from "../../shared/error"
 import { IContractsManager } from "../../interfaces/setup/IContractsManater"
 import * as utils from "../../shared/utils"
+import { Wallet } from "../../../src/shared/types/evmEngineType"
+import { IWallet } from "@unipackage/net"
 
 // Define contracts 
 const contracts: [string, new (...args: any[]) => any][] = [
@@ -37,13 +38,21 @@ const contracts: [string, new (...args: any[]) => any][] = [
     //["MerkleUtils",]
 ];
 
+function initWallet(url: string): IWallet {
+    let wallet = new Wallet(url)
+    wallet.add(process.env.PRIVATE_KEY as string)
+    wallet.add(process.env.PRIVATE_KEY_BIDDER as string)
+    wallet.add(process.env.PRIVATE_KEY_DATASETAUDITOR as string)
+    wallet.add(process.env.PRIVATE_KEY_METADATASUBMITTER as string)
+    wallet.add(process.env.PRIVATE_KEY_PROOFSUBMITTER as string)
+    return wallet
+}
+
 export class ContractsManager implements IContractsManager {
     private contractsEvms = new Map<string, any>()
     private contractsAddresses = new Map<string, string>()
-    private accounts: IAccounts
 
-    constructor(_accounts: IAccounts) {
-        this.accounts = _accounts
+    constructor() {
         // Get the RPC URL for the network
         let url = utils.getNetworkRpcURL();
 
@@ -51,12 +60,13 @@ export class ContractsManager implements IContractsManager {
         contracts.forEach(([contractName, evmConstructor]) => {
             let contractAddress = utils.getContractAddress(contractName);
 
+            let wallet = initWallet(url)
             // Load contract ABI
             const contractAbi = require(`@dataswapcore/contracts/abi/v0.8/${contractName}.json`);
 
             // Store contract instances and addresses in maps
             this.contractsEvms.set(contractName, new evmConstructor(
-                contractAbi, contractAddress, url
+                contractAbi, contractAddress, url, wallet
             ))
             this.contractsAddresses.set(contractName, contractAddress)
         })
@@ -69,7 +79,6 @@ export class ContractsManager implements IContractsManager {
      */
     private async _grantRole(contractAddress: string, role: string): Promise<void> {
         try {
-            let [governance, governanceKey] = this.accounts.getGovernance()
             const roleBytes = ethers.utils.toUtf8Bytes(role)
             const hash = ethers.utils.keccak256(roleBytes);
             let ret = await this.RolesEvm().hasRole(hash, contractAddress)
@@ -81,14 +90,11 @@ export class ContractsManager implements IContractsManager {
                 return
             }
 
+            this.RolesEvm().getWallet().setDefault(process.env.DATASWAP_GOVERNANCE as string)
             // Grant the role to the contract
             let tx = await this.RolesEvm().grantRole(
                 hash,
                 contractAddress,
-                {
-                    from: governance,
-                    privateKey: governanceKey
-                }
             );
             if (!tx.ok) {
                 throw tx.error
@@ -120,17 +126,13 @@ export class ContractsManager implements IContractsManager {
      */
     public async setupAccountsRoles(): Promise<void> {
         try {
-            let [client,] = this.accounts.getClient()
-            await this._grantRole(client, "CC");
+            await this._grantRole(process.env.DATASWAP_METADATASUBMITTER as string, "CC");
 
-            let [bidder,] = this.accounts.getBidder()
-            await this._grantRole(bidder, "SP");
+            await this._grantRole(process.env.DATASWAP_BIDDER as string, "SP");
 
-            let [datasetAuditor,] = this.accounts.getDatasetAuditor()
-            await this._grantRole(datasetAuditor, "DA");
+            await this._grantRole(process.env.DATASWAP_DATASETAUDITOR as string, "DA");
 
-            let [datasetPreparer,] = this.accounts.getProofSubmitter()
-            await this._grantRole(datasetPreparer, "DP");
+            await this._grantRole(process.env.DATASWAP_PROOFSUBMITTER as string, "DP");
         } catch (error) {
             throw error
         }
@@ -141,7 +143,6 @@ export class ContractsManager implements IContractsManager {
      */
     private async setupDatasetsDependencies(): Promise<void> {
         try {
-            let [governance, governanceKey] = this.accounts.getGovernance()
             let datasetProofAddress = this.contractsAddresses.get("DatasetsProof")
             if (!datasetProofAddress) {
                 throw new Error("cant get datasetsProof address in env")
@@ -152,12 +153,9 @@ export class ContractsManager implements IContractsManager {
                 return
             }
 
+            this.RolesEvm().getWallet().setDefault(process.env.DATASWAP_GOVERNANCE as string)
             await handleEvmError(this.DatasetMetadataEvm().initDependencies(
                 datasetProofAddress,
-                {
-                    from: governance,
-                    privateKey: governanceKey
-                }
             ))
         } catch (error) {
             throw error
@@ -169,7 +167,6 @@ export class ContractsManager implements IContractsManager {
      */
     private async setupDatasetsProofDependencies(): Promise<void> {
         try {
-            let [governance, governanceKey] = this.accounts.getGovernance()
             let datasetChallengeAddress = this.contractsAddresses.get("DatasetsChallenge")
             if (!datasetChallengeAddress) {
                 throw new Error("cant get datasetsChallenge address in env")
@@ -181,12 +178,9 @@ export class ContractsManager implements IContractsManager {
                 return
             }
 
+            this.RolesEvm().getWallet().setDefault(process.env.DATASWAP_GOVERNANCE as string)
             await handleEvmError(this.DatasetProofEvm().initDependencies(
                 datasetChallengeAddress,
-                {
-                    from: governance,
-                    privateKey: governanceKey
-                }
             ))
         } catch (error) {
             throw error
@@ -198,9 +192,6 @@ export class ContractsManager implements IContractsManager {
      */
     private async setupMatchingsBidsDependencies(): Promise<void> {
         try {
-            let [governance, governanceKey] = this.accounts.getGovernance()
-
-
             let matchingsAddress = this.contractsAddresses.get("Matchings")
             if (!matchingsAddress) {
                 throw new Error("cant get matchings ddress in env")
@@ -220,13 +211,10 @@ export class ContractsManager implements IContractsManager {
                 // Role already set up
                 return
             } else {
+                this.RolesEvm().getWallet().setDefault(process.env.DATASWAP_GOVERNANCE as string)
                 await handleEvmError(this.MatchingBidsEvm().initDependencies(
                     matchingsAddress,
                     matchingsTargetAddress,
-                    {
-                        from: governance,
-                        privateKey: governanceKey
-                    }
                 ))
             }
         } catch (error) {
@@ -239,9 +227,6 @@ export class ContractsManager implements IContractsManager {
      */
     private async setupMatchingsTargetDependencies(): Promise<void> {
         try {
-            let [governance, governanceKey] = this.accounts.getGovernance()
-
-
             let matchingsAddress = this.contractsAddresses.get("Matchings")
             if (!matchingsAddress) {
                 throw new Error("cant get matchings ddress in env")
@@ -261,13 +246,10 @@ export class ContractsManager implements IContractsManager {
                 // Role already set up
                 return
             } else {
+                this.RolesEvm().getWallet().setDefault(process.env.DATASWAP_GOVERNANCE as string)
                 await handleEvmError(this.MatchingTargetEvm().initDependencies(
                     matchingsAddress,
                     matchingsBidsAddress,
-                    {
-                        from: governance,
-                        privateKey: governanceKey
-                    }
                 ))
             }
         } catch (error) {
@@ -280,8 +262,6 @@ export class ContractsManager implements IContractsManager {
      */
     private async setupEscrowDependencies(): Promise<void> {
         try {
-            let [governance, governanceKey] = this.accounts.getGovernance()
-
             let datasetProofAddress = this.contractsAddresses.get("DatasetsProof")
             if (!datasetProofAddress) {
                 throw new Error("cant get datasetsProof address in env")
@@ -309,14 +289,11 @@ export class ContractsManager implements IContractsManager {
                 // Role already set up
                 return
             } else {
+                this.RolesEvm().getWallet().setDefault(process.env.DATASWAP_GOVERNANCE as string)
                 await handleEvmError(this.EscrowEvm().initDependencies(
                     datasetProofAddress,
                     storagesAddress,
                     datacapsAddress,
-                    {
-                        from: governance,
-                        privateKey: governanceKey
-                    }
                 ))
             }
         } catch (error) {

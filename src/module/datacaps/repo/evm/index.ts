@@ -77,14 +77,14 @@ interface DatacapsSendEvm {
      * @param matchingId The ID of the matching
      * @param options The options of transaction.
      */
-    addDatacapChunkCollateral(matchingId: number, options: EvmTransactionOptions): Promise<EvmOutput<void>>
+    addDatacapChunkCollateral(matchingId: number, options?: EvmTransactionOptions): Promise<EvmOutput<void>>
 
     /**
      * @dev Requests the allocation of matched datacap for a matching process.
      * @param matchingId The ID of the matching process.
      * @param options The options of transaction.
      */
-    requestAllocateDatacap(matchingId: number, options: EvmTransactionOptions): Promise<EvmOutput<number>>
+    requestAllocateDatacap(matchingId: number, options?: EvmTransactionOptions): Promise<EvmOutput<number>>
 }
 
 /**

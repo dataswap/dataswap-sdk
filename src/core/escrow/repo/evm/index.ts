@@ -63,7 +63,7 @@ interface EscrowSendEvm {
         datasetsProof: string,
         storages: string,
         datacaps: string,
-        options: EvmTransactionOptions
+        options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 
     /**

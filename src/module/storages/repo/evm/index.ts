@@ -86,7 +86,7 @@ interface StoragesSendEvm {
         provider: number,
         ids: number[],
         claimIds: number[],
-        options: EvmTransactionOptions
+        options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 }
 

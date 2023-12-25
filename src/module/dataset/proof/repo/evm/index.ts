@@ -124,7 +124,7 @@ interface DatasetProofCallEvm {
 interface DatasetProofSendEvm {
     initDependencies(
         datasetsChallenge: string,
-        options: EvmTransactionOptions
+        options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
     /**
      * Submit proof root for a dataset
@@ -139,7 +139,7 @@ interface DatasetProofSendEvm {
         dataType: DataType,
         mappingFilesAccessMethod: string,
         rootHash: string,
-        options: EvmTransactionOptions
+        options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 
     /**
@@ -159,7 +159,7 @@ interface DatasetProofSendEvm {
         leafIndex: number,
         leafSizes: number[],
         completed: boolean,
-        options: EvmTransactionOptions
+        options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 
     /**
@@ -169,7 +169,7 @@ interface DatasetProofSendEvm {
      */
     submitDatasetProofCompleted(
         datasetId: number,
-        options: EvmTransactionOptions
+        options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 
     /**
@@ -183,7 +183,7 @@ interface DatasetProofSendEvm {
         datasetId: number,
         datacapCollateral: bigint,
         dataAuditorFees: bigint,
-        options: EvmTransactionOptions
+        options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 }
 /**

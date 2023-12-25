@@ -141,7 +141,7 @@ interface FilplusSendEvm {
       * @param newValue The set value
       * @param options The options of transaction.
       */
-    setDatasetRuleMinRegionsPerDataset(newValue: number, options: EvmTransactionOptions): Promise<EvmOutput<void>>
+    setDatasetRuleMinRegionsPerDataset(newValue: number, options?: EvmTransactionOptions): Promise<EvmOutput<void>>
 
     /**
      * @notice Set dataset rule default max replicas per country
@@ -150,7 +150,7 @@ interface FilplusSendEvm {
      */
     setDatasetRuleDefaultMaxReplicasPerCountry(
         newValue: number,
-        options: EvmTransactionOptions
+        options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 
     /**
@@ -162,7 +162,7 @@ interface FilplusSendEvm {
     setDatasetRuleMaxReplicasInCountry(
         countryCode: number,
         newValue: number,
-        options: EvmTransactionOptions
+        options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 
     /**
@@ -170,7 +170,7 @@ interface FilplusSendEvm {
     * @param newValue The set value
     * @param options The options of transaction.
     */
-    setDatasetRuleMaxReplicasPerCity(newValue: number, options: EvmTransactionOptions): Promise<EvmOutput<void>>
+    setDatasetRuleMaxReplicasPerCity(newValue: number, options?: EvmTransactionOptions): Promise<EvmOutput<void>>
 
     /** 
      * @notice Set maximum proportion of dataset mapping files
@@ -179,7 +179,7 @@ interface FilplusSendEvm {
      */
     setDatasetRuleMaxProportionOfMappingFilesToDataset(
         newValue: number,
-        options: EvmTransactionOptions
+        options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 
     /** 
@@ -187,14 +187,14 @@ interface FilplusSendEvm {
      * @param newValue The set value
      * @param options The options of transaction.
      */
-    setDatasetRuleMinSPsPerDataset(newValue: number, options: EvmTransactionOptions): Promise<EvmOutput<void>>
+    setDatasetRuleMinSPsPerDataset(newValue: number, options?: EvmTransactionOptions): Promise<EvmOutput<void>>
 
     /** 
      * @notice Set dataset rule max replicas per SP
      * @param newValue The set value
      * @param options The options of transaction.
      */
-    setDatasetRuleMaxReplicasPerSP(newValue: number, options: EvmTransactionOptions): Promise<EvmOutput<void>>
+    setDatasetRuleMaxReplicasPerSP(newValue: number, options?: EvmTransactionOptions): Promise<EvmOutput<void>>
 
     /** 
      * @notice Set dataset rule min total replicas per dataset
@@ -203,7 +203,7 @@ interface FilplusSendEvm {
      */
     setDatasetRuleMinTotalReplicasPerDataset(
         newValue: number,
-        options: EvmTransactionOptions
+        options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 
     /** 
@@ -213,7 +213,7 @@ interface FilplusSendEvm {
      */
     setDatasetRuleMaxTotalReplicasPerDataset(
         newValue: number,
-        options: EvmTransactionOptions
+        options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 
     /** 
@@ -221,7 +221,7 @@ interface FilplusSendEvm {
      * @param newValue The set value
      * @param options The options of transaction.
      */
-    setDatacapRulesMaxAllocatedSizePerTime(newValue: number, options: EvmTransactionOptions): Promise<EvmOutput<void>>
+    setDatacapRulesMaxAllocatedSizePerTime(newValue: number, options?: EvmTransactionOptions): Promise<EvmOutput<void>>
 
     /** 
      * @notice Set datacap rule max remaining percentage for next
@@ -230,7 +230,7 @@ interface FilplusSendEvm {
      */
     setDatacapRulesMaxRemainingPercentageForNext(
         newValue: number,
-        options: EvmTransactionOptions
+        options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 }
 

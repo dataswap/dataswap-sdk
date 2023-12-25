@@ -5,17 +5,13 @@ import { EscrowType } from "../../../src/shared/types/escrowType"
 import { EscrowEvm } from "../../../src/core/escrow/repo/evm"
 import { Fund } from "../../../src/core/escrow/types"
 import { handleEvmError } from "../../shared/error"
-import { Accounts } from "../../testkits/setup/accounts"
-import { IAccounts } from "../../interfaces/setup/IAccounts"
 
 
 export class EscrowAssertion {
     private escrow: EscrowEvm
-    private accounts: IAccounts
 
-    constructor(escrow: EscrowEvm, accounts: IAccounts) {
+    constructor(escrow: EscrowEvm) {
         this.escrow = escrow
-        this.accounts = accounts
     }
 
     async getOwnerFundAssertion(type: EscrowType, owner: string, id: number, expectFund: Fund) {
@@ -41,11 +37,9 @@ export class EscrowAssertion {
         expectFund.total += fund.data.total
         expectFund.collateraled += fund.data.collateraled
 
-        let [governance, governanceKey] = this.accounts.getGovernance()
 
+        this.escrow.getWallet().setDefault(process.env.DATASWAP_GOVERNANCE as string)
         await handleEvmError(this.escrow.collateral(type, owner, id, amount, {
-            from: governance,
-            privateKey: governanceKey,
             value: amount
         }))
 
@@ -60,10 +54,8 @@ export class EscrowAssertion {
         expectFund.total += fund.data.total
         expectFund.locked += fund.data.locked
 
-        let [governance, governanceKey] = this.accounts.getGovernance()
+        this.escrow.getWallet().setDefault(process.env.DATASWAP_GOVERNANCE as string)
         await handleEvmError(this.escrow.payment(type, owner, id, amount, {
-            from: governance,
-            privateKey: governanceKey,
             value: amount
         }))
 
@@ -85,10 +77,8 @@ export class EscrowAssertion {
         expectBeneficiaryFund.locked += beneficiaryFund.data.locked
 
 
-        let [governance, governanceKey] = this.accounts.getGovernance()
+        this.escrow.getWallet().setDefault(process.env.DATASWAP_GOVERNANCE as string)
         await handleEvmError(this.escrow.paymentSingleBeneficiary(type, owner, id, beneficiary, amount, {
-            from: governance,
-            privateKey: governanceKey,
             value: amount
         }))
         expectFund.total += amount
@@ -97,9 +87,7 @@ export class EscrowAssertion {
         expectBeneficiaryFund.locked += amount
 
         // For test getBeneficiariesList multiple beneficiaries
-        await handleEvmError(this.escrow.paymentSingleBeneficiary(type, owner, id, governance, amount, {
-            from: governance,
-            privateKey: governanceKey,
+        await handleEvmError(this.escrow.paymentSingleBeneficiary(type, owner, id, process.env.DATASWAP_GOVERNANCE as string, amount, {
             value: amount
         }))
         expectFund.total += amount
@@ -109,7 +97,7 @@ export class EscrowAssertion {
             [
                 this.getOwnerFundAssertion(type, owner, id, expectFund),
                 this.getBeneficiaryFundAssertion(type, owner, id, beneficiary, expectBeneficiaryFund),
-                this.getBeneficiariesListAssertion(type, owner, id, [governance, beneficiary])
+                this.getBeneficiariesListAssertion(type, owner, id, [process.env.DATASWAP_GOVERNANCE as string, beneficiary])
             ]
         )
     }
@@ -118,15 +106,11 @@ export class EscrowAssertion {
         let amount: bigint = BigInt(100)
 
         await this.paymentAssertion(type, owner, id, amount)
-        let [governance, governanceKey] = this.accounts.getGovernance()
 
         let fund = await handleEvmError(this.escrow.getOwnerFund(type, owner, id))
         fund.data.locked -= amount
-
-        await handleEvmError(this.escrow.paymentTransfer(type, owner, id, amount, {
-            from: governance,
-            privateKey: governanceKey
-        }))
+        this.escrow.getWallet().setDefault(process.env.DATASWAP_GOVERNANCE as string)
+        await handleEvmError(this.escrow.paymentTransfer(type, owner, id, amount))
 
         await this.getOwnerFundAssertion(type, owner, id, fund.data)
     }

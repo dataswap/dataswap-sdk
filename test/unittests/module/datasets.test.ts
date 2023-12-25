@@ -1,13 +1,12 @@
 import { SubmitMetadataSuccessTestKit, SubmitRequirementSuccessTestKit, ApproveDatasetMetadataSuccessTestKit } from "../../testkits/module/datasets/DatasetsMetadataTestKit"
 import { SubmitDatasetProofRootSuccessTestKit } from "../../testkits/module/datasets/DatasetsProofTestKit"
 import { DataType } from "../../../src/shared/types/dataType"
-import { getAccounts, getContractsManager, getGenerator, getDatasetsHelper } from "../../fixtures"
+import { getContractsManager, getGenerator, getDatasetsHelper } from "../../fixtures"
 
 describe("datasets", async () => {
     before(function () {
         this.sharedData = {}
         this.sharedData.datasetId = 0
-        this.sharedData.accounts = getAccounts()
         this.sharedData.generator = getGenerator()
         this.sharedData.contractsManager = getContractsManager()
         this.sharedData.datasetHelper = getDatasetsHelper()
@@ -15,7 +14,6 @@ describe("datasets", async () => {
 
     it("SubmitDatasetsMetadataSuccess", async function () {
         let testKit = new SubmitMetadataSuccessTestKit(
-            this.sharedData.accounts,
             this.sharedData.generator,
             this.sharedData.contractsManager
         )
@@ -26,7 +24,6 @@ describe("datasets", async () => {
     it("SubmitRequirementSuccess", async function () {
         let datasetId = this.sharedData.datasetId
         let testKit = new SubmitRequirementSuccessTestKit(
-            this.sharedData.accounts,
             this.sharedData.generator,
             this.sharedData.contractsManager
         )
@@ -41,7 +38,6 @@ describe("datasets", async () => {
     it("ApproveDatasetMetadataSuccessTestSuite", async function () {
         try {
             let testKit = new ApproveDatasetMetadataSuccessTestKit(
-                this.sharedData.accounts,
                 this.sharedData.generator,
                 this.sharedData.contractsManager
             )
@@ -62,7 +58,6 @@ describe("datasets", async () => {
         try {
             let testKit = new SubmitDatasetProofRootSuccessTestKit(
                 DataType.MappingFiles,
-                this.sharedData.accounts,
                 this.sharedData.generator,
                 this.sharedData.contractsManager
             )
