@@ -4,13 +4,12 @@ import { expect } from "chai"
 import { handleEvmError } from "../../../shared/error";
 import { IContractsManager } from "../../../interfaces/setup/IContractsManater";
 import { IDatasetsHelper } from "../../../interfaces/helper/module/IDatasetshelper";
-import { IAccounts } from "../../../interfaces/setup/IAccounts";
 import { IGenerator } from "../../../interfaces/setup/IGenerator";
 
 export class SubmitDatasetProofRootSuccessTestKit extends DatasetsTestBase {
     private dataType: DataType
-    constructor(dataType: DataType, _accounts: IAccounts, _generator: IGenerator, _contractsManager: IContractsManager, _datasetHelper?: IDatasetsHelper) {
-        super(_accounts, _generator, _contractsManager, _datasetHelper)
+    constructor(dataType: DataType, _generator: IGenerator, _contractsManager: IContractsManager, _datasetHelper?: IDatasetsHelper) {
+        super(_generator, _contractsManager, _datasetHelper)
         this.dataType = dataType
     }
 
@@ -25,22 +24,18 @@ export class SubmitDatasetProofRootSuccessTestKit extends DatasetsTestBase {
 
     async action(datasetId: number): Promise<number> {
         try {
-            let [datasetPreparer, datasetPreparerKey] = this.accounts.getProofSubmitter()
             let [rootHash, , , mappingFilesAccessMethod] = this.generator.generateDatasetProof(0, this.dataType)
 
+            this.contractsManager.DatasetProofEvm().getWallet().setDefault(process.env.DATASWAP_PROOFSUBMITTER as string)
             await handleEvmError(this.contractsManager.DatasetProofEvm().submitDatasetProofRoot(
                 datasetId,
                 this.dataType,
                 mappingFilesAccessMethod,
                 rootHash,
-                {
-                    from: datasetPreparer,
-                    privateKey: datasetPreparerKey,
-                }
             ))
 
             let proofSubmitterOnChain = await handleEvmError(this.contractsManager.DatasetProofEvm().getDatasetProofSubmitter(datasetId))
-            expect(datasetPreparer).to.equal(proofSubmitterOnChain.data)
+            expect(process.env.DATASWAP_PROOFSUBMITTER as string).to.equal(proofSubmitterOnChain.data)
             return datasetId
         } catch (error) {
             throw error

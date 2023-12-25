@@ -55,7 +55,7 @@ interface MatchingMetadataSendEvm {
         biddingThreshold: bigint,
         replicaIndex: number,
         additionalInfo: string,
-        options: EvmTransactionOptions
+        options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
     /**
      * Pauses a specific matching identified by its ID.
@@ -65,7 +65,7 @@ interface MatchingMetadataSendEvm {
      */
     pauseMatching(
         matchingId: number,
-        options: EvmTransactionOptions
+        options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
     /**
      * Resumes a specific matching identified by its ID.
@@ -75,7 +75,7 @@ interface MatchingMetadataSendEvm {
      */
     resumeMatching(
         matchingId: number,
-        options: EvmTransactionOptions
+        options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 }
 /**

@@ -55,7 +55,7 @@ interface DatasetRequirementSendEvm {
         countrys: number[],
         citys: number[][],
         _amount: bigint,
-        options: EvmTransactionOptions
+        options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 }
 /**
