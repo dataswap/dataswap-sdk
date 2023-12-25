@@ -80,7 +80,7 @@ interface MatchingBidsSendEvm {
     initDependencies(
         matchings: string,
         matchingsTarget: string,
-        options: EvmTransactionOptions
+        options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 
     /**
@@ -93,7 +93,7 @@ interface MatchingBidsSendEvm {
     bidding(
         matchingId: number,
         amount: bigint,
-        options: EvmTransactionOptions
+        options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 
     /**
@@ -104,7 +104,7 @@ interface MatchingBidsSendEvm {
      */
     cancelMatching(
         matchingId: number,
-        options: EvmTransactionOptions
+        options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 
     /**
@@ -115,7 +115,7 @@ interface MatchingBidsSendEvm {
      */
     closeMatching(
         matchingId: number,
-        options: EvmTransactionOptions
+        options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 
 }

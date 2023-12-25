@@ -5,22 +5,18 @@ import { DataType } from "../../../src/shared/types/dataType"
 import { expect } from "chai"
 import { handleEvmError } from "../../shared/error"
 import { IGenerator } from "../../interfaces/setup/IGenerator"
-import { IAccounts } from "../../interfaces/setup/IAccounts"
 import { IContractsManager } from "../../interfaces/setup/IContractsManater"
 
 
 export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
-    private accounts: IAccounts
     private generator: IGenerator
     private contractsManager: IContractsManager
     private datasetsProofRootsMap: Map<number, string>
     constructor(
-        _accounts: IAccounts,
         _generator: IGenerator,
         _contractsManager: IContractsManager
     ) {
         super()
-        this.accounts = _accounts
         this.generator = _generator
         this.contractsManager = _contractsManager
         this.datasetsProofRootsMap = new Map<number, string>()
@@ -35,10 +31,9 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
      */
     async metadataSubmittedDatasetWorkflow(replicasCount: number, elementCountInReplica: number, duplicateIndex?: number, duplicateCount?: number): Promise<number> {
         try {
-            let [client, clientkey] = this.accounts.getClient()
             let datasetMetadata = this.generator.generateDatasetMetadata()
             let clientId = 100
-
+            this.contractsManager.DatasetMetadataEvm().getWallet().setDefault(process.env.DATASWAP_METADATASUBMITTER as string)
             // Submit dataset metadata transaction
             let tx = await handleEvmError(this.contractsManager.DatasetMetadataEvm().submitDatasetMetadata(
                 clientId,
@@ -51,10 +46,6 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
                 datasetMetadata.sizeInBytes,
                 datasetMetadata.isPublic,
                 datasetMetadata.version,
-                {
-                    from: client,
-                    privateKey: clientkey,
-                }
             ))
 
             // Get transaction receipt and event arguments
@@ -78,10 +69,6 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
                 requirments.countryCodes,
                 requirments.cityCodes,
                 BigInt(0),
-                {
-                    from: client,
-                    privateKey: clientkey,
-                }
             ))
 
             // Get updated dataset state
@@ -106,14 +93,9 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
                 }
             )
 
-            let [governance, governanceKey] = this.accounts.getGovernance()
-
+            this.contractsManager.DatasetMetadataEvm().getWallet().setDefault(process.env.DATASWAP_GOVERNANCE as string)
             await handleEvmError(this.contractsManager.DatasetMetadataEvm().approveDatasetMetadata(
                 datasetId,
-                {
-                    from: governance,
-                    privateKey: governanceKey,
-                }
             ))
             // Get updated dataset state
             let datasetState = await handleEvmError(this.contractsManager.DatasetMetadataEvm().getDatasetState(datasetId))
@@ -136,14 +118,10 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
             }
         )
 
-        let [governance, governanceKey] = this.accounts.getGovernance()
-
+        this.contractsManager.DatasetMetadataEvm().getWallet().setDefault(process.env.DATASWAP_GOVERNANCE as string)
         await handleEvmError(this.contractsManager.DatasetMetadataEvm().rejectDatasetMetadata(
             datasetId,
-            {
-                from: governance,
-                privateKey: governanceKey
-            }))
+        ))
         // Get updated dataset state
         let datasetState = await handleEvmError(this.contractsManager.DatasetMetadataEvm().getDatasetState(datasetId))
 
@@ -159,19 +137,15 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
             this.metadataApprovedDatasetWorkflow,
         )
 
-        let [datasetPreparer, datasetPreparerKey] = this.accounts.getProofSubmitter()
         let dataType = DataType.MappingFiles
         let [rootHashMappings, leafHashesMappings, leafSizesMappings, mappingFilesAccessMethod] = this.generator.generateDatasetProof(0, dataType)
 
+        this.contractsManager.DatasetProofEvm().getWallet().setDefault(process.env.DATASWAP_PROOFSUBMITTER as string)
         await handleEvmError(this.contractsManager.DatasetProofEvm().submitDatasetProofRoot(
             datasetId,
             dataType,
             mappingFilesAccessMethod,
             rootHashMappings,
-            {
-                from: datasetPreparer,
-                privateKey: datasetPreparerKey,
-            }
         ))
 
         await handleEvmError(this.contractsManager.DatasetProofEvm().submitDatasetProof(
@@ -181,10 +155,6 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
             0,
             leafSizesMappings,
             true,
-            {
-                from: datasetPreparer,
-                privateKey: datasetPreparerKey
-            }
         ))
 
         dataType = DataType.Source
@@ -195,10 +165,6 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
             dataType,
             '',
             rootHash,
-            {
-                from: datasetPreparer,
-                privateKey: datasetPreparerKey,
-            }
         ))
 
 
@@ -209,17 +175,9 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
             0,
             leafSizes,
             true,
-            {
-                from: datasetPreparer,
-                privateKey: datasetPreparerKey
-            }
         ))
         await handleEvmError(this.contractsManager.DatasetProofEvm().submitDatasetProofCompleted(
             datasetId,
-            {
-                from: datasetPreparer,
-                privateKey: datasetPreparerKey
-            }
         ))
         // Get updated dataset state
         let datasetState = await handleEvmError(this.contractsManager.DatasetMetadataEvm().getDatasetState(datasetId))
@@ -236,26 +194,20 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
             DatasetState.FundsNotEnough,
             this.fundsNotEnoughDatasetWorkflow
         )
-        let [client, clientkey] = this.accounts.getClient()
+        this.contractsManager.DatasetProofEvm().getWallet().setDefault(process.env.DATASWAP_METADATASUBMITTER as string)
         let fee = BigInt(this.contractsManager.DatasetProofEvm().generateWei("0.5", "ether").toString())
         await handleEvmError(this.contractsManager.DatasetProofEvm().appendDatasetFunds(
             datasetId,
             fee,
             fee,
             {
-                from: client,
-                privateKey: clientkey,
                 value: this.contractsManager.DatasetProofEvm().generateWei("1", "ether")
             }
         ))
 
-        let [datasetPreparer, datasetPreparerKey] = this.accounts.getProofSubmitter()
+        this.contractsManager.DatasetProofEvm().getWallet().setDefault(process.env.DATASWAP_PROOFSUBMITTER as string)
         await handleEvmError(this.contractsManager.DatasetProofEvm().submitDatasetProofCompleted(
             datasetId,
-            {
-                from: datasetPreparer,
-                privateKey: datasetPreparerKey
-            }
         ))
 
 
@@ -276,26 +228,18 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
         let rootHash = this.getDatasetProofRoot(datasetId)
         let [randomSeed, leaves, siblings, paths] = this.generator.generateDatasetChallengeProof(rootHash!)
 
-        let [datasetAuditor, datasetAuditorKey] = this.accounts.getDatasetAuditor()
+        this.contractsManager.DatasetProofEvm().getWallet().setDefault(process.env.DATASWAP_DATASETAUDITOR as string)
         await handleEvmError(this.contractsManager.DatasetChallengeEvm().submitDatasetChallengeProofs(
             datasetId,
             randomSeed,
             leaves,
             siblings,
             paths,
-            {
-                from: datasetAuditor,
-                privateKey: datasetAuditorKey
-            }
         ))
 
-        let [governance, governanceKey] = this.accounts.getGovernance()
+        this.contractsManager.DatasetMetadataEvm().getWallet().setDefault(process.env.DATASWAP_GOVERNANCE as string)
         await handleEvmError(this.contractsManager.DatasetMetadataEvm().approveDataset(
             datasetId,
-            {
-                from: governance,
-                privateKey: governanceKey
-            }
         ))
 
         // Get updated dataset state

@@ -4,15 +4,12 @@ import { MatchingState } from "../../../src/shared/types/matchingType"
 import { expect } from "chai"
 import { handleEvmError } from "../../shared/error"
 import { IGenerator } from "../../interfaces/setup/IGenerator"
-import { IAccounts } from "../../interfaces/setup/IAccounts"
 import { IContractsManager } from "../../interfaces/setup/IContractsManater"
 import { IDatasetsHelper } from "../../interfaces/helper/module/IDatasetshelper"
-import { DatasetState } from "../../../src/shared/types/datasetType"
 import { DataType } from "../../../src/shared/types/dataType"
 import * as utils from "../../shared/utils"
 
-class MatchingsHelper extends BasicHelper implements IMatchingsHelper {
-    private accounts: IAccounts
+export class MatchingsHelper extends BasicHelper implements IMatchingsHelper {
     private generator: IGenerator
     private contractsManager: IContractsManager
     private datasetHelper: IDatasetsHelper
@@ -20,13 +17,11 @@ class MatchingsHelper extends BasicHelper implements IMatchingsHelper {
     private matchingDatasetIdMap: Map<number, number>
 
     constructor(
-        _accounts: IAccounts,
         _generator: IGenerator,
         _contractsManager: IContractsManager,
         _datasetHelper: IDatasetsHelper
     ) {
         super()
-        this.accounts = _accounts
         this.generator = _generator
         this.contractsManager = _contractsManager
         this.datasetHelper = _datasetHelper
@@ -68,8 +63,7 @@ class MatchingsHelper extends BasicHelper implements IMatchingsHelper {
                 additionalInfo,
             ] = this.generator.generatorMatchingInfo(datasetId, replicaIndex)
 
-            let [dataPreparer, dataPreparersKey] = this.accounts.getProofSubmitter()
-
+            this.contractsManager.MatchingMetadataEvm().getWallet().setDefault(process.env.DATASWAP_PROOFSUBMITTER as string)
             let tx = await handleEvmError(this.contractsManager.MatchingMetadataEvm().createMatching(
                 datasetId,
                 bidSelectionRule,
@@ -80,8 +74,6 @@ class MatchingsHelper extends BasicHelper implements IMatchingsHelper {
                 replicaIndex,
                 additionalInfo,
                 {
-                    from: dataPreparer,
-                    privateKey: dataPreparersKey,
                     value: this.contractsManager.MatchingMetadataEvm().generateWei("1000000000", "wei")
                 }
             ))
@@ -116,10 +108,6 @@ class MatchingsHelper extends BasicHelper implements IMatchingsHelper {
                 dataType,
                 associatedMatchingId,
                 replicaIndex,
-                {
-                    from: dataPreparer,
-                    privateKey: dataPreparersKey
-                }
             ))
 
             let matchingState = await handleEvmError(this.contractsManager.MatchingMetadataEvm().getMatchingState(matchingId))
@@ -153,17 +141,13 @@ class MatchingsHelper extends BasicHelper implements IMatchingsHelper {
             let carsIds = await handleEvmError(this.contractsManager.CarstoreEvm().getCarsIds(cars.data))
             let { starts, ends } = utils.splitNumbers(carsIds)
 
-            let [dataPreparer, dataPreparersKey] = this.accounts.getProofSubmitter()
+            this.contractsManager.MatchingTargetEvm().getWallet().setDefault(process.env.DATASWAP_PROOFSUBMITTER as string)
             await handleEvmError(this.contractsManager.MatchingTargetEvm().publishMatching(
                 matchingId,
                 datasetId!,
                 starts,
                 ends,
                 true,
-                {
-                    from: dataPreparer,
-                    privateKey: dataPreparersKey
-                }
             ))
 
             let matchingState = await handleEvmError(this.contractsManager.MatchingMetadataEvm().getMatchingState(matchingId))
@@ -183,13 +167,9 @@ class MatchingsHelper extends BasicHelper implements IMatchingsHelper {
                     return await this.inProgressMatchingWorkflow(dataType, targetDatasetId)
                 }
             )
-            let [dataPreparer, dataPreparersKey] = this.accounts.getProofSubmitter()
+            this.contractsManager.MatchingMetadataEvm().getWallet().setDefault(process.env.DATASWAP_PROOFSUBMITTER as string)
             await handleEvmError(this.contractsManager.MatchingMetadataEvm().pauseMatching(
                 matchingId,
-                {
-                    from: dataPreparer,
-                    privateKey: dataPreparersKey
-                }
             ))
             let matchingState = await handleEvmError(this.contractsManager.MatchingMetadataEvm().getMatchingState(matchingId))
             expect(BigInt(MatchingState.Paused)).to.equal(matchingState.data)
@@ -208,22 +188,16 @@ class MatchingsHelper extends BasicHelper implements IMatchingsHelper {
                 }
             )
 
-            let [bidder, bidderkey] = this.accounts.getBidder()
+            this.contractsManager.MatchingBidsEvm().getWallet().setDefault(process.env.DATASWAP_BIDDER as string)
             await handleEvmError(this.contractsManager.MatchingBidsEvm().bidding(
                 matchingId,
                 BigInt(10000000000),
                 {
-                    from: bidder,
-                    privateKey: bidderkey,
                     value: this.contractsManager.MatchingBidsEvm().generateWei("1", "ether")
                 }))
 
             await handleEvmError(this.contractsManager.MatchingBidsEvm().closeMatching(
                 matchingId,
-                {
-                    from: bidder,
-                    privateKey: bidderkey,
-                }
             ))
 
             let matchingState = await handleEvmError(this.contractsManager.MatchingMetadataEvm().getMatchingState(matchingId))

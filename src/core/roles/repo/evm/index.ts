@@ -46,13 +46,13 @@ interface RolesSendEvm {
      * @dev The new owner accepts the ownership transfer.
      * @param options The options of transaction.
      */
-    acceptOwnership(options: EvmTransactionOptions): Promise<EvmOutput<void>>
+    acceptOwnership(options?: EvmTransactionOptions): Promise<EvmOutput<void>>
 
     /** 
      * @dev Returns the address of the pending owner.
      * @param options The options of transaction.
      */
-    pendingOwner(options: EvmTransactionOptions): Promise<EvmOutput<Buffer>>
+    pendingOwner(options?: EvmTransactionOptions): Promise<EvmOutput<Buffer>>
 
     /**
      * @dev Leaves the contract without owner. It will not be possible to call
@@ -62,7 +62,7 @@ interface RolesSendEvm {
      * thereby disabling any functionality that is only available to the owner.
      * @param options The options of transaction.
      */
-    renounceOwnership(options: EvmTransactionOptions): Promise<EvmOutput<void>>
+    renounceOwnership(options?: EvmTransactionOptions): Promise<EvmOutput<void>>
 
     /**
      * @dev Starts the ownership transfer of the contract to a new account. Replaces the pending transfer if there is one.
@@ -70,14 +70,14 @@ interface RolesSendEvm {
      * @param newOwner The transfer to account.
      * @param options The options of transaction.
      */
-    transferOwnership(newOwner: Buffer, options: EvmTransactionOptions): Promise<EvmOutput<void>>
+    transferOwnership(newOwner: Buffer, options?: EvmTransactionOptions): Promise<EvmOutput<void>>
 
     /**
      * @notice grantDataswapContractRole function to grant the dataswap contract role for dataswap contract. TODO: Move to governance
      * @param contracts The contracts address of grant dataswap role
      * @param options The options of transaction.
      */
-    grantDataswapContractRole(contracts: string[], options: EvmTransactionOptions): Promise<EvmOutput<void>>
+    grantDataswapContractRole(contracts: string[], options?: EvmTransactionOptions): Promise<EvmOutput<void>>
 
     /**
      * @notice Grants the specified role to the given account.
@@ -86,7 +86,7 @@ interface RolesSendEvm {
      * @param options The options of transaction.
      * @returns A Promise resolving to the EvmOutput<void> indicating the success of the transaction.
      */
-    grantRole(role: string, account: string, options: EvmTransactionOptions): Promise<EvmOutput<void>>
+    grantRole(role: string, account: string, options?: EvmTransactionOptions): Promise<EvmOutput<void>>
 }
 
 /**

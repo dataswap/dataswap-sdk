@@ -82,7 +82,7 @@ interface MatchingTargetSendEvm {
     initDependencies(
         matchings: string,
         matchingsBids: string,
-        options: EvmTransactionOptions
+        options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
     /**
      * Creates a new target for a matching with the specified parameters.
@@ -100,7 +100,7 @@ interface MatchingTargetSendEvm {
         dataType: DataType,
         associatedMappingFilesMatchingId: number,
         replicaIndex: number,
-        options: EvmTransactionOptions
+        options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
     /**
      * Publishes a matching with the specified parameters.
@@ -118,7 +118,7 @@ interface MatchingTargetSendEvm {
         carsStarts: number[],
         carsEnds: number[],
         complete: boolean,
-        options: EvmTransactionOptions
+        options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 }
 /**

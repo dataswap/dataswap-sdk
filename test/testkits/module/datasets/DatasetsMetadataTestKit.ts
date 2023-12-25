@@ -6,20 +6,19 @@ import * as utils from "../../../shared/utils"
 import { handleEvmError } from "../../../shared/error";
 import { IContractsManager } from "../../../interfaces/setup/IContractsManater";
 import { IDatasetsHelper } from "../../../interfaces/helper/module/IDatasetshelper";
-import { IAccounts } from "../../../interfaces/setup/IAccounts";
 import { IGenerator } from "../../../interfaces/setup/IGenerator";
 
 export class SubmitMetadataSuccessTestKit extends DatasetsTestBase {
-    constructor(_accounts: IAccounts, _generator: IGenerator, _contractsManager: IContractsManager) {
-        super(_accounts, _generator, _contractsManager)
+    constructor(_generator: IGenerator, _contractsManager: IContractsManager) {
+        super(_generator, _contractsManager)
     }
 
     async action(_: number): Promise<number> {
         try {
-            let [client, clientkey] = this.accounts.getClient()
             let datasetMetadata = this.generator.generateDatasetMetadata()
             let clientId = 100
 
+            this.contractsManager.DatasetMetadataEvm().getWallet().setDefault(process.env.DATASWAP_METADATASUBMITTER as string)
             // Submit dataset metadata transaction
             let tx = await handleEvmError(this.contractsManager.DatasetMetadataEvm().submitDatasetMetadata(
                 clientId,
@@ -31,11 +30,7 @@ export class SubmitMetadataSuccessTestKit extends DatasetsTestBase {
                 datasetMetadata.accessMethod,
                 datasetMetadata.sizeInBytes,
                 datasetMetadata.isPublic,
-                datasetMetadata.version,
-                {
-                    from: client,
-                    privateKey: clientkey,
-                }
+                datasetMetadata.version
             ))
 
             // Get transaction receipt and event arguments
@@ -60,9 +55,9 @@ export class SubmitMetadataSuccessTestKit extends DatasetsTestBase {
 
 export class SubmitRequirementSuccessTestKit extends DatasetsTestBase {
     private dependentTestKit: SubmitMetadataSuccessTestKit
-    constructor(_accounts: IAccounts, _generator: IGenerator, _contractsManager: IContractsManager, _datasetHelper?: IDatasetsHelper) {
-        super(_accounts, _generator, _contractsManager, _datasetHelper)
-        this.dependentTestKit = new SubmitMetadataSuccessTestKit(_accounts, _generator, _contractsManager)
+    constructor(_generator: IGenerator, _contractsManager: IContractsManager, _datasetHelper?: IDatasetsHelper) {
+        super(_generator, _contractsManager, _datasetHelper)
+        this.dependentTestKit = new SubmitMetadataSuccessTestKit(_generator, _contractsManager)
     }
 
     async optionalBefore(): Promise<number> {
@@ -76,10 +71,10 @@ export class SubmitRequirementSuccessTestKit extends DatasetsTestBase {
     async action(datasetId: number): Promise<number> {
         try {
 
-            let [client, clientkey] = this.accounts.getClient()
             // Generate dataset requirements
             let requirments = this.generator.generateDatasetRequirements(5, 3)
 
+            this.contractsManager.DatasetRequirementEvm().getWallet().setDefault(process.env.DATASWAP_METADATASUBMITTER as string)
             // Submit dataset replica requirements transaction
             let tx = await handleEvmError(this.contractsManager.DatasetRequirementEvm().submitDatasetReplicaRequirements(
                 datasetId,
@@ -89,10 +84,6 @@ export class SubmitRequirementSuccessTestKit extends DatasetsTestBase {
                 requirments.countryCodes,
                 requirments.cityCodes,
                 BigInt(0),
-                {
-                    from: client,
-                    privateKey: clientkey,
-                }
             ))
 
             // Get updated dataset state
@@ -121,8 +112,8 @@ export class SubmitRequirementSuccessTestKit extends DatasetsTestBase {
 }
 
 export class ApproveDatasetMetadataSuccessTestKit extends DatasetsTestBase {
-    constructor(_accounts: IAccounts, _generator: IGenerator, _contractsManager: IContractsManager, _datasetHelper?: IDatasetsHelper) {
-        super(_accounts, _generator, _contractsManager, _datasetHelper)
+    constructor(_generator: IGenerator, _contractsManager: IContractsManager, _datasetHelper?: IDatasetsHelper) {
+        super(_generator, _contractsManager, _datasetHelper)
     }
 
     async optionalBefore(): Promise<number> {
@@ -136,14 +127,10 @@ export class ApproveDatasetMetadataSuccessTestKit extends DatasetsTestBase {
 
     async action(datasetId: number): Promise<number> {
         try {
-            let [governance, governanceKey] = this.accounts.getGovernance()
 
+            this.contractsManager.DatasetMetadataEvm().getWallet().setDefault(process.env.DATASWAP_GOVERNANCE as string)
             await handleEvmError(this.contractsManager.DatasetMetadataEvm().approveDatasetMetadata(
                 datasetId,
-                {
-                    from: governance,
-                    privateKey: governanceKey,
-                }
             ))
 
             let datasetStateOnChain = await handleEvmError(this.contractsManager.DatasetMetadataEvm().getDatasetState(datasetId))

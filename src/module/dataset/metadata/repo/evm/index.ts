@@ -64,7 +64,7 @@ interface DatasetMetadataCallEvm {
 interface DatasetMetadataSendEvm {
     initDependencies(
         datasetsProof: string,
-        options: EvmTransactionOptions
+        options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
     /**
     /* This function changes the state of the dataset to DatasetApproved and emits the DatasetApproved event.
@@ -73,7 +73,7 @@ interface DatasetMetadataSendEvm {
     */
     approveDataset(
         datasetId: number,
-        options: EvmTransactionOptions
+        options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 
     /**
@@ -83,7 +83,7 @@ interface DatasetMetadataSendEvm {
      */
     approveDatasetMetadata(
         datasetId: number,
-        options: EvmTransactionOptions
+        options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 
     /**
@@ -93,7 +93,7 @@ interface DatasetMetadataSendEvm {
      */
     rejectDataset(
         datasetId: number,
-        options: EvmTransactionOptions
+        options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 
     /**
@@ -103,7 +103,7 @@ interface DatasetMetadataSendEvm {
      */
     rejectDatasetMetadata(
         datasetId: number,
-        options: EvmTransactionOptions
+        options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 
     /**
@@ -131,7 +131,7 @@ interface DatasetMetadataSendEvm {
         sizeInBytes: number,
         isPublic: boolean,
         version: number,
-        options: EvmTransactionOptions
+        options?: EvmTransactionOptions
     ): Promise<EvmOutput<any>>
 
     /**
