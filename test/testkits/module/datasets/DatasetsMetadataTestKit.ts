@@ -64,7 +64,6 @@ export class SubmitMetadataSuccessTestKit extends DatasetsTestBase {
     }
 }
 
-
 /**
  * Represents a test kit for approving dataset metadata successfully.
  * Extends from DatasetsTestBase.
