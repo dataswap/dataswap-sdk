@@ -26,22 +26,22 @@ interface MatchingTargetCallEvm {
     /**
      * Checks if a specific car hash is present in a matching identified by its ID.
      * @param matchingId - The ID of the matching.
-     * @param hash - The hash of the car to check.
+     * @param id - The id of the car to check.
      * @returns A Promise resolving to a boolean indicating whether the car hash is present.
      */
     isMatchingContainsCar(
         matchingId: number,
-        hash: number,
+        id: number,
     ): Promise<EvmOutput<boolean>>
     /**
      * Checks if multiple car hashes are present in a matching identified by its ID.
      * @param matchingId - The ID of the matching.
-     * @param hashs - An array of car hashes to check.
+     * @param ids - An array of car ids to check.
      * @returns A Promise resolving to a boolean indicating whether all specified car hashes are present.
      */
     isMatchingContainsCars(
         matchingId: number,
-        hashs: number[],
+        ids: number[],
     ): Promise<EvmOutput<boolean>>
     /**
      * Checks if a matching target is valid based on specified parameters.

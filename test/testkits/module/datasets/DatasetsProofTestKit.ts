@@ -81,6 +81,7 @@ export class SubmitDatasetProoSuccessTestKit extends DatasetsTestBase {
             let [leafHashes, leafSizes] = this.generator.getDatasetProof(rootHash!)
 
             await this.assertion.submitDatasetProofAssertion(
+                process.env.DATASWAP_PROOFSUBMITTER as string,
                 datasetId,
                 dataType,
                 leafHashes,
@@ -94,6 +95,7 @@ export class SubmitDatasetProoSuccessTestKit extends DatasetsTestBase {
             let [sourceLeafHashes, sourceLeafSizes] = this.generator.getDatasetProof(sourceRootHash!)
 
             await this.assertion.submitDatasetProofAssertion(
+                process.env.DATASWAP_PROOFSUBMITTER as string,
                 datasetId,
                 dataType,
                 sourceLeafHashes,

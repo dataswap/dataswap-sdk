@@ -30,7 +30,7 @@ export class SubmitRequirementSuccessTestKit extends DatasetsTestBase {
         try {
             // Generate dataset requirements
             let requirments = this.generator.generateDatasetRequirements(5, 3)
-            await this.assertion.submitDatasetReplicaRequirementsAssertion(datasetId, requirments, BigInt(0))
+            await this.assertion.submitDatasetReplicaRequirementsAssertion(process.env.DATASWAP_METADATASUBMITTER as string, datasetId, requirments, BigInt(0))
             await this.assertion.getDatasetStateAssertion(datasetId, DatasetState.MetadataSubmitted)
             this.datasetsHelper.updateWorkflowTargetState(datasetId, DatasetState.MetadataSubmitted)
             return datasetId

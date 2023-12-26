@@ -47,7 +47,6 @@ interface MatchingBidsCallEvm {
      */
     getMatchingWinner(
         matchingId: number,
-        candidate: string,
     ): Promise<EvmOutput<string>>,
     /**
      * Retrieves the winners of multiple matchings identified by their IDs.

@@ -15,7 +15,7 @@ export class SubmitMetadataSuccessTestKit extends DatasetsTestBase {
             let datasetMetadata = this.generator.generateDatasetMetadata()
             let clientId = 101
 
-            let datasetId = await this.assertion.submitDatasetMetadataAssertion(clientId, datasetMetadata)
+            let datasetId = await this.assertion.submitDatasetMetadataAssertion(process.env.DATASWAP_METADATASUBMITTER as string, clientId, datasetMetadata)
 
             return datasetId
         } catch (error) {
@@ -41,6 +41,7 @@ export class ApproveDatasetMetadataSuccessTestKit extends DatasetsTestBase {
     async action(datasetId: number): Promise<number> {
         try {
             await this.assertion.approveDatasetMetadataAssertion(
+                process.env.DATASWAP_GOVERNANCE as string,
                 datasetId,
                 DatasetState.MetadataApproved
             )

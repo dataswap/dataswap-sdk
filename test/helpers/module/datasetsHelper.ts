@@ -13,7 +13,6 @@ import { IDatasetsAssertion } from "../../interfaces/assertions/module/IDatasets
 export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
     private generator: IGenerator
     private contractsManager: IContractsManager
-    private datasetsProofRootsMap: Map<number, Map<DataType, string>>
     private assertion: IDatasetsAssertion
     constructor(
         _generator: IGenerator,
@@ -22,7 +21,6 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
         super()
         this.generator = _generator
         this.contractsManager = _contractsManager
-        this.datasetsProofRootsMap = new Map<number, Map<DataType, string>>()
         this.assertion = new DatasetsAssertion(_contractsManager)
     }
     /**
@@ -38,15 +36,14 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
             let datasetMetadata = this.generator.generateDatasetMetadata()
             let clientId = 101
 
-            let datasetId = await this.assertion.submitDatasetMetadataAssertion(clientId, datasetMetadata)
+            let datasetId = await this.assertion.submitDatasetMetadataAssertion(process.env.DATASWAP_METADATASUBMITTER as string, clientId, datasetMetadata)
 
             // Generate dataset requirements
             let requirments = this.generator.generateDatasetRequirements(replicasCount, elementCountInReplica, duplicateIndex, duplicateCount)
 
-            this.contractsManager.DatasetRequirementEvm().getWallet().setDefault(process.env.DATASWAP_METADATASUBMITTER as string)
-
             // Submit dataset replica requirements transaction
             await this.assertion.submitDatasetReplicaRequirementsAssertion(
+                process.env.DATASWAP_METADATASUBMITTER as string,
                 datasetId,
                 requirments,
                 BigInt(0)
@@ -71,6 +68,7 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
                 }
             )
             await this.assertion.approveDatasetMetadataAssertion(
+                process.env.DATASWAP_GOVERNANCE as string,
                 datasetId,
                 DatasetState.MetadataApproved
             )
@@ -90,7 +88,7 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
                 return await this.metadataSubmittedDatasetWorkflow(5, 3)
             }
         )
-        await this.assertion.rejectDatasetMetadataAssertion(datasetId, DatasetState.MetadataRejected)
+        await this.assertion.rejectDatasetMetadataAssertion(process.env.DATASWAP_GOVERNANCE as string, datasetId, DatasetState.MetadataRejected)
 
         this.updateWorkflowTargetState(datasetId, Number(DatasetState.MetadataRejected))
         return datasetId

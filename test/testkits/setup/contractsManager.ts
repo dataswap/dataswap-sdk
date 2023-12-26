@@ -81,10 +81,7 @@ export class ContractsManager implements IContractsManager {
         try {
             const roleBytes = ethers.utils.toUtf8Bytes(role)
             const hash = ethers.utils.keccak256(roleBytes);
-            let ret = await this.RolesEvm().hasRole(hash, contractAddress)
-            if (!ret.ok) {
-                throw ret.error
-            }
+            let ret = await handleEvmError(this.RolesEvm().hasRole(hash, contractAddress))
             if (ret.data) {
                 // Role already set up
                 return
@@ -92,13 +89,10 @@ export class ContractsManager implements IContractsManager {
 
             this.RolesEvm().getWallet().setDefault(process.env.DATASWAP_GOVERNANCE as string)
             // Grant the role to the contract
-            let tx = await this.RolesEvm().grantRole(
+            await handleEvmError(this.RolesEvm().grantRole(
                 hash,
                 contractAddress,
-            );
-            if (!tx.ok) {
-                throw tx.error
-            }
+            ))
         } catch (error) {
             throw error
         }

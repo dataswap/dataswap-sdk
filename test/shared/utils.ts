@@ -90,3 +90,17 @@ export function splitNumbers(ids: number[]): { starts: number[], ends: number[] 
 
     return result;
 }
+
+export function mergeRangesToCompleteArray(starts: number[], ends: number[]): number[] {
+    if (starts.length !== ends.length) {
+        throw new Error('Lengths of starts and ends arrays should be the same.');
+    }
+
+    const ids: number[] = [];
+    for (let i = 0; i < starts.length; i++) {
+        for (let j = starts[i]; j <= ends[i]; j++) {
+            ids.push(j);
+        }
+    }
+    return ids;
+}

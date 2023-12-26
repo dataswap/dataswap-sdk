@@ -53,8 +53,8 @@ export class DatasetsAssertion implements IDatasetsAssertion {
         expect(expectGovernance).to.be.equal(governance)
     }
 
-    async submitDatasetMetadataAssertion(expectDatasetClient: number, expectData: DatasetMetadata): Promise<number> {
-        this.contractsManager.DatasetMetadataEvm().getWallet().setDefault(process.env.DATASWAP_METADATASUBMITTER as string)
+    async submitDatasetMetadataAssertion(caller: string, expectDatasetClient: number, expectData: DatasetMetadata): Promise<number> {
+        this.contractsManager.DatasetMetadataEvm().getWallet().setDefault(caller)
         let tx = await handleEvmError(this.contractsManager.DatasetMetadataEvm().submitDatasetMetadata(
             expectDatasetClient,
             expectData.title,
@@ -77,13 +77,13 @@ export class DatasetsAssertion implements IDatasetsAssertion {
         let datasetId = Number(ret.data.datasetId)
         this.datasetsCountAssertion(datasetId)
         this.getDatasetMetadataAssertion(datasetId, expectData)
-        this.getDatasetMetadataSubmitterAssertion(datasetId, process.env.DATASWAP_METADATASUBMITTER as string)
+        this.getDatasetMetadataSubmitterAssertion(datasetId, caller)
         this.getDatasetMetadataClientAssertion(datasetId, expectDatasetClient)
         return datasetId
     }
 
 
-    async datasetsProofAssertion(expectDatasetsProofAddress: string): Promise<void> {
+    async metadataDatasetsProofAssertion(expectDatasetsProofAddress: string): Promise<void> {
         let datasetsProof = await handleEvmError(this.contractsManager.DatasetMetadataEvm().datasetsProof())
         expect(expectDatasetsProofAddress).to.equal(datasetsProof.data)
     }
@@ -93,21 +93,23 @@ export class DatasetsAssertion implements IDatasetsAssertion {
         expect(expectDatasetsCount).to.equal(Number(datasetCount.data))
     }
 
-    async initDatasetsDependenciesAssertion(
+    async metadataInitDependenciesAssertion(
+        caller: string,
         expectDatasetsProof: string,
     ): Promise<void> {
-        this.contractsManager.DatasetMetadataEvm().getWallet().setDefault(process.env.DATASWAP_GOVERNANCE as string)
+        this.contractsManager.DatasetMetadataEvm().getWallet().setDefault(caller)
         await handleEvmError(this.contractsManager.DatasetMetadataEvm().initDependencies(
             expectDatasetsProof,
         ))
-        await this.datasetsProofAssertion(expectDatasetsProof)
+        await this.metadataDatasetsProofAssertion(expectDatasetsProof)
     }
 
     async approveDatasetAssertion(
+        caller: string,
         datasetId: number,
         expectState: DatasetState
     ): Promise<void> {
-        this.contractsManager.DatasetMetadataEvm().getWallet().setDefault(process.env.DATASWAP_GOVERNANCE as string)
+        this.contractsManager.DatasetMetadataEvm().getWallet().setDefault(caller)
         await handleEvmError(this.contractsManager.DatasetMetadataEvm().approveDataset(
             datasetId,
         ))
@@ -116,10 +118,11 @@ export class DatasetsAssertion implements IDatasetsAssertion {
     }
 
     async approveDatasetMetadataAssertion(
+        caller: string,
         datasetId: number,
         expectState: DatasetState
     ): Promise<void> {
-        this.contractsManager.DatasetMetadataEvm().getWallet().setDefault(process.env.DATASWAP_GOVERNANCE as string)
+        this.contractsManager.DatasetMetadataEvm().getWallet().setDefault(caller)
         await handleEvmError(this.contractsManager.DatasetMetadataEvm().approveDatasetMetadata(
             datasetId,
         ))
@@ -128,10 +131,11 @@ export class DatasetsAssertion implements IDatasetsAssertion {
     }
 
     async rejectDatasetAssertion(
+        caller: string,
         datasetId: number,
         expectState: DatasetState
     ): Promise<void> {
-        this.contractsManager.DatasetMetadataEvm().getWallet().setDefault(process.env.DATASWAP_GOVERNANCE as string)
+        this.contractsManager.DatasetMetadataEvm().getWallet().setDefault(caller)
         await handleEvmError(this.contractsManager.DatasetMetadataEvm().rejectDataset(
             datasetId,
         ))
@@ -139,10 +143,11 @@ export class DatasetsAssertion implements IDatasetsAssertion {
     }
 
     async rejectDatasetMetadataAssertion(
+        caller: string,
         datasetId: number,
         expectState: DatasetState
     ): Promise<void> {
-        this.contractsManager.DatasetMetadataEvm().getWallet().setDefault(process.env.DATASWAP_GOVERNANCE as string)
+        this.contractsManager.DatasetMetadataEvm().getWallet().setDefault(caller)
         await handleEvmError(this.contractsManager.DatasetMetadataEvm().rejectDatasetMetadata(
             datasetId,
         ))
@@ -170,10 +175,10 @@ export class DatasetsAssertion implements IDatasetsAssertion {
         expect(preCollateral).to.be.equal(expectPreCollateral)
     }
 
-    async submitDatasetReplicaRequirementsAssertion(datasetId: number, expectRequirements: DatasetRequirements, expectAmount: bigint): Promise<void> {
+    async submitDatasetReplicaRequirementsAssertion(caller: string, datasetId: number, expectRequirements: DatasetRequirements, expectAmount: bigint): Promise<void> {
         try {
             let expectReplicasCount = expectRequirements.dataPreparers.length
-            this.contractsManager.DatasetRequirementEvm().getWallet().setDefault(process.env.DATASWAP_METADATASUBMITTER as string)
+            this.contractsManager.DatasetRequirementEvm().getWallet().setDefault(caller)
             await handleEvmError(this.contractsManager.DatasetRequirementEvm().submitDatasetReplicaRequirements(
                 datasetId,
                 expectRequirements.dataPreparers,
@@ -198,7 +203,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
         }
     }
 
-    async datasetsChallengeAssertion(expectDatasetChallengeAddress: string): Promise<void> {
+    async proofDatasetsChallengeAssertion(expectDatasetChallengeAddress: string): Promise<void> {
         let datasetsChallenge = await handleEvmError(this.contractsManager.DatasetProofEvm().datasetsChallenge())
         expect(expectDatasetChallengeAddress).to.be.equal(datasetsChallenge.data)
     }
@@ -273,12 +278,12 @@ export class DatasetsAssertion implements IDatasetsAssertion {
         expect(expectRet).to.be.equal(ret.data)
     }
 
-    async initDatasetsProofDependenciesAssertion(expectDatasetsChallenge: string): Promise<void> {
-        this.contractsManager.DatasetProofEvm().getWallet().setDefault(process.env.DATASWAP_GOVERNANCE as string)
-        let ret = await handleEvmError(this.contractsManager.DatasetProofEvm().initDependencies(
+    async proofInitDependenciesAssertion(caller: string, expectDatasetsChallenge: string): Promise<void> {
+        this.contractsManager.DatasetProofEvm().getWallet().setDefault(caller)
+        await handleEvmError(this.contractsManager.DatasetProofEvm().initDependencies(
             expectDatasetsChallenge,
         ))
-        await this.datasetsChallengeAssertion(expectDatasetsChallenge)
+        await this.proofDatasetsChallengeAssertion(expectDatasetsChallenge)
     }
 
     async submitDatasetProofRootAssertion(
@@ -289,7 +294,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
         expectSubmitter: string
     ): Promise<void> {
         try {
-            this.contractsManager.DatasetProofEvm().getWallet().setDefault(process.env.DATASWAP_PROOFSUBMITTER as string)
+            this.contractsManager.DatasetProofEvm().getWallet().setDefault(expectSubmitter)
             await handleEvmError(this.contractsManager.DatasetProofEvm().submitDatasetProofRoot(
                 datasetId,
                 dataType,
@@ -303,6 +308,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
         }
     }
     async submitDatasetProofAssertion(
+        caller: string,
         datasetId: number,
         dataType: DataType,
         expectLeafHashes: string[],
@@ -310,7 +316,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
         expectLeafSizes: number[],
         expectCompleted: boolean,
     ): Promise<void> {
-        this.contractsManager.DatasetProofEvm().getWallet().setDefault(process.env.DATASWAP_PROOFSUBMITTER as string)
+        this.contractsManager.DatasetProofEvm().getWallet().setDefault(caller)
         await handleEvmError(this.contractsManager.DatasetProofEvm().submitDatasetProof(
             datasetId,
             dataType,
@@ -325,10 +331,11 @@ export class DatasetsAssertion implements IDatasetsAssertion {
     }
 
     async submitDatasetProofCompletedAssertion(
+        caller: string,
         datasetId: number,
         expectState: DatasetState
     ): Promise<void> {
-        this.contractsManager.DatasetProofEvm().getWallet().setDefault(process.env.DATASWAP_PROOFSUBMITTER as string)
+        this.contractsManager.DatasetProofEvm().getWallet().setDefault(caller)
         await handleEvmError(this.contractsManager.DatasetProofEvm().submitDatasetProofCompleted(
             datasetId,
         ))
@@ -338,11 +345,12 @@ export class DatasetsAssertion implements IDatasetsAssertion {
     }
 
     async appendDatasetFundsAssertion(
+        caller: string,
         datasetId: number,
         expectDatacapCollateral: bigint,
         expectDataAuditorFees: bigint,
     ): Promise<void> {
-        this.contractsManager.DatasetProofEvm().getWallet().setDefault(process.env.DATASWAP_METADATASUBMITTER as string)
+        this.contractsManager.DatasetProofEvm().getWallet().setDefault(caller)
         await handleEvmError(this.contractsManager.DatasetProofEvm().appendDatasetFunds(
             datasetId,
             expectDatacapCollateral,
@@ -395,6 +403,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
     }
 
     async submitDatasetChallengeProofsAssertion(
+        caller: string,
         datasetId: number,
         randomSeed: number,
         leaves: string[],
@@ -402,7 +411,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
         paths: number[],
     ): Promise<void> {
         let count = await handleEvmError(this.contractsManager.DatasetChallengeEvm().getDatasetChallengeProofsCount(datasetId))
-        this.contractsManager.DatasetChallengeEvm().getWallet().setDefault(process.env.DATASWAP_DATASETAUDITOR as string)
+        this.contractsManager.DatasetChallengeEvm().getWallet().setDefault(caller)
         await handleEvmError(this.contractsManager.DatasetChallengeEvm().submitDatasetChallengeProofs(
             datasetId,
             randomSeed,
