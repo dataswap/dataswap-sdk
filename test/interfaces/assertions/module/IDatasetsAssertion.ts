@@ -25,7 +25,7 @@ export interface IDatasetsAssertion {
     getDatasetReplicasCountAssertion(datasetId: number, expectCount: number): Promise<void>
     getDatasetReplicaRequirementAssertion(datasetId: number, index: number, expectRequirement: DatasetRequirement): Promise<void>
     getDatasetPreCollateralRequirementsAssertion(datasetId: number, expectPreCollateral: bigint): Promise<void>
-    submitDatasetReplicaRequirementsAssertion(datasetId: number, expectRequirements: DatasetRequirements, expectAmount: bigint,): Promise<void>
+    submitDatasetReplicaRequirementsAssertion(datasetId: number, expectRequirements: DatasetRequirements, expectAmount: bigint): Promise<void>
     //DatasetsProof
     datasetsChallengeAssertion(expectDatasetChallengeAddress: string): Promise<void>
     getDatasetAppendCollateralAssertion(datasetId: number, expectAppendCollateral: bigint): Promise<void>

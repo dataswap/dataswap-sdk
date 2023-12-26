@@ -1,10 +1,10 @@
 export abstract class TestBase {
-    async optionalBefore(): Promise<number> { return 0 }
+    async optionalBefore(...args: any[]): Promise<number> { return 0 }
 
-    private async before(id?: number): Promise<number> {
+    private async before(id?: number, ...args: any[]): Promise<number> {
         try {
             if (!id) {
-                return await this.optionalBefore()
+                return await this.optionalBefore(...args)
             }
             return id
         } catch (error) {
@@ -13,18 +13,18 @@ export abstract class TestBase {
     }
 
 
-    abstract action(id: number): Promise<number>
+    abstract action(id: number, ...args: any[]): Promise<number>
 
-    async after(id: number): Promise<void> { }
+    async after(id: number, ...args: any[]): Promise<void> { }
 
-    async run(id?: number): Promise<number> {
+    async run(id?: number, ...args: any[]): Promise<number> {
         try {
-            let targetId = await this.before(id)
-            let ret = await this.action(targetId)
+            let targetId = await this.before(id, ...args)
+            let ret = await this.action(targetId, ...args)
             if (targetId === 0) {
                 targetId = ret
             }
-            await this.after(targetId)
+            await this.after(targetId, ...args)
             return targetId
         } catch (error) {
             throw error

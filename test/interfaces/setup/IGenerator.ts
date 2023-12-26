@@ -12,6 +12,7 @@ export interface IGenerator {
         duplicateCount?: number
     ): DatasetRequirements
     generateDatasetProof(leavesCount: number, dataType: DataType): [root: string, leafHashes: string[], leafSizes: number[], mappingFilesAccessMethod: string]
+    getDatasetProof(root: string): [leafHashes: string[], leafSizes: number[]]
     generateDatasetChallengeProof(root: string): [randomSeed: number, leaves: string[], siblings: string[][], paths: number[]]
     generatorAddress(): Promise<string>
     generatorEthAccount(): Promise<[string, string]>
@@ -24,5 +25,7 @@ export interface IGenerator {
         additionalInfo: string,
     ]
     datasetNextReplicaIndex(datasetId: number, max: number): number
+    getProofRoot(id: number, dataType: DataType): string | undefined
+    setProofRoot(id: number, dataType: DataType, root: string): void
 }
 

@@ -45,7 +45,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
 
     async getDatasetStateAssertion(datasetId: number, expectState: DatasetState): Promise<void> {
         let state = await handleEvmError(this.contractsManager.DatasetMetadataEvm().getDatasetState(datasetId))
-        expect(Number(expectState)).to.be.equal(Number(state))
+        expect(Number(expectState)).to.be.equal(Number(state.data))
     }
 
     async governanceAddressAssertion(expectGovernance: string): Promise<void> {
@@ -171,28 +171,33 @@ export class DatasetsAssertion implements IDatasetsAssertion {
     }
 
     async submitDatasetReplicaRequirementsAssertion(datasetId: number, expectRequirements: DatasetRequirements, expectAmount: bigint): Promise<void> {
-        let expectReplicasCount = expectRequirements.dataPreparers.length
-        this.contractsManager.DatasetMetadataEvm().getWallet().setDefault(process.env.DATASWAP_METADATASUBMITTER as string)
-        await handleEvmError(this.contractsManager.DatasetRequirementEvm().submitDatasetReplicaRequirements(
-            datasetId,
-            expectRequirements.dataPreparers,
-            expectRequirements.storageProviders,
-            expectRequirements.regionCodes,
-            expectRequirements.countryCodes,
-            expectRequirements.cityCodes,
-            expectAmount,
-        ))
-        this.getDatasetReplicasCountAssertion(datasetId, expectReplicasCount)
-        let index = utils.getRandomInt(0, expectReplicasCount - 1)
-        let expectRequirement = new DatasetRequirement({
-            dataPreparers: expectRequirements.dataPreparers[index],
-            storageProviders: expectRequirements.storageProviders[index],
-            regionCode: expectRequirements.regionCodes[index],
-            countryCode: expectRequirements.countryCodes[index],
-            cityCodes: expectRequirements.cityCodes[index]
-        })
-        this.getDatasetReplicaRequirementAssertion(datasetId, index, expectRequirement)
+        try {
+            let expectReplicasCount = expectRequirements.dataPreparers.length
+            this.contractsManager.DatasetRequirementEvm().getWallet().setDefault(process.env.DATASWAP_METADATASUBMITTER as string)
+            await handleEvmError(this.contractsManager.DatasetRequirementEvm().submitDatasetReplicaRequirements(
+                datasetId,
+                expectRequirements.dataPreparers,
+                expectRequirements.storageProviders,
+                expectRequirements.regionCodes,
+                expectRequirements.countryCodes,
+                expectRequirements.cityCodes,
+                expectAmount,
+            ))
+            await this.getDatasetReplicasCountAssertion(datasetId, expectReplicasCount)
+            let index = utils.getRandomInt(0, expectReplicasCount - 1)
+            let expectRequirement = new DatasetRequirement({
+                dataPreparers: expectRequirements.dataPreparers[index],
+                storageProviders: expectRequirements.storageProviders[index],
+                regionCode: expectRequirements.regionCodes[index],
+                countryCode: expectRequirements.countryCodes[index],
+                cityCodes: expectRequirements.cityCodes[index]
+            })
+            await this.getDatasetReplicaRequirementAssertion(datasetId, index, expectRequirement)
+        } catch (error) {
+            throw error
+        }
     }
+
     async datasetsChallengeAssertion(expectDatasetChallengeAddress: string): Promise<void> {
         let datasetsChallenge = await handleEvmError(this.contractsManager.DatasetProofEvm().datasetsChallenge())
         expect(expectDatasetChallengeAddress).to.be.equal(datasetsChallenge.data)
@@ -225,7 +230,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
 
     async getDatasetProofSubmitterAssertion(datasetId: number, expectProofSubmitter: string): Promise<void> {
         let proofSubmitter = await handleEvmError(this.contractsManager.DatasetProofEvm().getDatasetProofSubmitter(datasetId))
-        expect(expectProofSubmitter).to.be.equal(Number(proofSubmitter.data))
+        expect(expectProofSubmitter).to.be.equal(proofSubmitter.data)
     }
 
     async getDatasetSizeAssertion(datasetId: number, dataType: DataType, expectSize: number): Promise<void> {
@@ -283,15 +288,19 @@ export class DatasetsAssertion implements IDatasetsAssertion {
         rootHash: string,
         expectSubmitter: string
     ): Promise<void> {
-        this.contractsManager.DatasetProofEvm().getWallet().setDefault(process.env.DATASWAP_PROOFSUBMITTER as string)
-        await handleEvmError(this.contractsManager.DatasetProofEvm().submitDatasetProofRoot(
-            datasetId,
-            dataType,
-            mappingFilesAccessMethod,
-            rootHash,
-        ))
-        await this.getDatasetProofSubmitterAssertion(datasetId, expectSubmitter)
-        await this.isDatasetProofSubmitterAssertion(datasetId, expectSubmitter, true)
+        try {
+            this.contractsManager.DatasetProofEvm().getWallet().setDefault(process.env.DATASWAP_PROOFSUBMITTER as string)
+            await handleEvmError(this.contractsManager.DatasetProofEvm().submitDatasetProofRoot(
+                datasetId,
+                dataType,
+                mappingFilesAccessMethod,
+                rootHash,
+            ))
+            await this.getDatasetProofSubmitterAssertion(datasetId, expectSubmitter)
+            await this.isDatasetProofSubmitterAssertion(datasetId, expectSubmitter, true)
+        } catch (error) {
+            throw error
+        }
     }
     async submitDatasetProofAssertion(
         datasetId: number,
@@ -311,8 +320,8 @@ export class DatasetsAssertion implements IDatasetsAssertion {
             expectCompleted,
         ))
         let carsIds = await handleEvmError(this.contractsManager.CarstoreEvm().getCarsIds(expectLeafHashes))
-        await this.isDatasetContainsCarsAssertion(datasetId, carsIds, true)
-        await this.isDatasetContainsCarAssertion(datasetId, carsIds[0], true)
+        await this.isDatasetContainsCarsAssertion(datasetId, utils.convertToNumberArray(carsIds.data), true)
+        await this.isDatasetContainsCarAssertion(datasetId, Number(carsIds.data[0]), true)
     }
 
     async submitDatasetProofCompletedAssertion(

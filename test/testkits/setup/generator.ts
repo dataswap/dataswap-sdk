@@ -6,6 +6,7 @@ import { IGenerator } from "../../interfaces/setup/IGenerator"
 import { DatasetRequirements } from "../../../src/shared/types/datasetType"
 import { DataType } from '../../../src/shared/types/dataType';
 import { BidSelectionRule } from '../../../src/module/matching/metadata/types';
+//import { MerkleTree } from 'merkle-tree-gen'
 
 function getRequirementActors(count: number, elementCountInActor: number): string[][] {
     let actors: string[][] = []
@@ -138,9 +139,11 @@ const challengeProof = {
 
 export class Generator implements IGenerator {
     private datasetsNextReplicaIndexMap: Map<number, number>
+    private proofRootsMap: Map<number, Map<DataType, string>>
     private nonce = 0
     constructor() {
         this.datasetsNextReplicaIndexMap = new Map<number, number>()
+        this.proofRootsMap = new Map<number, Map<DataType, string>>()
     }
     generateDatasetMetadata(accessMethod?: string): DatasetMetadata {
         let random: string = utils.generateRandomString(7)
@@ -187,6 +190,14 @@ export class Generator implements IGenerator {
 
     }
 
+    getDatasetProof(root: string): [leafHashes: string[], leafSizes: number[]] {
+        if ("0x7ea8b1c4a9f6045bdff6ab808a9e38b4a6f267744f2a263dd67978ab0589fb32" === root) {
+            return [sourcesFiles.leafHashes, sourcesFiles.leafSizes]
+        }
+
+        return [mapingFiles.leafHashes, mapingFiles.leafSizes]
+    }
+
     generateDatasetChallengeProof(root: string): [randomSeed: number, leaves: string[], siblings: string[][], paths: number[]] {
         //TODO :Need to automatically generate verifiable challenge proofs.
         return [challengeProof.randomSeed, challengeProof.leaves, challengeProof.siblings, challengeProof.paths]
@@ -226,6 +237,23 @@ export class Generator implements IGenerator {
             }
         }
         return next
+    }
+
+    getProofRoot(id: number, dataType: DataType): string | undefined {
+        const rootsMap = this.proofRootsMap.get(id);
+        if (rootsMap) {
+            return rootsMap.get(dataType);
+        }
+        return undefined;
+    }
+
+    setProofRoot(id: number, dataType: DataType, root: string): void {
+        let rootsMap = this.proofRootsMap.get(id);
+        if (!rootsMap) {
+            rootsMap = new Map<DataType, string>();
+        }
+        rootsMap.set(dataType, root);
+        this.proofRootsMap.set(id, rootsMap)
     }
 }
 

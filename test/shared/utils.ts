@@ -1,4 +1,3 @@
-import { EvmOutput } from "@unipackage/net"
 import { ethers } from "ethers"
 
 
@@ -65,8 +64,8 @@ export function convertToBigIntArray(numbers: number[]): BigInt[] {
     return numbers.map((num) => BigInt(num));
 }
 
-export function convertToNumberArray(bigIntegers: BigInt[] | number[]): number[] {
-    return bigIntegers.map((bigInt) => Number(bigInt));
+export function convertToNumberArray(bigIntegers: (bigint | number)[]): number[] {
+    return bigIntegers.map(bigInt => Number(bigInt)) as number[];
 }
 
 
