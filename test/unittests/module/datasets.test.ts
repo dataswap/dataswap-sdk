@@ -26,7 +26,13 @@ import { getContractsManager, getGenerator, getDatasetsHelper } from "../../fixt
 import { DatasetState } from "../../../src/shared/types/datasetType"
 import { DatasetsAssertion } from "../../assertions/module/datasetsAssertion"
 
+/**
+ * Test suite for the datasets functionality.
+ */
 describe("datasets", async () => {
+    /**
+     * Setup before running the test suite.
+     */
     before(function () {
         this.sharedData = {}
         this.sharedData.datasetId = 0
@@ -38,6 +44,9 @@ describe("datasets", async () => {
         )
     })
 
+    /**
+     * Tests successful submission of dataset metadata.
+     */
     it("SubmitDatasetsMetadataSuccess", async function () {
         let testKit = new SubmitMetadataSuccessTestKit(
             this.sharedData.datasetsAssertion!,
@@ -49,6 +58,9 @@ describe("datasets", async () => {
         this.sharedData.datasetId = datasetId
     })
 
+    /**
+     * Tests successful submission of dataset requirements.
+     */
     it("SubmitRequirementSuccess", async function () {
         try {
             let datasetId = this.sharedData.datasetId!
@@ -65,6 +77,9 @@ describe("datasets", async () => {
         }
     })
 
+    /**
+     * Test suite for successful approval of dataset metadata.
+     */
     it("ApproveDatasetMetadataSuccessTestSuite", async function () {
         let testKit = new ApproveDatasetMetadataSuccessTestKit(
             this.sharedData.datasetsAssertion!,
@@ -78,6 +93,9 @@ describe("datasets", async () => {
         this.sharedData.datasetHelper.updateWorkflowTargetState(datasetId, DatasetState.MetadataApproved)
     })
 
+    /**
+     * Tests successful submission of dataset proof root.
+     */
     it("SubmitDatasetProofRootSuccess", async function () {
         let testKit = new SubmitDatasetProofRootSuccessTestKit(
             this.sharedData.datasetsAssertion!,
@@ -91,6 +109,9 @@ describe("datasets", async () => {
         this.sharedData.datasetId = datasetId
     })
 
+    /**
+     * Tests successful submission of dataset proof.
+     */
     it("SubmitDatasetProofSuccess", async function () {
         let testKit = new SubmitDatasetProofSuccessTestKit(
             this.sharedData.datasetsAssertion!,

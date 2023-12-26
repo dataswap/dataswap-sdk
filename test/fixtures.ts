@@ -28,8 +28,8 @@ import { DatasetsHelper } from './helpers/module/datasetsHelper';
 import { DataswapTestSetup } from './testkits/setup/dataswapTestSetup';
 
 
+// Import test environmental parameters
 function setup() {
-    // import test Environmental parameters
     dotenv.config()
 }
 
@@ -37,6 +37,10 @@ let contractsManagerInstance: IContractsManager | null = null;
 let generatorInstance: IGenerator | null = null;
 let datasetHelperInstance: IDatasetsHelper | null = null;
 
+/**
+ * Gets the contracts manager instance.
+ * Throws an error if contracts manager is not initialized.
+ */
 export function getContractsManager(): IContractsManager {
     if (!contractsManagerInstance) {
         throw new Error('Contracts manager not initialized');
@@ -44,20 +48,32 @@ export function getContractsManager(): IContractsManager {
     return contractsManagerInstance;
 }
 
+/**
+ * Gets the generator instance.
+ * Throws an error if generator is not initialized.
+ */
 export function getGenerator(): IGenerator {
     if (!generatorInstance) {
         throw new Error('Generator not initialized');
     }
     return generatorInstance;
 }
+
+/**
+ * Gets the datasets helper instance.
+ * Throws an error if datasetHelper is not initialized.
+ */
 export function getDatasetsHelper(): IDatasetsHelper {
     if (!datasetHelperInstance) {
-        throw new Error('datasetHelper not initialized');
+        throw new Error('DatasetHelper not initialized');
     }
     return datasetHelperInstance;
 }
 
-
+/**
+ * Global setup function for Mocha tests.
+ * Sets up required instances and runs necessary initializations.
+ */
 export async function mochaGlobalSetup() {
     setup()
     console.log(`@@@@ Mocha add hooks finished @@@@`)
