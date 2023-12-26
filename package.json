@@ -40,8 +40,8 @@
   "dependencies": {
     "@dataswapcore/contracts": "^0.1.3",
     "@unipackage/datastore": "^0.1.5",
-    "@unipackage/ddd": "^0.1.5",
-    "@unipackage/filecoin": "^0.2.0",
+    "@unipackage/ddd": "^1.0.0",
+    "@unipackage/filecoin": "^1.0.0",
     "@unipackage/net": "^2.2.2",
     "@unipackage/utils": "^1.4.0",
     "dotenv": "^16.3.1"
