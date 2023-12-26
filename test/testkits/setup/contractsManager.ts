@@ -1,3 +1,23 @@
+/*******************************************************************************
+ *   (c) 2023 dataswap
+ *
+ *  Licensed under either the MIT License (the "MIT License") or the Apache License, Version 2.0
+ *  (the "Apache License"). You may not use this file except in compliance with one of these
+ *  licenses. You may obtain a copy of the MIT License at
+ *
+ *      https://opensource.org/licenses/MIT
+ *
+ *  Or the Apache License, Version 2.0 at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the MIT License or the Apache License for the specific language governing permissions and
+ *  limitations under the respective licenses.
+ ********************************************************************************/
+
 import { CarstoreEvm } from "../../../src/core/carstore/repo/evm"
 import { DatacapsEvm } from "../../../src/module/datacaps/repo/evm"
 import { DatasetMetadataEvm } from "../../../src/module/dataset/metadata/repo/evm"
@@ -81,10 +101,7 @@ export class ContractsManager implements IContractsManager {
         try {
             const roleBytes = ethers.utils.toUtf8Bytes(role)
             const hash = ethers.utils.keccak256(roleBytes);
-            let ret = await this.RolesEvm().hasRole(hash, contractAddress)
-            if (!ret.ok) {
-                throw ret.error
-            }
+            let ret = await handleEvmError(this.RolesEvm().hasRole(hash, contractAddress))
             if (ret.data) {
                 // Role already set up
                 return
@@ -92,13 +109,10 @@ export class ContractsManager implements IContractsManager {
 
             this.RolesEvm().getWallet().setDefault(process.env.DATASWAP_GOVERNANCE as string)
             // Grant the role to the contract
-            let tx = await this.RolesEvm().grantRole(
+            await handleEvmError(this.RolesEvm().grantRole(
                 hash,
                 contractAddress,
-            );
-            if (!tx.ok) {
-                throw tx.error
-            }
+            ))
         } catch (error) {
             throw error
         }

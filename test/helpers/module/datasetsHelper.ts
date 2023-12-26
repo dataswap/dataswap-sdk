@@ -1,3 +1,23 @@
+/*******************************************************************************
+ *   (c) 2023 dataswap
+ *
+ *  Licensed under either the MIT License (the "MIT License") or the Apache License, Version 2.0
+ *  (the "Apache License"). You may not use this file except in compliance with one of these
+ *  licenses. You may obtain a copy of the MIT License at
+ *
+ *      https://opensource.org/licenses/MIT
+ *
+ *  Or the Apache License, Version 2.0 at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the MIT License or the Apache License for the specific language governing permissions and
+ *  limitations under the respective licenses.
+ ********************************************************************************/
+
 import { IDatasetsHelper } from "../../interfaces/helper/module/IDatasetshelper"
 import { BasicHelper } from "./basicHelper"
 import { DatasetState } from "../../../src/shared/types/datasetType"
@@ -6,12 +26,23 @@ import { expect } from "chai"
 import { handleEvmError } from "../../shared/error"
 import { IGenerator } from "../../interfaces/setup/IGenerator"
 import { IContractsManager } from "../../interfaces/setup/IContractsManater"
+import { DatasetsAssertion } from "../../assertions/module/datasetsAssertion"
+import { IDatasetsAssertion } from "../../interfaces/assertions/module/IDatasetsAssertion"
 
 
+/**
+ * Helper class providing dataset test-related functionalities.
+ */
 export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
     private generator: IGenerator
     private contractsManager: IContractsManager
-    private datasetsProofRootsMap: Map<number, string>
+    private assertion: IDatasetsAssertion
+
+    /**
+     * Constructs a DatasetsHelper.
+     * @param _generator - The generator instance used for dataset operations.
+     * @param _contractsManager - The contracts manager instance used for dataset operations.
+     */
     constructor(
         _generator: IGenerator,
         _contractsManager: IContractsManager
@@ -19,7 +50,7 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
         super()
         this.generator = _generator
         this.contractsManager = _contractsManager
-        this.datasetsProofRootsMap = new Map<number, string>()
+        this.assertion = new DatasetsAssertion(_contractsManager)
     }
     /**
      * Workflow for submitting dataset metadata.
@@ -32,50 +63,23 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
     async metadataSubmittedDatasetWorkflow(replicasCount: number, elementCountInReplica: number, duplicateIndex?: number, duplicateCount?: number): Promise<number> {
         try {
             let datasetMetadata = this.generator.generateDatasetMetadata()
-            let clientId = 100
-            this.contractsManager.DatasetMetadataEvm().getWallet().setDefault(process.env.DATASWAP_METADATASUBMITTER as string)
-            // Submit dataset metadata transaction
-            let tx = await handleEvmError(this.contractsManager.DatasetMetadataEvm().submitDatasetMetadata(
-                clientId,
-                datasetMetadata.title,
-                datasetMetadata.industry,
-                datasetMetadata.name,
-                datasetMetadata.description,
-                datasetMetadata.source,
-                datasetMetadata.accessMethod,
-                datasetMetadata.sizeInBytes,
-                datasetMetadata.isPublic,
-                datasetMetadata.version,
-            ))
+            let clientId = 101
 
-            // Get transaction receipt and event arguments
-            const receipt = await this.contractsManager.DatasetMetadataEvm().getTransactionReceipt(
-                tx.data.hash
-            )
-
-            let ret = this.contractsManager.DatasetMetadataEvm().getEvmEventArgs(receipt!, "DatasetMetadataSubmitted")
-
-            let datasetId = Number(ret.data.datasetId)
+            let datasetId = await this.assertion.submitDatasetMetadataAssertion(process.env.DATASWAP_METADATASUBMITTER as string, clientId, datasetMetadata)
 
             // Generate dataset requirements
             let requirments = this.generator.generateDatasetRequirements(replicasCount, elementCountInReplica, duplicateIndex, duplicateCount)
 
             // Submit dataset replica requirements transaction
-            await handleEvmError(this.contractsManager.DatasetRequirementEvm().submitDatasetReplicaRequirements(
+            await this.assertion.submitDatasetReplicaRequirementsAssertion(
+                process.env.DATASWAP_METADATASUBMITTER as string,
                 datasetId,
-                requirments.dataPreparers,
-                requirments.storageProviders,
-                requirments.regionCodes,
-                requirments.countryCodes,
-                requirments.cityCodes,
-                BigInt(0),
-            ))
+                requirments,
+                BigInt(0)
+            )
 
-            // Get updated dataset state
-            let datasetState = await handleEvmError(this.contractsManager.DatasetMetadataEvm().getDatasetState(datasetId))
+            await this.assertion.getDatasetStateAssertion(datasetId, DatasetState.MetadataSubmitted)
 
-            // Assertions for dataset state and metadata
-            expect(BigInt(DatasetState.MetadataSubmitted)).to.equal(datasetState.data)
             // Update workflow target state and return dataset ID
             this.updateWorkflowTargetState(datasetId, Number(DatasetState.MetadataSubmitted))
             return datasetId
@@ -84,176 +88,230 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
         }
     }
 
+    /**
+     * Executes the workflow for an approved dataset metadata.
+     * @returns The dataset ID after completing the workflow.
+     */
     async metadataApprovedDatasetWorkflow(): Promise<number> {
         try {
+            // Completes the workflow for MetadataSubmitted state
             let datasetId = await this.completeDependentWorkflow(
                 Number(DatasetState.MetadataSubmitted),
                 async (): Promise<number> => {
-                    return await this.metadataSubmittedDatasetWorkflow(5, 3)
+                    return await this.metadataSubmittedDatasetWorkflow(5, 3);
                 }
-            )
+            );
 
-            this.contractsManager.DatasetMetadataEvm().getWallet().setDefault(process.env.DATASWAP_GOVERNANCE as string)
-            await handleEvmError(this.contractsManager.DatasetMetadataEvm().approveDatasetMetadata(
+            // Approves dataset metadata using assertion
+            await this.assertion.approveDatasetMetadataAssertion(
+                process.env.DATASWAP_GOVERNANCE as string,
                 datasetId,
-            ))
-            // Get updated dataset state
-            let datasetState = await handleEvmError(this.contractsManager.DatasetMetadataEvm().getDatasetState(datasetId))
+                DatasetState.MetadataApproved
+            );
 
-            // Assertions for dataset state and metadata
-            expect(BigInt(DatasetState.MetadataApproved)).to.equal(datasetState.data)
+            // Updates the dataset state to MetadataApproved
+            this.updateWorkflowTargetState(datasetId, DatasetState.MetadataApproved);
 
-            this.updateWorkflowTargetState(datasetId, Number(DatasetState.MetadataApproved))
-            return datasetId
+            return datasetId; // Returns the dataset ID
         } catch (error) {
-            throw error
+            throw error;
         }
     }
 
+    /**
+     * Executes the workflow for rejected dataset metadata.
+     * @returns The dataset ID after completing the workflow.
+     */
     async metadataRejectedDatasetWorkflow(): Promise<number> {
-        let datasetId = await this.completeDependentWorkflow(
-            DatasetState.MetadataSubmitted,
-            async (): Promise<number> => {
-                return await this.metadataSubmittedDatasetWorkflow(5, 3)
-            }
-        )
+        try {
+            // Completes the workflow for MetadataSubmitted state
+            let datasetId = await this.completeDependentWorkflow(
+                DatasetState.MetadataSubmitted,
+                async (): Promise<number> => {
+                    return await this.metadataSubmittedDatasetWorkflow(5, 3);
+                }
+            );
 
-        this.contractsManager.DatasetMetadataEvm().getWallet().setDefault(process.env.DATASWAP_GOVERNANCE as string)
-        await handleEvmError(this.contractsManager.DatasetMetadataEvm().rejectDatasetMetadata(
-            datasetId,
-        ))
-        // Get updated dataset state
-        let datasetState = await handleEvmError(this.contractsManager.DatasetMetadataEvm().getDatasetState(datasetId))
+            // Rejects dataset metadata using assertion
+            await this.assertion.rejectDatasetMetadataAssertion(
+                process.env.DATASWAP_GOVERNANCE as string,
+                datasetId,
+                DatasetState.MetadataRejected
+            );
 
-        // Assertions for dataset state and metadata
-        expect(BigInt(DatasetState.MetadataRejected)).to.equal(datasetState.data)
-        this.updateWorkflowTargetState(datasetId, Number(DatasetState.MetadataRejected))
-        return datasetId
+            // Updates the dataset state to MetadataRejected
+            this.updateWorkflowTargetState(datasetId, Number(DatasetState.MetadataRejected));
+
+            return datasetId; // Returns the dataset ID
+        } catch (error) {
+            throw error;
+        }
     }
 
+    /**
+     * Executes the workflow when there are insufficient funds for a dataset.
+     * @returns The dataset ID after completing the workflow.
+     */
     async fundsNotEnoughDatasetWorkflow(): Promise<number> {
-        let datasetId = await this.completeDependentWorkflow(
-            DatasetState.MetadataApproved,
-            this.metadataApprovedDatasetWorkflow,
-        )
+        try {
+            // Completes the workflow for MetadataApproved state
+            let datasetId = await this.completeDependentWorkflow(
+                DatasetState.MetadataApproved,
+                this.metadataApprovedDatasetWorkflow,
+            );
 
-        let dataType = DataType.MappingFiles
-        let [rootHashMappings, leafHashesMappings, leafSizesMappings, mappingFilesAccessMethod] = this.generator.generateDatasetProof(0, dataType)
+            // Generating dataset proof for DataType.MappingFiles
+            let dataType = DataType.MappingFiles;
+            let [rootHashMappings, leafHashesMappings, leafSizesMappings, mappingFilesAccessMethod] = this.generator.generateDatasetProof(0, dataType);
 
-        this.contractsManager.DatasetProofEvm().getWallet().setDefault(process.env.DATASWAP_PROOFSUBMITTER as string)
-        await handleEvmError(this.contractsManager.DatasetProofEvm().submitDatasetProofRoot(
-            datasetId,
-            dataType,
-            mappingFilesAccessMethod,
-            rootHashMappings,
-        ))
+            // Submits dataset proof root for DataType.MappingFiles
+            this.contractsManager.DatasetProofEvm().getWallet().setDefault(process.env.DATASWAP_PROOFSUBMITTER as string);
+            await handleEvmError(this.contractsManager.DatasetProofEvm().submitDatasetProofRoot(
+                datasetId,
+                dataType,
+                mappingFilesAccessMethod,
+                rootHashMappings,
+            ));
 
-        await handleEvmError(this.contractsManager.DatasetProofEvm().submitDatasetProof(
-            datasetId,
-            dataType,
-            leafHashesMappings,
-            0,
-            leafSizesMappings,
-            true,
-        ))
+            // Submits dataset proof for DataType.MappingFiles
+            await handleEvmError(this.contractsManager.DatasetProofEvm().submitDatasetProof(
+                datasetId,
+                dataType,
+                leafHashesMappings,
+                0,
+                leafSizesMappings,
+                true,
+            ));
+            this.generator.setProofRoot(datasetId, DataType.MappingFiles, rootHashMappings);
 
-        dataType = DataType.Source
+            // Updating dataType to DataType.Source
+            dataType = DataType.Source;
 
-        let [rootHash, leafHashes, leafSizes,] = this.generator.generateDatasetProof(0, dataType)
-        await handleEvmError(this.contractsManager.DatasetProofEvm().submitDatasetProofRoot(
-            datasetId,
-            dataType,
-            '',
-            rootHash,
-        ))
+            // Generating dataset proof for DataType.Source
+            let [rootHash, leafHashes, leafSizes] = this.generator.generateDatasetProof(0, dataType);
 
+            // Submits dataset proof root for DataType.Source
+            await handleEvmError(this.contractsManager.DatasetProofEvm().submitDatasetProofRoot(
+                datasetId,
+                dataType,
+                '',
+                rootHash,
+            ));
 
-        await handleEvmError(this.contractsManager.DatasetProofEvm().submitDatasetProof(
-            datasetId,
-            dataType,
-            leafHashes,
-            0,
-            leafSizes,
-            true,
-        ))
-        await handleEvmError(this.contractsManager.DatasetProofEvm().submitDatasetProofCompleted(
-            datasetId,
-        ))
-        // Get updated dataset state
-        let datasetState = await handleEvmError(this.contractsManager.DatasetMetadataEvm().getDatasetState(datasetId))
+            // Submits dataset proof for DataType.Source
+            await handleEvmError(this.contractsManager.DatasetProofEvm().submitDatasetProof(
+                datasetId,
+                dataType,
+                leafHashes,
+                0,
+                leafSizes,
+                true,
+            ));
 
-        // Assertions for dataset state and metadata
-        expect(BigInt(DatasetState.FundsNotEnough)).to.equal(datasetState.data)
-        this.datasetsProofRootsMap.set(datasetId, rootHash)
-        this.updateWorkflowTargetState(datasetId, Number(DatasetState.FundsNotEnough))
-        return datasetId
+            // Completes the dataset proof submission
+            await handleEvmError(this.contractsManager.DatasetProofEvm().submitDatasetProofCompleted(
+                datasetId,
+            ));
+
+            // Get updated dataset state
+            let datasetState = await handleEvmError(this.contractsManager.DatasetMetadataEvm().getDatasetState(datasetId));
+
+            // Assertions for dataset state and metadata
+            expect(BigInt(DatasetState.FundsNotEnough)).to.equal(datasetState.data);
+            this.generator.setProofRoot(datasetId, DataType.Source, rootHashMappings);
+
+            // Updates the dataset state to FundsNotEnough
+            this.updateWorkflowTargetState(datasetId, Number(DatasetState.FundsNotEnough));
+            return datasetId; // Returns the dataset ID
+        } catch (error) {
+            throw error;
+        }
     }
 
+    /**
+     * Executes the workflow after the dataset proof has been submitted.
+     * @returns The dataset ID after completing the workflow.
+     */
     async proofSubmittedDatasetWorkflow(): Promise<number> {
-        let datasetId = await this.completeDependentWorkflow(
-            DatasetState.FundsNotEnough,
-            this.fundsNotEnoughDatasetWorkflow
-        )
-        this.contractsManager.DatasetProofEvm().getWallet().setDefault(process.env.DATASWAP_METADATASUBMITTER as string)
-        let fee = BigInt(this.contractsManager.DatasetProofEvm().generateWei("0.5", "ether").toString())
-        await handleEvmError(this.contractsManager.DatasetProofEvm().appendDatasetFunds(
-            datasetId,
-            fee,
-            fee,
-            {
-                value: this.contractsManager.DatasetProofEvm().generateWei("1", "ether")
-            }
-        ))
+        try {
+            // Completes the workflow for FundsNotEnough state
+            let datasetId = await this.completeDependentWorkflow(
+                DatasetState.FundsNotEnough,
+                this.fundsNotEnoughDatasetWorkflow
+            );
 
-        this.contractsManager.DatasetProofEvm().getWallet().setDefault(process.env.DATASWAP_PROOFSUBMITTER as string)
-        await handleEvmError(this.contractsManager.DatasetProofEvm().submitDatasetProofCompleted(
-            datasetId,
-        ))
+            // Setting wallet and appending dataset funds
+            this.contractsManager.DatasetProofEvm().getWallet().setDefault(process.env.DATASWAP_METADATASUBMITTER as string);
+            let fee = BigInt(this.contractsManager.DatasetProofEvm().generateWei("0.5", "ether").toString());
+            await handleEvmError(this.contractsManager.DatasetProofEvm().appendDatasetFunds(
+                datasetId,
+                fee,
+                fee,
+                {
+                    value: this.contractsManager.DatasetProofEvm().generateWei("1", "ether")
+                }
+            ));
 
+            // Setting wallet and submitting dataset proof as completed
+            this.contractsManager.DatasetProofEvm().getWallet().setDefault(process.env.DATASWAP_PROOFSUBMITTER as string);
+            await handleEvmError(this.contractsManager.DatasetProofEvm().submitDatasetProofCompleted(
+                datasetId,
+            ));
 
-        // Get updated dataset state
-        let datasetState = await handleEvmError(this.contractsManager.DatasetMetadataEvm().getDatasetState(datasetId))
+            // Get updated dataset state
+            let datasetState = await handleEvmError(this.contractsManager.DatasetMetadataEvm().getDatasetState(datasetId));
 
-        // Assertions for dataset state and metadata
-        expect(BigInt(DatasetState.DatasetProofSubmitted)).to.equal(datasetState.data)
-        this.updateWorkflowTargetState(datasetId, Number(DatasetState.DatasetProofSubmitted))
-        return datasetId
+            // Assertions for dataset state and metadata
+            expect(BigInt(DatasetState.DatasetProofSubmitted)).to.equal(datasetState.data);
+            this.updateWorkflowTargetState(datasetId, Number(DatasetState.DatasetProofSubmitted));
+            return datasetId; // Returns the dataset ID
+        } catch (error) {
+            throw error;
+        }
     }
 
-    async aprovedDatasetWorkflow(): Promise<number> {
-        let datasetId = await this.completeDependentWorkflow(
-            DatasetState.DatasetProofSubmitted,
-            this.proofSubmittedDatasetWorkflow,
-        )
-        let rootHash = this.getDatasetProofRoot(datasetId)
-        let [randomSeed, leaves, siblings, paths] = this.generator.generateDatasetChallengeProof(rootHash!)
+    /**
+     * Executes the workflow after the dataset has been approved.
+     * @returns The dataset ID after completing the workflow.
+     */
+    async approvedDatasetWorkflow(): Promise<number> {
+        try {
+            // Completes the workflow for DatasetProofSubmitted state
+            let datasetId = await this.completeDependentWorkflow(
+                DatasetState.DatasetProofSubmitted,
+                this.proofSubmittedDatasetWorkflow,
+            );
 
-        this.contractsManager.DatasetProofEvm().getWallet().setDefault(process.env.DATASWAP_DATASETAUDITOR as string)
-        await handleEvmError(this.contractsManager.DatasetChallengeEvm().submitDatasetChallengeProofs(
-            datasetId,
-            randomSeed,
-            leaves,
-            siblings,
-            paths,
-        ))
+            // Getting the root hash and generating challenge proof
+            let rootHash = this.generator.getProofRoot(datasetId, DataType.Source);
+            let [randomSeed, leaves, siblings, paths] = this.generator.generateDatasetChallengeProof(rootHash!);
 
-        this.contractsManager.DatasetMetadataEvm().getWallet().setDefault(process.env.DATASWAP_GOVERNANCE as string)
-        await handleEvmError(this.contractsManager.DatasetMetadataEvm().approveDataset(
-            datasetId,
-        ))
+            // Submitting challenge proofs
+            this.contractsManager.DatasetProofEvm().getWallet().setDefault(process.env.DATASWAP_DATASETAUDITOR as string);
+            await handleEvmError(this.contractsManager.DatasetChallengeEvm().submitDatasetChallengeProofs(
+                datasetId,
+                randomSeed,
+                leaves,
+                siblings,
+                paths,
+            ));
 
-        // Get updated dataset state
-        let datasetState = await handleEvmError(this.contractsManager.DatasetMetadataEvm().getDatasetState(datasetId))
+            // Approving the dataset
+            this.contractsManager.DatasetMetadataEvm().getWallet().setDefault(process.env.DATASWAP_GOVERNANCE as string);
+            await handleEvmError(this.contractsManager.DatasetMetadataEvm().approveDataset(
+                datasetId,
+            ));
 
-        // Assertions for dataset state and metadata
-        expect(BigInt(DatasetState.DatasetApproved)).to.equal(datasetState.data)
-        this.updateWorkflowTargetState(datasetId, Number(DatasetState.DatasetApproved))
+            // Get updated dataset state
+            let datasetState = await handleEvmError(this.contractsManager.DatasetMetadataEvm().getDatasetState(datasetId));
 
-        return datasetId
+            // Assertions for dataset state and metadata
+            expect(BigInt(DatasetState.DatasetApproved)).to.equal(datasetState.data);
+            this.updateWorkflowTargetState(datasetId, Number(DatasetState.DatasetApproved));
+
+            return datasetId; // Returns the dataset ID
+        } catch (error) {
+            throw error;
+        }
     }
-
-    getDatasetProofRoot(datasetId: number): string | undefined {
-        return this.datasetsProofRootsMap.get(datasetId)
-    }
-
 }

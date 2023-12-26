@@ -1,5 +1,24 @@
+/*******************************************************************************
+ *   (c) 2023 dataswap
+ *
+ *  Licensed under either the MIT License (the "MIT License") or the Apache License, Version 2.0
+ *  (the "Apache License"). You may not use this file except in compliance with one of these
+ *  licenses. You may obtain a copy of the MIT License at
+ *
+ *      https://opensource.org/licenses/MIT
+ *
+ *  Or the Apache License, Version 2.0 at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the MIT License or the Apache License for the specific language governing permissions and
+ *  limitations under the respective licenses.
+ ********************************************************************************/
+
 import {
-    Evm,
     withCallMethod,
     withSendMethod,
     EvmOutput,
@@ -26,22 +45,22 @@ interface MatchingTargetCallEvm {
     /**
      * Checks if a specific car hash is present in a matching identified by its ID.
      * @param matchingId - The ID of the matching.
-     * @param hash - The hash of the car to check.
+     * @param id - The id of the car to check.
      * @returns A Promise resolving to a boolean indicating whether the car hash is present.
      */
     isMatchingContainsCar(
         matchingId: number,
-        hash: number,
+        id: number,
     ): Promise<EvmOutput<boolean>>
     /**
      * Checks if multiple car hashes are present in a matching identified by its ID.
      * @param matchingId - The ID of the matching.
-     * @param hashs - An array of car hashes to check.
+     * @param ids - An array of car ids to check.
      * @returns A Promise resolving to a boolean indicating whether all specified car hashes are present.
      */
     isMatchingContainsCars(
         matchingId: number,
-        hashs: number[],
+        ids: number[],
     ): Promise<EvmOutput<boolean>>
     /**
      * Checks if a matching target is valid based on specified parameters.
