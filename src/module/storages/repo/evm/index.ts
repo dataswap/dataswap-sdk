@@ -47,13 +47,13 @@ interface StoragesCallEvm {
      * @dev Get the collateral amount
      * @param matchingId The ID of the matching.
      *  */
-    getProviderLockPayment(matchingId: number): Promise<EvmOutput<Buffer>>
+    getProviderLockPayment(matchingId: number): Promise<EvmOutput<bigint>>
 
     /**
      * @dev Get the client allow payment amount
      * @param matchingId The ID of the matching.
      *  */
-    getClientLockPayment(matchingId: number): Promise<EvmOutput<Buffer>>
+    getClientLockPayment(matchingId: number): Promise<EvmOutput<bigint>>
 
     /**
      * @dev Checks if all cars are done in the matchedstore.
