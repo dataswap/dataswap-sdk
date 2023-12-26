@@ -12,7 +12,14 @@
     "localnet:start": "./scripts/localnet.sh start",
     "localnet:restart": "./scripts/localnet.sh restart",
     "localnet:stop": "./scripts/localnet.sh stop",
-    "localnet:clear": "./scripts/localnet.sh clear"
+    "localnet:clear": "./scripts/localnet.sh clear",
+    "readme": "npx readme-md-generator -p ./templates/readme.md",
+    "commit": "git-cz",
+    "release": "npm run build; git branch --show-current | grep -q '^main$' && release-it",
+    "contrib:init": "all-contributors init",
+    "contrib:add": "all-contributors add",
+    "contrib:check": "all-contributors check",
+    "contrib:gen": "all-contributors generate"
   },
   "repository": {
     "type": "git",
@@ -55,6 +62,12 @@
     "ts-mocha": "^10.0.0",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.3.2"
+    "typescript": "^5.3.2",
+    "@release-it/conventional-changelog": "^8.0.1",
+    "all-contributors-cli": "^6.26.1",
+    "dotenv": "^16.3.1",
+    "git-cz": "^4.9.0",
+    "readme-md-generator": "^1.0.0",
+    "release-it": "^17.0.1"
   }
 }
