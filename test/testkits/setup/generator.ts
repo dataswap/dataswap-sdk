@@ -1,3 +1,23 @@
+/*******************************************************************************
+ *   (c) 2023 dataswap
+ *
+ *  Licensed under either the MIT License (the "MIT License") or the Apache License, Version 2.0
+ *  (the "Apache License"). You may not use this file except in compliance with one of these
+ *  licenses. You may obtain a copy of the MIT License at
+ *
+ *      https://opensource.org/licenses/MIT
+ *
+ *  Or the Apache License, Version 2.0 at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the MIT License or the Apache License for the specific language governing permissions and
+ *  limitations under the respective licenses.
+ ********************************************************************************/
+
 import { Wallet } from 'ethers';
 import * as utils from "../../shared/utils"
 import { ethers } from 'ethers'
@@ -8,7 +28,13 @@ import { DataType } from '../../../src/shared/types/dataType';
 import { BidSelectionRule } from '../../../src/module/matching/metadata/types';
 //import { MerkleTree } from 'merkle-tree-gen'
 
-function getRequirementActors(count: number, elementCountInActor: number): string[][] {
+/**
+ * Generates requirement actors based on count and element count for each actor.
+ * @param count - The count of actors.
+ * @param elementCountInActor - The element count for each actor.
+ * @returns A two-dimensional array containing actors.
+ */
+function generateRequirementActors(count: number, elementCountInActor: number): string[][] {
     let actors: string[][] = []
     for (let i = 0; i < count; i++) {
         let requirement: string[] = []
@@ -21,7 +47,12 @@ function getRequirementActors(count: number, elementCountInActor: number): strin
     return actors
 }
 
-function getArray(count: number): number[] {
+/**
+ * Generates an array with the specified count of elements.
+ * @param count - The count of elements in the array.
+ * @returns An array of numbers.
+ */
+function generateArray(count: number): number[] {
     let ret: number[] = []
     for (let i = 0; i < count; i++) {
         let rand = utils.getRandomInt(1, 256)
@@ -29,7 +60,14 @@ function getArray(count: number): number[] {
     }
     return ret
 }
-function getTwoDimensionalArray(count: number, elementCountInActor: number): number[][] {
+
+/**
+ * Generates a two-dimensional array based on count and element count in each array.
+ * @param count - The count of arrays.
+ * @param elementCountInActor - The element count in each array.
+ * @returns A two-dimensional array of numbers.
+ */
+function generateTwoDimensionalArray(count: number, elementCountInActor: number): number[][] {
     let ret: number[][] = []
     for (let i = 0; i < count; i++) {
         let requirement: number[] = []
@@ -145,6 +183,12 @@ export class Generator implements IGenerator {
         this.datasetsNextReplicaIndexMap = new Map<number, number>()
         this.proofRootsMap = new Map<number, Map<DataType, string>>()
     }
+
+    /**
+     * Generates dataset metadata.
+     * @param accessMethod - (Optional) The access method for the dataset.
+     * @returns The generated dataset metadata.
+     */
     generateDatasetMetadata(accessMethod?: string): DatasetMetadata {
         let random: string = utils.generateRandomString(7)
         let ret = new DatasetMetadata({
@@ -167,18 +211,31 @@ export class Generator implements IGenerator {
         }
         return ret
     }
-
+    /**
+     * Generates dataset requirements for creating replicas.
+     * @param replicasCount - The number of replicas to be created.
+     * @param elementCountInReplica - The number of elements in each replica.
+     * @param duplicateElementIndex - (Optional) The index of the duplicate element.
+     * @param duplicateCount - (Optional) The number of times the element should be duplicated.
+     * @returns The generated dataset requirements.
+     */
     generateDatasetRequirements(replicasCount: number, elementCountInReplica: number, duplicateElementIndex?: number, duplicateCount?: number): DatasetRequirements {
         //TODO: Duplicate Data Generation Feature
         return {
-            dataPreparers: getRequirementActors(replicasCount, elementCountInReplica),
-            storageProviders: getRequirementActors(replicasCount, elementCountInReplica),
-            regionCodes: getArray(replicasCount),
-            countryCodes: getArray(replicasCount),
-            cityCodes: getTwoDimensionalArray(replicasCount, elementCountInReplica),
+            dataPreparers: generateRequirementActors(replicasCount, elementCountInReplica),
+            storageProviders: generateRequirementActors(replicasCount, elementCountInReplica),
+            regionCodes: generateArray(replicasCount),
+            countryCodes: generateArray(replicasCount),
+            cityCodes: generateTwoDimensionalArray(replicasCount, elementCountInReplica),
         } as DatasetRequirements
     }
 
+    /**
+     * Generates dataset proof with specified leaf count and data type.
+     * @param leavesCount - The number of leaves in the dataset proof.
+     * @param dataType - The data type for the dataset.
+     * @returns The generated dataset proof containing root, leaf hashes, leaf sizes, and mapping files access method.
+     */
     generateDatasetProof(leavesCount: number, dataType: DataType): [root: string, leafHashes: string[], leafSizes: number[], mappingFilesAccessMethod: string] {
         //TODO :Need to automatically generate verifiable proofs.
         if (dataType === DataType.Source) {
@@ -190,6 +247,11 @@ export class Generator implements IGenerator {
 
     }
 
+    /**
+     * Retrieves dataset proof based on the root.
+     * @param root - The root identifier of the dataset proof.
+     * @returns The dataset proof containing leaf hashes and leaf sizes.
+     */
     getDatasetProof(root: string): [leafHashes: string[], leafSizes: number[]] {
         if ("0x7ea8b1c4a9f6045bdff6ab808a9e38b4a6f267744f2a263dd67978ab0589fb32" === root) {
             return [sourcesFiles.leafHashes, sourcesFiles.leafSizes]
@@ -197,22 +259,39 @@ export class Generator implements IGenerator {
 
         return [mapingFiles.leafHashes, mapingFiles.leafSizes]
     }
-
+    /**
+     * Generates dataset challenge proof based on the root.
+     * @param root - The root identifier of the dataset proof.
+     * @returns The dataset challenge proof containing random seed, leaves, siblings, and paths.
+     */
     generateDatasetChallengeProof(root: string): [randomSeed: number, leaves: string[], siblings: string[][], paths: number[]] {
         //TODO :Need to automatically generate verifiable challenge proofs.
         return [challengeProof.randomSeed, challengeProof.leaves, challengeProof.siblings, challengeProof.paths]
     }
 
+    /**
+     * Asynchronously generates an address for a generator.
+     * @returns The generated address.
+     */
     async generatorAddress(): Promise<string> {
         return await Wallet.createRandom(++this.nonce).getAddress()
     }
 
+    /**
+     * Asynchronously generates an Ethereum account for a generator.
+     * @returns The generated Ethereum account consisting of address and private key.
+     */
     async generatorEthAccount(): Promise<[string, string]> {
         let wallet = Wallet.createRandom(++this.nonce)
         return [await wallet.getAddress(), wallet.privateKey]
     }
 
-
+    /**
+     * Retrieves matching information for a dataset at a given index.
+     * @param datasetId - The ID of the dataset.
+     * @param index - The index of the dataset.
+     * @returns Information about bid selection rule, bidding delay, storage completion, threshold, and additional info.
+     */
     generatorMatchingInfo(datasetId: number, index: number): [
         bidSelectionRule: BidSelectionRule,
         biddingDelayBlockCount: number,
@@ -224,6 +303,12 @@ export class Generator implements IGenerator {
         return [BidSelectionRule.HighestBid, 10, 300, 10000, BigInt(1000000000), "none"]
     }
 
+    /**
+     * Determines the next replica index for a dataset.
+     * @param datasetId - The ID of the dataset.
+     * @param max - The maximum value for the index.
+     * @returns The next replica index for the dataset.
+     */
     datasetNextReplicaIndex(datasetId: number, max: number): number {
         let next = this.datasetsNextReplicaIndexMap.get(datasetId)
         if (!next) {
@@ -238,7 +323,12 @@ export class Generator implements IGenerator {
         }
         return next
     }
-
+    /**
+     * Retrieves the proof root for a specific dataset ID and data type.
+     * @param id - The ID of the dataset.
+     * @param dataType - The data type for the proof.
+     * @returns The proof root if found, otherwise undefined.
+     */
     getProofRoot(id: number, dataType: DataType): string | undefined {
         const rootsMap = this.proofRootsMap.get(id);
         if (rootsMap) {
@@ -246,7 +336,12 @@ export class Generator implements IGenerator {
         }
         return undefined;
     }
-
+    /**
+     * Sets the proof root for a specific  dataset ID and data type.
+     * @param id - The ID of the dataset.
+     * @param dataType - The data type for the proof.
+     * @param root - The root identifier for the proof.
+     */
     setProofRoot(id: number, dataType: DataType, root: string): void {
         let rootsMap = this.proofRootsMap.get(id);
         if (!rootsMap) {

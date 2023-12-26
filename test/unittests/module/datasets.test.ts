@@ -1,11 +1,30 @@
+/*******************************************************************************
+ *   (c) 2023 dataswap
+ *
+ *  Licensed under either the MIT License (the "MIT License") or the Apache License, Version 2.0
+ *  (the "Apache License"). You may not use this file except in compliance with one of these
+ *  licenses. You may obtain a copy of the MIT License at
+ *
+ *      https://opensource.org/licenses/MIT
+ *
+ *  Or the Apache License, Version 2.0 at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *  Unless required by applicable law or agreed to in writing, software
+ *  distributed under the License is distributed on an "AS IS" BASIS,
+ *  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  See the MIT License or the Apache License for the specific language governing permissions and
+ *  limitations under the respective licenses.
+ ********************************************************************************/
+
+
 import { SubmitMetadataSuccessTestKit, ApproveDatasetMetadataSuccessTestKit } from "../../testkits/module/datasets/DatasetsMetadataTestKit"
 import { SubmitRequirementSuccessTestKit } from "../../testkits/module/datasets/DatasetsRequirementTestKit"
-import { SubmitDatasetProofRootSuccessTestKit, SubmitDatasetProoSuccessTestKit } from "../../testkits/module/datasets/DatasetsProofTestKit"
-import { DataType } from "../../../src/shared/types/dataType"
+import { SubmitDatasetProofRootSuccessTestKit, SubmitDatasetProofSuccessTestKit } from "../../testkits/module/datasets/DatasetsProofTestKit"
 import { getContractsManager, getGenerator, getDatasetsHelper } from "../../fixtures"
 import { DatasetState } from "../../../src/shared/types/datasetType"
 import { DatasetsAssertion } from "../../assertions/module/datasetsAssertion"
-import * as utils from "../../shared/utils"
 
 describe("datasets", async () => {
     before(function () {
@@ -73,7 +92,7 @@ describe("datasets", async () => {
     })
 
     it("SubmitDatasetProofSuccess", async function () {
-        let testKit = new SubmitDatasetProoSuccessTestKit(
+        let testKit = new SubmitDatasetProofSuccessTestKit(
             this.sharedData.datasetsAssertion!,
             this.sharedData.generator!,
             this.sharedData.contractsManager!,
