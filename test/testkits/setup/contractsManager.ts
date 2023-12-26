@@ -83,7 +83,7 @@ export class ContractsManager implements IContractsManager {
             const hash = ethers.utils.keccak256(roleBytes);
             let ret = await this.RolesEvm().hasRole(hash, contractAddress)
             if (!ret.ok) {
-                throw new ret.error
+                throw ret.error
             }
             if (ret.data) {
                 // Role already set up

@@ -104,8 +104,8 @@ interface FilplusCallEvm {
      * @param citys The citys
      */
     isCompliantRuleTotalReplicasPerDataset(
-        dataPreparers: Buffer[][],
-        storageProviders: Buffer[][],
+        dataPreparers: string[][],
+        storageProviders: string[][],
         regions: number[],
         countrys: number[],
         citys: number[][]

@@ -1,5 +1,4 @@
 import {
-    Evm,
     withSendMethod,
     EvmOutput,
     withCallMethod,
@@ -21,12 +20,12 @@ interface RolesCallEvm {
      *
      * _Available since v4.6._
      */
-    checkRole(role: Buffer): Promise<EvmOutput<void>>
+    checkRole(role: string): Promise<EvmOutput<void>>
 
     /**
      * @dev Returns the address of the current owner.
      */
-    owner(): Promise<EvmOutput<Buffer>>
+    owner(): Promise<EvmOutput<string>>
 
     /**
      * @notice Checks whether the given account has the specified role.
@@ -52,7 +51,7 @@ interface RolesSendEvm {
      * @dev Returns the address of the pending owner.
      * @param options The options of transaction.
      */
-    pendingOwner(options?: EvmTransactionOptions): Promise<EvmOutput<Buffer>>
+    pendingOwner(options?: EvmTransactionOptions): Promise<EvmOutput<string>>
 
     /**
      * @dev Leaves the contract without owner. It will not be possible to call
@@ -70,7 +69,7 @@ interface RolesSendEvm {
      * @param newOwner The transfer to account.
      * @param options The options of transaction.
      */
-    transferOwnership(newOwner: Buffer, options?: EvmTransactionOptions): Promise<EvmOutput<void>>
+    transferOwnership(newOwner: string, options?: EvmTransactionOptions): Promise<EvmOutput<void>>
 
     /**
      * @notice grantDataswapContractRole function to grant the dataswap contract role for dataswap contract. TODO: Move to governance

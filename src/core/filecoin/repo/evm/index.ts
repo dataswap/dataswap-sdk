@@ -16,7 +16,7 @@ interface FilecoinCallEvm {
      * @param claimId The claim id
      */
     getReplicaDealState(
-        cid: Buffer,
+        cid: string,
         claimId: number
     ): Promise<EvmOutput<DealState>>
 
@@ -28,7 +28,7 @@ interface FilecoinCallEvm {
     getReplicaClaimData(
         provider: number,
         claimId: number
-    ): Promise<EvmOutput<Buffer>>
+    ): Promise<EvmOutput<string>>
 }
 
 /**
