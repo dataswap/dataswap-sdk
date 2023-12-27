@@ -54,16 +54,17 @@ export interface IDatasetsHelper extends IHelper {
 
     /**
      * Executes the workflow for a dataset with insufficient funds.
+     * @param fakedata Whether the specified workflow is submitted using fake data.
      * @returns A promise resolving to the dataset ID.
      */
-    fundsNotEnoughDatasetWorkflow(): Promise<number>
+    fundsNotEnoughDatasetWorkflow(fakedata: boolean): Promise<number>
 
     /**
      * Executes the workflow for a submitted proof dataset.
-     * @param dataType - The type of data.
+     * @param fakedata Whether the specified workflow is submitted using fake data.
      * @returns A promise resolving to the dataset ID.
      */
-    proofSubmittedDatasetWorkflow(dataType: number): Promise<number>
+    proofSubmittedDatasetWorkflow(fakedata: boolean): Promise<number>
 
     /**
      * Executes the workflow for an approved dataset.

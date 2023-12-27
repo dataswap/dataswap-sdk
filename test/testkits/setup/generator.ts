@@ -178,7 +178,7 @@ const challengeProof = {
 export class Generator implements IGenerator {
     private datasetsNextReplicaIndexMap: Map<number, number>
     private proofRootsMap: Map<number, Map<DataType, string>>
-    private nonce = 0
+    private nonce = 1
     constructor() {
         this.datasetsNextReplicaIndexMap = new Map<number, number>()
         this.proofRootsMap = new Map<number, Map<DataType, string>>()
@@ -231,28 +231,58 @@ export class Generator implements IGenerator {
     }
 
     /**
+     * Generates fake leaves for a given count.
+     * @param _count The count of fake leaves to generate.
+     * @returns An array containing fake leaf hashes and sizes.
+     */
+    private _generateFakeLeaves(_count: number): [leafHashs: string[], leafSizes: number[]] {
+        let leafHashs: string[] = []
+        let leafSizes: number[] = []
+        for (let i = 0; i < _count; i++) {
+            this.nonce++;
+            leafSizes[i] = this.nonce;
+            leafHashs[i] = utils.numberToBytes32(this.nonce)
+        }
+        return [leafHashs, leafSizes];
+    }
+    /**
      * Generates dataset proof with specified leaf count and data type.
      * @param leavesCount - The number of leaves in the dataset proof.
      * @param dataType - The data type for the dataset.
+     * @param fakedata Whether the specified generate fake data (optional).
      * @returns The generated dataset proof containing root, leaf hashes, leaf sizes, and mapping files access method.
      */
-    generateDatasetProof(leavesCount: number, dataType: DataType): [root: string, leafHashes: string[], leafSizes: number[], mappingFilesAccessMethod: string] {
-        //TODO :Need to automatically generate verifiable proofs.
+    generateDatasetProof(leavesCount: number, dataType: DataType, fakedata?: boolean): [root: string, leafHashes: string[], leafSizes: number[], mappingFilesAccessMethod: string] {
+        const isFakeData = fakedata !== undefined ? fakedata : false
+
+        if (isFakeData) {
+            let root = utils.numberToBytes32(this.nonce)
+            this.nonce++
+            let [leafHashs, leafSizes] = this._generateFakeLeaves(leavesCount)
+            let accessMethod = utils.generateRandomString(7)
+            return [root, leafHashs, leafSizes, accessMethod]
+        }
+
         if (dataType === DataType.Source) {
             return [sourcesFiles.root, sourcesFiles.leafHashes, sourcesFiles.leafSizes, '']
         }
 
         let accessMethod: string = "mappingfilesAccessMethod:" + utils.generateRandomString(7)
         return [mapingFiles.root, mapingFiles.leafHashes, mapingFiles.leafSizes, accessMethod]
-
     }
 
     /**
      * Retrieves dataset proof based on the root.
      * @param root - The root identifier of the dataset proof.
+     * @param fakedata Whether the specified generate fake data (optional).
      * @returns The dataset proof containing leaf hashes and leaf sizes.
      */
-    getDatasetProof(root: string): [leafHashes: string[], leafSizes: number[]] {
+    getDatasetProof(root: string, fakedata?: boolean): [leafHashes: string[], leafSizes: number[]] {
+        const isFakeData = fakedata !== undefined ? fakedata : false
+        if (isFakeData) {
+            return this._generateFakeLeaves(10)
+        }
+
         if ("0x7ea8b1c4a9f6045bdff6ab808a9e38b4a6f267744f2a263dd67978ab0589fb32" === root) {
             return [sourcesFiles.leafHashes, sourcesFiles.leafSizes]
         }

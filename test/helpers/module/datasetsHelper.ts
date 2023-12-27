@@ -150,19 +150,22 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
 
     /**
      * Executes the workflow when there are insufficient funds for a dataset.
+     * @param fakedata Whether the specified workflow is submitted using fake data.
      * @returns The dataset ID after completing the workflow.
      */
-    async fundsNotEnoughDatasetWorkflow(): Promise<number> {
+    async fundsNotEnoughDatasetWorkflow(fakedata: boolean): Promise<number> {
         try {
             // Completes the workflow for MetadataApproved state
             let datasetId = await this.completeDependentWorkflow(
                 DatasetState.MetadataApproved,
-                this.metadataApprovedDatasetWorkflow,
+                async (): Promise<number> => {
+                    return await this.metadataApprovedDatasetWorkflow()
+                }
             );
 
             // Generating dataset proof for DataType.MappingFiles
             let dataType = DataType.MappingFiles;
-            let [rootHashMappings, leafHashesMappings, leafSizesMappings, mappingFilesAccessMethod] = this.generator.generateDatasetProof(0, dataType);
+            let [rootHashMappings, leafHashesMappings, leafSizesMappings, mappingFilesAccessMethod] = this.generator.generateDatasetProof(0, dataType, fakedata);
 
             // Submits dataset proof root for DataType.MappingFiles
             this.contractsManager.DatasetProofEvm().getWallet().setDefault(process.env.DATASWAP_PROOFSUBMITTER as string);
@@ -188,7 +191,7 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
             dataType = DataType.Source;
 
             // Generating dataset proof for DataType.Source
-            let [rootHash, leafHashes, leafSizes] = this.generator.generateDatasetProof(0, dataType);
+            let [rootHash, leafHashes, leafSizes] = this.generator.generateDatasetProof(0, dataType, fakedata);
 
             // Submits dataset proof root for DataType.Source
             await handleEvmError(this.contractsManager.DatasetProofEvm().submitDatasetProofRoot(
@@ -230,14 +233,17 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
 
     /**
      * Executes the workflow after the dataset proof has been submitted.
+     * @param fakedata Whether the specified workflow is submitted using fake data.
      * @returns The dataset ID after completing the workflow.
      */
-    async proofSubmittedDatasetWorkflow(): Promise<number> {
+    async proofSubmittedDatasetWorkflow(fakedata: boolean): Promise<number> {
         try {
             // Completes the workflow for FundsNotEnough state
             let datasetId = await this.completeDependentWorkflow(
                 DatasetState.FundsNotEnough,
-                this.fundsNotEnoughDatasetWorkflow
+                async (): Promise<number> => {
+                    return await this.fundsNotEnoughDatasetWorkflow(fakedata)
+                }
             );
 
             // Setting wallet and appending dataset funds
@@ -279,7 +285,9 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
             // Completes the workflow for DatasetProofSubmitted state
             let datasetId = await this.completeDependentWorkflow(
                 DatasetState.DatasetProofSubmitted,
-                this.proofSubmittedDatasetWorkflow,
+                async (): Promise<number> => {
+                    return await this.proofSubmittedDatasetWorkflow(true)
+                }
             );
 
             // Getting the root hash and generating challenge proof

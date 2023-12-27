@@ -50,16 +50,18 @@ export interface IGenerator {
      * Generates dataset proof information.
      * @param leavesCount - Number of leaves in the dataset.
      * @param dataType - Type of dataset (DataType enum).
+     * @param fakedata Whether the specified generate fake data (optional).
      * @returns An array containing root, leaf hashes, leaf sizes, and mapping files access method.
      */
-    generateDatasetProof(leavesCount: number, dataType: DataType): [root: string, leafHashes: string[], leafSizes: number[], mappingFilesAccessMethod: string]
+    generateDatasetProof(leavesCount: number, dataType: DataType, fakedata?: boolean): [root: string, leafHashes: string[], leafSizes: number[], mappingFilesAccessMethod: string]
 
     /**
      * Retrieves dataset proof information based on the provided root.
      * @param root - The root to retrieve proof information.
+     * @param fakedata Whether the specified get fake data (optional).
      * @returns An array containing leaf hashes and leaf sizes.
      */
-    getDatasetProof(root: string): [leafHashes: string[], leafSizes: number[]]
+    getDatasetProof(root: string, fakedata?: boolean): [leafHashes: string[], leafSizes: number[]]
 
     /**
      * Generates dataset challenge proof based on the provided root.
