@@ -25,7 +25,7 @@ import { DataswapMessage } from "../../../types"
  * Interface representing a DataswapMessageDocument, extending DataswapMessage and Document.
  * @interface
  */
-interface DataswapMessageDocument extends DataswapMessage, Document { }
+interface DataswapMessageDocument extends DataswapMessage, Document {}
 
 /**
  * Schema definition for the DataswapMessage collection.
@@ -39,31 +39,32 @@ const DataswapMessageSchema = new Schema<DataswapMessageDocument>({
     },
     height: {
         type: Number,
-        required: [true, "Please provide the Replayed"],
+        required: [true, "Please provide the Height"],
     },
     timestamp: {
         type: String,
-        required: [true, "Please provide the height"],
     },
     from: {
         type: String,
-        required: [true, "Please provide the Msg"],
+        required: [true, "Please provide the from address"],
     },
     to: {
         type: String,
-        required: [true, "Please provide the Msg"],
+        required: [true, "Please provide the to address"],
     },
     method: {
         type: String,
-        required: [true, "Please provide the Msg"],
+        required: [true, "Please provide the method"],
     },
     params: {
         type: Object,
-        required: [true, "Please provide the Msg"],
+        required: [true, "Please provide the params"],
     },
     status: {
-        type: Number,
-        required: [true, "Please provide the Msg"],
+        type: String,
+    },
+    return: {
+        type: String,
     },
     datasetId: {
         type: Number,
