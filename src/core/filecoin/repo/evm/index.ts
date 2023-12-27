@@ -18,7 +18,7 @@
  *  limitations under the respective licenses.
  ********************************************************************************/
 
-import { Evm, withCallMethod, EvmOutput } from "@unipackage/net"
+import { withCallMethod, EvmOutput } from "@unipackage/net"
 import { DealState } from "../../../../shared/types/filecoinType"
 import { EvmEx } from "../../../../shared/types/evmEngineType"
 
