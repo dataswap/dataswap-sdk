@@ -31,6 +31,10 @@ import { DataswapMessage } from "../../../../../message/types"
 import { MatchingMetadata, MatchingState, BidSelectionRule } from "../../types"
 import { EvmEx } from "../../../../../shared/types/evmEngineType"
 
+/**
+ * Interface representing the data structure for matching metadata (call EVM).
+ * @interface
+ */
 interface MatchingMetadataCallEvm {
     /**
      * Retrieves the initiator associated with a matching identified by its ID.
@@ -52,6 +56,10 @@ interface MatchingMetadataCallEvm {
     getMatchingMetadata(matchingId: number): Promise<EvmOutput<MatchingMetadata>>
 }
 
+/**
+ * Interface representing the data structure for matching metadata (send EVM).
+ * @interface
+ */
 interface MatchingMetadataSendEvm {
     /**
      * Creates a new matching with the specified parameters.

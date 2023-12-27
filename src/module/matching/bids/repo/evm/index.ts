@@ -29,6 +29,10 @@ import { DataswapMessage } from "../../../../../message/types"
 import { MatchingBids } from "../../types"
 import { EvmEx } from "../../../../../shared/types/evmEngineType"
 
+/**
+ * Interface representing the data structure for calling matching bids in an EVM environment.
+ * @interface
+ */
 interface MatchingBidsCallEvm {
 
     matchings(): Promise<EvmOutput<string>>
@@ -87,6 +91,10 @@ interface MatchingBidsCallEvm {
     ): Promise<EvmOutput<boolean>>
 }
 
+/**
+ * Interface representing the data structure for sending matching bids in an EVM environment.
+ * @interface
+ */
 interface MatchingBidsSendEvm {
     /**
      * Initializes dependencies for the contract.

@@ -21,6 +21,10 @@
 import { Entity } from "@unipackage/ddd"
 import { ValueFields } from "@unipackage/utils"
 
+/**
+ * Represents a Fund entity.
+ * @interface
+ */
 export interface Fund {
     total: bigint, // Total amount in fund account
     locked: bigint, // Lock amount in fund account for payment beneficiaries
@@ -29,6 +33,10 @@ export interface Fund {
     createdBlockNumber: number // Fund account created block number
 }
 
+/**
+ * Represents a Fund entity with default values.
+ * @class
+ */
 export class Fund extends Entity<Fund> {
     constructor(data?: ValueFields<Fund>) {
         super({

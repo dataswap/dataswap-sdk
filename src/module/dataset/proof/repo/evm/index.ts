@@ -30,6 +30,10 @@ import { DataswapMessage } from "../../../../../message/types"
 import { DataType } from "../../../../../shared/types/dataType"
 import { EvmEx } from "../../../../../shared/types/evmEngineType"
 
+/**
+ * Interface representing the Ethereum Virtual Machine (EVM) call structure for a dataset proof.
+ * @interface
+ */
 interface DatasetProofCallEvm {
     datasetsChallenge(): Promise<EvmOutput<string>>
     /**
@@ -141,6 +145,10 @@ interface DatasetProofCallEvm {
 
 }
 
+/**
+ * Interface representing the Ethereum Virtual Machine (EVM) send structure for a dataset proof.
+ * @interface
+ */
 interface DatasetProofSendEvm {
     initDependencies(
         datasetsChallenge: string,

@@ -28,6 +28,10 @@ export enum BidSelectionRule {
     ImmediateAtMost // Note: Render Immediate winning condition: Bid amount is at most the threshold
 }
 
+/**
+ * Interface representing the data structure for matching metadata.
+ * @interface
+ */
 export interface MatchingMetadata {
     bidSelectionRule: BidSelectionRule;
     biddingDelayBlockCount: number;
@@ -41,8 +45,17 @@ export interface MatchingMetadata {
     matchingId?: number;
 }
 
+/**
+ * Class representing the entity for matching metadata.
+ * @class
+ * @extends Entity
+ */
 export class MatchingMetadata extends Entity<MatchingMetadata> { }
 
+/**
+ * Enumeration representing the possible states of a matching.
+ * @enum {number}
+ */
 export enum MatchingState {
     None,
     Published, // Matching is published and open for bids

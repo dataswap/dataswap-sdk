@@ -20,6 +20,10 @@
 
 import { Entity } from "@unipackage/ddd"
 
+/**
+ * Interface representing metadata information for a dataset.
+ * @interface
+ */
 export interface DatasetMetadata {
     title: string
     industry: string
@@ -36,4 +40,9 @@ export interface DatasetMetadata {
     status?: string
 }
 
+/**
+ * Class representing a DatasetMetadata entity.
+ * @class
+ * @extends Entity<DatasetMetadata>
+ */
 export class DatasetMetadata extends Entity<DatasetMetadata> { }

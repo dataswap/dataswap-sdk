@@ -18,6 +18,10 @@
  *  limitations under the respective licenses.
  ********************************************************************************/
 
+/**
+ * Interface representing an operation.
+ * @interface
+ */
 export interface Operate {
     operate: string
 }

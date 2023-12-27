@@ -20,10 +20,18 @@
 
 import { Entity } from "@unipackage/ddd"
 
+/**
+ * Interface representing a DatasetChallenge.
+ * @interface
+ */
 export interface DatasetChallenge {
     leaves: string[]
     siblings: string[][]
     paths: string[]
 }
 
+/**
+ * Class representing a DatasetChallenge entity, extending the Entity class.
+ * @class
+ */
 export class DatasetChallenge extends Entity<DatasetChallenge> { }

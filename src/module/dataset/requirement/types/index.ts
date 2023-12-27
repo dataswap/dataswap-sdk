@@ -20,6 +20,10 @@
 
 import { Entity } from "@unipackage/ddd"
 
+/**
+ * Interface representing dataset requirements.
+ * @interface
+ */
 export interface DatasetRequirement {
     dataPreparers: string[]
     storageProviders: string[]
@@ -28,4 +32,9 @@ export interface DatasetRequirement {
     cityCodes: number[]
 }
 
+/**
+ * Class representing a dataset requirement entity.
+ * @class
+ * @extends {Entity<DatasetRequirement>}
+ */
 export class DatasetRequirement extends Entity<DatasetRequirement> { }
