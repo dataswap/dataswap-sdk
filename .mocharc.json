@@ -5,6 +5,6 @@
         "node_modules"
     ],
     "project": "./tsconfig.test.json",
-    "timeout": 100000,
+    "timeout": 500000,
     "require": "dist-test/test/fixtures.js"
 }

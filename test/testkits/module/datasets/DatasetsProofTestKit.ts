@@ -144,7 +144,7 @@ export class SubmitDatasetProofSuccessTestKit extends DatasetsTestBase {
         try {
             let dataType = DataType.MappingFiles
             let rootHash = this.generator.getProofRoot(datasetId, dataType)
-            let [leafHashes, leafSizes] = this.generator.getDatasetProof(rootHash!)
+            let [leafHashes, leafSizes] = this.generator.getDatasetProof(rootHash!, dataType)
 
             await this.assertion.submitDatasetProofAssertion(
                 process.env.DATASWAP_PROOFSUBMITTER as string,
@@ -158,7 +158,7 @@ export class SubmitDatasetProofSuccessTestKit extends DatasetsTestBase {
 
             dataType = DataType.Source
             let sourceRootHash = this.generator.getProofRoot(datasetId, dataType)
-            let [sourceLeafHashes, sourceLeafSizes] = this.generator.getDatasetProof(sourceRootHash!)
+            let [sourceLeafHashes, sourceLeafSizes] = this.generator.getDatasetProof(sourceRootHash!, dataType)
 
             await this.assertion.submitDatasetProofAssertion(
                 process.env.DATASWAP_PROOFSUBMITTER as string,

@@ -55,7 +55,7 @@ function generateRequirementActors(count: number, elementCountInActor: number): 
 function generateArray(count: number): number[] {
     let ret: number[] = []
     for (let i = 0; i < count; i++) {
-        let rand = utils.getRandomInt(1, 256)
+        let rand = utils.getRandomInt(i * 1000, (i + 1) * 1000 - 1)
         ret.push(rand)
     }
     return ret
@@ -72,7 +72,7 @@ function generateTwoDimensionalArray(count: number, elementCountInActor: number)
     for (let i = 0; i < count; i++) {
         let requirement: number[] = []
         for (let j = 0; j < elementCountInActor; j++) {
-            let rand = utils.getRandomInt(1, 10000000)
+            let rand = utils.getRandomInt(j * 1000000, (j + 1) * 1000000 - 1)
             requirement.push(rand)
         }
         ret.push(requirement)
@@ -178,7 +178,7 @@ const challengeProof = {
 export class Generator implements IGenerator {
     private datasetsNextReplicaIndexMap: Map<number, number>
     private proofRootsMap: Map<number, Map<DataType, string>>
-    private nonce = 1
+    private nonce = 100
     constructor() {
         this.datasetsNextReplicaIndexMap = new Map<number, number>()
         this.proofRootsMap = new Map<number, Map<DataType, string>>()
@@ -235,12 +235,16 @@ export class Generator implements IGenerator {
      * @param _count The count of fake leaves to generate.
      * @returns An array containing fake leaf hashes and sizes.
      */
-    private _generateFakeLeaves(_count: number): [leafHashs: string[], leafSizes: number[]] {
+    private _generateFakeLeaves(_count: number, dataType: DataType): [leafHashs: string[], leafSizes: number[]] {
         let leafHashs: string[] = []
         let leafSizes: number[] = []
         for (let i = 0; i < _count; i++) {
             this.nonce++;
-            leafSizes[i] = this.nonce;
+            if (dataType === DataType.MappingFiles) {
+                leafSizes[i] = this.nonce;
+            } else {
+                leafSizes[i] = this.nonce * 10000
+            }
             leafHashs[i] = utils.numberToBytes32(this.nonce)
         }
         return [leafHashs, leafSizes];
@@ -258,7 +262,7 @@ export class Generator implements IGenerator {
         if (isFakeData) {
             let root = utils.numberToBytes32(this.nonce)
             this.nonce++
-            let [leafHashs, leafSizes] = this._generateFakeLeaves(leavesCount)
+            let [leafHashs, leafSizes] = this._generateFakeLeaves(leavesCount, dataType)
             let accessMethod = utils.generateRandomString(7)
             return [root, leafHashs, leafSizes, accessMethod]
         }
@@ -274,13 +278,14 @@ export class Generator implements IGenerator {
     /**
      * Retrieves dataset proof based on the root.
      * @param root - The root identifier of the dataset proof.
+     * @param dataType - The data type for the dataset.
      * @param fakedata Whether the specified generate fake data (optional).
      * @returns The dataset proof containing leaf hashes and leaf sizes.
      */
-    getDatasetProof(root: string, fakedata?: boolean): [leafHashes: string[], leafSizes: number[]] {
+    getDatasetProof(root: string, dataType: DataType, fakedata?: boolean): [leafHashes: string[], leafSizes: number[]] {
         const isFakeData = fakedata !== undefined ? fakedata : false
         if (isFakeData) {
-            return this._generateFakeLeaves(10)
+            return this._generateFakeLeaves(10, dataType)
         }
 
         if ("0x7ea8b1c4a9f6045bdff6ab808a9e38b4a6f267744f2a263dd67978ab0589fb32" === root) {

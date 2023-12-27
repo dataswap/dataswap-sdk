@@ -23,7 +23,7 @@ import { DatasetState } from "../../../../src/shared/types/datasetType";
 import { IContractsManager } from "../../../interfaces/setup/IContractsManater";
 import { IDatasetsHelper } from "../../../interfaces/helper/module/IDatasetshelper";
 import { IGenerator } from "../../../interfaces/setup/IGenerator";
-import { SubmitMetadataSuccessTestKit } from "./DatasetsMetadataTestKit";
+import { SubmitMetadataTestKit } from "./DatasetsMetadataTestKit";
 import { IDatasetsAssertion } from "../../../interfaces/assertions/module/IDatasetsAssertion";
 import { DatasetsHelper } from "../../../helpers/module/datasetsHelper";
 
@@ -31,8 +31,8 @@ import { DatasetsHelper } from "../../../helpers/module/datasetsHelper";
  * Represents a test kit for submitting requirement successfully.
  * Extends from DatasetsTestBase.
  */
-export class SubmitRequirementSuccessTestKit extends DatasetsTestBase {
-    private dependentTestKit: SubmitMetadataSuccessTestKit
+export class SubmitRequirementTestKit extends DatasetsTestBase {
+    private dependentTestKit: SubmitMetadataTestKit
 
     /**
      * Constructor for SubmitRequirementSuccessTestKit.
@@ -47,7 +47,7 @@ export class SubmitRequirementSuccessTestKit extends DatasetsTestBase {
             _datasetHelper = new DatasetsHelper(_generator, _contractsManager)
         }
 
-        this.dependentTestKit = new SubmitMetadataSuccessTestKit(_assertion, _generator, _contractsManager, _datasetHelper)
+        this.dependentTestKit = new SubmitMetadataTestKit(_assertion, _generator, _contractsManager, _datasetHelper)
     }
 
     /**
