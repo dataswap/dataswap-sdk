@@ -19,12 +19,13 @@
  ********************************************************************************/
 
 import { ContractMessage } from "@unipackage/filecoin"
+import { ValueFields } from "@unipackage/utils"
 
 /**
  * Interface representing a DataswapMessage, extending the ContractMessage interface.
  * @interface
  */
-export interface DataswapMessage extends ContractMessage {
+export interface DataswapMessage extends ValueFields<ContractMessage> {
     datasetId?: number
     matchingId?: number
 }
