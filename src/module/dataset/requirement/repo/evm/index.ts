@@ -30,6 +30,10 @@ import { DataswapMessage } from "../../../../../message/types"
 import { DatasetRequirement } from "../../types"
 import { EvmEx } from "../../../../../shared/types/evmEngineType"
 
+/**
+ * Interface representing the Ethereum Virtual Machine (EVM) call structure for dataset requirements.
+ * @interface
+ */
 interface DatasetRequirementCallEvm {
     /**
      * Get dataset replicas count 
@@ -55,6 +59,10 @@ interface DatasetRequirementCallEvm {
     getDatasetPreCollateralRequirements(datasetId: number): Promise<EvmOutput<bigint>>
 }
 
+/**
+ * Interface representing the Ethereum Virtual Machine (EVM) send structure for dataset requirements.
+ * @interface
+ */
 interface DatasetRequirementSendEvm {
     /**
      * Submit replica requirement for a dataset

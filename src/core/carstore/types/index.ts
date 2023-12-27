@@ -22,6 +22,10 @@ import { Entity } from "@unipackage/ddd"
 import { ValueFields } from "@unipackage/utils"
 import { CarReplicaState } from "../../../shared/types/carstoreType";
 
+/**
+ * Represents a Car entity.
+ * @interface
+ */
 export interface Car {
     hash: string; // car hash
     datasetId: number; // Index of approved dataset
@@ -31,11 +35,19 @@ export interface Car {
     id: number; // The id associated with the car.
 }
 
+/**
+ * Represents a Car Replica entity.
+ * @interface
+ */
 export interface CarReplica {
     state: CarReplicaState; // Current state of the replica
     filecoinClaimId: number; // ID of the Filecoin claim associated with the replica's storage
 }
 
+/**
+ * Represents a Car entity with default values.
+ * @class
+ */
 export class Car extends Entity<Car> {
     constructor(data?: ValueFields<Car>) {
         super({
@@ -49,6 +61,10 @@ export class Car extends Entity<Car> {
     }
 }
 
+/**
+ * Represents a Car Replica entity with default values.
+ * @class
+ */
 export class CarReplica extends Entity<CarReplica> {
     constructor(data?: ValueFields<CarReplica>) {
         super({

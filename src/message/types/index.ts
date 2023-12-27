@@ -19,6 +19,11 @@
  ********************************************************************************/
 
 import { ContractMessage } from "@unipackage/filecoin"
+
+/**
+ * Interface representing a DataswapMessage, extending the ContractMessage interface.
+ * @interface
+ */
 export interface DataswapMessage extends ContractMessage {
     datasetId?: number
     matchingId?: number

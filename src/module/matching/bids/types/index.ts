@@ -20,6 +20,10 @@
 
 import { Entity } from "@unipackage/ddd"
 
+/**
+ * Interface representing the data structure for matching bids.
+ * @interface
+ */
 export interface MatchingBids {
     bidders: string[],
     amounts: bigint[],
@@ -28,4 +32,8 @@ export interface MatchingBids {
     matchingId?: number
 }
 
+/**
+ * Class representing the entity for matching bids.
+ * @class
+ */
 export class MatchingBids extends Entity<MatchingBids> { }

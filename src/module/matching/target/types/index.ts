@@ -20,6 +20,11 @@
 
 import { Entity } from "@unipackage/ddd"
 import { DataType } from "../../../../shared/types/dataType"
+
+/**
+ * Interface representing matching targets, which are entities associated with a dataset in the matching process.
+ * @interface
+ */
 export interface MatchingTarget {
     datasetId: number,
     cars: number[],
@@ -31,4 +36,9 @@ export interface MatchingTarget {
     matchingId?: number
 }
 
+/**
+ * Class representing matching targets as entities.
+ * @class
+ * @extends {Entity<MatchingTarget>}
+ */
 export class MatchingTarget extends Entity<MatchingTarget> { }

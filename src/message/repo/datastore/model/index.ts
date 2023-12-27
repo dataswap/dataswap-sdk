@@ -21,8 +21,16 @@
 import mongoose, { Schema, Document } from "mongoose"
 import { DataswapMessage } from "../../../types"
 
+/**
+ * Interface representing a DataswapMessageDocument, extending DataswapMessage and Document.
+ * @interface
+ */
 interface DataswapMessageDocument extends DataswapMessage, Document { }
 
+/**
+ * Schema definition for the DataswapMessage collection.
+ * @constant
+ */
 const DataswapMessageSchema = new Schema<DataswapMessageDocument>({
     cid: {
         type: Object,
@@ -65,6 +73,10 @@ const DataswapMessageSchema = new Schema<DataswapMessageDocument>({
     },
 })
 
+/**
+ * Model for the DataswapMessage collection.
+ * @constant
+ */
 const DataswapMessageModel =
     mongoose.models.Message ||
     mongoose.model<DataswapMessageDocument>(

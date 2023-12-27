@@ -18,6 +18,10 @@
  *  limitations under the respective licenses.
  ********************************************************************************/
 
+/**
+ * Interface representing a state.
+ * @interface
+ */
 export interface State {
     state: string
 }

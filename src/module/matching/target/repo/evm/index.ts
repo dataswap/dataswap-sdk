@@ -30,10 +30,22 @@ import { MatchingTarget } from "../../types"
 import { DataType } from "../../../../../shared/types/dataType"
 import { EvmEx } from "../../../../../shared/types/evmEngineType"
 
+/**
+ * Interface for making Ethereum Virtual Machine (EVM) calls related to matching targets.
+ * @interface
+ */
 interface MatchingTargetCallEvm {
 
+    /**
+     * Retrieves information about matchings.
+     * @returns {Promise<EvmOutput<string>>} A promise resolving to the EVM output for matchings.
+     */
     matchings(): Promise<EvmOutput<string>>
 
+    /**
+     * Retrieves information about matching bids.
+     * @returns {Promise<EvmOutput<string>>} A promise resolving to the EVM output for matching bids.
+     */
     matchingsBids(): Promise<EvmOutput<string>>
 
     /**
@@ -90,6 +102,10 @@ interface MatchingTargetCallEvm {
     ): Promise<EvmOutput<boolean>>
 }
 
+/**
+ * Interface for sending Ethereum Virtual Machine (EVM) transactions related to matching targets.
+ * @interface
+ */
 interface MatchingTargetSendEvm {
     /**
      * Initializes dependencies for the contract.
