@@ -342,8 +342,8 @@ export class DatasetsAssertion implements IDatasetsAssertion {
             const metadata = await handleEvmError(this.contractsManager.DatasetMetadataEvm().getDatasetMetadata(datasetId))
 
             const metadataSize = BigInt(metadata.data.sizeInBytes)
-            const PER_TIB_BYTE = BigInt(1024 * 1024 * 1024 * 1024);
-            const PRICE_PER_BYTE = (BigInt(1000000000000000000) / PER_TIB_BYTE);
+            const PER_TIB_BYTE = BigInt(1024 * 1024 * 1024 * 1024)
+            const PRICE_PER_BYTE = (BigInt('1000000000000000000') / PER_TIB_BYTE)
             const expectPreCollateral = metadataSize * BigInt(expectReplicasCount) * PRICE_PER_BYTE
             await this.getDatasetPreCollateralRequirementsAssertion(datasetId, expectPreCollateral)
 
@@ -441,7 +441,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
      */
     async getDatasetCollateralRequirementAssertion(datasetId: number, expectCollateral: bigint): Promise<void> {
         const collateral = await handleEvmError(this.contractsManager.DatasetProofEvm().getDatasetCollateralRequirement(datasetId))
-        expect(expectCollateral).to.be.equal(collateral.data)
+        expect(expectCollateral).to.be.equal(BigInt(collateral.data))
     }
 
     /**
@@ -463,7 +463,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
      */
     async getDatasetDataAuditorFeesAssertion(datasetId: number, expectAuditorFees: bigint): Promise<void> {
         const fees = await handleEvmError(this.contractsManager.DatasetProofEvm().getDatasetDataAuditorFees(datasetId))
-        expect(expectAuditorFees).to.be.equal(fees.data)
+        expect(expectAuditorFees).to.be.equal(BigInt(fees.data))
     }
 
     /**
@@ -580,6 +580,8 @@ export class DatasetsAssertion implements IDatasetsAssertion {
         expectCompleted: boolean,
     ): Promise<void> {
         this.contractsManager.DatasetProofEvm().getWallet().setDefault(caller)
+        let proofCount = await handleEvmError(this.contractsManager.DatasetProofEvm().getDatasetProofCount(datasetId, dataType))
+        let datasetSize = await handleEvmError(this.contractsManager.DatasetProofEvm().getDatasetSize(datasetId, dataType))
         await handleEvmError(this.contractsManager.DatasetProofEvm().submitDatasetProof(
             datasetId,
             dataType,
@@ -591,6 +593,21 @@ export class DatasetsAssertion implements IDatasetsAssertion {
         const carsIds = await handleEvmError(this.contractsManager.CarstoreEvm().getCarsIds(expectLeafHashes))
         await this.isDatasetContainsCarsAssertion(datasetId, utils.convertToNumberArray(carsIds.data), true)
         await this.isDatasetContainsCarAssertion(datasetId, Number(carsIds.data[0]), true)
+        await this.getDatasetProofAssertion(datasetId, dataType, expectLeafIndex, expectLeafHashes.length, expectLeafHashes)
+        await this.getDatasetProofCountAssertion(datasetId, dataType, Number(proofCount.data) + expectLeafHashes.length)
+        const sum = expectLeafSizes.reduce((acc, curr) => acc + curr, 0);
+        await this.getDatasetSizeAssertion(datasetId, dataType, Number(datasetSize.data) + sum)
+        if (dataType == DataType.Source) {
+            let PER_TIB_BYTE = BigInt(1024 * 1024 * 1024 * 1024);
+            let PRICE_PER_BYTE = BigInt('1000000000000000000') / PER_TIB_BYTE;
+            let replicasCount = await handleEvmError(this.contractsManager.DatasetRequirementEvm().getDatasetReplicasCount(datasetId))
+            let expectCollateralRequirement = BigInt(Number(datasetSize.data) + sum) * BigInt(replicasCount.data) * PRICE_PER_BYTE
+            await this.getDatasetCollateralRequirementAssertion(datasetId, expectCollateralRequirement)
+        }
+        let PRICE_PER_POINT = BigInt('1000000000000000000') / BigInt(1000)
+        let submissionCount = await handleEvmError(this.contractsManager.DatasetChallengeEvm().getChallengeSubmissionCount(datasetId))
+        let expectAuditorFees = BigInt(submissionCount.data) * PRICE_PER_POINT
+        await this.getDatasetDataAuditorFeesAssertion(datasetId, expectAuditorFees)
     }
 
     /**

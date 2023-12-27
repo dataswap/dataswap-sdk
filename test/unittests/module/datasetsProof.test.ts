@@ -17,9 +17,10 @@
  *  See the MIT License or the Apache License for the specific language governing permissions and
  *  limitations under the respective licenses.
  ********************************************************************************/
-import { SubmitDatasetProofRootSuccessTestKit, SubmitDatasetProofSuccessTestKit } from "../../testkits/module/datasets/DatasetsProofTestKit"
-import { getContractsManager, getGenerator, getDatasetsHelper } from "../../fixtures"
+import { SubmitDatasetProofRootTestKit, SubmitDatasetProofTestKit, SubmitDatasetProofCompletedTestKit } from "../../testkits/module/datasets/DatasetsProofTestKit"
+import { getContractsManager, getGenerator } from "../../fixtures"
 import { DatasetsAssertion } from "../../assertions/module/datasetsAssertion"
+import { DatasetsHelper } from "../../helpers/module/datasetsHelper"
 
 /**
  * Test suite for the DatasetsProof functionality.
@@ -31,44 +32,66 @@ describe("datasetsProof", async () => {
      */
     before(function () {
         this.sharedData = {}
-        this.sharedData.datasetId = 0
         this.sharedData.generator = getGenerator()
         this.sharedData.contractsManager = getContractsManager()
-        this.sharedData.datasetHelper = getDatasetsHelper()
+        this.sharedData.datasetHelper = new DatasetsHelper(
+            getGenerator(),
+            getContractsManager()
+        )
         this.sharedData.datasetsAssertion = new DatasetsAssertion(
             this.sharedData.contractsManager
         )
     })
 
     /**
+     * Tests assert dependencies addressed of DatasetsProof.
+     */
+    it("assertDependenciesAdresses", async function () {
+        await this.sharedData.datasetsAssertion.proofInitDependenciesAssertion(process.env.DATASWAP_GOVERNANCE as string, process.env.DatasetsChallengeAddress as string)
+    })
+
+    /**
      * Tests successful submission of dataset proof root.
      */
-    it.skip("SubmitDatasetProofRootSuccess", async function () {
-        let testKit = new SubmitDatasetProofRootSuccessTestKit(
+    it("submitDatasetProofRoot", async function () {
+        let testKit = new SubmitDatasetProofRootTestKit(
             this.sharedData.datasetsAssertion!,
             this.sharedData.generator!,
             this.sharedData.contractsManager!,
-            getDatasetsHelper(),
+            this.sharedData.datasetHelper,
         )
-        let datasetId = this.sharedData.datasetId
-
-        datasetId = await testKit.run(datasetId)
+        let datasetId = await testKit.run()
         this.sharedData.datasetId = datasetId
     })
 
     /**
      * Tests successful submission of dataset proof.
      */
-    it.skip("SubmitDatasetProofSuccess", async function () {
-        let testKit = new SubmitDatasetProofSuccessTestKit(
+    it("submitDatasetProof", async function () {
+        let testKit = new SubmitDatasetProofTestKit(
             this.sharedData.datasetsAssertion!,
             this.sharedData.generator!,
             this.sharedData.contractsManager!,
-            getDatasetsHelper(),
+            this.sharedData.datasetHelper,
         )
 
         let datasetId = this.sharedData.datasetId
         datasetId = await testKit.run(datasetId)
         this.sharedData.datasetId = datasetId
+    })
+
+    /**
+     * Tests submission of dataset proof completed.
+     */
+    it("submitDatasetProofCompleted", async function () {
+        let testKit = new SubmitDatasetProofCompletedTestKit(
+            this.sharedData.datasetsAssertion!,
+            this.sharedData.generator!,
+            this.sharedData.contractsManager!,
+            this.sharedData.datasetHelper,
+        )
+
+        let datasetId = this.sharedData.datasetId
+        await testKit.run(datasetId)
     })
 })
