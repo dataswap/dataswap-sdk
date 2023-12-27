@@ -180,3 +180,21 @@ export function mergeRangesToCompleteArray(starts: number[], ends: number[]): nu
     }
     return ids;
 }
+
+/**
+ * Converts a number to its bytes32 representation.
+ * @param num The number to convert to bytes32.
+ * @returns The bytes32 representation of the number.
+ */
+export function numberToBytes32(num: number): string {
+    // Convert the number to its hexadecimal representation
+    let hexString = num.toString(16);
+
+    // Pad the hexadecimal string to make it 32 bytes long
+    const padding = 64 - hexString.length;
+    if (padding > 0) {
+        hexString = '0x' + '0'.repeat(padding) + hexString;
+    }
+
+    return hexString;
+}
