@@ -54,8 +54,6 @@ jobs:
             - name: deploy localnet
               run: |
                   docker run -d -p 1234:1234  --name localnet dataswap/lotus-devnet:0.1.4
-                  sleep 90
-                  docker exec localnet /usr/local/bin/lotus wallet list
 
             - name: Test
               env:
