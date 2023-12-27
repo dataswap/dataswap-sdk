@@ -55,7 +55,7 @@ export class FilecoinAssertion implements IFilecoinAssertion {
             this.filecoin.getReplicaDealState(cid, claimId)
         )
         assert.isTrue(
-            equal(expectState, state.data),
+            expectState == state.data,
             "ReplicaDealState should be expect state"
         )
     }
