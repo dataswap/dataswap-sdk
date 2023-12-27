@@ -58,10 +58,11 @@ export interface IGenerator {
     /**
      * Retrieves dataset proof information based on the provided root.
      * @param root - The root to retrieve proof information.
+     * @param dataType - The data type for the dataset.
      * @param fakedata Whether the specified get fake data (optional).
      * @returns An array containing leaf hashes and leaf sizes.
      */
-    getDatasetProof(root: string, fakedata?: boolean): [leafHashes: string[], leafSizes: number[]]
+    getDatasetProof(root: string, dataType: DataType, fakedata?: boolean): [leafHashes: string[], leafSizes: number[]]
 
     /**
      * Generates dataset challenge proof based on the provided root.

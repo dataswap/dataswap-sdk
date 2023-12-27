@@ -19,23 +19,19 @@
  ********************************************************************************/
 
 
-import { SubmitMetadataSuccessTestKit, ApproveDatasetMetadataSuccessTestKit } from "../../testkits/module/datasets/DatasetsMetadataTestKit"
-import { SubmitRequirementSuccessTestKit } from "../../testkits/module/datasets/DatasetsRequirementTestKit"
-import { SubmitDatasetProofRootSuccessTestKit, SubmitDatasetProofSuccessTestKit } from "../../testkits/module/datasets/DatasetsProofTestKit"
+import { SubmitMetadataTestKit, ApproveDatasetMetadataTestKit, RejectDatasetMetadataTestKit, RejectDatasetTestKit, ApproveDatasetTestKit } from "../../testkits/module/datasets/DatasetsMetadataTestKit"
 import { getContractsManager, getGenerator, getDatasetsHelper } from "../../fixtures"
-import { DatasetState } from "../../../src/shared/types/datasetType"
 import { DatasetsAssertion } from "../../assertions/module/datasetsAssertion"
-
+import { DatasetState } from "../../../src/shared/types/datasetType"
 /**
- * Test suite for the datasets functionality.
+ * Test suite for the Datasets functionality.
  */
-describe("datasets", async () => {
+describe("datasetsmetadata", async () => {
     /**
      * Setup before running the test suite.
      */
     before(function () {
         this.sharedData = {}
-        this.sharedData.datasetId = 0
         this.sharedData.generator = getGenerator()
         this.sharedData.contractsManager = getContractsManager()
         this.sharedData.datasetHelper = getDatasetsHelper()
@@ -45,83 +41,74 @@ describe("datasets", async () => {
     })
 
     /**
+     * Tests assert dependencies addressed of datasets.
+     */
+    it("assertDependenciesAdresses", async function () {
+        await this.sharedData.datasetsAssertion.metadataInitDependenciesAssertion(process.env.DATASWAP_GOVERNANCE as string, process.env.DatasetsProofAddress as string)
+    })
+
+    /**
      * Tests successful submission of dataset metadata.
      */
-    it("SubmitDatasetsMetadataSuccess", async function () {
-        let testKit = new SubmitMetadataSuccessTestKit(
+    it("submitMetadata", async function () {
+        let testKit = new SubmitMetadataTestKit(
             this.sharedData.datasetsAssertion!,
             this.sharedData.generator!,
             this.sharedData.contractsManager!,
             this.sharedData.datasetsHelper!
         )
-        let datasetId = await testKit.run()
-        this.sharedData.datasetId = datasetId
+        await testKit.run()
     })
 
     /**
-     * Tests successful submission of dataset requirements.
+     * Tests approve metadata of Datasets.
      */
-    it("SubmitRequirementSuccess", async function () {
-        try {
-            let datasetId = this.sharedData.datasetId!
-            let testKit = new SubmitRequirementSuccessTestKit(
-                this.sharedData.datasetsAssertion!,
-                this.sharedData.generator!,
-                this.sharedData.contractsManager!,
-                this.sharedData.datasetsHelper!
-            )
-            datasetId = await testKit.run()
-            this.sharedData.datasetId = datasetId
-        } catch (error) {
-            throw error
-        }
-    })
-
-    /**
-     * Test suite for successful approval of dataset metadata.
-     */
-    it("ApproveDatasetMetadataSuccessTestSuite", async function () {
-        let testKit = new ApproveDatasetMetadataSuccessTestKit(
+    it("approveMetadata", async function () {
+        let testKit = new ApproveDatasetMetadataTestKit(
             this.sharedData.datasetsAssertion!,
             this.sharedData.generator!,
             this.sharedData.contractsManager!,
-            this.sharedData.datasetsHelper!
+            getDatasetsHelper()
         )
-        let datasetId = this.sharedData.datasetId
-        datasetId = await testKit.run(datasetId)
-        this.sharedData.datasetId = datasetId
-        this.sharedData.datasetHelper.updateWorkflowTargetState(datasetId, DatasetState.MetadataApproved)
+        await testKit.run()
     })
 
     /**
-     * Tests successful submission of dataset proof root.
+     * Tests reject metadata of Datasets.
      */
-    it("SubmitDatasetProofRootSuccess", async function () {
-        let testKit = new SubmitDatasetProofRootSuccessTestKit(
+    it("rejectDatasetMetadata", async function () {
+        let testKit = new RejectDatasetMetadataTestKit(
             this.sharedData.datasetsAssertion!,
             this.sharedData.generator!,
             this.sharedData.contractsManager!,
-            getDatasetsHelper(),
         )
-        let datasetId = this.sharedData.datasetId
-
-        datasetId = await testKit.run(datasetId)
-        this.sharedData.datasetId = datasetId
+        await testKit.run()
     })
 
     /**
-     * Tests successful submission of dataset proof.
+     * Tests reject dataset.
      */
-    it("SubmitDatasetProofSuccess", async function () {
-        let testKit = new SubmitDatasetProofSuccessTestKit(
+    it("rejectDataset", async function () {
+        let testKit = new RejectDatasetTestKit(
             this.sharedData.datasetsAssertion!,
             this.sharedData.generator!,
             this.sharedData.contractsManager!,
-            getDatasetsHelper(),
         )
-
-        let datasetId = this.sharedData.datasetId
-        datasetId = await testKit.run(datasetId)
-        this.sharedData.datasetId = datasetId
+        await testKit.run()
     })
+
+    /**
+     * Tests approve dataset.
+     */
+    it("approveDataset", async function () {
+        let testKit = new ApproveDatasetTestKit(
+            this.sharedData.datasetsAssertion!,
+            this.sharedData.generator!,
+            this.sharedData.contractsManager!,
+            getDatasetsHelper()
+        )
+        await testKit.run()
+    })
+
 })
+
