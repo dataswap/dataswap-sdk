@@ -1,5 +1,32 @@
 
 
+# [0.3.0](https://github.com/dataswap/dataswapjs/compare/0.2.0...0.3.0) (2023-12-28)
+
+
+### Bug Fixes
+
+* 🐛 [#79](https://github.com/dataswap/dataswapjs/issues/79) ([853f34e](https://github.com/dataswap/dataswapjs/commit/853f34ed9fbdb876ebbe22fb7de815d602044903))
+* 🐛 datasetmeta type ([efe4deb](https://github.com/dataswap/dataswapjs/commit/efe4deb8061ba5d6b57b63fa033a36e87f1c0cf6))
+* 🐛 multiformat build issues ([a40f085](https://github.com/dataswap/dataswapjs/commit/a40f08555f0af9468fd4a1ccb599b9da2eef7b65))
+* 🐛 update net->v2.5.1 ([a95dc95](https://github.com/dataswap/dataswapjs/commit/a95dc95bdb7696eb89e7d6a60bcf0672716f32a2)), closes [#68](https://github.com/dataswap/dataswapjs/issues/68)
+
+
+### Features
+
+* 🎸 add datasetmeta model and decode feature ([4ad9ae3](https://github.com/dataswap/dataswapjs/commit/4ad9ae3920f1bfac57214b3ecd72b916571ca883))
+* 🎸 Add filplus test case ([809261d](https://github.com/dataswap/dataswapjs/commit/809261d9c17848d812b05f39d565e7e9ef4deec0)), closes [#30](https://github.com/dataswap/dataswapjs/issues/30) [#8](https://github.com/dataswap/dataswapjs/issues/8)
+* 🎸 add issues and PR specifications ([82c2447](https://github.com/dataswap/dataswapjs/commit/82c244711fa44a22c676850cf6a8337b51381d01)), closes [#51](https://github.com/dataswap/dataswapjs/issues/51)
+* 🎸 add test code for datasets ([3de2a4d](https://github.com/dataswap/dataswapjs/commit/3de2a4d4ab5acd066402c52a10db41bd820f503c)), closes [#5](https://github.com/dataswap/dataswapjs/issues/5)
+* 🎸 add test code for datasetschallengeproof ([e21a2ab](https://github.com/dataswap/dataswapjs/commit/e21a2aba679ce086f4c53a3e5ebf5440bf301190)), closes [#35](https://github.com/dataswap/dataswapjs/issues/35)
+* 🎸 add test code for datasetsproof ([ff54acd](https://github.com/dataswap/dataswapjs/commit/ff54acd700f3dfea168eb100bde2d8851110422b)), closes [#34](https://github.com/dataswap/dataswapjs/issues/34)
+* 🎸 add test code for datasetsrequirement ([628f94b](https://github.com/dataswap/dataswapjs/commit/628f94bd2c7513546b10b43028626828c8583f95)), closes [#31](https://github.com/dataswap/dataswapjs/issues/31)
+* 🎸 add unimessage datstore ([b75359f](https://github.com/dataswap/dataswapjs/commit/b75359fb7eb57407a727a3798032dc4ac6bb4533)), closes [#44](https://github.com/dataswap/dataswapjs/issues/44)
+* 🎸 auto generate proofs ([b7f2b87](https://github.com/dataswap/dataswapjs/commit/b7f2b873bcfc6befc9311b84be88f33e651919a2)), closes [#24](https://github.com/dataswap/dataswapjs/issues/24)
+* 🎸 delete draft code ([efd6cb7](https://github.com/dataswap/dataswapjs/commit/efd6cb7a8b498f47a5ac838b05c52f197ca21a84))
+* 🎸 export feature for debug ([c0f812f](https://github.com/dataswap/dataswapjs/commit/c0f812f519ce411694ee77c30978c156e09f96b8))
+* 🎸 update filecoin and ddd version to v1 ([2f58c1c](https://github.com/dataswap/dataswapjs/commit/2f58c1cd69096b2c2776791a6cab72de901cd80c))
+* 🎸 upgrade filecoin version ->1.5 ([a3008ea](https://github.com/dataswap/dataswapjs/commit/a3008eac23712c9847b71714641f2273540b3496))
+
 # 0.2.0 (2023-12-26)
 
 
