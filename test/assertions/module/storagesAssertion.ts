@@ -181,10 +181,10 @@ export class StoragesAssertion implements IStoragesAssertion {
         claimIds: number[]
     ): Promise<void> {
         this.contractsManager.StoragesEvm().getWallet().setDefault(caller)
-        let count = await handleEvmError(
+        const count = await handleEvmError(
             this.contractsManager.StoragesEvm().getStoredCarCount(matchingId)
         )
-        let totalSize = await handleEvmError(
+        const totalSize = await handleEvmError(
             this.contractsManager.StoragesEvm().getTotalStoredSize(matchingId)
         )
 
@@ -193,12 +193,28 @@ export class StoragesAssertion implements IStoragesAssertion {
                 .StoragesEvm()
                 .submitStorageClaimIds(matchingId, provider, ids, claimIds)
         )
-        await this.getStoredCarsAssertion(matchingId, ids)
-        await this.getStoredCarCountAssertion(
-            matchingId,
-            Number(count.data) + ids.length
+
+        await Promise.all([
+            this.getStoredCarsAssertion(matchingId, ids),
+            this.isAllStoredDoneAssertion(matchingId, true),
+            this.isStorageExpirationAssertion(matchingId, false),
+
+            // All cars have been stored and the locked amount will be 0.
+            this.getProviderLockPaymentAssertion(matchingId, BigInt(0)),
+            this.getClientLockPaymentAssertion(matchingId, BigInt(0)),
+
+            this.getStoredCarCountAssertion(
+                matchingId,
+                Number(count.data) + ids.length
+            ),
+        ])
+
+        const size = await handleEvmError(
+            this.contractsManager
+                .StoragesEvm()
+                .getStoredCarSize(matchingId, ids[1])
         )
-        await this.getStoredCarsAssertion(matchingId, ids)
+        await this.getStoredCarSizeAssertion(matchingId, 1, size.data)
 
         let inputCarsTotalSize = 0
         for (let i = 0; i < ids.length; i++) {
@@ -207,7 +223,7 @@ export class StoragesAssertion implements IStoragesAssertion {
                     .StoragesEvm()
                     .getStoredCarSize(matchingId, ids[i])
             )
-            inputCarsTotalSize += carSize
+            inputCarsTotalSize += carSize.data
         }
 
         await this.getTotalStoredSizeAssertion(
