@@ -25,14 +25,16 @@ import { IDatasetsHelper } from "../../../interfaces/helper/module/IDatasetshelp
 import { IGenerator } from "../../../interfaces/setup/IGenerator";
 import { IDatasetsAssertion } from "../../../interfaces/assertions/module/IDatasetsAssertion";
 import { DatasetsHelper } from "../../../helpers/module/datasetsHelper";
+import { handleEvmError } from "../../../shared/error";
+import { DatasetState } from "../../../../src/shared/types/datasetType";
 
 /**
- * Represents a test kit for submitting dataset proof root successfully.
+ * Represents a test kit for submitting dataset proof root.
  * Extends from DatasetsTestBase.
  */
-export class SubmitDatasetProofRootSuccessTestKit extends DatasetsTestBase {
+export class SubmitDatasetProofRootTestKit extends DatasetsTestBase {
     /**
-     * Constructor for SubmitDatasetProofRootSuccessTestKit.
+     * Constructor for SubmitDatasetProofRootTestKit.
      * @param _assertion - The assertion instance.
      * @param _generator - The generator instance.
      * @param _contractsManager - The contracts manager instance.
@@ -64,7 +66,7 @@ export class SubmitDatasetProofRootSuccessTestKit extends DatasetsTestBase {
             let dataType = DataType.MappingFiles
 
             // Generate proof for mapping files
-            let [rootHash, , , mappingFilesAccessMethod] = this.generator.generateDatasetProof(0, dataType)
+            let [rootHash, , , mappingFilesAccessMethod] = this.generator.generateDatasetProof(0, dataType, true)
             await this.assertion.submitDatasetProofRootAssertion(
                 datasetId,
                 dataType,
@@ -77,7 +79,7 @@ export class SubmitDatasetProofRootSuccessTestKit extends DatasetsTestBase {
             dataType = DataType.Source
 
             // Generate proof for source
-            let [sourceRootHash, , ,] = this.generator.generateDatasetProof(0, dataType)
+            let [sourceRootHash, , ,] = this.generator.generateDatasetProof(0, dataType, true)
             await this.assertion.submitDatasetProofRootAssertion(
                 datasetId,
                 dataType,
@@ -95,14 +97,14 @@ export class SubmitDatasetProofRootSuccessTestKit extends DatasetsTestBase {
 }
 
 /**
- * Represents a test kit for submitting dataset proof successfully.
+ * Represents a test kit for submitting dataset proof.
  * Extends from DatasetsTestBase.
  */
-export class SubmitDatasetProofSuccessTestKit extends DatasetsTestBase {
-    private dependentTestKit: SubmitDatasetProofRootSuccessTestKit
+export class SubmitDatasetProofTestKit extends DatasetsTestBase {
+    private dependentTestKit: SubmitDatasetProofRootTestKit
 
     /**
-     * Constructor for SubmitDatasetProofSuccessTestKit.
+     * Constructor for SubmitDatasetProofTestKit.
      * @param _assertion - The assertion instance.
      * @param _generator - The generator instance.
      * @param _contractsManager - The contracts manager instance.
@@ -114,7 +116,7 @@ export class SubmitDatasetProofSuccessTestKit extends DatasetsTestBase {
         }
 
         super(_assertion, _generator, _contractsManager, _datasetHelper)
-        this.dependentTestKit = new SubmitDatasetProofRootSuccessTestKit(
+        this.dependentTestKit = new SubmitDatasetProofRootTestKit(
             _assertion,
             _generator,
             _contractsManager,
@@ -144,7 +146,7 @@ export class SubmitDatasetProofSuccessTestKit extends DatasetsTestBase {
         try {
             let dataType = DataType.MappingFiles
             let rootHash = this.generator.getProofRoot(datasetId, dataType)
-            let [leafHashes, leafSizes] = this.generator.getDatasetProof(rootHash!, dataType)
+            let [leafHashes, leafSizes] = this.generator.getDatasetProof(rootHash!, dataType, true)
 
             await this.assertion.submitDatasetProofAssertion(
                 process.env.DATASWAP_PROOFSUBMITTER as string,
@@ -158,7 +160,7 @@ export class SubmitDatasetProofSuccessTestKit extends DatasetsTestBase {
 
             dataType = DataType.Source
             let sourceRootHash = this.generator.getProofRoot(datasetId, dataType)
-            let [sourceLeafHashes, sourceLeafSizes] = this.generator.getDatasetProof(sourceRootHash!, dataType)
+            let [sourceLeafHashes, sourceLeafSizes] = this.generator.getDatasetProof(sourceRootHash!, dataType, true)
 
             await this.assertion.submitDatasetProofAssertion(
                 process.env.DATASWAP_PROOFSUBMITTER as string,
@@ -170,6 +172,78 @@ export class SubmitDatasetProofSuccessTestKit extends DatasetsTestBase {
                 true
             )
 
+            return datasetId
+        } catch (error) {
+            throw error
+        }
+    }
+}
+
+/**
+ * Represents a test kit for submitting dataset proof completed.
+ * Extends from DatasetsTestBase.
+ */
+export class SubmitDatasetProofCompletedTestKit extends DatasetsTestBase {
+    private dependentTestKit: SubmitDatasetProofTestKit
+
+    /**
+     * Constructor for SubmitDatasetProofCompletedTestKit.
+     * @param _assertion - The assertion instance.
+     * @param _generator - The generator instance.
+     * @param _contractsManager - The contracts manager instance.
+     * @param _datasetHelper - The datasets helper instance.
+     */
+    constructor(_assertion: IDatasetsAssertion, _generator: IGenerator, _contractsManager: IContractsManager, _datasetHelper?: IDatasetsHelper) {
+        if (!_datasetHelper) {
+            _datasetHelper = new DatasetsHelper(_generator, _contractsManager)
+        }
+
+        super(_assertion, _generator, _contractsManager, _datasetHelper)
+        this.dependentTestKit = new SubmitDatasetProofTestKit(
+            _assertion,
+            _generator,
+            _contractsManager,
+            _datasetHelper
+        )
+    }
+
+    /**
+     * Optional setup before the action execution.
+     * @returns Promise resolving to a number.
+     */
+    async optionalBefore(): Promise<number> {
+        try {
+            let datasetId = await this.dependentTestKit.run()
+            return datasetId
+        } catch (error) {
+            throw error
+        }
+    }
+
+    /**
+     * Action function to submit dataset proof completed.
+     * @param datasetId - The ID of the dataset.
+     * @returns Promise resolving to a number.
+     */
+    async action(datasetId: number): Promise<number> {
+        try {
+
+            let datacapCollateral = await handleEvmError(this.contractsManager.DatasetProofEvm().getDatasetAppendCollateral(datasetId))
+            let auditorFees = await handleEvmError(this.contractsManager.DatasetProofEvm().getDatasetDataAuditorFeesRequirement(datasetId))
+            // Setting wallet and appending dataset funds
+            await this.assertion.appendDatasetFundsAssertion(
+                process.env.DATASWAP_METADATASUBMITTER as string,
+                datasetId,
+                BigInt(datacapCollateral.data),
+                BigInt(auditorFees.data),
+            )
+
+            // Setting wallet and submitting dataset proof as completed
+            await this.assertion.submitDatasetProofCompletedAssertion(
+                process.env.DATASWAP_PROOFSUBMITTER as string,
+                datasetId,
+                DatasetState.DatasetProofSubmitted
+            )
             return datasetId
         } catch (error) {
             throw error
