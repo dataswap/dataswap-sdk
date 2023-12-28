@@ -21,7 +21,7 @@
 import { DatasetMetadata } from "../../../src/module/dataset/metadata/types"
 import { DatasetRequirements } from "../../../src/shared/types/datasetType"
 import { DataType } from "../../../src/shared/types/dataType"
-import { BidSelectionRule } from "../../../src/module/matching/metadata/types"
+import { MatchingMetadata } from "../../../src/module/matching/metadata/types"
 
 export interface IGenerator {
     /**
@@ -109,25 +109,7 @@ export interface IGenerator {
      * @param index - Index of the dataset.
      * @returns An array containing bid selection rule, delay block counts, storage completion blocks, threshold, and additional information.
      */
-    generatorMatchingInfo(
-        datasetId: number,
-        index: number
-    ): [
-        bidSelectionRule: BidSelectionRule,
-        biddingDelayBlockCount: number,
-        biddingPeriodBlockCount: number,
-        storageCompletionPeriodBlocks: number,
-        biddingThreshold: bigint,
-        additionalInfo: string,
-    ]
-
-    /**
-     * Retrieves the next replica index for a dataset.
-     * @param datasetId - The ID of the dataset.
-     * @param max - Maximum limit for the index.
-     * @returns The next replica index for the dataset.
-     */
-    datasetNextReplicaIndex(datasetId: number, max: number): number
+    generatorMatchingInfo(datasetId: number, index: number): MatchingMetadata
 
     /**
      * Retrieves the proof root for a dataset ID and data type.

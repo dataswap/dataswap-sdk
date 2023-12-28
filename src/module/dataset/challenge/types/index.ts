@@ -26,7 +26,7 @@ import { Entity } from "@unipackage/ddd"
  */
 export interface DatasetChallenge {
     leaves: string[]
-    siblings: string[][]
+    siblingss: string[][]
     paths: number[]
 }
 
