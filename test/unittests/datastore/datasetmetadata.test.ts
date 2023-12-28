@@ -33,9 +33,9 @@ const sampleDatasetMetadata: ValueFields<DatasetMetadata> = {
     accessMethod: "a",
     submitter: "a",
     createdBlockNumber: 0,
-    sizeInBytes: 0,
+    sizeInBytes: BigInt(0),
     isPublic: true,
-    version: 0,
+    version: BigInt(0),
     datasetId: 0,
     status: "a",
 }

@@ -34,9 +34,9 @@ export interface DatasetMetadata {
     // set submitter and createdBlockNumber is optional,because this interface must mathed the txinput decode params(submitmetadata)
     submitter?: string
     createdBlockNumber?: number
-    sizeInBytes: number
+    sizeInBytes: bigint
     isPublic: boolean
-    version: number
+    version: bigint
     datasetId?: number
     status?: string
 }

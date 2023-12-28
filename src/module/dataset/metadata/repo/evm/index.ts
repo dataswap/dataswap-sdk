@@ -148,9 +148,9 @@ interface DatasetMetadataSendEvm {
         description: string,
         source: string,
         accessMethod: string,
-        sizeInBytes: number,
+        sizeInBytes: bigint,
         isPublic: boolean,
-        version: number,
+        version: bigint,
         options?: EvmTransactionOptions
     ): Promise<EvmOutput<any>>
 
@@ -224,7 +224,7 @@ export class DatasetMetadataEvm extends DatasetMetadataOriginEvm {
             return { ok: false, error: decodeRes.error }
         }
 
-        let result: DataswapMessage = decodeRes.data as DataswapMessage
+        let result: DataswapMessage = decodeRes.data!.value() as DataswapMessage
         switch (decodeRes.data!.method) {
             case "submitDatasetMetadata":
                 result.datasetId = Number(result.return)
