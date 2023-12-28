@@ -1,6 +1,4 @@
 node_modules
 dist
-dist-test
-.localnet
-.env
+dist - test.localnet.env
 yarn.lock
