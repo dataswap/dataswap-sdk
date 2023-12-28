@@ -82,9 +82,7 @@ export class ContractsManager implements IContractsManager {
 
             const wallet = initWallet(url)
             // Load contract ABI
-            const contractAbi = require(
-                `@dataswapcore/contracts/abi/v0.8/${contractName}.json`
-            )
+            const contractAbi = require(`@dataswapcore/contracts/abi/v0.8/${contractName}.json`)
 
             // Store contract instances and addresses in maps
             this.contractsEvms.set(
