@@ -153,7 +153,7 @@ export class RolesEvm extends RolesOriginEvm {
             return { ok: false, error: decodeRes.error }
         }
 
-        let result: DataswapMessage = decodeRes.data as DataswapMessage
+        let result: DataswapMessage = decodeRes.data!.value() as DataswapMessage
         switch (decodeRes.data!.method) {
             case "acceptOwnership":
             case "pendingOwner":

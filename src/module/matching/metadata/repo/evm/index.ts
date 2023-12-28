@@ -153,10 +153,10 @@ export class MatchingMetadataEvm extends MatchingMetadataOriginEvm {
             return { ok: false, error: decodeRes.error }
         }
 
-        let result: DataswapMessage = decodeRes.data as DataswapMessage
+        let result: DataswapMessage = decodeRes.data!.value() as DataswapMessage
         switch (decodeRes.data!.method) {
             case "createMatching":
-                result.matchingId = msg.MsgRct?.Return
+                result.matchingId = Number(result.return)
                 break
             case "pauseMatching" || "resumeMatching":
                 result.matchingId = result.params.matchingId
