@@ -172,7 +172,7 @@ export class MatchingsHelper extends BasicHelper implements IMatchingsHelper {
             let associatedMatchingId: number = 0
             if (dataType === DataType.Source) {
                 const associatedMappingFilesMatchingId =
-                    this.getAssociatedMappingFilesMatchingId(matchingId)
+                    this.getAssociatedMappingFilesMatchingId(datasetId)
                 if (!associatedMappingFilesMatchingId) {
                     // Completing dependent workflow for mapping files if missing
                     associatedMatchingId = await this.completeDependentWorkflow(
@@ -185,7 +185,7 @@ export class MatchingsHelper extends BasicHelper implements IMatchingsHelper {
                         }
                     )
                     this.setAssociatedMappingFilesMatchingId(
-                        matchingId,
+                        datasetId,
                         associatedMatchingId
                     )
                 } else {
@@ -361,7 +361,7 @@ export class MatchingsHelper extends BasicHelper implements IMatchingsHelper {
                 process.env.DATASWAP_BIDDER as string,
                 matchingId,
                 BigInt(meta.data.biddingThreshold) + BigInt(10),
-                MatchingState.Completed
+                MatchingState.InProgress
             )
 
             await this.contractsManager

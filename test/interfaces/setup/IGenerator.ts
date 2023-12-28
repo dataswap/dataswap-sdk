@@ -61,7 +61,7 @@ export interface IGenerator {
         root: string,
         leafHashes: string[],
         leafSizes: number[],
-        mappingFilesAccessMethod: string,
+        mappingFilesAccessMethod: string
     ]
 
     /**
@@ -88,7 +88,7 @@ export interface IGenerator {
         randomSeed: number,
         leaves: string[],
         siblings: string[][],
-        paths: number[],
+        paths: number[]
     ]
 
     /**

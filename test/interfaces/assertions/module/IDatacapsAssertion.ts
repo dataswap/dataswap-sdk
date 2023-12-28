@@ -58,7 +58,7 @@ export interface IDatacapsAssertion {
      */
     getAvailableDatacapAssertion(
         matchingId: number,
-        expectAvailableDatacaps: number
+        expectAvailableDatacaps: bigint
     ): Promise<void>
 
     /**
@@ -69,7 +69,7 @@ export interface IDatacapsAssertion {
      */
     getAllocatedDatacapAssertion(
         matchingId: number,
-        expectAllocatedDatacaps: number
+        expectAllocatedDatacaps: bigint
     ): Promise<void>
 
     /**
@@ -80,7 +80,7 @@ export interface IDatacapsAssertion {
      */
     getTotalDatacapAllocationRequirementAssertion(
         matchingId: number,
-        expectTotalDatacapRequirement: number
+        expectTotalDatacapRequirement: bigint 
     ): Promise<void>
 
     /**
@@ -91,7 +91,7 @@ export interface IDatacapsAssertion {
      */
     getRemainingUnallocatedDatacapAssertion(
         matchingId: number,
-        expectRemainUnallocatedDatacaps: number
+        expectRemainUnallocatedDatacaps: bigint
     ): Promise<void>
 
     /**
@@ -122,12 +122,10 @@ export interface IDatacapsAssertion {
      * Requests datacap allocation for a specific matching identified by its ID.
      * @param caller - The address of the caller.
      * @param matchingId - The ID of the matching.
-     * @param expectAllocated - Expected amount to be allocated.
      * @returns A Promise indicating the assertion result.
      */
     requestAllocateDatacapAssertion(
         caller: string,
-        matchingId: number,
-        expectAllocated: number
+        matchingId: number
     ): Promise<void>
 }
