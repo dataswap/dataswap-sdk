@@ -40,32 +40,32 @@ interface DatasetMetadataCallEvm {
      */
     getDatasetUsedSize(datasetId: number): Promise<EvmOutput<number>>
     /**
-     * Get dataset metadata 
+     * Get dataset metadata
      * @param datasetId The ID of the dataset to get metadata.
      * @returns The metadata of dataset.
      */
     getDatasetMetadata(datasetId: number): Promise<EvmOutput<DatasetMetadata>>
     /**
      * Get submitter of dataset's metadata
-     * @param datasetId The ID of the dataset to get submitter of dataset'metadata. 
+     * @param datasetId The ID of the dataset to get submitter of dataset'metadata.
      * @returns The address of submitter.
      */
     getDatasetMetadataSubmitter(datasetId: number): Promise<EvmOutput<string>>
     /**
-     * Get client of dataset. 
-     * @param datasetId The ID of the dataset to get client of dataset'metadata. 
+     * Get client of dataset.
+     * @param datasetId The ID of the dataset to get client of dataset'metadata.
      * @returns The actor id of client in filecoin network.
      */
     getDatasetMetadataClient(datasetId: number): Promise<EvmOutput<number>>
     /**
      *  Get dataset state
-     * @param datasetId The ID of the dataset to get state of dataset. 
+     * @param datasetId The ID of the dataset to get state of dataset.
      * @returns The state of dataset.
      */
     getDatasetState(datasetId: number): Promise<EvmOutput<DatasetState>>
     /**
      *  Get governance address
-     * @return The address of governance 
+     * @return The address of governance
      */
     governanceAddress(): Promise<EvmOutput<string>>
     /**
@@ -97,8 +97,8 @@ interface DatasetMetadataSendEvm {
     ): Promise<EvmOutput<void>>
 
     /**
-     * This function changes the state of the dataset to MetadataApproved and emits the MetadataApproved event. 
-     * @param datasetId The ID of the dataset for which to approve metadata. 
+     * This function changes the state of the dataset to MetadataApproved and emits the MetadataApproved event.
+     * @param datasetId The ID of the dataset for which to approve metadata.
      * @param options The options of transaction.
      */
     approveDatasetMetadata(
@@ -107,7 +107,7 @@ interface DatasetMetadataSendEvm {
     ): Promise<EvmOutput<void>>
 
     /**
-     * This function changes the state of the dataset to DatasetRejected and emits the DatasetRejected event. 
+     * This function changes the state of the dataset to DatasetRejected and emits the DatasetRejected event.
      * @param datasetId The ID of the dataset to reject.
      * @param options The options of transaction.
      */
@@ -148,18 +148,21 @@ interface DatasetMetadataSendEvm {
         description: string,
         source: string,
         accessMethod: string,
-        sizeInBytes: number,
+        sizeInBytes: bigint,
         isPublic: boolean,
-        version: number,
+        version: bigint,
         options?: EvmTransactionOptions
     ): Promise<EvmOutput<any>>
 
     /**
-     * Update dataset usedSizeInBytes. only called by matching contract. TODO: Need to add permission control 
+     * Update dataset usedSizeInBytes. only called by matching contract. TODO: Need to add permission control
      * @param datasetId The ID of the dataset to add used size.
-     * @param size The size to add. 
+     * @param size The size to add.
      */
-    addDatasetUsedSize(datasetId: number, size: number): Promise<EvmOutput<void>>
+    addDatasetUsedSize(
+        datasetId: number,
+        size: number
+    ): Promise<EvmOutput<void>>
 }
 
 /**
@@ -167,7 +170,7 @@ interface DatasetMetadataSendEvm {
  */
 export interface DatasetMetadataOriginEvm
     extends DatasetMetadataCallEvm,
-    DatasetMetadataSendEvm { }
+        DatasetMetadataSendEvm {}
 
 /**
  * Implementation of DatasetMetadataOriginEvm with specific EVM methods.
@@ -192,13 +195,15 @@ export interface DatasetMetadataOriginEvm
     "submitDatasetMetadata",
     "addDatasetUsedSize",
 ])
-export class DatasetMetadataOriginEvm extends EvmEx { }
+export class DatasetMetadataOriginEvm extends EvmEx {}
 
 /**
  * Extended class for DatasetMetadataOriginEvm with additional message decoding.
  */
 export class DatasetMetadataEvm extends DatasetMetadataOriginEvm {
-    async getDatasetMetadata(datasetId: number): Promise<EvmOutput<DatasetMetadata>> {
+    async getDatasetMetadata(
+        datasetId: number
+    ): Promise<EvmOutput<DatasetMetadata>> {
         const metaRes = await super.getDatasetMetadata(datasetId)
         if (metaRes.ok && metaRes.data) {
             return {
@@ -219,10 +224,14 @@ export class DatasetMetadataEvm extends DatasetMetadataOriginEvm {
             return { ok: false, error: decodeRes.error }
         }
 
-        let result: DataswapMessage = decodeRes.data as DataswapMessage
+        let result: DataswapMessage = decodeRes.data!.value() as DataswapMessage
         switch (decodeRes.data!.method) {
             case "submitDatasetMetadata":
-                result.datasetId = msg.MsgRct?.Return
+                result.datasetId = Number(result.return)
+                /*params match the DatasetMetadata struct*/
+                result.params.submitter = result.from
+                result.params.createdBlockNumber = result.height
+                result.params.datasetId = result.datasetId
                 break
             case "approveDataset" ||
                 "approveDatasetMetadata" ||

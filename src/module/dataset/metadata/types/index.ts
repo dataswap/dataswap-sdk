@@ -31,11 +31,12 @@ export interface DatasetMetadata {
     description: string
     source: string
     accessMethod: string
-    submitter: string
-    createdBlockNumber: number
-    sizeInBytes: number
+    // set submitter and createdBlockNumber is optional,because this interface must mathed the txinput decode params(submitmetadata)
+    submitter?: string
+    createdBlockNumber?: number
+    sizeInBytes: bigint
     isPublic: boolean
-    version: number
+    version: bigint
     datasetId?: number
     status?: string
 }
@@ -45,4 +46,4 @@ export interface DatasetMetadata {
  * @class
  * @extends Entity<DatasetMetadata>
  */
-export class DatasetMetadata extends Entity<DatasetMetadata> { }
+export class DatasetMetadata extends Entity<DatasetMetadata> {}
