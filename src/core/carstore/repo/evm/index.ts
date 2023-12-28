@@ -180,7 +180,7 @@ interface CarstoreCallEvm {
      * @param ids Array of car IDs to check.
      * @return True if all specified cars exist, false if any one does not exist.
      */
-    hasCars(ids: string[]): Promise<EvmOutput<boolean>>
+    hasCars(ids: number[]): Promise<EvmOutput<boolean>>
 
     /**
      * @returns The cars count
@@ -231,4 +231,18 @@ export class CarstoreOriginEvm extends EvmEx { }
 /**
  * Extended class for CarstoreOriginEvm with additional message decoding.
  */
-export class CarstoreEvm extends CarstoreOriginEvm { }
+export class CarstoreEvm extends CarstoreOriginEvm {
+    async getCar(id: number): Promise<EvmOutput<Car>> {
+        const metaRes = await super.getCar(id)
+        if (metaRes.ok && metaRes.data) {
+            return {
+                ok: true,
+                data: new Car({
+                    ...metaRes.data,
+                    id: id,
+                }),
+            }
+        }
+        return metaRes
+    }
+}

@@ -8,6 +8,9 @@
             "args": [
                 "--require",
                 "ts-node/register",
+                "--require",
+                "${workspaceFolder}/test/fixtures.ts",
+                "--no-config",
                 "-u",
                 "bdd",
                 "--timeout",
