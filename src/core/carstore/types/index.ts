@@ -20,19 +20,19 @@
 
 import { Entity } from "@unipackage/ddd"
 import { ValueFields } from "@unipackage/utils"
-import { CarReplicaState } from "../../../shared/types/carstoreType";
+import { CarReplicaState } from "../../../shared/types/carstoreType"
 
 /**
  * Represents a Car entity.
  * @interface
  */
 export interface Car {
-    hash: string; // car hash
-    datasetId: number; // Index of approved dataset
-    size: number; //car size
-    replicasCount: number; // Replica count
-    matchingIds: number[]; // Matching Ids.
-    id: number; // The id associated with the car.
+    hash: string // car hash
+    datasetId: number // Index of approved dataset
+    size: number //car size
+    replicasCount: number // Replica count
+    matchingIds: number[] // Matching Ids.
+    id: number // The id associated with the car.
 }
 
 /**
@@ -40,8 +40,8 @@ export interface Car {
  * @interface
  */
 export interface CarReplica {
-    state: CarReplicaState; // Current state of the replica
-    filecoinClaimId: number; // ID of the Filecoin claim associated with the replica's storage
+    state: CarReplicaState // Current state of the replica
+    filecoinClaimId: number // ID of the Filecoin claim associated with the replica's storage
 }
 
 /**
@@ -56,7 +56,7 @@ export class Car extends Entity<Car> {
             datasetId: data?.datasetId || 0,
             size: data?.size || 0,
             replicasCount: data?.replicasCount || 0,
-            matchingIds: data?.matchingIds || []
+            matchingIds: data?.matchingIds || [],
         })
     }
 }
@@ -69,7 +69,7 @@ export class CarReplica extends Entity<CarReplica> {
     constructor(data?: ValueFields<CarReplica>) {
         super({
             filecoinClaimId: data?.filecoinClaimId || 0,
-            state: data?.state || CarReplicaState.None
+            state: data?.state || CarReplicaState.None,
         })
     }
 }

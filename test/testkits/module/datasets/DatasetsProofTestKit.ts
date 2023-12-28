@@ -18,15 +18,15 @@
  *  limitations under the respective licenses.
  ********************************************************************************/
 
-import { DatasetsTestBase } from "./abstract/DatasetsTestBase";
-import { DataType } from "../../../../src/shared/types/dataType";
-import { IContractsManager } from "../../../interfaces/setup/IContractsManater";
-import { IDatasetsHelper } from "../../../interfaces/helper/module/IDatasetshelper";
-import { IGenerator } from "../../../interfaces/setup/IGenerator";
-import { IDatasetsAssertion } from "../../../interfaces/assertions/module/IDatasetsAssertion";
-import { DatasetsHelper } from "../../../helpers/module/datasetsHelper";
-import { handleEvmError } from "../../../shared/error";
-import { DatasetState } from "../../../../src/shared/types/datasetType";
+import { DatasetsTestBase } from "./abstract/DatasetsTestBase"
+import { DataType } from "../../../../src/shared/types/dataType"
+import { IContractsManager } from "../../../interfaces/setup/IContractsManater"
+import { IDatasetsHelper } from "../../../interfaces/helper/module/IDatasetshelper"
+import { IGenerator } from "../../../interfaces/setup/IGenerator"
+import { IDatasetsAssertion } from "../../../interfaces/assertions/module/IDatasetsAssertion"
+import { DatasetsHelper } from "../../../helpers/module/datasetsHelper"
+import { handleEvmError } from "../../../shared/error"
+import { DatasetState } from "../../../../src/shared/types/datasetType"
 
 /**
  * Represents a test kit for submitting dataset proof root.
@@ -40,7 +40,12 @@ export class SubmitDatasetProofRootTestKit extends DatasetsTestBase {
      * @param _contractsManager - The contracts manager instance.
      * @param _datasetHelper - The datasets helper instance.
      */
-    constructor(_assertion: IDatasetsAssertion, _generator: IGenerator, _contractsManager: IContractsManager, _datasetHelper?: IDatasetsHelper) {
+    constructor(
+        _assertion: IDatasetsAssertion,
+        _generator: IGenerator,
+        _contractsManager: IContractsManager,
+        _datasetHelper?: IDatasetsHelper
+    ) {
         super(_assertion, _generator, _contractsManager, _datasetHelper)
     }
 
@@ -66,7 +71,8 @@ export class SubmitDatasetProofRootTestKit extends DatasetsTestBase {
             let dataType = DataType.MappingFiles
 
             // Generate proof for mapping files
-            let [rootHash, , , mappingFilesAccessMethod] = this.generator.generateDatasetProof(0, dataType, true)
+            let [rootHash, , , mappingFilesAccessMethod] =
+                this.generator.generateDatasetProof(0, dataType, true)
             await this.assertion.submitDatasetProofRootAssertion(
                 datasetId,
                 dataType,
@@ -79,11 +85,15 @@ export class SubmitDatasetProofRootTestKit extends DatasetsTestBase {
             dataType = DataType.Source
 
             // Generate proof for source
-            let [sourceRootHash, , ,] = this.generator.generateDatasetProof(0, dataType, true)
+            let [sourceRootHash, , ,] = this.generator.generateDatasetProof(
+                0,
+                dataType,
+                true
+            )
             await this.assertion.submitDatasetProofRootAssertion(
                 datasetId,
                 dataType,
-                '',
+                "",
                 sourceRootHash,
                 process.env.DATASWAP_PROOFSUBMITTER as string
             )
@@ -110,7 +120,12 @@ export class SubmitDatasetProofTestKit extends DatasetsTestBase {
      * @param _contractsManager - The contracts manager instance.
      * @param _datasetHelper - The datasets helper instance.
      */
-    constructor(_assertion: IDatasetsAssertion, _generator: IGenerator, _contractsManager: IContractsManager, _datasetHelper?: IDatasetsHelper) {
+    constructor(
+        _assertion: IDatasetsAssertion,
+        _generator: IGenerator,
+        _contractsManager: IContractsManager,
+        _datasetHelper?: IDatasetsHelper
+    ) {
         if (!_datasetHelper) {
             _datasetHelper = new DatasetsHelper(_generator, _contractsManager)
         }
@@ -146,7 +161,11 @@ export class SubmitDatasetProofTestKit extends DatasetsTestBase {
         try {
             let dataType = DataType.MappingFiles
             let rootHash = this.generator.getProofRoot(datasetId, dataType)
-            let [leafHashes, leafSizes] = this.generator.getDatasetProof(rootHash!, dataType, true)
+            let [leafHashes, leafSizes] = this.generator.getDatasetProof(
+                rootHash!,
+                dataType,
+                true
+            )
 
             await this.assertion.submitDatasetProofAssertion(
                 process.env.DATASWAP_PROOFSUBMITTER as string,
@@ -159,8 +178,12 @@ export class SubmitDatasetProofTestKit extends DatasetsTestBase {
             )
 
             dataType = DataType.Source
-            let sourceRootHash = this.generator.getProofRoot(datasetId, dataType)
-            let [sourceLeafHashes, sourceLeafSizes] = this.generator.getDatasetProof(sourceRootHash!, dataType, true)
+            let sourceRootHash = this.generator.getProofRoot(
+                datasetId,
+                dataType
+            )
+            let [sourceLeafHashes, sourceLeafSizes] =
+                this.generator.getDatasetProof(sourceRootHash!, dataType, true)
 
             await this.assertion.submitDatasetProofAssertion(
                 process.env.DATASWAP_PROOFSUBMITTER as string,
@@ -193,7 +216,12 @@ export class SubmitDatasetProofCompletedTestKit extends DatasetsTestBase {
      * @param _contractsManager - The contracts manager instance.
      * @param _datasetHelper - The datasets helper instance.
      */
-    constructor(_assertion: IDatasetsAssertion, _generator: IGenerator, _contractsManager: IContractsManager, _datasetHelper?: IDatasetsHelper) {
+    constructor(
+        _assertion: IDatasetsAssertion,
+        _generator: IGenerator,
+        _contractsManager: IContractsManager,
+        _datasetHelper?: IDatasetsHelper
+    ) {
         if (!_datasetHelper) {
             _datasetHelper = new DatasetsHelper(_generator, _contractsManager)
         }
@@ -227,15 +255,22 @@ export class SubmitDatasetProofCompletedTestKit extends DatasetsTestBase {
      */
     async action(datasetId: number): Promise<number> {
         try {
-
-            let datacapCollateral = await handleEvmError(this.contractsManager.DatasetProofEvm().getDatasetAppendCollateral(datasetId))
-            let auditorFees = await handleEvmError(this.contractsManager.DatasetProofEvm().getDatasetDataAuditorFeesRequirement(datasetId))
+            let datacapCollateral = await handleEvmError(
+                this.contractsManager
+                    .DatasetProofEvm()
+                    .getDatasetAppendCollateral(datasetId)
+            )
+            let auditorFees = await handleEvmError(
+                this.contractsManager
+                    .DatasetProofEvm()
+                    .getDatasetDataAuditorFeesRequirement(datasetId)
+            )
             // Setting wallet and appending dataset funds
             await this.assertion.appendDatasetFundsAssertion(
                 process.env.DATASWAP_METADATASUBMITTER as string,
                 datasetId,
                 BigInt(datacapCollateral.data),
-                BigInt(auditorFees.data),
+                BigInt(auditorFees.data)
             )
 
             // Setting wallet and submitting dataset proof as completed

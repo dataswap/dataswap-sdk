@@ -18,11 +18,7 @@
  *  limitations under the respective licenses.
  ********************************************************************************/
 
-import {
-    Evm,
-    withCallMethod,
-    EvmOutput
-} from "@unipackage/net"
+import { Evm, withCallMethod, EvmOutput } from "@unipackage/net"
 import { DealState } from "../../../../shared/types/filecoinType"
 import { EvmEx } from "../../../../shared/types/evmEngineType"
 
@@ -54,27 +50,20 @@ interface FilecoinCallEvm {
 /**
  * Interface for EVM transactions related to  Filecoin.
  */
-interface FilecoinSendEvm { }
+interface FilecoinSendEvm {}
 
 /**
  * Combined interface for EVM calls and transactions related to  Filecoin.
  */
-export interface FilecoinOriginEvm
-    extends FilecoinCallEvm,
-    FilecoinSendEvm { }
+export interface FilecoinOriginEvm extends FilecoinCallEvm, FilecoinSendEvm {}
 
 /**
  * Implementation of  FilecoinOriginEvm with specific EVM methods.
  */
-@withCallMethod(
-    [
-        "getReplicaDealState",
-        "getReplicaClaimData"
-    ]
-)
-export class FilecoinOriginEvm extends EvmEx { }
+@withCallMethod(["getReplicaDealState", "getReplicaClaimData"])
+export class FilecoinOriginEvm extends EvmEx {}
 
 /**
  * Extended class for  FilecoinOriginEvm with additional message decoding.
  */
-export class FilecoinEvm extends FilecoinOriginEvm { }
+export class FilecoinEvm extends FilecoinOriginEvm {}

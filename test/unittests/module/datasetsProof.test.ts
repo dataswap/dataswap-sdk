@@ -17,7 +17,11 @@
  *  See the MIT License or the Apache License for the specific language governing permissions and
  *  limitations under the respective licenses.
  ********************************************************************************/
-import { SubmitDatasetProofRootTestKit, SubmitDatasetProofTestKit, SubmitDatasetProofCompletedTestKit } from "../../testkits/module/datasets/DatasetsProofTestKit"
+import {
+    SubmitDatasetProofRootTestKit,
+    SubmitDatasetProofTestKit,
+    SubmitDatasetProofCompletedTestKit,
+} from "../../testkits/module/datasets/DatasetsProofTestKit"
 import { getContractsManager, getGenerator } from "../../fixtures"
 import { DatasetsAssertion } from "../../assertions/module/datasetsAssertion"
 import { DatasetsHelper } from "../../helpers/module/datasetsHelper"
@@ -26,7 +30,6 @@ import { DatasetsHelper } from "../../helpers/module/datasetsHelper"
  * Test suite for the DatasetsProof functionality.
  */
 describe("datasetsProof", async () => {
-
     /**
      * Setup before running the test suite.
      */
@@ -47,7 +50,10 @@ describe("datasetsProof", async () => {
      * Tests assert dependencies addressed of DatasetsProof.
      */
     it("assertDependenciesAdresses", async function () {
-        await this.sharedData.datasetsAssertion.proofInitDependenciesAssertion(process.env.DATASWAP_GOVERNANCE as string, process.env.DatasetsChallengeAddress as string)
+        await this.sharedData.datasetsAssertion.proofInitDependenciesAssertion(
+            process.env.DATASWAP_GOVERNANCE as string,
+            process.env.DatasetsChallengeAddress as string
+        )
     })
 
     /**
@@ -58,7 +64,7 @@ describe("datasetsProof", async () => {
             this.sharedData.datasetsAssertion!,
             this.sharedData.generator!,
             this.sharedData.contractsManager!,
-            this.sharedData.datasetHelper,
+            this.sharedData.datasetHelper
         )
         let datasetId = await testKit.run()
         this.sharedData.datasetId = datasetId
@@ -72,7 +78,7 @@ describe("datasetsProof", async () => {
             this.sharedData.datasetsAssertion!,
             this.sharedData.generator!,
             this.sharedData.contractsManager!,
-            this.sharedData.datasetHelper,
+            this.sharedData.datasetHelper
         )
 
         let datasetId = this.sharedData.datasetId
@@ -88,7 +94,7 @@ describe("datasetsProof", async () => {
             this.sharedData.datasetsAssertion!,
             this.sharedData.generator!,
             this.sharedData.contractsManager!,
-            this.sharedData.datasetHelper,
+            this.sharedData.datasetHelper
         )
 
         let datasetId = this.sharedData.datasetId

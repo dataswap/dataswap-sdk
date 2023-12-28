@@ -25,7 +25,6 @@ import { Fund } from "../../../../src/core/escrow/types"
  * Interface for asserting operations on an EscrowEvm instance.
  */
 export interface IEscrowAssertion {
-
     /**
      * Asserts the owner's fund on the escrow.
      * @param {EscrowType} type - The type of the escrow.
@@ -34,7 +33,12 @@ export interface IEscrowAssertion {
      * @param {Fund} expectFund - The expected fund details.
      * @returns {Promise<void>}
      */
-    getOwnerFundAssertion(type: EscrowType, owner: string, id: number, expectFund: Fund): Promise<void>
+    getOwnerFundAssertion(
+        type: EscrowType,
+        owner: string,
+        id: number,
+        expectFund: Fund
+    ): Promise<void>
 
     /**
      * Asserts the list of beneficiaries on the escrow.
@@ -44,7 +48,12 @@ export interface IEscrowAssertion {
      * @param {string[]} expectBeneficiaries - The expected list of beneficiaries.
      * @returns {Promise<void>}
      */
-    getBeneficiariesListAssertion(type: EscrowType, owner: string, id: number, expectBeneficiaries: string[]): Promise<void>
+    getBeneficiariesListAssertion(
+        type: EscrowType,
+        owner: string,
+        id: number,
+        expectBeneficiaries: string[]
+    ): Promise<void>
 
     /**
      * Asserts the beneficiary's fund on the escrow.
@@ -55,7 +64,13 @@ export interface IEscrowAssertion {
      * @param {Fund} expectFund - The expected fund details.
      * @returns {Promise<void>}
      */
-    getBeneficiaryFundAssertion(type: EscrowType, owner: string, id: number, beneficiary: string, expectFund: Fund): Promise<void>
+    getBeneficiaryFundAssertion(
+        type: EscrowType,
+        owner: string,
+        id: number,
+        beneficiary: string,
+        expectFund: Fund
+    ): Promise<void>
 
     /**
      * Asserts the collateral operation on the escrow.
@@ -65,7 +80,12 @@ export interface IEscrowAssertion {
      * @param {bigint} amount - The collateral amount.
      * @returns {Promise<void>}
      */
-    collateralAssertion(type: EscrowType, owner: string, id: number, amount: bigint): Promise<void>
+    collateralAssertion(
+        type: EscrowType,
+        owner: string,
+        id: number,
+        amount: bigint
+    ): Promise<void>
 
     /**
      * Asserts the payment operation on the escrow.
@@ -75,7 +95,12 @@ export interface IEscrowAssertion {
      * @param {bigint} amount - The payment amount.
      * @returns {Promise<void>}
      */
-    paymentAssertion(type: EscrowType, owner: string, id: number, amount: bigint): Promise<void>
+    paymentAssertion(
+        type: EscrowType,
+        owner: string,
+        id: number,
+        amount: bigint
+    ): Promise<void>
 
     /**
      * Asserts the payment to a single beneficiary operation on the escrow.
@@ -86,7 +111,13 @@ export interface IEscrowAssertion {
      * @param {bigint} amount - The payment amount.
      * @returns {Promise<void>}
      */
-    paymentSingleBeneficiaryAssertion(type: EscrowType, owner: string, id: number, beneficiary: string, amount: bigint): Promise<void>
+    paymentSingleBeneficiaryAssertion(
+        type: EscrowType,
+        owner: string,
+        id: number,
+        beneficiary: string,
+        amount: bigint
+    ): Promise<void>
 
     /**
      * Asserts the payment transfer operation on the escrow.
@@ -95,5 +126,9 @@ export interface IEscrowAssertion {
      * @param {number} id - The ID of the escrow.
      * @returns {Promise<void>}
      */
-    paymentTransferAssertion(type: EscrowType, owner: string, id: number): Promise<void>
+    paymentTransferAssertion(
+        type: EscrowType,
+        owner: string,
+        id: number
+    ): Promise<void>
 }

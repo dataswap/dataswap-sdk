@@ -53,7 +53,9 @@ interface MatchingMetadataCallEvm {
      * @param matchingId - The ID of the matching.
      * @returns A Promise resolving to the MatchingMetadata object.
      */
-    getMatchingMetadata(matchingId: number): Promise<EvmOutput<MatchingMetadata>>
+    getMatchingMetadata(
+        matchingId: number
+    ): Promise<EvmOutput<MatchingMetadata>>
 }
 
 /**
@@ -111,7 +113,7 @@ interface MatchingMetadataSendEvm {
  */
 export interface MatchingMetadataOriginEvm
     extends MatchingMetadataCallEvm,
-    MatchingMetadataSendEvm { }
+        MatchingMetadataSendEvm {}
 
 /**
  * Implementation of MatchingMetadataOriginEvm with specific EVM methods.
@@ -121,19 +123,16 @@ export interface MatchingMetadataOriginEvm
     "getMatchingState",
     "getMatchingMetadata",
 ])
-@withSendMethod([
-    "createMatching",
-    "pauseMatching",
-    "resumeMatching",
-])
-
-export class MatchingMetadataOriginEvm extends EvmEx { }
+@withSendMethod(["createMatching", "pauseMatching", "resumeMatching"])
+export class MatchingMetadataOriginEvm extends EvmEx {}
 
 /**
  * Extended class for MatchingMetadataEvm with additional message decoding.
  */
 export class MatchingMetadataEvm extends MatchingMetadataOriginEvm {
-    async getMatchingMetadata(matchingId: number): Promise<EvmOutput<MatchingMetadata>> {
+    async getMatchingMetadata(
+        matchingId: number
+    ): Promise<EvmOutput<MatchingMetadata>> {
         const metaRes = await super.getMatchingMetadata(matchingId)
         if (metaRes.ok && metaRes.data) {
             return {
@@ -159,8 +158,7 @@ export class MatchingMetadataEvm extends MatchingMetadataOriginEvm {
             case "createMatching":
                 result.matchingId = msg.MsgRct?.Return
                 break
-            case "pauseMatching" ||
-                "resumeMatching":
+            case "pauseMatching" || "resumeMatching":
                 result.matchingId = result.params.matchingId
                 break
             default:

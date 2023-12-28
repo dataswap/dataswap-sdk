@@ -52,7 +52,9 @@ interface DatasetChallengeCallEvm {
      * @param datasetId - ID of the dataset.
      * @returns EvmOutput containing the number of proofs.
      */
-    getDatasetChallengeProofsCount(datasetId: number): Promise<EvmOutput<number>>
+    getDatasetChallengeProofsCount(
+        datasetId: number
+    ): Promise<EvmOutput<number>>
 
     /**
      * Get the count of challenges for a dataset.
@@ -107,7 +109,7 @@ interface DatasetChallengeSendEvm {
  */
 export interface DatasetChallengeOriginEvm
     extends DatasetChallengeCallEvm,
-    DatasetChallengeSendEvm { }
+        DatasetChallengeSendEvm {}
 
 /**
  * Implementation of DatasetChallengeOriginEvm with specific EVM methods.
@@ -119,7 +121,7 @@ export interface DatasetChallengeOriginEvm
     "isDatasetChallengeProofDuplicate",
 ])
 @withSendMethod(["submitDatasetChallengeProofs"])
-export class DatasetChallengeOriginEvm extends EvmEx { }
+export class DatasetChallengeOriginEvm extends EvmEx {}
 
 /**
  * Extended class for DatasetChallengeOriginEvm with additional message decoding.

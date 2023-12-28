@@ -37,4 +37,4 @@ export interface DatasetRequirement {
  * @class
  * @extends {Entity<DatasetRequirement>}
  */
-export class DatasetRequirement extends Entity<DatasetRequirement> { }
+export class DatasetRequirement extends Entity<DatasetRequirement> {}

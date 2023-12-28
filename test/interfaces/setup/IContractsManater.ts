@@ -135,5 +135,4 @@ export interface IContractsManager {
      * @returns A Promise that resolves when contracts dependencies are set up.
      */
     setupContractsDependencies(): Promise<void>
-
 }

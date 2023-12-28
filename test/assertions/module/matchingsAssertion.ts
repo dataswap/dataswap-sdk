@@ -20,16 +20,15 @@
 
 import { expect } from "chai"
 import { IContractsManager } from "../../interfaces/setup/IContractsManater"
-import { IMatchingsAssertion } from "../../interfaces/assertions/module/IMatchingsAssertion";
-import { MatchingState } from "../../../src/module/matching/metadata/types";
-import { MatchingMetadata } from "../../../src/module/matching/metadata/types";
-import { MatchingTarget } from "../../../src/module/matching/target/types";
-import { MatchingBids } from "../../../src/module/matching/bids/types";
-import { DataType } from "../../../src/shared/types/dataType";
+import { IMatchingsAssertion } from "../../interfaces/assertions/module/IMatchingsAssertion"
+import { MatchingState } from "../../../src/module/matching/metadata/types"
+import { MatchingMetadata } from "../../../src/module/matching/metadata/types"
+import { MatchingTarget } from "../../../src/module/matching/target/types"
+import { MatchingBids } from "../../../src/module/matching/bids/types"
+import { DataType } from "../../../src/shared/types/dataType"
 import { handleEvmError } from "../../shared/error"
-import { equal } from "@unipackage/utils";
+import { equal } from "@unipackage/utils"
 import * as utils from "../../shared/utils"
-
 
 export class MatchingsAssertion implements IMatchingsAssertion {
     private contractsManager: IContractsManager
@@ -44,8 +43,15 @@ export class MatchingsAssertion implements IMatchingsAssertion {
      * @param expectInitiator - The expected initiator address.
      * @returns A Promise resolving if the assertion is successful.
      */
-    async getMatchingInitiatorAssertion(matchingId: number, expectInitiator: string): Promise<void> {
-        let initiator = await handleEvmError(this.contractsManager.MatchingMetadataEvm().getMatchingInitiator(matchingId))
+    async getMatchingInitiatorAssertion(
+        matchingId: number,
+        expectInitiator: string
+    ): Promise<void> {
+        let initiator = await handleEvmError(
+            this.contractsManager
+                .MatchingMetadataEvm()
+                .getMatchingInitiator(matchingId)
+        )
         expect(expectInitiator).to.equal(initiator.data)
     }
 
@@ -55,8 +61,15 @@ export class MatchingsAssertion implements IMatchingsAssertion {
      * @param expectState - The expected state for the matching.
      * @returns A Promise resolving if the assertion is successful.
      */
-    async getMatchingStateAssertion(matchingId: number, expectState: MatchingState): Promise<void> {
-        let state = await handleEvmError(this.contractsManager.MatchingMetadataEvm().getMatchingState(matchingId))
+    async getMatchingStateAssertion(
+        matchingId: number,
+        expectState: MatchingState
+    ): Promise<void> {
+        let state = await handleEvmError(
+            this.contractsManager
+                .MatchingMetadataEvm()
+                .getMatchingState(matchingId)
+        )
         expect(expectState).to.equal(state.data)
     }
 
@@ -66,8 +79,15 @@ export class MatchingsAssertion implements IMatchingsAssertion {
      * @param expectMatchingMetadata - The expected matching metadata.
      * @returns A Promise resolving if the assertion is successful.
      */
-    async getMatchingMetadataAssertion(matchingId: number, expectMatchingMetadata: MatchingMetadata): Promise<void> {
-        let metadata = await handleEvmError(this.contractsManager.MatchingMetadataEvm().getMatchingMetadata(matchingId))
+    async getMatchingMetadataAssertion(
+        matchingId: number,
+        expectMatchingMetadata: MatchingMetadata
+    ): Promise<void> {
+        let metadata = await handleEvmError(
+            this.contractsManager
+                .MatchingMetadataEvm()
+                .getMatchingMetadata(matchingId)
+        )
         expect(equal(expectMatchingMetadata, metadata.data)).to.be.true
     }
 
@@ -85,28 +105,40 @@ export class MatchingsAssertion implements IMatchingsAssertion {
         replicaIndex: number,
         expectMatchingMetadata: MatchingMetadata
     ): Promise<number> {
-        this.contractsManager.MatchingMetadataEvm().getWallet().setDefault(caller)
-        let tx = await handleEvmError(this.contractsManager.MatchingMetadataEvm().createMatching(
-            datasetId,
-            expectMatchingMetadata.bidSelectionRule,
-            expectMatchingMetadata.biddingDelayBlockCount,
-            expectMatchingMetadata.biddingPeriodBlockCount,
-            expectMatchingMetadata.storageCompletionPeriodBlocks,
-            expectMatchingMetadata.biddingThreshold,
-            replicaIndex,
-            expectMatchingMetadata.additionalInfo
-        ))
-
-        // Get transaction receipt and event arguments
-        const receipt = await this.contractsManager.MatchingMetadataEvm().getTransactionReceipt(
-            tx.data.hash
+        this.contractsManager
+            .MatchingMetadataEvm()
+            .getWallet()
+            .setDefault(caller)
+        let tx = await handleEvmError(
+            this.contractsManager
+                .MatchingMetadataEvm()
+                .createMatching(
+                    datasetId,
+                    expectMatchingMetadata.bidSelectionRule,
+                    expectMatchingMetadata.biddingDelayBlockCount,
+                    expectMatchingMetadata.biddingPeriodBlockCount,
+                    expectMatchingMetadata.storageCompletionPeriodBlocks,
+                    expectMatchingMetadata.biddingThreshold,
+                    replicaIndex,
+                    expectMatchingMetadata.additionalInfo
+                )
         )
 
-        let ret = this.contractsManager.MatchingMetadataEvm().getEvmEventArgs(receipt!, "MatchingCreated")
+        // Get transaction receipt and event arguments
+        const receipt = await this.contractsManager
+            .MatchingMetadataEvm()
+            .getTransactionReceipt(tx.data.hash)
+
+        let ret = this.contractsManager
+            .MatchingMetadataEvm()
+            .getEvmEventArgs(receipt!, "MatchingCreated")
 
         let matchingId = Number(ret.data.matchingId)
 
-        await this.getMatchingMetadataAssertion(matchingId, expectMatchingMetadata)
+        await this.getMatchingMetadataAssertion(
+            matchingId,
+            expectMatchingMetadata
+        )
         await this.getMatchingInitiatorAssertion(matchingId, caller)
 
         return matchingId
@@ -124,8 +156,15 @@ export class MatchingsAssertion implements IMatchingsAssertion {
         matchingId: number,
         expectState: MatchingState
     ): Promise<void> {
-        this.contractsManager.MatchingMetadataEvm().getWallet().setDefault(caller)
-        await handleEvmError(this.contractsManager.MatchingMetadataEvm().pauseMatching(matchingId))
+        this.contractsManager
+            .MatchingMetadataEvm()
+            .getWallet()
+            .setDefault(caller)
+        await handleEvmError(
+            this.contractsManager
+                .MatchingMetadataEvm()
+                .pauseMatching(matchingId)
+        )
         await this.getMatchingStateAssertion(matchingId, expectState)
     }
 
@@ -141,8 +180,15 @@ export class MatchingsAssertion implements IMatchingsAssertion {
         matchingId: number,
         expectState: MatchingState
     ): Promise<void> {
-        this.contractsManager.MatchingMetadataEvm().getWallet().setDefault(caller)
-        await handleEvmError(this.contractsManager.MatchingMetadataEvm().resumeMatching(matchingId))
+        this.contractsManager
+            .MatchingMetadataEvm()
+            .getWallet()
+            .setDefault(caller)
+        await handleEvmError(
+            this.contractsManager
+                .MatchingMetadataEvm()
+                .resumeMatching(matchingId)
+        )
         await this.getMatchingStateAssertion(matchingId, expectState)
     }
 
@@ -153,8 +199,12 @@ export class MatchingsAssertion implements IMatchingsAssertion {
      * @param expectMatchingsTargetAddress - The expected matchings target address.
      * @returns A Promise resolving if the assertion is successful.
      */
-    async targetMatchingsAssertion(expectMatchingsTargetAddress: string): Promise<void> {
-        let matchingsAddress = await handleEvmError(this.contractsManager.MatchingTargetEvm().matchings())
+    async targetMatchingsAssertion(
+        expectMatchingsTargetAddress: string
+    ): Promise<void> {
+        let matchingsAddress = await handleEvmError(
+            this.contractsManager.MatchingTargetEvm().matchings()
+        )
         expect(expectMatchingsTargetAddress).to.be.equal(matchingsAddress.data)
     }
 
@@ -163,9 +213,15 @@ export class MatchingsAssertion implements IMatchingsAssertion {
      * @param expectMatchingsBidsAddress - The expected matchings bids address.
      * @returns A Promise resolving if the assertion is successful.
      */
-    async targetMatchingsBidsAssertion(expectMatchingsBidsAddress: string): Promise<void> {
-        let matchingsBidsAddress = await handleEvmError(this.contractsManager.MatchingTargetEvm().matchingsBids())
-        expect(expectMatchingsBidsAddress).to.be.equal(matchingsBidsAddress.data)
+    async targetMatchingsBidsAssertion(
+        expectMatchingsBidsAddress: string
+    ): Promise<void> {
+        let matchingsBidsAddress = await handleEvmError(
+            this.contractsManager.MatchingTargetEvm().matchingsBids()
+        )
+        expect(expectMatchingsBidsAddress).to.be.equal(
+            matchingsBidsAddress.data
+        )
     }
 
     /**
@@ -174,8 +230,15 @@ export class MatchingsAssertion implements IMatchingsAssertion {
      * @param expectMatchingTarget - The expected matching target.
      * @returns A Promise resolving if the assertion is successful.
      */
-    async getMatchingTargetAssertion(matchingId: number, expectMatchingTarget: MatchingTarget): Promise<void> {
-        let matchingTarget = await handleEvmError(this.contractsManager.MatchingTargetEvm().getMatchingTarget(matchingId))
+    async getMatchingTargetAssertion(
+        matchingId: number,
+        expectMatchingTarget: MatchingTarget
+    ): Promise<void> {
+        let matchingTarget = await handleEvmError(
+            this.contractsManager
+                .MatchingTargetEvm()
+                .getMatchingTarget(matchingId)
+        )
         expect(equal(expectMatchingTarget, matchingTarget.data))
     }
 
@@ -191,7 +254,11 @@ export class MatchingsAssertion implements IMatchingsAssertion {
         id: number,
         expectRet: boolean
     ): Promise<void> {
-        let ret = await handleEvmError(this.contractsManager.MatchingTargetEvm().isMatchingContainsCar(matchingId, id))
+        let ret = await handleEvmError(
+            this.contractsManager
+                .MatchingTargetEvm()
+                .isMatchingContainsCar(matchingId, id)
+        )
         expect(expectRet).to.be.equal(ret.data)
     }
 
@@ -207,7 +274,11 @@ export class MatchingsAssertion implements IMatchingsAssertion {
         ids: number[],
         expectRet: boolean
     ): Promise<void> {
-        let ret = await handleEvmError(this.contractsManager.MatchingTargetEvm().isMatchingContainsCars(matchingId, ids))
+        let ret = await handleEvmError(
+            this.contractsManager
+                .MatchingTargetEvm()
+                .isMatchingContainsCars(matchingId, ids)
+        )
         expect(expectRet).to.be.equal(ret.data)
     }
 
@@ -229,16 +300,19 @@ export class MatchingsAssertion implements IMatchingsAssertion {
         associatedMappingFilesMatchingId: number,
         expectRet: boolean
     ): Promise<void> {
-        let ret = await handleEvmError(this.contractsManager.MatchingTargetEvm().isMatchingTargetValid(
-            datasetId,
-            cars,
-            size,
-            dataType,
-            associatedMappingFilesMatchingId
-        ))
+        let ret = await handleEvmError(
+            this.contractsManager
+                .MatchingTargetEvm()
+                .isMatchingTargetValid(
+                    datasetId,
+                    cars,
+                    size,
+                    dataType,
+                    associatedMappingFilesMatchingId
+                )
+        )
         expect(expectRet).to.be.equal(ret.data)
     }
-
 
     /**
      * Checks if a matching target meets specific FIL Plus requirements.
@@ -252,7 +326,11 @@ export class MatchingsAssertion implements IMatchingsAssertion {
         candidate: string,
         expectRet: boolean
     ): Promise<void> {
-        let ret = await handleEvmError(this.contractsManager.MatchingTargetEvm().isMatchingTargetMeetsFilPlusRequirements(matchingId, candidate))
+        let ret = await handleEvmError(
+            this.contractsManager
+                .MatchingTargetEvm()
+                .isMatchingTargetMeetsFilPlusRequirements(matchingId, candidate)
+        )
         expect(expectRet).to.be.equal(ret.data)
     }
 
@@ -266,10 +344,17 @@ export class MatchingsAssertion implements IMatchingsAssertion {
     async targetInitDependenciesAssertion(
         caller: string,
         expectMatchingsAddress: string,
-        expectMatchingsBidsAddress: string,
+        expectMatchingsBidsAddress: string
     ): Promise<void> {
         this.contractsManager.MatchingTargetEvm().getWallet().setDefault(caller)
-        await handleEvmError(this.contractsManager.MatchingTargetEvm().initDependencies(expectMatchingsAddress, expectMatchingsBidsAddress))
+        await handleEvmError(
+            this.contractsManager
+                .MatchingTargetEvm()
+                .initDependencies(
+                    expectMatchingsAddress,
+                    expectMatchingsBidsAddress
+                )
+        )
         this.targetMatchingsAssertion(expectMatchingsAddress)
         this.targetMatchingsBidsAssertion(expectMatchingsBidsAddress)
     }
@@ -290,26 +375,31 @@ export class MatchingsAssertion implements IMatchingsAssertion {
         expectDatasetId: number,
         expectDataType: DataType,
         expectAssociatedMappingFilesMatchingId: number,
-        expectReplicaIndex: number,
+        expectReplicaIndex: number
     ): Promise<void> {
         this.contractsManager.MatchingTargetEvm().getWallet().setDefault(caller)
-        await handleEvmError(this.contractsManager.MatchingTargetEvm().createTarget(
-            matchingId,
-            expectDatasetId,
-            expectDataType,
-            expectAssociatedMappingFilesMatchingId,
-            expectReplicaIndex
-        ))
+        await handleEvmError(
+            this.contractsManager
+                .MatchingTargetEvm()
+                .createTarget(
+                    matchingId,
+                    expectDatasetId,
+                    expectDataType,
+                    expectAssociatedMappingFilesMatchingId,
+                    expectReplicaIndex
+                )
+        )
 
         let expectData = new MatchingTarget({
             datasetId: expectDatasetId,
             cars: [],
             size: 0,
             dataType: expectDataType,
-            associatedMappingFilesMatchingID: expectAssociatedMappingFilesMatchingId,
+            associatedMappingFilesMatchingID:
+                expectAssociatedMappingFilesMatchingId,
             replicaIndex: expectReplicaIndex,
             subsidy: BigInt(0),
-            matchingId: matchingId
+            matchingId: matchingId,
         })
 
         this.getMatchingTargetAssertion(matchingId, expectData)
@@ -331,22 +421,32 @@ export class MatchingsAssertion implements IMatchingsAssertion {
         datasetId: number,
         expectCarsStarts: number[],
         expectCarsEnds: number[],
-        expectComplete: boolean,
+        expectComplete: boolean
     ): Promise<void> {
         this.contractsManager.MatchingTargetEvm().getWallet().setDefault(caller)
-        await handleEvmError(this.contractsManager.MatchingTargetEvm().publishMatching(
-            matchingId,
-            datasetId,
-            expectCarsStarts,
-            expectCarsEnds,
-            expectComplete
-        ))
+        await handleEvmError(
+            this.contractsManager
+                .MatchingTargetEvm()
+                .publishMatching(
+                    matchingId,
+                    datasetId,
+                    expectCarsStarts,
+                    expectCarsEnds,
+                    expectComplete
+                )
+        )
 
-        this.isMatchingContainsCarAssertion(matchingId, expectCarsStarts[0], true)
-        let expectIds = utils.mergeRangesToCompleteArray(expectCarsStarts, expectCarsEnds)
+        this.isMatchingContainsCarAssertion(
+            matchingId,
+            expectCarsStarts[0],
+            true
+        )
+        let expectIds = utils.mergeRangesToCompleteArray(
+            expectCarsStarts,
+            expectCarsEnds
+        )
         this.isMatchingContainsCarsAssertion(matchingId, expectIds, true)
     }
-
 
     // MatchingsBids
     /**
@@ -354,8 +454,12 @@ export class MatchingsAssertion implements IMatchingsAssertion {
      * @param expectMatchingsAddress - The expected matchings address.
      * @returns A Promise resolving if the assertion is successful.
      */
-    async bidsMatchingsAssertion(expectMatchingsAddress: string): Promise<void> {
-        let matchingsAddress = await handleEvmError(this.contractsManager.MatchingBidsEvm().matchings())
+    async bidsMatchingsAssertion(
+        expectMatchingsAddress: string
+    ): Promise<void> {
+        let matchingsAddress = await handleEvmError(
+            this.contractsManager.MatchingBidsEvm().matchings()
+        )
         expect(expectMatchingsAddress).to.be.equal(matchingsAddress.data)
     }
 
@@ -364,9 +468,15 @@ export class MatchingsAssertion implements IMatchingsAssertion {
      * @param expectMatchingsTargetAddress - The expected matchings target address.
      * @returns A Promise resolving if the assertion is successful.
      */
-    async bidsMatchingsTargetAssertion(expectMatchingsTargetAddress: string): Promise<void> {
-        let matchingsTargetAddress = await handleEvmError(this.contractsManager.MatchingBidsEvm().matchingsTarget())
-        expect(expectMatchingsTargetAddress).to.be.equal(matchingsTargetAddress.data)
+    async bidsMatchingsTargetAssertion(
+        expectMatchingsTargetAddress: string
+    ): Promise<void> {
+        let matchingsTargetAddress = await handleEvmError(
+            this.contractsManager.MatchingBidsEvm().matchingsTarget()
+        )
+        expect(expectMatchingsTargetAddress).to.be.equal(
+            matchingsTargetAddress.data
+        )
     }
 
     /**
@@ -375,11 +485,23 @@ export class MatchingsAssertion implements IMatchingsAssertion {
      * @param expectMachingBids - The expected matching bids.
      * @returns A Promise resolving if the assertion is successful.
      */
-    async getMatchingBidsAssertion(matchingId: number, expectMachingBids: MatchingBids): Promise<void> {
-        let matchingBids = await handleEvmError(this.contractsManager.MatchingBidsEvm().getMatchingBids(matchingId))
-        expect(equal(expectMachingBids.bidders, matchingBids.data.bidders)).to.be.true
-        expect(equal(expectMachingBids.amounts, matchingBids.data.amounts)).to.be.true
-        expect(equal(expectMachingBids.complyFilplusRules, matchingBids.data.complyFilplusRules)).to.be.true
+    async getMatchingBidsAssertion(
+        matchingId: number,
+        expectMachingBids: MatchingBids
+    ): Promise<void> {
+        let matchingBids = await handleEvmError(
+            this.contractsManager.MatchingBidsEvm().getMatchingBids(matchingId)
+        )
+        expect(equal(expectMachingBids.bidders, matchingBids.data.bidders)).to
+            .be.true
+        expect(equal(expectMachingBids.amounts, matchingBids.data.amounts)).to
+            .be.true
+        expect(
+            equal(
+                expectMachingBids.complyFilplusRules,
+                matchingBids.data.complyFilplusRules
+            )
+        ).to.be.true
         expect(expectMachingBids.winner).to.be.equal(matchingBids.data.winner)
     }
 
@@ -395,7 +517,11 @@ export class MatchingsAssertion implements IMatchingsAssertion {
         bidder: string,
         expectBidAmount: bigint
     ): Promise<void> {
-        let amount = await handleEvmError(this.contractsManager.MatchingBidsEvm().getMatchingBidAmount(matchingId, bidder))
+        let amount = await handleEvmError(
+            this.contractsManager
+                .MatchingBidsEvm()
+                .getMatchingBidAmount(matchingId, bidder)
+        )
         expect(expectBidAmount).to.be.equal(amount.data)
     }
 
@@ -409,7 +535,11 @@ export class MatchingsAssertion implements IMatchingsAssertion {
         matchingId: number,
         expectBidsCount: number
     ): Promise<void> {
-        let bidsCount = await handleEvmError(this.contractsManager.MatchingBidsEvm().getMatchingBidsCount(matchingId))
+        let bidsCount = await handleEvmError(
+            this.contractsManager
+                .MatchingBidsEvm()
+                .getMatchingBidsCount(matchingId)
+        )
         expect(expectBidsCount).to.be.equal(Number(bidsCount.data))
     }
 
@@ -423,7 +553,11 @@ export class MatchingsAssertion implements IMatchingsAssertion {
         matchingId: number,
         expectWinner: string
     ): Promise<void> {
-        let winner = await handleEvmError(this.contractsManager.MatchingBidsEvm().getMatchingWinner(matchingId))
+        let winner = await handleEvmError(
+            this.contractsManager
+                .MatchingBidsEvm()
+                .getMatchingWinner(matchingId)
+        )
         expect(expectWinner).to.be.equal(Number(winner.data))
     }
 
@@ -437,10 +571,16 @@ export class MatchingsAssertion implements IMatchingsAssertion {
         matchingIds: number[],
         expectWinners: string[]
     ): Promise<void> {
-        let winners = await handleEvmError(this.contractsManager.MatchingBidsEvm().getMatchingWinners(matchingIds))
+        let winners = await handleEvmError(
+            this.contractsManager
+                .MatchingBidsEvm()
+                .getMatchingWinners(matchingIds)
+        )
         expect(expectWinners.length).to.be.equal(winners.data)
         for (let i = 0; i < expectWinners.length; i++) {
-            await handleEvmError(this.getMatchingWinnerAssertion(matchingIds[i], winners[i]))
+            await handleEvmError(
+                this.getMatchingWinnerAssertion(matchingIds[i], winners[i])
+            )
         }
     }
 
@@ -456,7 +596,11 @@ export class MatchingsAssertion implements IMatchingsAssertion {
         bidder: string,
         expectRet: boolean
     ): Promise<void> {
-        let ret = await handleEvmError(this.contractsManager.MatchingBidsEvm().hasMatchingBid(matchingId, bidder))
+        let ret = await handleEvmError(
+            this.contractsManager
+                .MatchingBidsEvm()
+                .hasMatchingBid(matchingId, bidder)
+        )
         expect(expectRet).to.be(ret.data)
     }
 
@@ -470,13 +614,17 @@ export class MatchingsAssertion implements IMatchingsAssertion {
     async bidsInitDependenciesAssertion(
         caller: string,
         expectMatchingsAddresss: string,
-        expectMatchingsTargetAddresss: string,
+        expectMatchingsTargetAddresss: string
     ): Promise<void> {
         this.contractsManager.MatchingBidsEvm().getWallet().setDefault(caller)
-        await handleEvmError(this.contractsManager.MatchingBidsEvm().initDependencies(
-            expectMatchingsAddresss,
-            expectMatchingsTargetAddresss
-        ))
+        await handleEvmError(
+            this.contractsManager
+                .MatchingBidsEvm()
+                .initDependencies(
+                    expectMatchingsAddresss,
+                    expectMatchingsTargetAddresss
+                )
+        )
         await this.bidsMatchingsAssertion(expectMatchingsAddresss)
         await this.bidsMatchingsTargetAssertion(expectMatchingsTargetAddresss)
     }
@@ -491,11 +639,19 @@ export class MatchingsAssertion implements IMatchingsAssertion {
     async biddingAssertion(
         caller: string,
         matchingId: number,
-        expectAmount: bigint,
+        expectAmount: bigint
     ): Promise<void> {
         this.contractsManager.MatchingBidsEvm().getWallet().setDefault(caller)
-        await handleEvmError(this.contractsManager.MatchingBidsEvm().bidding(matchingId, expectAmount))
-        await this.getMatchingBidAmountAssertion(matchingId, caller, expectAmount)
+        await handleEvmError(
+            this.contractsManager
+                .MatchingBidsEvm()
+                .bidding(matchingId, expectAmount)
+        )
+        await this.getMatchingBidAmountAssertion(
+            matchingId,
+            caller,
+            expectAmount
+        )
     }
 
     /**
@@ -511,7 +667,9 @@ export class MatchingsAssertion implements IMatchingsAssertion {
         expectState: MatchingState
     ): Promise<void> {
         this.contractsManager.MatchingBidsEvm().getWallet().setDefault(caller)
-        await handleEvmError(this.contractsManager.MatchingBidsEvm().cancelMatching(matchingId))
+        await handleEvmError(
+            this.contractsManager.MatchingBidsEvm().cancelMatching(matchingId)
+        )
         await this.getMatchingStateAssertion(matchingId, expectState)
     }
 
@@ -528,7 +686,9 @@ export class MatchingsAssertion implements IMatchingsAssertion {
         expectState: MatchingState
     ): Promise<void> {
         this.contractsManager.MatchingBidsEvm().getWallet().setDefault(caller)
-        await handleEvmError(this.contractsManager.MatchingBidsEvm().closeMatching(matchingId))
+        await handleEvmError(
+            this.contractsManager.MatchingBidsEvm().closeMatching(matchingId)
+        )
         await this.getMatchingStateAssertion(matchingId, expectState)
     }
 }

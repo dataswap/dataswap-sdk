@@ -28,7 +28,10 @@ export interface IHelper {
      * @param requireWorkflow - The function that returns a promise resolving to the workflow ID.
      * @returns A promise resolving to the completed workflow ID.
      */
-    completeDependentWorkflow(requireState: number, requireWorkflow: () => Promise<number>): Promise<number>
+    completeDependentWorkflow(
+        requireState: number,
+        requireWorkflow: () => Promise<number>
+    ): Promise<number>
 
     /**
      * Retrieves the target ID associated with a specific state in a workflow.

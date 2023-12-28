@@ -23,12 +23,11 @@ import {
     withCallMethod,
     withSendMethod,
     EvmOutput,
-    EvmTransactionOptions
+    EvmTransactionOptions,
 } from "@unipackage/net"
 import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
 import { DataswapMessage } from "../../../../message/types"
 import { EvmEx } from "../../../../shared/types/evmEngineType"
-
 
 /**
  * Interface for EVM calls related to  Storages.
@@ -114,38 +113,28 @@ interface StoragesSendEvm {
 /**
  * Combined interface for EVM calls and transactions related to  Storages.
  */
-export interface StoragesOriginEvm
-    extends StoragesCallEvm,
-    StoragesSendEvm { }
+export interface StoragesOriginEvm extends StoragesCallEvm, StoragesSendEvm {}
 
 /**
  * Implementation of  StoragesOriginEvm with specific EVM methods.
  */
-@withCallMethod(
-    [
-        "getStoredCars",
-        "getStoredCarCount",
-        "getTotalStoredSize",
-        "getStoredCarSize",
-        "getProviderLockPayment",
-        "getClientLockPayment",
-        "isAllStoredDone",
-        "isStorageExpiration"
-    ]
-)
-@withSendMethod(
-    [
-        "submitStorageClaimIds"
-    ]
-)
-export class StoragesOriginEvm extends EvmEx { }
+@withCallMethod([
+    "getStoredCars",
+    "getStoredCarCount",
+    "getTotalStoredSize",
+    "getStoredCarSize",
+    "getProviderLockPayment",
+    "getClientLockPayment",
+    "isAllStoredDone",
+    "isStorageExpiration",
+])
+@withSendMethod(["submitStorageClaimIds"])
+export class StoragesOriginEvm extends EvmEx {}
 
 /**
  * Extended class for  StoragesOriginEvm with additional message decoding.
  */
 export class StoragesEvm extends StoragesOriginEvm {
-
-
     /**
      * Decode a DataswapMessage from an EVM message.
      *

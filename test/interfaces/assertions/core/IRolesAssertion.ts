@@ -23,7 +23,6 @@
  * @interface
  */
 export interface IRolesAssertion {
-
     /**
      * Asserts the role assigned to an entity.
      * @param {string} role - The role to check.
@@ -46,7 +45,11 @@ export interface IRolesAssertion {
      * @param {boolean} expectHas - The expected existence status of the role.
      * @returns {Promise<void>}
      */
-    hasRoleAssertion(role: string, account: string, expectHas: boolean): Promise<void>
+    hasRoleAssertion(
+        role: string,
+        account: string,
+        expectHas: boolean
+    ): Promise<void>
 
     /**
      * Asserts the acceptance of ownership transfer to a new owner.

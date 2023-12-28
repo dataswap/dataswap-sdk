@@ -28,7 +28,9 @@ export abstract class TestBase {
      * @param args - Additional arguments for the optional action.
      * @returns A promise resolving to a number (0 by default).
      */
-    async optionalBefore(...args: any[]): Promise<number> { return 0 }
+    async optionalBefore(...args: any[]): Promise<number> {
+        return 0
+    }
 
     /**
      * Performs actions before the main test action based on the provided ID.
@@ -62,7 +64,7 @@ export abstract class TestBase {
      * @param args - Additional arguments for the action.
      * @returns A promise resolving to void.
      */
-    async after(id: number, ...args: any[]): Promise<void> { }
+    async after(id: number, ...args: any[]): Promise<void> {}
 
     /**
      * Executes the test sequence.

@@ -53,7 +53,16 @@ export interface IGenerator {
      * @param fakedata Whether the specified generate fake data (optional).
      * @returns An array containing root, leaf hashes, leaf sizes, and mapping files access method.
      */
-    generateDatasetProof(leavesCount: number, dataType: DataType, fakedata?: boolean): [root: string, leafHashes: string[], leafSizes: number[], mappingFilesAccessMethod: string]
+    generateDatasetProof(
+        leavesCount: number,
+        dataType: DataType,
+        fakedata?: boolean
+    ): [
+        root: string,
+        leafHashes: string[],
+        leafSizes: number[],
+        mappingFilesAccessMethod: string,
+    ]
 
     /**
      * Retrieves dataset proof information based on the provided root.
@@ -62,14 +71,25 @@ export interface IGenerator {
      * @param fakedata Whether the specified get fake data (optional).
      * @returns An array containing leaf hashes and leaf sizes.
      */
-    getDatasetProof(root: string, dataType: DataType, fakedata?: boolean): [leafHashes: string[], leafSizes: number[]]
+    getDatasetProof(
+        root: string,
+        dataType: DataType,
+        fakedata?: boolean
+    ): [leafHashes: string[], leafSizes: number[]]
 
     /**
      * Generates dataset challenge proof based on the provided root.
      * @param root - The root to generate challenge proof.
      * @returns An array containing random seed, leaves, siblings, and paths.
      */
-    generateDatasetChallengeProof(root: string): [randomSeed: number, leaves: string[], siblings: string[][], paths: number[]]
+    generateDatasetChallengeProof(
+        root: string
+    ): [
+        randomSeed: number,
+        leaves: string[],
+        siblings: string[][],
+        paths: number[],
+    ]
 
     /**
      * Generates a new address.
@@ -89,7 +109,10 @@ export interface IGenerator {
      * @param index - Index of the dataset.
      * @returns An array containing bid selection rule, delay block counts, storage completion blocks, threshold, and additional information.
      */
-    generatorMatchingInfo(datasetId: number, index: number): [
+    generatorMatchingInfo(
+        datasetId: number,
+        index: number
+    ): [
         bidSelectionRule: BidSelectionRule,
         biddingDelayBlockCount: number,
         biddingPeriodBlockCount: number,
@@ -121,6 +144,4 @@ export interface IGenerator {
      * @param root - The root to set for proof.
      */
     setProofRoot(id: number, dataType: DataType, root: string): void
-
 }
-

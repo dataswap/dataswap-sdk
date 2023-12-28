@@ -25,7 +25,10 @@ export interface IStoragesAssertion {
      * @param expectCarIds - Array of expected car IDs.
      * @returns A Promise indicating the assertion result.
      */
-    getStoredCarsAssertion(matchingId: number, expectCarIds: number[]): Promise<void>
+    getStoredCarsAssertion(
+        matchingId: number,
+        expectCarIds: number[]
+    ): Promise<void>
 
     /**
      * Retrieves the count of stored cars for a specific matching identified by its ID.
@@ -33,7 +36,10 @@ export interface IStoragesAssertion {
      * @param expectCarCount - Expected count of stored cars.
      * @returns A Promise indicating the assertion result.
      */
-    getStoredCarCountAssertion(matchingId: number, expectCarCount: number): Promise<void>
+    getStoredCarCountAssertion(
+        matchingId: number,
+        expectCarCount: number
+    ): Promise<void>
 
     /**
      * Retrieves the total stored size for a specific matching identified by its ID.
@@ -41,7 +47,10 @@ export interface IStoragesAssertion {
      * @param expectSize - Expected total stored size.
      * @returns A Promise indicating the assertion result.
      */
-    getTotalStoredSizeAssertion(matchingId: number, expectSize: number): Promise<void>
+    getTotalStoredSizeAssertion(
+        matchingId: number,
+        expectSize: number
+    ): Promise<void>
 
     /**
      * Retrieves the stored size of a specific car for a matching identified by its ID.
@@ -50,7 +59,11 @@ export interface IStoragesAssertion {
      * @param expectSize - Expected size of the car.
      * @returns A Promise indicating the assertion result.
      */
-    getStoredCarSizeAssertion(matchingId: number, id: number, expectSize: number): Promise<void>
+    getStoredCarSizeAssertion(
+        matchingId: number,
+        id: number,
+        expectSize: number
+    ): Promise<void>
 
     /**
      * Retrieves the lock payment for the provider in a matching identified by its ID.
@@ -58,7 +71,10 @@ export interface IStoragesAssertion {
      * @param expectLockPayment - Expected lock payment for the provider.
      * @returns A Promise indicating the assertion result.
      */
-    getProviderLockPaymentAssertion(matchingId: number, expectLockPayment: bigint): Promise<void>
+    getProviderLockPaymentAssertion(
+        matchingId: number,
+        expectLockPayment: bigint
+    ): Promise<void>
 
     /**
      * Retrieves the lock payment for the client in a matching identified by its ID.
@@ -66,7 +82,10 @@ export interface IStoragesAssertion {
      * @param expectLockPayment - Expected lock payment for the client.
      * @returns A Promise indicating the assertion result.
      */
-    getClientLockPaymentAssertion(matchingId: number, expectLockPayment: bigint): Promise<void>
+    getClientLockPaymentAssertion(
+        matchingId: number,
+        expectLockPayment: bigint
+    ): Promise<void>
 
     /**
      * Checks if all stored operations are completed for a specific matching identified by its ID.
@@ -74,7 +93,10 @@ export interface IStoragesAssertion {
      * @param expectRet - Expected boolean indicating if all storage operations are done.
      * @returns A Promise indicating the assertion result.
      */
-    isAllStoredDoneAssertion(matchingId: number, expectRet: boolean): Promise<void>
+    isAllStoredDoneAssertion(
+        matchingId: number,
+        expectRet: boolean
+    ): Promise<void>
 
     /**
      * Checks if storage expiration is set for a specific matching identified by its ID.
@@ -82,7 +104,10 @@ export interface IStoragesAssertion {
      * @param expectRet - Expected boolean indicating if storage expiration is set.
      * @returns A Promise indicating the assertion result.
      */
-    isStorageExpirationAssertion(matchingId: number, expectRet: boolean): Promise<void>
+    isStorageExpirationAssertion(
+        matchingId: number,
+        expectRet: boolean
+    ): Promise<void>
 
     /**
      * Submits storage claim IDs for a matching identified by its ID.

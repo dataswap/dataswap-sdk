@@ -36,7 +36,7 @@ import { EvmEx } from "../../../../../shared/types/evmEngineType"
  */
 interface DatasetRequirementCallEvm {
     /**
-     * Get dataset replicas count 
+     * Get dataset replicas count
      * @param datasetId The ID of the dataset to get the count of replicas of dataset.
      * @returns The count of replicas of dataset.
      */
@@ -44,7 +44,7 @@ interface DatasetRequirementCallEvm {
     /**
      *  Get dataset replica requirement
      * @param datasetId The ID of the dataset to get the requirement of replica.
-     * @param index The index of replica to get requirement. 
+     * @param index The index of replica to get requirement.
      * @returns The requirement of the replica.
      */
     getDatasetReplicaRequirement(
@@ -56,7 +56,9 @@ interface DatasetRequirementCallEvm {
      * @param datasetId The ID of the dataset to get the pre collateral of datasets.
      * @returns The pre collateral's amount of dataset.
      */
-    getDatasetPreCollateralRequirements(datasetId: number): Promise<EvmOutput<bigint>>
+    getDatasetPreCollateralRequirements(
+        datasetId: number
+    ): Promise<EvmOutput<bigint>>
 }
 
 /**
@@ -91,7 +93,7 @@ interface DatasetRequirementSendEvm {
  */
 export interface DatasetRequirementOriginEvm
     extends DatasetRequirementCallEvm,
-    DatasetRequirementSendEvm { }
+        DatasetRequirementSendEvm {}
 
 /**
  * Implementation of DatasetRequirementOriginEvm with specific EVM methods.
@@ -102,7 +104,7 @@ export interface DatasetRequirementOriginEvm
     "getDatasetPreCollateralRequirements",
 ])
 @withSendMethod(["submitDatasetReplicaRequirements"])
-export class DatasetRequirementOriginEvm extends EvmEx { }
+export class DatasetRequirementOriginEvm extends EvmEx {}
 
 /**
  * Extended class for DatasetRequirementEvm with additional message decoding.

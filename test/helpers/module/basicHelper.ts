@@ -23,8 +23,7 @@ import { IHelper } from "../../interfaces/helper/module/IHelpler"
  * Implementation of the basic helper class that implements the IHelper interface.
  */
 export class BasicHelper implements IHelper {
-
-    private targets: Map<number, number>;
+    private targets: Map<number, number>
     /**
      * Constructor for BasicHelper class.
      * Initializes the targets map.
@@ -40,7 +39,10 @@ export class BasicHelper implements IHelper {
      * @returns A Promise that resolves with the target ID of the workflow.
      * @throws If an error occurs during the workflow execution.
      */
-    async completeDependentWorkflow(requireDatasetState: number, requireWorkflow: () => Promise<number>): Promise<number> {
+    async completeDependentWorkflow(
+        requireDatasetState: number,
+        requireWorkflow: () => Promise<number>
+    ): Promise<number> {
         let targetId = this.getWorkflowTargetId(requireDatasetState)
 
         // If the target ID is not found, execute the required workflow
@@ -64,10 +66,10 @@ export class BasicHelper implements IHelper {
     getWorkflowTargetId(state: number): number {
         for (let [key, value] of this.targets) {
             if (value === state) {
-                return key;
+                return key
             }
         }
-        return 0;
+        return 0
     }
 
     /**
@@ -79,4 +81,3 @@ export class BasicHelper implements IHelper {
         this.targets.set(id, newState)
     }
 }
-

@@ -18,7 +18,11 @@
  *  limitations under the respective licenses.
  ********************************************************************************/
 
-import { MatchingMetadata, MatchingState, BidSelectionRule } from "../../../../src/module/matching/metadata/types"
+import {
+    MatchingMetadata,
+    MatchingState,
+    BidSelectionRule,
+} from "../../../../src/module/matching/metadata/types"
 import { MatchingTarget } from "../../../../src/module/matching/target/types"
 import { DataType } from "../../../../src/shared/types/dataType"
 import { MatchingBids } from "../../../../src/module/matching/bids/types"
@@ -31,7 +35,10 @@ export interface IMatchingsAssertion {
      * @param expectInitiator - The expected initiator address.
      * @returns A Promise resolving if the assertion is successful.
      */
-    getMatchingInitiatorAssertion(matchingId: number, expectInitiator: string): Promise<void>
+    getMatchingInitiatorAssertion(
+        matchingId: number,
+        expectInitiator: string
+    ): Promise<void>
 
     /**
      * Retrieves the state for a specific matching identified by its ID.
@@ -39,7 +46,10 @@ export interface IMatchingsAssertion {
      * @param expectState - The expected state for the matching.
      * @returns A Promise resolving if the assertion is successful.
      */
-    getMatchingStateAssertion(matchingId: number, expectState: MatchingState): Promise<void>
+    getMatchingStateAssertion(
+        matchingId: number,
+        expectState: MatchingState
+    ): Promise<void>
 
     /**
      * Retrieves the metadata for a specific matching identified by its ID.
@@ -47,7 +57,10 @@ export interface IMatchingsAssertion {
      * @param expectMatchingMetadata - The expected matching metadata.
      * @returns A Promise resolving if the assertion is successful.
      */
-    getMatchingMetadataAssertion(matchingId: number, expectMatchingMetadata: MatchingMetadata): Promise<void>
+    getMatchingMetadataAssertion(
+        matchingId: number,
+        expectMatchingMetadata: MatchingMetadata
+    ): Promise<void>
 
     /**
      * Creates a matching and asserts the expectations.
@@ -97,14 +110,18 @@ export interface IMatchingsAssertion {
      * @param expectMatchingsTargetAddress - The expected matchings target address.
      * @returns A Promise resolving if the assertion is successful.
      */
-    targetMatchingsAssertion(expectMatchingsTargetAddress: string): Promise<void>
+    targetMatchingsAssertion(
+        expectMatchingsTargetAddress: string
+    ): Promise<void>
 
     /**
      * Asserts the target matchings bids against the expected bids address.
      * @param expectMatchingsBidsAddress - The expected matchings bids address.
      * @returns A Promise resolving if the assertion is successful.
      */
-    targetMatchingsBidsAssertion(expectMatchingsBidsAddress: string): Promise<void>
+    targetMatchingsBidsAssertion(
+        expectMatchingsBidsAddress: string
+    ): Promise<void>
 
     /**
      * Retrieves the matching target and asserts it against the expected target.
@@ -112,7 +129,10 @@ export interface IMatchingsAssertion {
      * @param expectMatchingTarget - The expected matching target.
      * @returns A Promise resolving if the assertion is successful.
      */
-    getMatchingTargetAssertion(matchingId: number, expectMatchingTarget: MatchingTarget): Promise<void>
+    getMatchingTargetAssertion(
+        matchingId: number,
+        expectMatchingTarget: MatchingTarget
+    ): Promise<void>
 
     /**
      * Checks if a matching contains a car identified by its hash and asserts the result.
@@ -182,7 +202,7 @@ export interface IMatchingsAssertion {
     targetInitDependenciesAssertion(
         caller: string,
         expectMatchingsAddress: string,
-        expectMatchingsBidsAddress: string,
+        expectMatchingsBidsAddress: string
     ): Promise<void>
 
     /**
@@ -201,7 +221,7 @@ export interface IMatchingsAssertion {
         expectDatasetId: number,
         expectDataType: DataType,
         expectAssociatedMappingFilesMatchingId: number,
-        expectReplicaIndex: number,
+        expectReplicaIndex: number
     ): Promise<void>
 
     /**
@@ -220,9 +240,8 @@ export interface IMatchingsAssertion {
         datasetId: number,
         expectCarsStarts: number[],
         expectCarsEnds: number[],
-        expectComplete: boolean,
+        expectComplete: boolean
     ): Promise<void>
-
 
     // MatchingsBids
     /**
@@ -237,7 +256,9 @@ export interface IMatchingsAssertion {
      * @param expectMatchingsTargetAddress - The expected matchings target address.
      * @returns A Promise resolving if the assertion is successful.
      */
-    bidsMatchingsTargetAssertion(expectMatchingsTargetAddress: string): Promise<void>
+    bidsMatchingsTargetAssertion(
+        expectMatchingsTargetAddress: string
+    ): Promise<void>
 
     /**
      * Retrieves the matching bids and asserts them against the expected matching bids.
@@ -245,7 +266,10 @@ export interface IMatchingsAssertion {
      * @param expectMachingBids - The expected matching bids.
      * @returns A Promise resolving if the assertion is successful.
      */
-    getMatchingBidsAssertion(matchingId: number, expectMachingBids: MatchingBids): Promise<void>
+    getMatchingBidsAssertion(
+        matchingId: number,
+        expectMachingBids: MatchingBids
+    ): Promise<void>
 
     /**
      * Retrieves the bid amount for a specific bidder in a matching and asserts it.
@@ -316,7 +340,7 @@ export interface IMatchingsAssertion {
     bidsInitDependenciesAssertion(
         caller: string,
         expectMatchingsAddresss: string,
-        expectMatchingsTargetAddresss: string,
+        expectMatchingsTargetAddresss: string
     ): Promise<void>
 
     /**
@@ -329,7 +353,7 @@ export interface IMatchingsAssertion {
     biddingAssertion(
         caller: string,
         matchingId: number,
-        expectAmount: bigint,
+        expectAmount: bigint
     ): Promise<void>
 
     /**

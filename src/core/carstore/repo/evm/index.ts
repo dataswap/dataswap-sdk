@@ -18,10 +18,7 @@
  *  limitations under the respective licenses.
  ********************************************************************************/
 
-import {
-    withCallMethod,
-    EvmOutput
-} from "@unipackage/net"
+import { withCallMethod, EvmOutput } from "@unipackage/net"
 import { Car, CarReplica } from "../../types"
 import { CarReplicaState } from "../../../../shared/types/carstoreType"
 import { EvmEx } from "../../../../shared/types/evmEngineType"
@@ -35,12 +32,10 @@ interface CarstoreCallEvm {
      * @param id Car ID to check.
      * @return The car information.
      */
-    getCar(
-        id: number
-    ): Promise<EvmOutput<Car>>
+    getCar(id: number): Promise<EvmOutput<Car>>
 
     /**
-     * @notice Get the dataset ID associated with a car. 
+     * @notice Get the dataset ID associated with a car.
      * @param id Car ID to check.
      * @return The car size of the car.
      */
@@ -58,7 +53,7 @@ interface CarstoreCallEvm {
      * @param id Car ID to check.
      * @return The dataset ID of the car.
      * NOTE: a car only belongs a datasets
-    */
+     */
     getCarDatasetId(id: number): Promise<EvmOutput<number>>
 
     /**
@@ -66,14 +61,12 @@ interface CarstoreCallEvm {
      * @param id Car ID associated with the replica.
      * @return The matching ids of the car's replica.
      */
-    getCarMatchingIds(
-        id: number
-    ): Promise<EvmOutput<number[]>>
+    getCarMatchingIds(id: number): Promise<EvmOutput<number[]>>
 
     /**
      * @notice Get the replica details associated with a car.
      * @param id Car ID associated with the replica.
-     * @param matchingId Matching ID of the replica. 
+     * @param matchingId Matching ID of the replica.
      * @return The dataset ID, state, and Filecoin claim ID of the replica.
      */
     getCarReplica(
@@ -122,9 +115,7 @@ interface CarstoreCallEvm {
      * @param ids An array of car IDs for which to get car hashs.
      * @return The hashs of cars.
      */
-    getCarsHashs(
-        ids: number[]
-    ): Promise<EvmOutput<string[]>>
+    getCarsHashs(ids: number[]): Promise<EvmOutput<string[]>>
 
     /**
      * @notice Get the car's id based on the car's hash.
@@ -138,9 +129,7 @@ interface CarstoreCallEvm {
      * @param hashs An array of car hashs for which to cat car hashs.
      * @return The ids of cars.
      */
-    getCarsIds(
-        hashs: string[]
-    ): Promise<EvmOutput<number[]>>
+    getCarsIds(hashs: string[]): Promise<EvmOutput<number[]>>
 
     /**
      * @notice Check if a car exists based on its Hash.
@@ -162,10 +151,7 @@ interface CarstoreCallEvm {
      * @param matchingId Matching ID of the replica to check.
      * @return True if the replica exists, false otherwise.
      */
-    hasCarReplica(
-        id: number,
-        matchingId: number
-    ): Promise<EvmOutput<boolean>>
+    hasCarReplica(id: number, matchingId: number): Promise<EvmOutput<boolean>>
 
     /**
      * @notice Check if a car exists based on its Hashs.
@@ -191,42 +177,38 @@ interface CarstoreCallEvm {
 /**
  * Interface for EVM transactions related to Carstore.
  */
-interface CarstoreSendEvm { }
+interface CarstoreSendEvm {}
 
 /**
  * Combined interface for EVM calls and transactions related to Carstore.
  */
-export interface CarstoreOriginEvm
-    extends CarstoreCallEvm,
-    CarstoreSendEvm { }
+export interface CarstoreOriginEvm extends CarstoreCallEvm, CarstoreSendEvm {}
 
 /**
  * Implementation of CarstoreOriginEvm with specific EVM methods.
  */
-@withCallMethod(
-    [
-        "getCar",
-        "getCarSize",
-        "getCarsSize",
-        "getCarDatasetId",
-        "getCarMatchingIds",
-        "getCarReplica",
-        "getCarReplicasCount",
-        "getCarReplicaFilecoinClaimId",
-        "getCarReplicaState",
-        "getCarHash",
-        "getCarsHashs",
-        "getCarId",
-        "getCarsIds",
-        "hasCarHash",
-        "hasCar",
-        "hasCarReplica",
-        "hasCarsHashs",
-        "hasCars",
-        "carsCount"
-    ]
-)
-export class CarstoreOriginEvm extends EvmEx { }
+@withCallMethod([
+    "getCar",
+    "getCarSize",
+    "getCarsSize",
+    "getCarDatasetId",
+    "getCarMatchingIds",
+    "getCarReplica",
+    "getCarReplicasCount",
+    "getCarReplicaFilecoinClaimId",
+    "getCarReplicaState",
+    "getCarHash",
+    "getCarsHashs",
+    "getCarId",
+    "getCarsIds",
+    "hasCarHash",
+    "hasCar",
+    "hasCarReplica",
+    "hasCarsHashs",
+    "hasCars",
+    "carsCount",
+])
+export class CarstoreOriginEvm extends EvmEx {}
 
 /**
  * Extended class for CarstoreOriginEvm with additional message decoding.

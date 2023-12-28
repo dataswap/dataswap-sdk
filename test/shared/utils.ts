@@ -18,7 +18,6 @@
  *  limitations under the respective licenses.
  ********************************************************************************/
 
-
 import { ethers } from "ethers"
 
 /**
@@ -59,7 +58,6 @@ export function getRandomInt(min: number, max: number): number {
     max = Math.floor(max)
     return Math.floor(Math.random() * (max - min + 1)) + min
 }
-
 
 /**
  * Retrieves the address of a contract by its name.
@@ -122,7 +120,7 @@ export function getAccountPrivateKey(variableName: string): string {
  * @returns An array of BigIntegers.
  */
 export function convertToBigIntArray(numbers: number[]): BigInt[] {
-    return numbers.map((num) => BigInt(num));
+    return numbers.map((num) => BigInt(num))
 }
 
 /**
@@ -130,8 +128,10 @@ export function convertToBigIntArray(numbers: number[]): BigInt[] {
  * @param bigIntegers - The array of BigIntegers or numbers to convert.
  * @returns An array of numbers.
  */
-export function convertToNumberArray(bigIntegers: (bigint | number)[]): number[] {
-    return bigIntegers.map(bigInt => Number(bigInt)) as number[];
+export function convertToNumberArray(
+    bigIntegers: (bigint | number)[]
+): number[] {
+    return bigIntegers.map((bigInt) => Number(bigInt)) as number[]
 }
 
 /**
@@ -139,26 +139,29 @@ export function convertToNumberArray(bigIntegers: (bigint | number)[]): number[]
  * @param ids - The array of numbers to split.
  * @returns An object containing arrays of start and end ranges.
  */
-export function splitNumbers(ids: number[]): { starts: number[], ends: number[] } {
+export function splitNumbers(ids: number[]): {
+    starts: number[]
+    ends: number[]
+} {
     if (ids.length === 0) {
-        return { starts: [], ends: [] };
+        return { starts: [], ends: [] }
     }
 
     const result = {
         starts: [ids[0]],
-        ends: [] as number[]
-    };
+        ends: [] as number[],
+    }
 
     for (let i = 1; i < ids.length; i++) {
         if (ids[i] !== ids[i - 1] + 1) {
-            result.ends.push(ids[i - 1]);
-            result.starts.push(ids[i]);
+            result.ends.push(ids[i - 1])
+            result.starts.push(ids[i])
         }
     }
 
-    result.ends.push(ids[ids.length - 1]);
+    result.ends.push(ids[ids.length - 1])
 
-    return result;
+    return result
 }
 
 /**
@@ -167,18 +170,21 @@ export function splitNumbers(ids: number[]): { starts: number[], ends: number[] 
  * @param ends - The array of end ranges.
  * @returns A complete array merged from start and end ranges.
  */
-export function mergeRangesToCompleteArray(starts: number[], ends: number[]): number[] {
+export function mergeRangesToCompleteArray(
+    starts: number[],
+    ends: number[]
+): number[] {
     if (starts.length !== ends.length) {
-        throw new Error('Lengths of starts and ends arrays should be the same.');
+        throw new Error("Lengths of starts and ends arrays should be the same.")
     }
 
-    const ids: number[] = [];
+    const ids: number[] = []
     for (let i = 0; i < starts.length; i++) {
         for (let j = starts[i]; j <= ends[i]; j++) {
-            ids.push(j);
+            ids.push(j)
         }
     }
-    return ids;
+    return ids
 }
 
 /**
@@ -188,13 +194,13 @@ export function mergeRangesToCompleteArray(starts: number[], ends: number[]): nu
  */
 export function numberToBytes32(num: number): string {
     // Convert the number to its hexadecimal representation
-    let hexString = num.toString(16);
+    let hexString = num.toString(16)
 
     // Pad the hexadecimal string to make it 32 bytes long
-    const padding = 64 - hexString.length;
+    const padding = 64 - hexString.length
     if (padding > 0) {
-        hexString = '0x' + '0'.repeat(padding) + hexString;
+        hexString = "0x" + "0".repeat(padding) + hexString
     }
 
-    return hexString;
+    return hexString
 }

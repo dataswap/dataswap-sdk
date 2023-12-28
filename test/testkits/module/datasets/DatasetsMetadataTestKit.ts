@@ -18,13 +18,13 @@
  *  limitations under the respective licenses.
  ********************************************************************************/
 
-import { DatasetsTestBase } from "./abstract/DatasetsTestBase";
-import { DatasetState } from "../../../../src/shared/types/datasetType";
-import { IContractsManager } from "../../../interfaces/setup/IContractsManater";
-import { IDatasetsHelper } from "../../../interfaces/helper/module/IDatasetshelper";
-import { IGenerator } from "../../../interfaces/setup/IGenerator";
-import { IDatasetsAssertion } from "../../../interfaces/assertions/module/IDatasetsAssertion";
-import { DataType } from "../../../../src/shared/types/dataType";
+import { DatasetsTestBase } from "./abstract/DatasetsTestBase"
+import { DatasetState } from "../../../../src/shared/types/datasetType"
+import { IContractsManager } from "../../../interfaces/setup/IContractsManater"
+import { IDatasetsHelper } from "../../../interfaces/helper/module/IDatasetshelper"
+import { IGenerator } from "../../../interfaces/setup/IGenerator"
+import { IDatasetsAssertion } from "../../../interfaces/assertions/module/IDatasetsAssertion"
+import { DataType } from "../../../../src/shared/types/dataType"
 
 /**
  * Represents a test kit for submitting metadata successfully.
@@ -38,7 +38,12 @@ export class SubmitMetadataTestKit extends DatasetsTestBase {
      * @param _contractsManager - The contracts manager instance.
      * @param _datasetHelper - The datasets helper instance.
      */
-    constructor(_assertion: IDatasetsAssertion, _generator: IGenerator, _contractsManager: IContractsManager, _datasetHelper?: IDatasetsHelper) {
+    constructor(
+        _assertion: IDatasetsAssertion,
+        _generator: IGenerator,
+        _contractsManager: IContractsManager,
+        _datasetHelper?: IDatasetsHelper
+    ) {
         super(_assertion, _generator, _contractsManager, _datasetHelper)
     }
 
@@ -77,7 +82,12 @@ export class ApproveDatasetMetadataTestKit extends DatasetsTestBase {
      * @param _contractsManager - The contracts manager instance.
      * @param _datasetHelper - The datasets helper instance.
      */
-    constructor(_assertion: IDatasetsAssertion, _generator: IGenerator, _contractsManager: IContractsManager, _datasetHelper: IDatasetsHelper) {
+    constructor(
+        _assertion: IDatasetsAssertion,
+        _generator: IGenerator,
+        _contractsManager: IContractsManager,
+        _datasetHelper: IDatasetsHelper
+    ) {
         super(_assertion, _generator, _contractsManager, _datasetHelper)
     }
 
@@ -87,7 +97,10 @@ export class ApproveDatasetMetadataTestKit extends DatasetsTestBase {
      */
     async optionalBefore(): Promise<number> {
         try {
-            return await this.datasetsHelper.metadataSubmittedDatasetWorkflow(5, 3)
+            return await this.datasetsHelper.metadataSubmittedDatasetWorkflow(
+                5,
+                3
+            )
             //return [datasetId]
         } catch (error) {
             throw error
@@ -107,14 +120,16 @@ export class ApproveDatasetMetadataTestKit extends DatasetsTestBase {
                 DatasetState.MetadataApproved
             )
 
-            this.datasetsHelper.updateWorkflowTargetState(datasetId, DatasetState.MetadataApproved)
+            this.datasetsHelper.updateWorkflowTargetState(
+                datasetId,
+                DatasetState.MetadataApproved
+            )
             return datasetId
         } catch (error) {
             throw error
         }
     }
 }
-
 
 /**
  * Represents a test kit for reject dataset metadata.
@@ -128,7 +143,12 @@ export class RejectDatasetMetadataTestKit extends DatasetsTestBase {
      * @param _contractsManager - The contracts manager instance.
      * @param _datasetHelper - The datasets helper instance.
      */
-    constructor(_assertion: IDatasetsAssertion, _generator: IGenerator, _contractsManager: IContractsManager, _datasetHelper?: IDatasetsHelper) {
+    constructor(
+        _assertion: IDatasetsAssertion,
+        _generator: IGenerator,
+        _contractsManager: IContractsManager,
+        _datasetHelper?: IDatasetsHelper
+    ) {
         super(_assertion, _generator, _contractsManager, _datasetHelper)
     }
 
@@ -138,7 +158,10 @@ export class RejectDatasetMetadataTestKit extends DatasetsTestBase {
      */
     async optionalBefore(): Promise<number> {
         try {
-            return await this.datasetsHelper.metadataSubmittedDatasetWorkflow(5, 3)
+            return await this.datasetsHelper.metadataSubmittedDatasetWorkflow(
+                5,
+                3
+            )
             //return [datasetId]
         } catch (error) {
             throw error
@@ -158,14 +181,16 @@ export class RejectDatasetMetadataTestKit extends DatasetsTestBase {
                 DatasetState.MetadataRejected
             )
 
-            this.datasetsHelper.updateWorkflowTargetState(datasetId, DatasetState.MetadataRejected)
+            this.datasetsHelper.updateWorkflowTargetState(
+                datasetId,
+                DatasetState.MetadataRejected
+            )
             return datasetId
         } catch (error) {
             throw error
         }
     }
 }
-
 
 /**
  * Represents a test kit for reject dataset.
@@ -179,7 +204,12 @@ export class RejectDatasetTestKit extends DatasetsTestBase {
      * @param _contractsManager - The contracts manager instance.
      * @param _datasetHelper - The datasets helper instance.
      */
-    constructor(_assertion: IDatasetsAssertion, _generator: IGenerator, _contractsManager: IContractsManager, _datasetHelper?: IDatasetsHelper) {
+    constructor(
+        _assertion: IDatasetsAssertion,
+        _generator: IGenerator,
+        _contractsManager: IContractsManager,
+        _datasetHelper?: IDatasetsHelper
+    ) {
         super(_assertion, _generator, _contractsManager, _datasetHelper)
     }
 
@@ -226,7 +256,12 @@ export class ApproveDatasetTestKit extends DatasetsTestBase {
      * @param _contractsManager - The contracts manager instance.
      * @param _datasetHelper - The datasets helper instance.
      */
-    constructor(_assertion: IDatasetsAssertion, _generator: IGenerator, _contractsManager: IContractsManager, _datasetHelper?: IDatasetsHelper) {
+    constructor(
+        _assertion: IDatasetsAssertion,
+        _generator: IGenerator,
+        _contractsManager: IContractsManager,
+        _datasetHelper?: IDatasetsHelper
+    ) {
         super(_assertion, _generator, _contractsManager, _datasetHelper)
     }
 
@@ -236,7 +271,9 @@ export class ApproveDatasetTestKit extends DatasetsTestBase {
      */
     async optionalBefore(): Promise<number> {
         try {
-            let datasetId = this.datasetsHelper.getWorkflowTargetId(DatasetState.DatasetProofSubmitted)
+            let datasetId = this.datasetsHelper.getWorkflowTargetId(
+                DatasetState.DatasetProofSubmitted
+            )
             if (datasetId != 0) {
                 return datasetId
             }
@@ -255,8 +292,12 @@ export class ApproveDatasetTestKit extends DatasetsTestBase {
     async action(datasetId: number): Promise<number> {
         try {
             // Getting the root hash and generating challenge proof
-            let rootHash = this.generator.getProofRoot(datasetId, DataType.Source);
-            let [randomSeed, leaves, siblings, paths] = this.generator.generateDatasetChallengeProof(rootHash!);
+            let rootHash = this.generator.getProofRoot(
+                datasetId,
+                DataType.Source
+            )
+            let [randomSeed, leaves, siblings, paths] =
+                this.generator.generateDatasetChallengeProof(rootHash!)
 
             // Submitting challenge proofs
             await this.assertion.submitDatasetChallengeProofsAssertion(
@@ -275,7 +316,10 @@ export class ApproveDatasetTestKit extends DatasetsTestBase {
                 DatasetState.DatasetApproved
             )
 
-            this.datasetsHelper.updateWorkflowTargetState(datasetId, Number(DatasetState.DatasetApproved));
+            this.datasetsHelper.updateWorkflowTargetState(
+                datasetId,
+                Number(DatasetState.DatasetApproved)
+            )
             return datasetId
         } catch (error) {
             throw error

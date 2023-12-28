@@ -25,7 +25,10 @@ export interface IDatacapsAssertion {
      * @param expectChunkCollateralFunds - Expected chunk collateral funds.
      * @returns A Promise indicating the assertion result.
      */
-    getDatacapChunkCollateralFundsAssertion(matchingId: number, expectChunkCollateralFunds: bigint): Promise<void>
+    getDatacapChunkCollateralFundsAssertion(
+        matchingId: number,
+        expectChunkCollateralFunds: bigint
+    ): Promise<void>
 
     /**
      * Retrieves the chunk burn funds for a specific matching identified by its ID.
@@ -33,14 +36,19 @@ export interface IDatacapsAssertion {
      * @param expectChunkBurnFunds - Expected chunk burn funds.
      * @returns A Promise indicating the assertion result.
      */
-    getDatacapChunkBurnFundsAssertion(matchingId: number, expectChunkBurnFunds: bigint): Promise<void>
+    getDatacapChunkBurnFundsAssertion(
+        matchingId: number,
+        expectChunkBurnFunds: bigint
+    ): Promise<void>
 
     /**
      * Retrieves the collateral requirement for datacaps.
      * @param expectCollateraRequirement - Expected collateral requirement.
      * @returns A Promise indicating the assertion result.
      */
-    getCollateralRequirementAssertion(expectCollateraRequirement: bigint): Promise<void>
+    getCollateralRequirementAssertion(
+        expectCollateraRequirement: bigint
+    ): Promise<void>
 
     /**
      * Retrieves the available datacaps for a specific matching identified by its ID.
@@ -48,7 +56,10 @@ export interface IDatacapsAssertion {
      * @param expectAvailableDatacaps - Expected available datacaps.
      * @returns A Promise indicating the assertion result.
      */
-    getAvailableDatacapAssertion(matchingId: number, expectAvailableDatacaps: number): Promise<void>
+    getAvailableDatacapAssertion(
+        matchingId: number,
+        expectAvailableDatacaps: number
+    ): Promise<void>
 
     /**
      * Retrieves the allocated datacaps for a specific matching identified by its ID.
@@ -56,7 +67,10 @@ export interface IDatacapsAssertion {
      * @param expectAllocatedDatacaps - Expected allocated datacaps.
      * @returns A Promise indicating the assertion result.
      */
-    getAllocatedDatacapAssertion(matchingId: number, expectAllocatedDatacaps: number): Promise<void>
+    getAllocatedDatacapAssertion(
+        matchingId: number,
+        expectAllocatedDatacaps: number
+    ): Promise<void>
 
     /**
      * Retrieves the total datacap allocation requirement for a specific matching identified by its ID.
@@ -64,7 +78,10 @@ export interface IDatacapsAssertion {
      * @param expectTotalDatacapRequirement - Expected total datacap allocation requirement.
      * @returns A Promise indicating the assertion result.
      */
-    getTotalDatacapAllocationRequirementAssertion(matchingId: number, expectTotalDatacapRequirement: number): Promise<void>
+    getTotalDatacapAllocationRequirementAssertion(
+        matchingId: number,
+        expectTotalDatacapRequirement: number
+    ): Promise<void>
 
     /**
      * Retrieves the remaining unallocated datacaps for a specific matching identified by its ID.
@@ -72,7 +89,10 @@ export interface IDatacapsAssertion {
      * @param expectRemainUnallocatedDatacaps - Expected remaining unallocated datacaps.
      * @returns A Promise indicating the assertion result.
      */
-    getRemainingUnallocatedDatacapAssertion(matchingId: number, expectRemainUnallocatedDatacaps: number): Promise<void>
+    getRemainingUnallocatedDatacapAssertion(
+        matchingId: number,
+        expectRemainUnallocatedDatacaps: number
+    ): Promise<void>
 
     /**
      * Checks if the next datacap allocation is valid for a specific matching identified by its ID.
@@ -80,7 +100,10 @@ export interface IDatacapsAssertion {
      * @param expectRet - Expected boolean indicating if the next allocation is valid.
      * @returns A Promise indicating the assertion result.
      */
-    isNextDatacapAllocationValidAssertion(matchingId: number, expectRet: boolean): Promise<void>
+    isNextDatacapAllocationValidAssertion(
+        matchingId: number,
+        expectRet: boolean
+    ): Promise<void>
 
     /**
      * Adds datacap chunk collateral for a matching identified by its ID.
@@ -89,7 +112,11 @@ export interface IDatacapsAssertion {
      * @param expectAddAmount - Expected amount to add as chunk collateral.
      * @returns A Promise indicating the assertion result.
      */
-    addDatacapChunkCollateralAssertion(caller: string, matchingId: number, expectAddAmount: bigint): Promise<void>
+    addDatacapChunkCollateralAssertion(
+        caller: string,
+        matchingId: number,
+        expectAddAmount: bigint
+    ): Promise<void>
 
     /**
      * Requests datacap allocation for a specific matching identified by its ID.
@@ -98,5 +125,9 @@ export interface IDatacapsAssertion {
      * @param expectAllocated - Expected amount to be allocated.
      * @returns A Promise indicating the assertion result.
      */
-    requestAllocateDatacapAssertion(caller: string, matchingId: number, expectAllocated: number): Promise<void>
+    requestAllocateDatacapAssertion(
+        caller: string,
+        matchingId: number,
+        expectAllocated: number
+    ): Promise<void>
 }

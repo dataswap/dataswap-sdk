@@ -29,7 +29,6 @@ import { IContractsManager } from "../../interfaces/setup/IContractsManater"
 import { DatasetsAssertion } from "../../assertions/module/datasetsAssertion"
 import { IDatasetsAssertion } from "../../interfaces/assertions/module/IDatasetsAssertion"
 
-
 /**
  * Helper class providing dataset test-related functionalities.
  */
@@ -43,10 +42,7 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
      * @param _generator - The generator instance used for dataset operations.
      * @param _contractsManager - The contracts manager instance used for dataset operations.
      */
-    constructor(
-        _generator: IGenerator,
-        _contractsManager: IContractsManager
-    ) {
+    constructor(_generator: IGenerator, _contractsManager: IContractsManager) {
         super()
         this.generator = _generator
         this.contractsManager = _contractsManager
@@ -60,15 +56,29 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
      * @param duplicateCount The duplicate count (optional).
      * @returns A Promise that resolves with the dataset ID.
      */
-    async metadataSubmittedDatasetWorkflow(replicasCount: number, elementCountInReplica: number, duplicateIndex?: number, duplicateCount?: number): Promise<number> {
+    async metadataSubmittedDatasetWorkflow(
+        replicasCount: number,
+        elementCountInReplica: number,
+        duplicateIndex?: number,
+        duplicateCount?: number
+    ): Promise<number> {
         try {
             let datasetMetadata = this.generator.generateDatasetMetadata()
             let clientId = 101
 
-            let datasetId = await this.assertion.submitDatasetMetadataAssertion(process.env.DATASWAP_METADATASUBMITTER as string, clientId, datasetMetadata)
+            let datasetId = await this.assertion.submitDatasetMetadataAssertion(
+                process.env.DATASWAP_METADATASUBMITTER as string,
+                clientId,
+                datasetMetadata
+            )
 
             // Generate dataset requirements
-            let requirments = this.generator.generateDatasetRequirements(replicasCount, elementCountInReplica, duplicateIndex, duplicateCount)
+            let requirments = this.generator.generateDatasetRequirements(
+                replicasCount,
+                elementCountInReplica,
+                duplicateIndex,
+                duplicateCount
+            )
 
             // Submit dataset replica requirements transaction
             await this.assertion.submitDatasetReplicaRequirementsAssertion(
@@ -78,10 +88,16 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
                 BigInt(0)
             )
 
-            await this.assertion.getDatasetStateAssertion(datasetId, DatasetState.MetadataSubmitted)
+            await this.assertion.getDatasetStateAssertion(
+                datasetId,
+                DatasetState.MetadataSubmitted
+            )
 
             // Update workflow target state and return dataset ID
-            this.updateWorkflowTargetState(datasetId, Number(DatasetState.MetadataSubmitted))
+            this.updateWorkflowTargetState(
+                datasetId,
+                Number(DatasetState.MetadataSubmitted)
+            )
             return datasetId
         } catch (error) {
             throw error
@@ -98,22 +114,25 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
             let datasetId = await this.completeDependentWorkflow(
                 Number(DatasetState.MetadataSubmitted),
                 async (): Promise<number> => {
-                    return await this.metadataSubmittedDatasetWorkflow(5, 3);
+                    return await this.metadataSubmittedDatasetWorkflow(5, 3)
                 }
-            );
+            )
 
             // Approves dataset metadata using assertion
             await this.assertion.approveDatasetMetadataAssertion(
                 process.env.DATASWAP_GOVERNANCE as string,
                 datasetId,
                 DatasetState.MetadataApproved
-            );
+            )
             // Updates the dataset state to MetadataApproved
-            this.updateWorkflowTargetState(datasetId, DatasetState.MetadataApproved);
+            this.updateWorkflowTargetState(
+                datasetId,
+                DatasetState.MetadataApproved
+            )
 
-            return datasetId; // Returns the dataset ID
+            return datasetId // Returns the dataset ID
         } catch (error) {
-            throw error;
+            throw error
         }
     }
 
@@ -127,23 +146,26 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
             let datasetId = await this.completeDependentWorkflow(
                 DatasetState.MetadataSubmitted,
                 async (): Promise<number> => {
-                    return await this.metadataSubmittedDatasetWorkflow(5, 3);
+                    return await this.metadataSubmittedDatasetWorkflow(5, 3)
                 }
-            );
+            )
 
             // Rejects dataset metadata using assertion
             await this.assertion.rejectDatasetMetadataAssertion(
                 process.env.DATASWAP_GOVERNANCE as string,
                 datasetId,
                 DatasetState.MetadataRejected
-            );
+            )
 
             // Updates the dataset state to MetadataRejected
-            this.updateWorkflowTargetState(datasetId, Number(DatasetState.MetadataRejected));
+            this.updateWorkflowTargetState(
+                datasetId,
+                Number(DatasetState.MetadataRejected)
+            )
 
-            return datasetId; // Returns the dataset ID
+            return datasetId // Returns the dataset ID
         } catch (error) {
-            throw error;
+            throw error
         }
     }
 
@@ -160,11 +182,16 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
                 async (): Promise<number> => {
                     return await this.metadataApprovedDatasetWorkflow()
                 }
-            );
+            )
 
             // Generating dataset proof for DataType.MappingFiles
-            let dataType = DataType.MappingFiles;
-            let [rootHashMappings, leafHashesMappings, leafSizesMappings, mappingFilesAccessMethod] = this.generator.generateDatasetProof(1, dataType, fakedata);
+            let dataType = DataType.MappingFiles
+            let [
+                rootHashMappings,
+                leafHashesMappings,
+                leafSizesMappings,
+                mappingFilesAccessMethod,
+            ] = this.generator.generateDatasetProof(1, dataType, fakedata)
             // Submits dataset proof root for DataType.MappingFiles
             await this.assertion.submitDatasetProofRootAssertion(
                 datasetId,
@@ -185,19 +212,24 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
                 true
             )
 
-            this.generator.setProofRoot(datasetId, DataType.MappingFiles, rootHashMappings);
+            this.generator.setProofRoot(
+                datasetId,
+                DataType.MappingFiles,
+                rootHashMappings
+            )
 
             // Updating dataType to DataType.Source
-            dataType = DataType.Source;
+            dataType = DataType.Source
 
             // Generating dataset proof for DataType.Source
-            let [rootHash, leafHashes, leafSizes] = this.generator.generateDatasetProof(20, dataType, fakedata);
+            let [rootHash, leafHashes, leafSizes] =
+                this.generator.generateDatasetProof(20, dataType, fakedata)
 
             // Submits dataset proof root for DataType.Source
             await this.assertion.submitDatasetProofRootAssertion(
                 datasetId,
                 dataType,
-                '',
+                "",
                 rootHash,
                 process.env.DATASWAP_PROOFSUBMITTER as string
             )
@@ -210,7 +242,7 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
                 leafHashes,
                 0,
                 leafSizes,
-                true,
+                true
             )
 
             // Completes the dataset proof submission
@@ -220,12 +252,19 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
                 DatasetState.FundsNotEnough
             )
 
-            this.generator.setProofRoot(datasetId, DataType.Source, rootHashMappings);
+            this.generator.setProofRoot(
+                datasetId,
+                DataType.Source,
+                rootHashMappings
+            )
             // Updates the dataset state to FundsNotEnough
-            this.updateWorkflowTargetState(datasetId, Number(DatasetState.FundsNotEnough));
-            return datasetId; // Returns the dataset ID
+            this.updateWorkflowTargetState(
+                datasetId,
+                Number(DatasetState.FundsNotEnough)
+            )
+            return datasetId // Returns the dataset ID
         } catch (error) {
-            throw error;
+            throw error
         }
     }
 
@@ -242,16 +281,24 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
                 async (): Promise<number> => {
                     return await this.fundsNotEnoughDatasetWorkflow(fakedata)
                 }
-            );
-            let datacapCollateral = await handleEvmError(this.contractsManager.DatasetProofEvm().getDatasetAppendCollateral(datasetId))
-            let auditorFees = await handleEvmError(this.contractsManager.DatasetProofEvm().getDatasetDataAuditorFeesRequirement(datasetId))
+            )
+            let datacapCollateral = await handleEvmError(
+                this.contractsManager
+                    .DatasetProofEvm()
+                    .getDatasetAppendCollateral(datasetId)
+            )
+            let auditorFees = await handleEvmError(
+                this.contractsManager
+                    .DatasetProofEvm()
+                    .getDatasetDataAuditorFeesRequirement(datasetId)
+            )
 
             // Setting wallet and appending dataset funds
             await this.assertion.appendDatasetFundsAssertion(
                 process.env.DATASWAP_METADATASUBMITTER as string,
                 datasetId,
                 BigInt(datacapCollateral.data),
-                BigInt(auditorFees.data),
+                BigInt(auditorFees.data)
             )
 
             // Setting wallet and submitting dataset proof as completed
@@ -260,10 +307,13 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
                 datasetId,
                 DatasetState.DatasetProofSubmitted
             )
-            this.updateWorkflowTargetState(datasetId, Number(DatasetState.DatasetProofSubmitted));
-            return datasetId; // Returns the dataset ID
+            this.updateWorkflowTargetState(
+                datasetId,
+                Number(DatasetState.DatasetProofSubmitted)
+            )
+            return datasetId // Returns the dataset ID
         } catch (error) {
-            throw error;
+            throw error
         }
     }
 
@@ -279,11 +329,15 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
                 async (): Promise<number> => {
                     return await this.proofSubmittedDatasetWorkflow()
                 }
-            );
+            )
 
             // Getting the root hash and generating challenge proof
-            let rootHash = this.generator.getProofRoot(datasetId, DataType.Source);
-            let [randomSeed, leaves, siblings, paths] = this.generator.generateDatasetChallengeProof(rootHash!);
+            let rootHash = this.generator.getProofRoot(
+                datasetId,
+                DataType.Source
+            )
+            let [randomSeed, leaves, siblings, paths] =
+                this.generator.generateDatasetChallengeProof(rootHash!)
 
             // Submitting challenge proofs
             await this.assertion.submitDatasetChallengeProofsAssertion(
@@ -302,11 +356,14 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
                 DatasetState.DatasetApproved
             )
 
-            this.updateWorkflowTargetState(datasetId, Number(DatasetState.DatasetApproved));
+            this.updateWorkflowTargetState(
+                datasetId,
+                Number(DatasetState.DatasetApproved)
+            )
 
-            return datasetId; // Returns the dataset ID
+            return datasetId // Returns the dataset ID
         } catch (error) {
-            throw error;
+            throw error
         }
     }
 }

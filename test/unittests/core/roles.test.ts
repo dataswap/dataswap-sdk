@@ -54,6 +54,8 @@ describe("roles", () => {
      * Test case for accepting ownership.
      */
     it("acceptOwnership", async function () {
-        await rolesAssertion.acceptOwnershipAssertion(process.env.DATASWAP_METADATASUBMITTER!)
+        await rolesAssertion.acceptOwnershipAssertion(
+            process.env.DATASWAP_METADATASUBMITTER!
+        )
     })
 })

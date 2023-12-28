@@ -18,9 +18,18 @@
  *  limitations under the respective licenses.
  ********************************************************************************/
 
-
-import { SubmitMetadataTestKit, ApproveDatasetMetadataTestKit, RejectDatasetMetadataTestKit, RejectDatasetTestKit, ApproveDatasetTestKit } from "../../testkits/module/datasets/DatasetsMetadataTestKit"
-import { getContractsManager, getGenerator, getDatasetsHelper } from "../../fixtures"
+import {
+    SubmitMetadataTestKit,
+    ApproveDatasetMetadataTestKit,
+    RejectDatasetMetadataTestKit,
+    RejectDatasetTestKit,
+    ApproveDatasetTestKit,
+} from "../../testkits/module/datasets/DatasetsMetadataTestKit"
+import {
+    getContractsManager,
+    getGenerator,
+    getDatasetsHelper,
+} from "../../fixtures"
 import { DatasetsAssertion } from "../../assertions/module/datasetsAssertion"
 import { DatasetState } from "../../../src/shared/types/datasetType"
 /**
@@ -44,7 +53,10 @@ describe("datasetsmetadata", async () => {
      * Tests assert dependencies addressed of datasets.
      */
     it("assertDependenciesAdresses", async function () {
-        await this.sharedData.datasetsAssertion.metadataInitDependenciesAssertion(process.env.DATASWAP_GOVERNANCE as string, process.env.DatasetsProofAddress as string)
+        await this.sharedData.datasetsAssertion.metadataInitDependenciesAssertion(
+            process.env.DATASWAP_GOVERNANCE as string,
+            process.env.DatasetsProofAddress as string
+        )
     })
 
     /**
@@ -80,7 +92,7 @@ describe("datasetsmetadata", async () => {
         let testKit = new RejectDatasetMetadataTestKit(
             this.sharedData.datasetsAssertion!,
             this.sharedData.generator!,
-            this.sharedData.contractsManager!,
+            this.sharedData.contractsManager!
         )
         await testKit.run()
     })
@@ -92,7 +104,7 @@ describe("datasetsmetadata", async () => {
         let testKit = new RejectDatasetTestKit(
             this.sharedData.datasetsAssertion!,
             this.sharedData.generator!,
-            this.sharedData.contractsManager!,
+            this.sharedData.contractsManager!
         )
         await testKit.run()
     })
@@ -109,6 +121,4 @@ describe("datasetsmetadata", async () => {
         )
         await testKit.run()
     })
-
 })
-

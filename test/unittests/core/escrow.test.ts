@@ -44,27 +44,47 @@ describe("escrow", () => {
      * Test case for collateral functionality.
      */
     it("collateral", async function () {
-        await escrowAssertion.collateralAssertion(EscrowType.DatacapCollateral, await this.sharedData.generator.generatorAddress(), 1, BigInt(100))
+        await escrowAssertion.collateralAssertion(
+            EscrowType.DatacapCollateral,
+            await this.sharedData.generator.generatorAddress(),
+            1,
+            BigInt(100)
+        )
     })
 
     /**
      * Test case for payment functionality.
      */
     it("payment", async function () {
-        await escrowAssertion.paymentAssertion(EscrowType.DatasetAuditFee, await this.sharedData.generator.generatorAddress(), 1, BigInt(100))
+        await escrowAssertion.paymentAssertion(
+            EscrowType.DatasetAuditFee,
+            await this.sharedData.generator.generatorAddress(),
+            1,
+            BigInt(100)
+        )
     })
 
     /**
      * Test case for payment with a single beneficiary.
      */
     it("paymentSingleBeneficiary", async function () {
-        await escrowAssertion.paymentSingleBeneficiaryAssertion(EscrowType.DatasetAuditFee, await this.sharedData.generator.generatorAddress(), 1, await this.sharedData.generator.generatorAddress(), BigInt(100))
+        await escrowAssertion.paymentSingleBeneficiaryAssertion(
+            EscrowType.DatasetAuditFee,
+            await this.sharedData.generator.generatorAddress(),
+            1,
+            await this.sharedData.generator.generatorAddress(),
+            BigInt(100)
+        )
     })
 
     /**
      * Test case for payment transfer functionality.
      */
     it("paymentTransfer", async function () {
-        await escrowAssertion.paymentTransferAssertion(EscrowType.TotalDataPrepareFeeByClient, process.env.DATASWAP_GOVERNANCE as string, 1)
+        await escrowAssertion.paymentTransferAssertion(
+            EscrowType.TotalDataPrepareFeeByClient,
+            process.env.DATASWAP_GOVERNANCE as string,
+            1
+        )
     })
 })

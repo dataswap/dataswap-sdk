@@ -58,7 +58,10 @@ export class RolesAssertion implements IRolesAssertion {
      */
     async ownerAssertion(expectAddress: string): Promise<void> {
         let data = await handleEvmError(this.roles.owner())
-        assert.isTrue(equal(expectAddress, data.data), "owner should be expect address")
+        assert.isTrue(
+            equal(expectAddress, data.data),
+            "owner should be expect address"
+        )
     }
 
     /**
@@ -68,9 +71,16 @@ export class RolesAssertion implements IRolesAssertion {
      * @param {boolean} expectHas - The expected existence status of the role.
      * @returns {Promise<void>}
      */
-    async hasRoleAssertion(role: string, account: string, expectHas: boolean): Promise<void> {
+    async hasRoleAssertion(
+        role: string,
+        account: string,
+        expectHas: boolean
+    ): Promise<void> {
         let data = await handleEvmError(this.roles.hasRole(role, account))
-        assert.isTrue(equal(expectHas, data.data), "account should be has expect role")
+        assert.isTrue(
+            equal(expectHas, data.data),
+            "account should be has expect role"
+        )
     }
 
     /**
@@ -92,7 +102,6 @@ export class RolesAssertion implements IRolesAssertion {
         await this.transferOwnershipAssertion(data.data)
         this.roles.getWallet().setDefault(data.data)
         await handleEvmError(this.roles.acceptOwnership())
-
     }
 
     /**

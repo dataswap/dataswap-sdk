@@ -25,7 +25,7 @@ export enum BidSelectionRule {
     HighestBid, // Note: Auction, Winner is determined by the highest bid
     LowestBid, // Note: Tender, Winner is determined by the lowest bid
     ImmediateAtLeast, // Note: Auction Immediate winning condition: Bid amount is at least the threshold
-    ImmediateAtMost // Note: Render Immediate winning condition: Bid amount is at most the threshold
+    ImmediateAtMost, // Note: Render Immediate winning condition: Bid amount is at most the threshold
 }
 
 /**
@@ -33,16 +33,16 @@ export enum BidSelectionRule {
  * @interface
  */
 export interface MatchingMetadata {
-    bidSelectionRule: BidSelectionRule;
-    biddingDelayBlockCount: number;
-    biddingPeriodBlockCount: number;
-    storageCompletionPeriodBlocks: number;
-    biddingThreshold: bigint;
-    createdBlockNumber: number;
-    additionalInfo: string;
-    initiator: string;
-    pausedBlockCount: number;
-    matchingId?: number;
+    bidSelectionRule: BidSelectionRule
+    biddingDelayBlockCount: number
+    biddingPeriodBlockCount: number
+    storageCompletionPeriodBlocks: number
+    biddingThreshold: bigint
+    createdBlockNumber: number
+    additionalInfo: string
+    initiator: string
+    pausedBlockCount: number
+    matchingId?: number
 }
 
 /**
@@ -50,7 +50,7 @@ export interface MatchingMetadata {
  * @class
  * @extends Entity
  */
-export class MatchingMetadata extends Entity<MatchingMetadata> { }
+export class MatchingMetadata extends Entity<MatchingMetadata> {}
 
 /**
  * Enumeration representing the possible states of a matching.
@@ -64,5 +64,5 @@ export enum MatchingState {
     Closed, // Matching is closed and no longer accepting bids
     Completed, // Matching is completed
     Cancelled, // Matching is cancelled
-    Failed // Matching has failed
+    Failed, // Matching has failed
 }

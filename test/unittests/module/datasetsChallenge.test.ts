@@ -17,7 +17,11 @@
  *  See the MIT License or the Apache License for the specific language governing permissions and
  *  limitations under the respective licenses.
  ********************************************************************************/
-import { getContractsManager, getGenerator, getDatasetsHelper } from "../../fixtures"
+import {
+    getContractsManager,
+    getGenerator,
+    getDatasetsHelper,
+} from "../../fixtures"
 import { DatasetsAssertion } from "../../assertions/module/datasetsAssertion"
 import { ApproveDatasetTestKit } from "../../testkits/module/datasets/DatasetsMetadataTestKit"
 

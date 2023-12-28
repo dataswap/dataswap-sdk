@@ -18,24 +18,23 @@
  *  limitations under the respective licenses.
  ********************************************************************************/
 
-import dotenv from 'dotenv';
-import { IContractsManager } from './interfaces/setup/IContractsManater';
-import { ContractsManager } from './testkits/setup/contractsManager';
-import { IGenerator } from './interfaces/setup/IGenerator';
-import { Generator } from './testkits/setup/generator';
-import { IDatasetsHelper } from './interfaces/helper/module/IDatasetshelper';
-import { DatasetsHelper } from './helpers/module/datasetsHelper';
-import { DataswapTestSetup } from './testkits/setup/dataswapTestSetup';
-
+import dotenv from "dotenv"
+import { IContractsManager } from "./interfaces/setup/IContractsManater"
+import { ContractsManager } from "./testkits/setup/contractsManager"
+import { IGenerator } from "./interfaces/setup/IGenerator"
+import { Generator } from "./testkits/setup/generator"
+import { IDatasetsHelper } from "./interfaces/helper/module/IDatasetshelper"
+import { DatasetsHelper } from "./helpers/module/datasetsHelper"
+import { DataswapTestSetup } from "./testkits/setup/dataswapTestSetup"
 
 // Import test environmental parameters
 function setup() {
     dotenv.config()
 }
 
-let contractsManagerInstance: IContractsManager | null = null;
-let generatorInstance: IGenerator | null = null;
-let datasetHelperInstance: IDatasetsHelper | null = null;
+let contractsManagerInstance: IContractsManager | null = null
+let generatorInstance: IGenerator | null = null
+let datasetHelperInstance: IDatasetsHelper | null = null
 
 /**
  * Gets the contracts manager instance.
@@ -43,9 +42,9 @@ let datasetHelperInstance: IDatasetsHelper | null = null;
  */
 export function getContractsManager(): IContractsManager {
     if (!contractsManagerInstance) {
-        throw new Error('Contracts manager not initialized');
+        throw new Error("Contracts manager not initialized")
     }
-    return contractsManagerInstance;
+    return contractsManagerInstance
 }
 
 /**
@@ -54,9 +53,9 @@ export function getContractsManager(): IContractsManager {
  */
 export function getGenerator(): IGenerator {
     if (!generatorInstance) {
-        throw new Error('Generator not initialized');
+        throw new Error("Generator not initialized")
     }
-    return generatorInstance;
+    return generatorInstance
 }
 
 /**
@@ -65,9 +64,9 @@ export function getGenerator(): IGenerator {
  */
 export function getDatasetsHelper(): IDatasetsHelper {
     if (!datasetHelperInstance) {
-        throw new Error('DatasetHelper not initialized');
+        throw new Error("DatasetHelper not initialized")
     }
-    return datasetHelperInstance;
+    return datasetHelperInstance
 }
 
 /**
@@ -77,8 +76,8 @@ export function getDatasetsHelper(): IDatasetsHelper {
 export async function mochaGlobalSetup() {
     setup()
     console.log(`@@@@ Mocha add hooks finished @@@@`)
-    generatorInstance = new Generator();
-    contractsManagerInstance = new ContractsManager();
+    generatorInstance = new Generator()
+    contractsManagerInstance = new ContractsManager()
     datasetHelperInstance = new DatasetsHelper(
         generatorInstance,
         contractsManagerInstance

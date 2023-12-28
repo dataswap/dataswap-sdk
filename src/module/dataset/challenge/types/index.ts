@@ -34,4 +34,4 @@ export interface DatasetChallenge {
  * Class representing a DatasetChallenge entity, extending the Entity class.
  * @class
  */
-export class DatasetChallenge extends Entity<DatasetChallenge> { }
+export class DatasetChallenge extends Entity<DatasetChallenge> {}

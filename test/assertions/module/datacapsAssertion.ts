@@ -35,9 +35,18 @@ export class DatacapsAssertion implements IDatacapsAssertion {
      * @param expectChunkCollateralFunds - Expected chunk collateral funds.
      * @returns A Promise indicating the assertion result.
      */
-    async getDatacapChunkCollateralFundsAssertion(matchingId: number, expectChunkCollateralFunds: bigint): Promise<void> {
-        let chunkCollateralFunds = await handleEvmError(this.contractsManager.DatacapsEvm().getDatacapChunkCollateralFunds(matchingId))
-        expect(expectChunkCollateralFunds).to.be.equal(BigInt(chunkCollateralFunds.data))
+    async getDatacapChunkCollateralFundsAssertion(
+        matchingId: number,
+        expectChunkCollateralFunds: bigint
+    ): Promise<void> {
+        let chunkCollateralFunds = await handleEvmError(
+            this.contractsManager
+                .DatacapsEvm()
+                .getDatacapChunkCollateralFunds(matchingId)
+        )
+        expect(expectChunkCollateralFunds).to.be.equal(
+            BigInt(chunkCollateralFunds.data)
+        )
     }
 
     /**
@@ -46,8 +55,15 @@ export class DatacapsAssertion implements IDatacapsAssertion {
      * @param expectChunkBurnFunds - Expected chunk burn funds.
      * @returns A Promise indicating the assertion result.
      */
-    async getDatacapChunkBurnFundsAssertion(matchingId: number, expectChunkBurnFunds: bigint): Promise<void> {
-        let chunkBurnFunds = await handleEvmError(this.contractsManager.DatacapsEvm().getDatacapChunkBurnFunds(matchingId))
+    async getDatacapChunkBurnFundsAssertion(
+        matchingId: number,
+        expectChunkBurnFunds: bigint
+    ): Promise<void> {
+        let chunkBurnFunds = await handleEvmError(
+            this.contractsManager
+                .DatacapsEvm()
+                .getDatacapChunkBurnFunds(matchingId)
+        )
         expect(expectChunkBurnFunds).to.be.equal(BigInt(chunkBurnFunds.data))
     }
 
@@ -56,9 +72,15 @@ export class DatacapsAssertion implements IDatacapsAssertion {
      * @param expectCollateraRequirement - Expected collateral requirement.
      * @returns A Promise indicating the assertion result.
      */
-    async getCollateralRequirementAssertion(expectCollateraRequirement: bigint): Promise<void> {
-        let collaterealRequirement = await handleEvmError(this.contractsManager.DatacapsEvm().getCollateralRequirement())
-        expect(expectCollateraRequirement).to.be.equal(BigInt(collaterealRequirement.data))
+    async getCollateralRequirementAssertion(
+        expectCollateraRequirement: bigint
+    ): Promise<void> {
+        let collaterealRequirement = await handleEvmError(
+            this.contractsManager.DatacapsEvm().getCollateralRequirement()
+        )
+        expect(expectCollateraRequirement).to.be.equal(
+            BigInt(collaterealRequirement.data)
+        )
     }
 
     /**
@@ -67,9 +89,16 @@ export class DatacapsAssertion implements IDatacapsAssertion {
      * @param expectAvailableDatacaps - Expected available datacaps.
      * @returns A Promise indicating the assertion result.
      */
-    async getAvailableDatacapAssertion(matchingId: number, expectAvailableDatacaps: number): Promise<void> {
-        let collaterealRequirement = await handleEvmError(this.contractsManager.DatacapsEvm().getCollateralRequirement())
-        expect(expectAvailableDatacaps).to.be.equal(Number(collaterealRequirement.data))
+    async getAvailableDatacapAssertion(
+        matchingId: number,
+        expectAvailableDatacaps: number
+    ): Promise<void> {
+        let collaterealRequirement = await handleEvmError(
+            this.contractsManager.DatacapsEvm().getCollateralRequirement()
+        )
+        expect(expectAvailableDatacaps).to.be.equal(
+            Number(collaterealRequirement.data)
+        )
     }
 
     /**
@@ -78,9 +107,16 @@ export class DatacapsAssertion implements IDatacapsAssertion {
      * @param expectAllocatedDatacaps - Expected allocated datacaps.
      * @returns A Promise indicating the assertion result.
      */
-    async getAllocatedDatacapAssertion(matchingId: number, expectAllocatedDatacaps: number): Promise<void> {
-        let allocatedDatacap = await handleEvmError(this.contractsManager.DatacapsEvm().getAllocatedDatacap(matchingId))
-        expect(expectAllocatedDatacaps).to.be.equal(Number(allocatedDatacap.data))
+    async getAllocatedDatacapAssertion(
+        matchingId: number,
+        expectAllocatedDatacaps: number
+    ): Promise<void> {
+        let allocatedDatacap = await handleEvmError(
+            this.contractsManager.DatacapsEvm().getAllocatedDatacap(matchingId)
+        )
+        expect(expectAllocatedDatacaps).to.be.equal(
+            Number(allocatedDatacap.data)
+        )
     }
 
     /**
@@ -89,9 +125,18 @@ export class DatacapsAssertion implements IDatacapsAssertion {
      * @param expectTotalDatacapRequirement - Expected total datacap allocation requirement.
      * @returns A Promise indicating the assertion result.
      */
-    async getTotalDatacapAllocationRequirementAssertion(matchingId: number, expectTotalDatacapRequirement: number): Promise<void> {
-        let totalDatacapRequirement = await handleEvmError(this.contractsManager.DatacapsEvm().getTotalDatacapAllocationRequirement(matchingId))
-        expect(expectTotalDatacapRequirement).to.be.equal(Number(totalDatacapRequirement.data))
+    async getTotalDatacapAllocationRequirementAssertion(
+        matchingId: number,
+        expectTotalDatacapRequirement: number
+    ): Promise<void> {
+        let totalDatacapRequirement = await handleEvmError(
+            this.contractsManager
+                .DatacapsEvm()
+                .getTotalDatacapAllocationRequirement(matchingId)
+        )
+        expect(expectTotalDatacapRequirement).to.be.equal(
+            Number(totalDatacapRequirement.data)
+        )
     }
 
     /**
@@ -100,9 +145,18 @@ export class DatacapsAssertion implements IDatacapsAssertion {
      * @param expectRemainUnallocatedDatacaps - Expected remaining unallocated datacaps.
      * @returns A Promise indicating the assertion result.
      */
-    async getRemainingUnallocatedDatacapAssertion(matchingId: number, expectRemainUnallocatedDatacaps: number): Promise<void> {
-        let remainUnallocated = await handleEvmError(this.contractsManager.DatacapsEvm().getRemainingUnallocatedDatacap(matchingId))
-        expect(expectRemainUnallocatedDatacaps).to.be.equal(Number(remainUnallocated.data))
+    async getRemainingUnallocatedDatacapAssertion(
+        matchingId: number,
+        expectRemainUnallocatedDatacaps: number
+    ): Promise<void> {
+        let remainUnallocated = await handleEvmError(
+            this.contractsManager
+                .DatacapsEvm()
+                .getRemainingUnallocatedDatacap(matchingId)
+        )
+        expect(expectRemainUnallocatedDatacaps).to.be.equal(
+            Number(remainUnallocated.data)
+        )
     }
 
     /**
@@ -111,8 +165,15 @@ export class DatacapsAssertion implements IDatacapsAssertion {
      * @param expectRet - Expected boolean indicating if the next allocation is valid.
      * @returns A Promise indicating the assertion result.
      */
-    async isNextDatacapAllocationValidAssertion(matchingId: number, expectRet: boolean): Promise<void> {
-        let ret = await handleEvmError(this.contractsManager.DatacapsEvm().isNextDatacapAllocationValid(matchingId))
+    async isNextDatacapAllocationValidAssertion(
+        matchingId: number,
+        expectRet: boolean
+    ): Promise<void> {
+        let ret = await handleEvmError(
+            this.contractsManager
+                .DatacapsEvm()
+                .isNextDatacapAllocationValid(matchingId)
+        )
         expect(expectRet).to.be.equal(ret.data)
     }
 
@@ -123,17 +184,27 @@ export class DatacapsAssertion implements IDatacapsAssertion {
      * @param expectAddAmount - Expected amount to add as chunk collateral.
      * @returns A Promise indicating the assertion result.
      */
-    async addDatacapChunkCollateralAssertion(caller: string, matchingId: number, expectAddAmount: bigint): Promise<void> {
+    async addDatacapChunkCollateralAssertion(
+        caller: string,
+        matchingId: number,
+        expectAddAmount: bigint
+    ): Promise<void> {
         this.contractsManager.DatacapsEvm().getWallet().setDefault(caller)
-        let chunkCollateralFund = await this.contractsManager.DatacapsEvm().getDatacapChunkCollateralFunds(matchingId)
-        await handleEvmError(this.contractsManager.DatacapsEvm().addDatacapChunkCollateral(
+        let chunkCollateralFund = await this.contractsManager
+            .DatacapsEvm()
+            .getDatacapChunkCollateralFunds(matchingId)
+        await handleEvmError(
+            this.contractsManager
+                .DatacapsEvm()
+                .addDatacapChunkCollateral(matchingId, {
+                    value: expectAddAmount,
+                })
+        )
+
+        this.getDatacapChunkCollateralFundsAssertion(
             matchingId,
-            {
-                value: expectAddAmount
-            }))
-
-
-        this.getDatacapChunkCollateralFundsAssertion(matchingId, BigInt(chunkCollateralFund.data!) + expectAddAmount)
+            BigInt(chunkCollateralFund.data!) + expectAddAmount
+        )
     }
 
     /**
@@ -143,24 +214,43 @@ export class DatacapsAssertion implements IDatacapsAssertion {
      * @param expectAllocated - Expected amount to be allocated.
      * @returns A Promise indicating the assertion result.
      */
-    async requestAllocateDatacapAssertion(caller: string, matchingId: number, expectAllocated: number): Promise<void> {
-        let allocated = await handleEvmError(this.contractsManager.DatacapsEvm().getAllocatedDatacap(matchingId))
-        let availableDatacap = await handleEvmError(this.contractsManager.DatacapsEvm().getAvailableDatacap(matchingId))
-
-        this.contractsManager.DatacapsEvm().getWallet().setDefault(caller)
-        let tx = await handleEvmError(this.contractsManager.DatacapsEvm().requestAllocateDatacap(matchingId))
-
-        // Get transaction receipt and event arguments
-        const receipt = await this.contractsManager.DatacapsEvm().getTransactionReceipt(
-            tx.data.hash
+    async requestAllocateDatacapAssertion(
+        caller: string,
+        matchingId: number,
+        expectAllocated: number
+    ): Promise<void> {
+        let allocated = await handleEvmError(
+            this.contractsManager.DatacapsEvm().getAllocatedDatacap(matchingId)
+        )
+        let availableDatacap = await handleEvmError(
+            this.contractsManager.DatacapsEvm().getAvailableDatacap(matchingId)
         )
 
-        let ret = this.contractsManager.DatasetMetadataEvm().getEvmEventArgs(receipt!, "DatacapAllocated")
+        this.contractsManager.DatacapsEvm().getWallet().setDefault(caller)
+        let tx = await handleEvmError(
+            this.contractsManager
+                .DatacapsEvm()
+                .requestAllocateDatacap(matchingId)
+        )
+
+        // Get transaction receipt and event arguments
+        const receipt = await this.contractsManager
+            .DatacapsEvm()
+            .getTransactionReceipt(tx.data.hash)
+
+        let ret = this.contractsManager
+            .DatasetMetadataEvm()
+            .getEvmEventArgs(receipt!, "DatacapAllocated")
 
         let allocatedCapacity = Number(ret.data.allocatedCapacity)
 
-        await this.getAllocatedDatacapAssertion(matchingId, allocated + allocatedCapacity)
-        await this.getAvailableDatacapAssertion(matchingId, availableDatacap + allocatedCapacity)
+        await this.getAllocatedDatacapAssertion(
+            matchingId,
+            allocated + allocatedCapacity
+        )
+        await this.getAvailableDatacapAssertion(
+            matchingId,
+            availableDatacap + allocatedCapacity
+        )
     }
-
 }

@@ -34,7 +34,6 @@ import { EvmEx } from "../../../../../shared/types/evmEngineType"
  * @interface
  */
 interface MatchingBidsCallEvm {
-
     matchings(): Promise<EvmOutput<string>>
     matchingsTarget(): Promise<EvmOutput<string>>
     /**
@@ -52,33 +51,27 @@ interface MatchingBidsCallEvm {
      */
     getMatchingBidAmount(
         matchingId: number,
-        bidder: string,
-    ): Promise<EvmOutput<bigint>>,
+        bidder: string
+    ): Promise<EvmOutput<bigint>>
     /**
      * Retrieves the count of bids for a matching identified by its ID.
      * @param matchingId - The ID of the matching.
      * @returns A Promise resolving to the count of bids.
      */
-    getMatchingBidsCount(
-        matchingId: number,
-    ): Promise<EvmOutput<number>>,
+    getMatchingBidsCount(matchingId: number): Promise<EvmOutput<number>>
     /**
      * Retrieves the winner of a matching identified by its ID.
      * @param matchingId - The ID of the matching.
      * @param candidate - The address of the candidate.
      * @returns A Promise resolving to the address of the winner.
      */
-    getMatchingWinner(
-        matchingId: number,
-    ): Promise<EvmOutput<string>>,
+    getMatchingWinner(matchingId: number): Promise<EvmOutput<string>>
     /**
      * Retrieves the winners of multiple matchings identified by their IDs.
      * @param matchingIds - An array of matching IDs.
      * @returns A Promise resolving to an array of winner addresses.
      */
-    getMatchingWinners(
-        matchingIds: number[],
-    ): Promise<EvmOutput<string[]>>,
+    getMatchingWinners(matchingIds: number[]): Promise<EvmOutput<string[]>>
     /**
      * Checks if a bidder has placed a bid in a matching identified by its ID.
      * @param matchingId - The ID of the matching.
@@ -143,7 +136,6 @@ interface MatchingBidsSendEvm {
         matchingId: number,
         options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
-
 }
 
 /**
@@ -151,7 +143,7 @@ interface MatchingBidsSendEvm {
  */
 export interface MatchingBidsOriginEvm
     extends MatchingBidsCallEvm,
-    MatchingBidsSendEvm { }
+        MatchingBidsSendEvm {}
 
 /**
  * Implementation of MatchingBidsOriginEvm with specific EVM methods.
@@ -172,12 +164,14 @@ export interface MatchingBidsOriginEvm
     "cancelMatching",
     "closeMatching",
 ])
-export class MatchingBidsOriginEvm extends EvmEx { }
+export class MatchingBidsOriginEvm extends EvmEx {}
 /**
  * Extended class for MatchingBidsEvm with additional message decoding.
  */
 export class MatchingBidsEvm extends MatchingBidsOriginEvm {
-    async getMatchingBids(matchingId: number): Promise<EvmOutput<MatchingBids>> {
+    async getMatchingBids(
+        matchingId: number
+    ): Promise<EvmOutput<MatchingBids>> {
         const metaRes = await super.getMatchingBids(matchingId)
         if (metaRes.ok && metaRes.data) {
             return {
@@ -200,9 +194,7 @@ export class MatchingBidsEvm extends MatchingBidsOriginEvm {
 
         let result: DataswapMessage = decodeRes.data as DataswapMessage
         switch (decodeRes.data!.method) {
-            case "bidding" ||
-                "cancelMatching" ||
-                "closeMatching":
+            case "bidding" || "cancelMatching" || "closeMatching":
                 result.matchingId = result.params.matchingId
                 break
             case "initDependencies":

@@ -26,13 +26,13 @@ import { DataType } from "../../../../shared/types/dataType"
  * @interface
  */
 export interface MatchingTarget {
-    datasetId: number,
-    cars: number[],
-    size: number,
-    dataType: DataType,
-    associatedMappingFilesMatchingID: number,
-    replicaIndex: number,
-    subsidy: bigint,
+    datasetId: number
+    cars: number[]
+    size: number
+    dataType: DataType
+    associatedMappingFilesMatchingID: number
+    replicaIndex: number
+    subsidy: bigint
     matchingId?: number
 }
 
@@ -41,4 +41,4 @@ export interface MatchingTarget {
  * @class
  * @extends {Entity<MatchingTarget>}
  */
-export class MatchingTarget extends Entity<MatchingTarget> { }
+export class MatchingTarget extends Entity<MatchingTarget> {}

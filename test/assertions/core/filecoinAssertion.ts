@@ -46,9 +46,18 @@ export class FilecoinAssertion implements IFilecoinAssertion {
      * @param {DealState} expectState - The expected state of the replica deal.
      * @returns {Promise<void>}
      */
-    async getReplicaDealStateAssertion(cid: string, claimId: number, expectState: DealState): Promise<void> {
-        let state = await handleEvmError(this.filecoin.getReplicaDealState(cid, claimId))
-        assert.isTrue(equal(expectState, state.data), "ReplicaDealState should be expect state")
+    async getReplicaDealStateAssertion(
+        cid: string,
+        claimId: number,
+        expectState: DealState
+    ): Promise<void> {
+        let state = await handleEvmError(
+            this.filecoin.getReplicaDealState(cid, claimId)
+        )
+        assert.isTrue(
+            equal(expectState, state.data),
+            "ReplicaDealState should be expect state"
+        )
     }
 
     /**
@@ -58,8 +67,17 @@ export class FilecoinAssertion implements IFilecoinAssertion {
      * @param {string} expectData - The expected data of the replica claim.
      * @returns {Promise<void>}
      */
-    async getReplicaClaimDataAssertion(provider: number, claimId: number, expectData: string): Promise<void> {
-        let data = await handleEvmError(this.filecoin.getReplicaClaimData(provider, claimId))
-        assert.isTrue(equal(expectData, data.data), "ReplicaClaimData should be expect data")
+    async getReplicaClaimDataAssertion(
+        provider: number,
+        claimId: number,
+        expectData: string
+    ): Promise<void> {
+        let data = await handleEvmError(
+            this.filecoin.getReplicaClaimData(provider, claimId)
+        )
+        assert.isTrue(
+            equal(expectData, data.data),
+            "ReplicaClaimData should be expect data"
+        )
     }
 }

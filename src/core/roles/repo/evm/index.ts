@@ -22,7 +22,7 @@ import {
     withSendMethod,
     EvmOutput,
     withCallMethod,
-    EvmTransactionOptions
+    EvmTransactionOptions,
 } from "@unipackage/net"
 import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
 import { DataswapMessage } from "../../../../message/types"
@@ -56,7 +56,6 @@ interface RolesCallEvm {
     hasRole(role: string, account: string): Promise<EvmOutput<boolean>>
 }
 
-
 /**
  * Interface for EVM transactions related to  Roles.
  */
@@ -67,7 +66,7 @@ interface RolesSendEvm {
      */
     acceptOwnership(options?: EvmTransactionOptions): Promise<EvmOutput<void>>
 
-    /** 
+    /**
      * @dev Returns the address of the pending owner.
      * @param options The options of transaction.
      */
@@ -89,14 +88,20 @@ interface RolesSendEvm {
      * @param newOwner The transfer to account.
      * @param options The options of transaction.
      */
-    transferOwnership(newOwner: string, options?: EvmTransactionOptions): Promise<EvmOutput<void>>
+    transferOwnership(
+        newOwner: string,
+        options?: EvmTransactionOptions
+    ): Promise<EvmOutput<void>>
 
     /**
      * @notice grantDataswapContractRole function to grant the dataswap contract role for dataswap contract. TODO: Move to governance
      * @param contracts The contracts address of grant dataswap role
      * @param options The options of transaction.
      */
-    grantDataswapContractRole(contracts: string[], options?: EvmTransactionOptions): Promise<EvmOutput<void>>
+    grantDataswapContractRole(
+        contracts: string[],
+        options?: EvmTransactionOptions
+    ): Promise<EvmOutput<void>>
 
     /**
      * @notice Grants the specified role to the given account.
@@ -105,44 +110,36 @@ interface RolesSendEvm {
      * @param options The options of transaction.
      * @returns A Promise resolving to the EvmOutput<void> indicating the success of the transaction.
      */
-    grantRole(role: string, account: string, options?: EvmTransactionOptions): Promise<EvmOutput<void>>
+    grantRole(
+        role: string,
+        account: string,
+        options?: EvmTransactionOptions
+    ): Promise<EvmOutput<void>>
 }
 
 /**
  * Combined interface for EVM calls and transactions related to  Roles.
  */
-export interface RolesOriginEvm
-    extends RolesCallEvm,
-    RolesSendEvm { }
+export interface RolesOriginEvm extends RolesCallEvm, RolesSendEvm {}
 
 /**
  * Implementation of  RolesOriginEvm with specific EVM methods.
  */
-@withCallMethod(
-    [
-        "hasRole",
-        "checkRole",
-        "owner"
-    ]
-)
-@withSendMethod(
-    [
-        "grantRole",
-        "acceptOwnership",
-        "pendingOwner",
-        "renounceOwnership",
-        "transferOwnership",
-        "grantDataswapContractRole"
-    ]
-)
-export class RolesOriginEvm extends EvmEx { }
+@withCallMethod(["hasRole", "checkRole", "owner"])
+@withSendMethod([
+    "grantRole",
+    "acceptOwnership",
+    "pendingOwner",
+    "renounceOwnership",
+    "transferOwnership",
+    "grantDataswapContractRole",
+])
+export class RolesOriginEvm extends EvmEx {}
 
 /**
  * Extended class for  RolesOriginEvm with additional message decoding.
  */
 export class RolesEvm extends RolesOriginEvm {
-
-
     /**
      * Decode a DataswapMessage from an EVM message.
      *

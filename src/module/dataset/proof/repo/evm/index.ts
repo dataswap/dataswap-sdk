@@ -70,39 +70,46 @@ interface DatasetProofCallEvm {
     ): Promise<EvmOutput<number>>
 
     /**
-     * Get dataset proof's submitter. 
+     * Get dataset proof's submitter.
      * @param datasetId The ID of the dataset for which to get the submitter of the proof.
      * @returns The address of the submitter of the proof.
      */
     getDatasetProofSubmitter(datasetId: number): Promise<EvmOutput<string>>
 
     /**
-     * Get dataset size. 
+     * Get dataset size.
      * @param datasetId The ID of the dataset for which to get the size of the dataset.
      * @param dataType The data type of the proof.
      * @returns The size of the dataset.
      */
-    getDatasetSize(datasetId: number, dataType: DataType): Promise<EvmOutput<number>>
+    getDatasetSize(
+        datasetId: number,
+        dataType: DataType
+    ): Promise<EvmOutput<number>>
 
     /**
      * Retrieves the collateral requirement for a dataset identified by its ID.
      * @param datasetId - The ID of the dataset.
      * @returns The collateral requirement for the dataset.
      */
-    getDatasetCollateralRequirement(datasetId: number): Promise<EvmOutput<bigint>>
+    getDatasetCollateralRequirement(
+        datasetId: number
+    ): Promise<EvmOutput<bigint>>
 
     /**
      * Retrieves the fees requirement for data auditors associated with a dataset identified by its ID.
      * @param datasetId - The ID of the dataset.
      * @returns The fees requirement for data auditors.
      */
-    getDatasetDataAuditorFeesRequirement(datasetId: number): Promise<EvmOutput<bigint>>
+    getDatasetDataAuditorFeesRequirement(
+        datasetId: number
+    ): Promise<EvmOutput<bigint>>
 
     /**
-    * Retrieves the fees paid to data auditors for a dataset identified by its ID.
-    * @param datasetId - The ID of the dataset.
-    * @returns The fees paid to data auditors for the dataset.
-    */
+     * Retrieves the fees paid to data auditors for a dataset identified by its ID.
+     * @param datasetId - The ID of the dataset.
+     * @returns The fees paid to data auditors for the dataset.
+     */
     getDatasetDataAuditorFees(datasetId: number): Promise<EvmOutput<bigint>>
 
     /**
@@ -122,7 +129,10 @@ interface DatasetProofCallEvm {
      * @param id - The ID of the car to check.
      * @returns True if the car is present; otherwise, false.
      */
-    isDatasetContainsCar(datasetId: number, id: number): Promise<EvmOutput<boolean>>
+    isDatasetContainsCar(
+        datasetId: number,
+        id: number
+    ): Promise<EvmOutput<boolean>>
 
     /**
      * Checks if multiple cars are present in a dataset identified by its ID.
@@ -130,7 +140,10 @@ interface DatasetProofCallEvm {
      * @param ids - An array of car IDs to check.
      * @returns True if all specified cars are present; otherwise, false.
      */
-    isDatasetContainsCars(datasetId: number, ids: number[]): Promise<EvmOutput<boolean>>
+    isDatasetContainsCars(
+        datasetId: number,
+        ids: number[]
+    ): Promise<EvmOutput<boolean>>
 
     /**
      * Checks if a specific address is the proof submitter for a dataset identified by its ID.
@@ -142,7 +155,6 @@ interface DatasetProofCallEvm {
         datasetId: number,
         submitter: string
     ): Promise<EvmOutput<boolean>>
-
 }
 
 /**
@@ -171,13 +183,13 @@ interface DatasetProofSendEvm {
     ): Promise<EvmOutput<void>>
 
     /**
-     * Submit proof for a dataset 
+     * Submit proof for a dataset
      * @param datasetId The ID of the dataset for which to submit proof.
      * @param dataType The data type of the proof.
      * @param leafHashes The leaf hashes of the proof.
      * @param leafIndex The index of leaf hashes.
      * @param leafSizes The sizes of the leaf hashes.
-     * @param completed A boolean indicating if the proof is completed. 
+     * @param completed A boolean indicating if the proof is completed.
      * @param options The options of transaction.
      */
     submitDatasetProof(
@@ -201,10 +213,10 @@ interface DatasetProofSendEvm {
     ): Promise<EvmOutput<void>>
 
     /**
-     * Append dataset escrow funds. include datacap collateral and dataset auditor calculate fees 
+     * Append dataset escrow funds. include datacap collateral and dataset auditor calculate fees
      * @param datasetId The ID of the dataset for which to append funds.
      * @param datacapCollateral The collateral for datacap.
-     * @param dataAuditorFees The fees for dataset'auditor. 
+     * @param dataAuditorFees The fees for dataset'auditor.
      * @param options The options of transaction.
      */
     appendDatasetFunds(
@@ -219,7 +231,7 @@ interface DatasetProofSendEvm {
  */
 export interface DatasetProofOriginEvm
     extends DatasetProofCallEvm,
-    DatasetProofSendEvm { }
+        DatasetProofSendEvm {}
 /**
  * Implementation of DatasetProofOriginEvm with specific EVM methods.
  */
@@ -245,7 +257,7 @@ export interface DatasetProofOriginEvm
     "submitDatasetProofCompleted",
     "appendDatasetFunds",
 ])
-export class DatasetProofOriginEvm extends EvmEx { }
+export class DatasetProofOriginEvm extends EvmEx {}
 
 /**
  * Extended class for DatasetProofEvm with additional message decoding.

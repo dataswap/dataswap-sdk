@@ -18,14 +18,14 @@
  *  limitations under the respective licenses.
  ********************************************************************************/
 
-import { DatasetsTestBase } from "./abstract/DatasetsTestBase";
-import { DatasetState } from "../../../../src/shared/types/datasetType";
-import { IContractsManager } from "../../../interfaces/setup/IContractsManater";
-import { IDatasetsHelper } from "../../../interfaces/helper/module/IDatasetshelper";
-import { IGenerator } from "../../../interfaces/setup/IGenerator";
-import { SubmitMetadataTestKit } from "./DatasetsMetadataTestKit";
-import { IDatasetsAssertion } from "../../../interfaces/assertions/module/IDatasetsAssertion";
-import { DatasetsHelper } from "../../../helpers/module/datasetsHelper";
+import { DatasetsTestBase } from "./abstract/DatasetsTestBase"
+import { DatasetState } from "../../../../src/shared/types/datasetType"
+import { IContractsManager } from "../../../interfaces/setup/IContractsManater"
+import { IDatasetsHelper } from "../../../interfaces/helper/module/IDatasetshelper"
+import { IGenerator } from "../../../interfaces/setup/IGenerator"
+import { SubmitMetadataTestKit } from "./DatasetsMetadataTestKit"
+import { IDatasetsAssertion } from "../../../interfaces/assertions/module/IDatasetsAssertion"
+import { DatasetsHelper } from "../../../helpers/module/datasetsHelper"
 
 /**
  * Represents a test kit for submitting requirement successfully.
@@ -41,13 +41,23 @@ export class SubmitRequirementTestKit extends DatasetsTestBase {
      * @param _contractsManager - The contracts manager instance.
      * @param _datasetHelper - The datasets helper instance.
      */
-    constructor(_assertion: IDatasetsAssertion, _generator: IGenerator, _contractsManager: IContractsManager, _datasetHelper?: IDatasetsHelper) {
+    constructor(
+        _assertion: IDatasetsAssertion,
+        _generator: IGenerator,
+        _contractsManager: IContractsManager,
+        _datasetHelper?: IDatasetsHelper
+    ) {
         super(_assertion, _generator, _contractsManager, _datasetHelper)
         if (!_datasetHelper) {
             _datasetHelper = new DatasetsHelper(_generator, _contractsManager)
         }
 
-        this.dependentTestKit = new SubmitMetadataTestKit(_assertion, _generator, _contractsManager, _datasetHelper)
+        this.dependentTestKit = new SubmitMetadataTestKit(
+            _assertion,
+            _generator,
+            _contractsManager,
+            _datasetHelper
+        )
     }
 
     /**
@@ -70,10 +80,24 @@ export class SubmitRequirementTestKit extends DatasetsTestBase {
     async action(datasetId: number): Promise<number> {
         try {
             // Generate dataset requirements
-            const requirements = this.generator.generateDatasetRequirements(5, 3)
-            await this.assertion.submitDatasetReplicaRequirementsAssertion(process.env.DATASWAP_METADATASUBMITTER as string, datasetId, requirements, BigInt(0))
-            await this.assertion.getDatasetStateAssertion(datasetId, DatasetState.MetadataSubmitted)
-            this.datasetsHelper.updateWorkflowTargetState(datasetId, DatasetState.MetadataSubmitted)
+            const requirements = this.generator.generateDatasetRequirements(
+                5,
+                3
+            )
+            await this.assertion.submitDatasetReplicaRequirementsAssertion(
+                process.env.DATASWAP_METADATASUBMITTER as string,
+                datasetId,
+                requirements,
+                BigInt(0)
+            )
+            await this.assertion.getDatasetStateAssertion(
+                datasetId,
+                DatasetState.MetadataSubmitted
+            )
+            this.datasetsHelper.updateWorkflowTargetState(
+                datasetId,
+                DatasetState.MetadataSubmitted
+            )
             return datasetId
         } catch (error) {
             throw error

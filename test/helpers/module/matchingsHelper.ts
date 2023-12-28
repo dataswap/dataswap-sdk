@@ -29,7 +29,6 @@ import { IDatasetsHelper } from "../../interfaces/helper/module/IDatasetshelper"
 import { DataType } from "../../../src/shared/types/dataType"
 import * as utils from "../../shared/utils"
 
-
 /**
  * Helper class for managing matchings in the system.
  */
@@ -82,7 +81,9 @@ export class MatchingsHelper extends BasicHelper implements IMatchingsHelper {
      * @param matchingId - The ID of the matching.
      * @returns The associated mapping files' matching ID if available, otherwise undefined.
      */
-    getAssociatedMappingFilesMatchingId(matchingId: number): number | undefined {
+    getAssociatedMappingFilesMatchingId(
+        matchingId: number
+    ): number | undefined {
         return this.associatedMappingFilesMatchingIds.get(matchingId)
     }
 
@@ -91,8 +92,14 @@ export class MatchingsHelper extends BasicHelper implements IMatchingsHelper {
      * @param matchingId - The ID of the matching.
      * @param associatedMatchingId - The associated mapping files' matching ID to set.
      */
-    setAssociatedMappingFilesMatchingId(matchingId: number, associatedMatchingId: any): void {
-        this.associatedMappingFilesMatchingIds.set(matchingId, associatedMatchingId)
+    setAssociatedMappingFilesMatchingId(
+        matchingId: number,
+        associatedMatchingId: any
+    ): void {
+        this.associatedMappingFilesMatchingIds.set(
+            matchingId,
+            associatedMatchingId
+        )
     }
 
     /**
@@ -101,7 +108,10 @@ export class MatchingsHelper extends BasicHelper implements IMatchingsHelper {
      * @param targetDatasetId - (Optional) The target dataset ID for the matching workflow.
      * @returns The ID of the created matching.
      */
-    async createdMatchingWorkflow(dataType: DataType, targetDatasetId?: number): Promise<number> {
+    async createdMatchingWorkflow(
+        dataType: DataType,
+        targetDatasetId?: number
+    ): Promise<number> {
         try {
             let datasetId = 0
             if (!targetDatasetId) {
@@ -110,8 +120,15 @@ export class MatchingsHelper extends BasicHelper implements IMatchingsHelper {
                 datasetId = targetDatasetId
             }
 
-            let replicasCount = await handleEvmError(this.contractsManager.DatasetRequirementEvm().getDatasetReplicasCount(datasetId))
-            let replicaIndex = this.generator.datasetNextReplicaIndex(datasetId, replicasCount.data)
+            let replicasCount = await handleEvmError(
+                this.contractsManager
+                    .DatasetRequirementEvm()
+                    .getDatasetReplicasCount(datasetId)
+            )
+            let replicaIndex = this.generator.datasetNextReplicaIndex(
+                datasetId,
+                replicasCount.data
+            )
             let [
                 bidSelectionRule,
                 biddingDelayBlockCount,
@@ -122,61 +139,92 @@ export class MatchingsHelper extends BasicHelper implements IMatchingsHelper {
             ] = this.generator.generatorMatchingInfo(datasetId, replicaIndex)
 
             // Setting the default wallet for the MatchingMetadataEvm contract
-            this.contractsManager.MatchingMetadataEvm().getWallet().setDefault(process.env.DATASWAP_PROOFSUBMITTER as string)
+            this.contractsManager
+                .MatchingMetadataEvm()
+                .getWallet()
+                .setDefault(process.env.DATASWAP_PROOFSUBMITTER as string)
 
             // Creating a new matching
-            let tx = await handleEvmError(this.contractsManager.MatchingMetadataEvm().createMatching(
-                datasetId,
-                bidSelectionRule,
-                biddingDelayBlockCount,
-                biddingPeriodBlockCount,
-                storageCompletionPeriodBlocks,
-                biddingThreshold,
-                replicaIndex,
-                additionalInfo,
-                {
-                    value: this.contractsManager.MatchingMetadataEvm().generateWei("1000000000", "wei")
-                }
-            ))
-            // Retrieving transaction receipt and event arguments
-            const receipt = await this.contractsManager.MatchingMetadataEvm().getTransactionReceipt(
-                tx.data.hash
+            let tx = await handleEvmError(
+                this.contractsManager
+                    .MatchingMetadataEvm()
+                    .createMatching(
+                        datasetId,
+                        bidSelectionRule,
+                        biddingDelayBlockCount,
+                        biddingPeriodBlockCount,
+                        storageCompletionPeriodBlocks,
+                        biddingThreshold,
+                        replicaIndex,
+                        additionalInfo,
+                        {
+                            value: this.contractsManager
+                                .MatchingMetadataEvm()
+                                .generateWei("1000000000", "wei"),
+                        }
+                    )
             )
+            // Retrieving transaction receipt and event arguments
+            const receipt = await this.contractsManager
+                .MatchingMetadataEvm()
+                .getTransactionReceipt(tx.data.hash)
 
-            let ret = this.contractsManager.DatasetMetadataEvm().getEvmEventArgs(receipt!, "MatchingCreated")
+            let ret = this.contractsManager
+                .DatasetMetadataEvm()
+                .getEvmEventArgs(receipt!, "MatchingCreated")
             let matchingId = Number(ret.data.matchingId)
 
             let associatedMatchingId: number = 0
             if (dataType === DataType.Source) {
-                let associatedMappingFilesMatchingId = this.getAssociatedMappingFilesMatchingId(matchingId)
+                let associatedMappingFilesMatchingId =
+                    this.getAssociatedMappingFilesMatchingId(matchingId)
                 if (!associatedMappingFilesMatchingId) {
                     // Completing dependent workflow for mapping files if missing
                     associatedMatchingId = await this.completeDependentWorkflow(
                         MatchingState.Completed,
                         async (): Promise<number> => {
-                            return await this.completedMatchingWorkflow(DataType.MappingFiles, datasetId)
+                            return await this.completedMatchingWorkflow(
+                                DataType.MappingFiles,
+                                datasetId
+                            )
                         }
                     )
-                    this.setAssociatedMappingFilesMatchingId(matchingId, associatedMatchingId)
-                    throw new Error("associatedMappingFilesMatchingId must not be nil when data type is source")
+                    this.setAssociatedMappingFilesMatchingId(
+                        matchingId,
+                        associatedMatchingId
+                    )
+                    throw new Error(
+                        "associatedMappingFilesMatchingId must not be nil when data type is source"
+                    )
                 } else {
                     associatedMatchingId = associatedMappingFilesMatchingId
                 }
             }
 
             // Creating target for the matching
-            await handleEvmError(this.contractsManager.MatchingTargetEvm().createTarget(
-                matchingId,
-                datasetId,
-                dataType,
-                associatedMatchingId,
-                replicaIndex,
-            ))
+            await handleEvmError(
+                this.contractsManager
+                    .MatchingTargetEvm()
+                    .createTarget(
+                        matchingId,
+                        datasetId,
+                        dataType,
+                        associatedMatchingId,
+                        replicaIndex
+                    )
+            )
 
             // Checking and updating the state of the created matching
-            let matchingState = await handleEvmError(this.contractsManager.MatchingMetadataEvm().getMatchingState(matchingId))
+            let matchingState = await handleEvmError(
+                this.contractsManager
+                    .MatchingMetadataEvm()
+                    .getMatchingState(matchingId)
+            )
             expect(BigInt(MatchingState.None)).to.equal(matchingState.data)
-            this.updateWorkflowTargetState(matchingId, Number(MatchingState.None))
+            this.updateWorkflowTargetState(
+                matchingId,
+                Number(MatchingState.None)
+            )
             return matchingId
         } catch (error) {
             throw error
@@ -189,13 +237,19 @@ export class MatchingsHelper extends BasicHelper implements IMatchingsHelper {
      * @param targetDatasetId - (Optional) The target dataset ID for the in-progress matching workflow.
      * @returns The ID of the matching in progress.
      */
-    async inProgressMatchingWorkflow(dataType: DataType, targetDatasetId?: number): Promise<number> {
+    async inProgressMatchingWorkflow(
+        dataType: DataType,
+        targetDatasetId?: number
+    ): Promise<number> {
         try {
             // Completes dependent workflow to create a new matching
             let matchingId = await this.completeDependentWorkflow(
                 Number(MatchingState.None),
                 async (): Promise<number> => {
-                    return await this.createdMatchingWorkflow(dataType, targetDatasetId)
+                    return await this.createdMatchingWorkflow(
+                        dataType,
+                        targetDatasetId
+                    )
                 }
             )
 
@@ -203,36 +257,56 @@ export class MatchingsHelper extends BasicHelper implements IMatchingsHelper {
             let datasetId = this._getTargetDatasetId(matchingId)
 
             // Fetches the count of proofs for the dataset and data type
-            let matchingCount = await handleEvmError(this.contractsManager.DatasetProofEvm().getDatasetProofCount(datasetId!, dataType))
+            let matchingCount = await handleEvmError(
+                this.contractsManager
+                    .DatasetProofEvm()
+                    .getDatasetProofCount(datasetId!, dataType)
+            )
 
             // Retrieves proof data for the dataset and data type
-            let cars = await handleEvmError(this.contractsManager.DatasetProofEvm().getDatasetProof(
-                datasetId!,
-                dataType,
-                0,
-                matchingCount.data,
-            ))
+            let cars = await handleEvmError(
+                this.contractsManager
+                    .DatasetProofEvm()
+                    .getDatasetProof(
+                        datasetId!,
+                        dataType,
+                        0,
+                        matchingCount.data
+                    )
+            )
 
             // Extracts data from car IDs
-            let carsIds = await handleEvmError(this.contractsManager.CarstoreEvm().getCarsIds(cars.data))
+            let carsIds = await handleEvmError(
+                this.contractsManager.CarstoreEvm().getCarsIds(cars.data)
+            )
             let { starts, ends } = utils.splitNumbers(carsIds)
 
             // Configures wallet for MatchingTargetEvm
-            this.contractsManager.MatchingTargetEvm().getWallet().setDefault(process.env.DATASWAP_PROOFSUBMITTER as string)
+            this.contractsManager
+                .MatchingTargetEvm()
+                .getWallet()
+                .setDefault(process.env.DATASWAP_PROOFSUBMITTER as string)
 
             // Publishes the in-progress matching
-            await handleEvmError(this.contractsManager.MatchingTargetEvm().publishMatching(
-                matchingId,
-                datasetId!,
-                starts,
-                ends,
-                true,
-            ))
+            await handleEvmError(
+                this.contractsManager
+                    .MatchingTargetEvm()
+                    .publishMatching(matchingId, datasetId!, starts, ends, true)
+            )
 
             // Checks and updates the state of the matching to in-progress
-            let matchingState = await handleEvmError(this.contractsManager.MatchingMetadataEvm().getMatchingState(matchingId))
-            expect(BigInt(MatchingState.InProgress)).to.equal(matchingState.data)
-            this.updateWorkflowTargetState(matchingId, Number(MatchingState.InProgress))
+            let matchingState = await handleEvmError(
+                this.contractsManager
+                    .MatchingMetadataEvm()
+                    .getMatchingState(matchingId)
+            )
+            expect(BigInt(MatchingState.InProgress)).to.equal(
+                matchingState.data
+            )
+            this.updateWorkflowTargetState(
+                matchingId,
+                Number(MatchingState.InProgress)
+            )
             return matchingId
         } catch (error) {
             throw error
@@ -245,30 +319,48 @@ export class MatchingsHelper extends BasicHelper implements IMatchingsHelper {
      * @param targetDatasetId - (Optional) The target dataset ID for the paused matching workflow.
      * @returns The ID of the paused matching.
      */
-    async pausedMatchingWorkflow(dataType: DataType, targetDatasetId?: number): Promise<number> {
+    async pausedMatchingWorkflow(
+        dataType: DataType,
+        targetDatasetId?: number
+    ): Promise<number> {
         try {
             // Completes dependent workflow to initiate the matching as in progress
             let matchingId = await this.completeDependentWorkflow(
                 Number(MatchingState.InProgress),
                 async (): Promise<number> => {
-                    return await this.inProgressMatchingWorkflow(dataType, targetDatasetId)
+                    return await this.inProgressMatchingWorkflow(
+                        dataType,
+                        targetDatasetId
+                    )
                 }
             )
 
             // Sets the wallet default for MatchingMetadataEvm
-            this.contractsManager.MatchingMetadataEvm().getWallet().setDefault(process.env.DATASWAP_PROOFSUBMITTER as string)
+            this.contractsManager
+                .MatchingMetadataEvm()
+                .getWallet()
+                .setDefault(process.env.DATASWAP_PROOFSUBMITTER as string)
 
             // Pauses the matching in progress
-            await handleEvmError(this.contractsManager.MatchingMetadataEvm().pauseMatching(
-                matchingId,
-            ))
+            await handleEvmError(
+                this.contractsManager
+                    .MatchingMetadataEvm()
+                    .pauseMatching(matchingId)
+            )
 
             // Retrieves and validates the state of the paused matching
-            let matchingState = await handleEvmError(this.contractsManager.MatchingMetadataEvm().getMatchingState(matchingId))
+            let matchingState = await handleEvmError(
+                this.contractsManager
+                    .MatchingMetadataEvm()
+                    .getMatchingState(matchingId)
+            )
             expect(BigInt(MatchingState.Paused)).to.equal(matchingState.data)
 
             // Updates the workflow target state to paused
-            this.updateWorkflowTargetState(matchingId, Number(MatchingState.Paused))
+            this.updateWorkflowTargetState(
+                matchingId,
+                Number(MatchingState.Paused)
+            )
             return matchingId
         } catch (error) {
             throw error
@@ -281,42 +373,62 @@ export class MatchingsHelper extends BasicHelper implements IMatchingsHelper {
      * @param targetDatasetId - (Optional) The target dataset ID for the completed matching workflow.
      * @returns The ID of the completed matching.
      */
-    async completedMatchingWorkflow(dataType: DataType, targetDatasetId?: number): Promise<number> {
+    async completedMatchingWorkflow(
+        dataType: DataType,
+        targetDatasetId?: number
+    ): Promise<number> {
         try {
             // Completes dependent workflow to initiate the matching as in progress
             let matchingId = await this.completeDependentWorkflow(
                 Number(MatchingState.InProgress),
                 async (): Promise<number> => {
-                    return await this.inProgressMatchingWorkflow(dataType, targetDatasetId)
+                    return await this.inProgressMatchingWorkflow(
+                        dataType,
+                        targetDatasetId
+                    )
                 }
             )
 
             // Sets the wallet default for MatchingBidsEvm
-            this.contractsManager.MatchingBidsEvm().getWallet().setDefault(process.env.DATASWAP_BIDDER as string)
+            this.contractsManager
+                .MatchingBidsEvm()
+                .getWallet()
+                .setDefault(process.env.DATASWAP_BIDDER as string)
 
             // Bids on the matching in progress
-            await handleEvmError(this.contractsManager.MatchingBidsEvm().bidding(
-                matchingId,
-                BigInt(10000000000),
-                {
-                    value: this.contractsManager.MatchingBidsEvm().generateWei("1", "ether")
-                }))
+            await handleEvmError(
+                this.contractsManager
+                    .MatchingBidsEvm()
+                    .bidding(matchingId, BigInt(10000000000), {
+                        value: this.contractsManager
+                            .MatchingBidsEvm()
+                            .generateWei("1", "ether"),
+                    })
+            )
 
             // Closes the completed matching
-            await handleEvmError(this.contractsManager.MatchingBidsEvm().closeMatching(
-                matchingId,
-            ))
+            await handleEvmError(
+                this.contractsManager
+                    .MatchingBidsEvm()
+                    .closeMatching(matchingId)
+            )
 
             // Retrieves and validates the state of the completed matching
-            let matchingState = await handleEvmError(this.contractsManager.MatchingMetadataEvm().getMatchingState(matchingId))
+            let matchingState = await handleEvmError(
+                this.contractsManager
+                    .MatchingMetadataEvm()
+                    .getMatchingState(matchingId)
+            )
             expect(BigInt(MatchingState.Completed)).to.equal(matchingState.data)
 
             // Updates the workflow target state to completed
-            this.updateWorkflowTargetState(matchingId, Number(MatchingState.Completed))
+            this.updateWorkflowTargetState(
+                matchingId,
+                Number(MatchingState.Completed)
+            )
             return matchingId
         } catch (error) {
             throw error
         }
     }
-
 }

@@ -38,7 +38,10 @@ export interface IMatchingsHelper extends IHelper {
      * @param matchingId - The matching ID.
      * @param associatedMatchingId - The associated mapping files' matching ID to be set.
      */
-    setAssociatedMappingFilesMatchingId(matchingId: number, associatedMatchingId: number): void
+    setAssociatedMappingFilesMatchingId(
+        matchingId: number,
+        associatedMatchingId: number
+    ): void
 
     /**
      * Initiates a workflow for a created matching of a specific data type.
@@ -46,7 +49,10 @@ export interface IMatchingsHelper extends IHelper {
      * @param targetDatasetId - (Optional) The target dataset ID for the matching.
      * @returns The ID of the created matching.
      */
-    createdMatchingWorkflow(dataType: DataType, targetDatasetId?: number): Promise<number>
+    createdMatchingWorkflow(
+        dataType: DataType,
+        targetDatasetId?: number
+    ): Promise<number>
 
     /**
      * Initiates a workflow for an in-progress matching of a specific data type.
@@ -54,7 +60,10 @@ export interface IMatchingsHelper extends IHelper {
      * @param targetDatasetId - (Optional) The target dataset ID for the matching.
      * @returns The ID of the in-progress matching.
      */
-    inProgressMatchingWorkflow(dataType: DataType, targetDatasetId?: number): Promise<number>
+    inProgressMatchingWorkflow(
+        dataType: DataType,
+        targetDatasetId?: number
+    ): Promise<number>
 
     /**
      * Initiates a workflow for a paused matching of a specific data type.
@@ -62,7 +71,10 @@ export interface IMatchingsHelper extends IHelper {
      * @param targetDatasetId - (Optional) The target dataset ID for the matching.
      * @returns The ID of the paused matching.
      */
-    pausedMatchingWorkflow(dataType: DataType, targetDatasetId?: number): Promise<number>
+    pausedMatchingWorkflow(
+        dataType: DataType,
+        targetDatasetId?: number
+    ): Promise<number>
 
     /**
      * Initiates a workflow for a completed matching of a specific data type.
@@ -70,5 +82,8 @@ export interface IMatchingsHelper extends IHelper {
      * @param targetDatasetId - (Optional) The target dataset ID for the matching.
      * @returns The ID of the completed matching.
      */
-    completedMatchingWorkflow(dataType: DataType, targetDatasetId?: number): Promise<number>
+    completedMatchingWorkflow(
+        dataType: DataType,
+        targetDatasetId?: number
+    ): Promise<number>
 }

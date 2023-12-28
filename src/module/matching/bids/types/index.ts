@@ -25,10 +25,10 @@ import { Entity } from "@unipackage/ddd"
  * @interface
  */
 export interface MatchingBids {
-    bidders: string[],
-    amounts: bigint[],
-    complyFilplusRules: boolean[],
-    winner: string,
+    bidders: string[]
+    amounts: bigint[]
+    complyFilplusRules: boolean[]
+    winner: string
     matchingId?: number
 }
 
@@ -36,4 +36,4 @@ export interface MatchingBids {
  * Class representing the entity for matching bids.
  * @class
  */
-export class MatchingBids extends Entity<MatchingBids> { }
+export class MatchingBids extends Entity<MatchingBids> {}

@@ -25,7 +25,6 @@ import { DealState } from "../../../../src/shared/types/filecoinType"
  * @interface
  */
 export interface IFilecoinAssertion {
-
     /**
      * Asserts the state of a replica deal.
      * @param {string} cid - The content identifier (CID) of the replica.
@@ -33,7 +32,11 @@ export interface IFilecoinAssertion {
      * @param {DealState} expectState - The expected state of the replica deal.
      * @returns {Promise<void>}
      */
-    getReplicaDealStateAssertion(cid: string, claimId: number, expectState: DealState): Promise<void>
+    getReplicaDealStateAssertion(
+        cid: string,
+        claimId: number,
+        expectState: DealState
+    ): Promise<void>
 
     /**
      * Asserts the data of a replica claim.
@@ -42,5 +45,9 @@ export interface IFilecoinAssertion {
      * @param {string} expectData - The expected data of the replica claim.
      * @returns {Promise<void>}
      */
-    getReplicaClaimDataAssertion(provider: number, claimId: number, expectData: string): Promise<void>
+    getReplicaClaimDataAssertion(
+        provider: number,
+        claimId: number,
+        expectData: string
+    ): Promise<void>
 }

@@ -35,7 +35,6 @@ import { EvmEx } from "../../../../../shared/types/evmEngineType"
  * @interface
  */
 interface MatchingTargetCallEvm {
-
     /**
      * Retrieves information about matchings.
      * @returns {Promise<EvmOutput<string>>} A promise resolving to the EVM output for matchings.
@@ -62,7 +61,7 @@ interface MatchingTargetCallEvm {
      */
     isMatchingContainsCar(
         matchingId: number,
-        id: number,
+        id: number
     ): Promise<EvmOutput<boolean>>
     /**
      * Checks if multiple car hashes are present in a matching identified by its ID.
@@ -72,7 +71,7 @@ interface MatchingTargetCallEvm {
      */
     isMatchingContainsCars(
         matchingId: number,
-        ids: number[],
+        ids: number[]
     ): Promise<EvmOutput<boolean>>
     /**
      * Checks if a matching target is valid based on specified parameters.
@@ -88,7 +87,7 @@ interface MatchingTargetCallEvm {
         cars: number[],
         size: number,
         dataType: DataType,
-        associatedMappingFilesMatchingId: number,
+        associatedMappingFilesMatchingId: number
     ): Promise<EvmOutput<boolean>>
     /**
      * Checks if a specific candidate address meets the requirements for a Fil+ matching identified by its ID.
@@ -98,7 +97,7 @@ interface MatchingTargetCallEvm {
      */
     isMatchingTargetMeetsFilPlusRequirements(
         matchingId: number,
-        candidate: string,
+        candidate: string
     ): Promise<EvmOutput<boolean>>
 }
 
@@ -161,7 +160,7 @@ interface MatchingTargetSendEvm {
  */
 export interface MatchingTargetOriginEvm
     extends MatchingTargetCallEvm,
-    MatchingTargetSendEvm { }
+        MatchingTargetSendEvm {}
 
 /**
  * Implementation of MatchingTargetOriginEvm with specific EVM methods.
@@ -175,18 +174,16 @@ export interface MatchingTargetOriginEvm
     "isMatchingTargetValid",
     "isMatchingTargetMeetsFilPlusRequirements",
 ])
-@withSendMethod([
-    "initDependencies",
-    "createTarget",
-    "publishMatching",
-])
-export class MatchingTargetOriginEvm extends EvmEx { }
+@withSendMethod(["initDependencies", "createTarget", "publishMatching"])
+export class MatchingTargetOriginEvm extends EvmEx {}
 
 /**
  * Extended class for MatchingTargetEvm with additional message decoding.
  */
 export class MatchingTargetEvm extends MatchingTargetOriginEvm {
-    async getDatasetTarget(matchingId: number): Promise<EvmOutput<MatchingTarget>> {
+    async getDatasetTarget(
+        matchingId: number
+    ): Promise<EvmOutput<MatchingTarget>> {
         const metaRes = await super.getMatchingTarget(matchingId)
         if (metaRes.ok && metaRes.data) {
             return {
@@ -209,8 +206,7 @@ export class MatchingTargetEvm extends MatchingTargetOriginEvm {
 
         let result: DataswapMessage = decodeRes.data as DataswapMessage
         switch (decodeRes.data!.method) {
-            case "createTarget" ||
-                "publishMatching":
+            case "createTarget" || "publishMatching":
                 result.datasetId = result.params.datasetId
                 result.matchingId = result.params.matchingId
                 break

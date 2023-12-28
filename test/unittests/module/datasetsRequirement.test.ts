@@ -19,7 +19,11 @@
  ********************************************************************************/
 
 import { SubmitRequirementTestKit } from "../../testkits/module/datasets/DatasetsRequirementTestKit"
-import { getContractsManager, getGenerator, getDatasetsHelper } from "../../fixtures"
+import {
+    getContractsManager,
+    getGenerator,
+    getDatasetsHelper,
+} from "../../fixtures"
 import { DatasetsAssertion } from "../../assertions/module/datasetsAssertion"
 
 /**
@@ -47,7 +51,7 @@ describe("datasetsRequirement", async () => {
             let testKit = new SubmitRequirementTestKit(
                 this.sharedData.datasetsAssertion!,
                 this.sharedData.generator!,
-                this.sharedData.contractsManager!,
+                this.sharedData.contractsManager!
             )
             const datasetId = await testKit.run()
             this.sharedData.datasetId = datasetId

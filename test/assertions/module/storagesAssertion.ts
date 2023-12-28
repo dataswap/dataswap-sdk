@@ -18,11 +18,11 @@
  *  limitations under the respective licenses.
  ********************************************************************************/
 
-import { IStoragesAssertion } from "../../interfaces/assertions/module/IStoragesAssertion";
-import { IContractsManager } from "../../interfaces/setup/IContractsManater";
-import { expect } from "chai";
-import { handleEvmError } from "../../shared/error";
-import { equal } from "@unipackage/utils";
+import { IStoragesAssertion } from "../../interfaces/assertions/module/IStoragesAssertion"
+import { IContractsManager } from "../../interfaces/setup/IContractsManater"
+import { expect } from "chai"
+import { handleEvmError } from "../../shared/error"
+import { equal } from "@unipackage/utils"
 import * as utils from "../../shared/utils"
 
 export class StoragesAssertion implements IStoragesAssertion {
@@ -37,9 +37,15 @@ export class StoragesAssertion implements IStoragesAssertion {
      * @param expectCarIds - Array of expected car IDs.
      * @returns A Promise indicating the assertion result.
      */
-    async getStoredCarsAssertion(matchingId: number, expectCarIds: number[]): Promise<void> {
-        let cars = await handleEvmError(this.contractsManager.StoragesEvm().getStoredCars(matchingId))
-        expect(equal(expectCarIds, utils.convertToNumberArray(cars.data))).to.be.true
+    async getStoredCarsAssertion(
+        matchingId: number,
+        expectCarIds: number[]
+    ): Promise<void> {
+        let cars = await handleEvmError(
+            this.contractsManager.StoragesEvm().getStoredCars(matchingId)
+        )
+        expect(equal(expectCarIds, utils.convertToNumberArray(cars.data))).to.be
+            .true
     }
 
     /**
@@ -48,8 +54,13 @@ export class StoragesAssertion implements IStoragesAssertion {
      * @param expectCarCount - Expected count of stored cars.
      * @returns A Promise indicating the assertion result.
      */
-    async getStoredCarCountAssertion(matchingId: number, expectCarCount: number): Promise<void> {
-        let carCount = await handleEvmError(this.contractsManager.StoragesEvm().getStoredCarCount(matchingId))
+    async getStoredCarCountAssertion(
+        matchingId: number,
+        expectCarCount: number
+    ): Promise<void> {
+        let carCount = await handleEvmError(
+            this.contractsManager.StoragesEvm().getStoredCarCount(matchingId)
+        )
         expect(expectCarCount).to.be.equal(Number(carCount.data))
     }
 
@@ -59,8 +70,13 @@ export class StoragesAssertion implements IStoragesAssertion {
      * @param expectSize - Expected total stored size.
      * @returns A Promise indicating the assertion result.
      */
-    async getTotalStoredSizeAssertion(matchingId: number, expectSize: number): Promise<void> {
-        let storedSize = await handleEvmError(this.contractsManager.StoragesEvm().getTotalStoredSize(matchingId))
+    async getTotalStoredSizeAssertion(
+        matchingId: number,
+        expectSize: number
+    ): Promise<void> {
+        let storedSize = await handleEvmError(
+            this.contractsManager.StoragesEvm().getTotalStoredSize(matchingId)
+        )
         expect(expectSize).to.be.equal(Number(storedSize.data))
     }
 
@@ -71,8 +87,14 @@ export class StoragesAssertion implements IStoragesAssertion {
      * @param expectSize - Expected size of the car.
      * @returns A Promise indicating the assertion result.
      */
-    async getStoredCarSizeAssertion(matchingId: number, id: number, expectSize: number): Promise<void> {
-        let storedCarSize = await handleEvmError(this.contractsManager.StoragesEvm().getStoredCarSize(matchingId, id))
+    async getStoredCarSizeAssertion(
+        matchingId: number,
+        id: number,
+        expectSize: number
+    ): Promise<void> {
+        let storedCarSize = await handleEvmError(
+            this.contractsManager.StoragesEvm().getStoredCarSize(matchingId, id)
+        )
         expect(expectSize).to.be.equal(Number(storedCarSize.data))
     }
 
@@ -82,8 +104,15 @@ export class StoragesAssertion implements IStoragesAssertion {
      * @param expectLockPayment - Expected lock payment for the provider.
      * @returns A Promise indicating the assertion result.
      */
-    async getProviderLockPaymentAssertion(matchingId: number, expectLockPayment: bigint): Promise<void> {
-        let lockPayment = await handleEvmError(this.contractsManager.StoragesEvm().getProviderLockPayment(matchingId))
+    async getProviderLockPaymentAssertion(
+        matchingId: number,
+        expectLockPayment: bigint
+    ): Promise<void> {
+        let lockPayment = await handleEvmError(
+            this.contractsManager
+                .StoragesEvm()
+                .getProviderLockPayment(matchingId)
+        )
         expect(expectLockPayment).to.be.equal(BigInt(lockPayment.data))
     }
 
@@ -93,8 +122,13 @@ export class StoragesAssertion implements IStoragesAssertion {
      * @param expectLockPayment - Expected lock payment for the client.
      * @returns A Promise indicating the assertion result.
      */
-    async getClientLockPaymentAssertion(matchingId: number, expectLockPayment: bigint): Promise<void> {
-        let lockPayment = await handleEvmError(this.contractsManager.StoragesEvm().getClientLockPayment(matchingId))
+    async getClientLockPaymentAssertion(
+        matchingId: number,
+        expectLockPayment: bigint
+    ): Promise<void> {
+        let lockPayment = await handleEvmError(
+            this.contractsManager.StoragesEvm().getClientLockPayment(matchingId)
+        )
         expect(expectLockPayment).to.be.equal(BigInt(lockPayment.data))
     }
 
@@ -104,8 +138,13 @@ export class StoragesAssertion implements IStoragesAssertion {
      * @param expectRet - Expected boolean indicating if all storage operations are done.
      * @returns A Promise indicating the assertion result.
      */
-    async isAllStoredDoneAssertion(matchingId: number, expectRet: boolean): Promise<void> {
-        let ret = await handleEvmError(this.contractsManager.StoragesEvm().isAllStoredDone(matchingId))
+    async isAllStoredDoneAssertion(
+        matchingId: number,
+        expectRet: boolean
+    ): Promise<void> {
+        let ret = await handleEvmError(
+            this.contractsManager.StoragesEvm().isAllStoredDone(matchingId)
+        )
         expect(expectRet).to.be.equal(ret.data)
     }
 
@@ -115,8 +154,13 @@ export class StoragesAssertion implements IStoragesAssertion {
      * @param expectRet - Expected boolean indicating if storage expiration is set.
      * @returns A Promise indicating the assertion result.
      */
-    async isStorageExpirationAssertion(matchingId: number, expectRet: boolean): Promise<void> {
-        let ret = await handleEvmError(this.contractsManager.StoragesEvm().isStorageExpiration(matchingId))
+    async isStorageExpirationAssertion(
+        matchingId: number,
+        expectRet: boolean
+    ): Promise<void> {
+        let ret = await handleEvmError(
+            this.contractsManager.StoragesEvm().isStorageExpiration(matchingId)
+        )
         expect(expectRet).to.be.equal(ret.data)
     }
 
@@ -137,26 +181,38 @@ export class StoragesAssertion implements IStoragesAssertion {
         claimIds: number[]
     ): Promise<void> {
         this.contractsManager.StoragesEvm().getWallet().setDefault(caller)
-        let count = await handleEvmError(this.contractsManager.StoragesEvm().getStoredCarCount(matchingId))
-        let totalSize = await handleEvmError(this.contractsManager.StoragesEvm().getTotalStoredSize(matchingId))
+        let count = await handleEvmError(
+            this.contractsManager.StoragesEvm().getStoredCarCount(matchingId)
+        )
+        let totalSize = await handleEvmError(
+            this.contractsManager.StoragesEvm().getTotalStoredSize(matchingId)
+        )
 
-        await handleEvmError(this.contractsManager.StoragesEvm().submitStorageClaimIds(
+        await handleEvmError(
+            this.contractsManager
+                .StoragesEvm()
+                .submitStorageClaimIds(matchingId, provider, ids, claimIds)
+        )
+        await this.getStoredCarsAssertion(matchingId, ids)
+        await this.getStoredCarCountAssertion(
             matchingId,
-            provider,
-            ids,
-            claimIds
-        ))
-        await this.getStoredCarsAssertion(matchingId, ids)
-        await this.getStoredCarCountAssertion(matchingId, Number(count.data) + ids.length)
+            Number(count.data) + ids.length
+        )
         await this.getStoredCarsAssertion(matchingId, ids)
 
-        let inputCarsTotalSize = 0;
+        let inputCarsTotalSize = 0
         for (let i = 0; i < ids.length; i++) {
-            const carSize = await handleEvmError(this.contractsManager.StoragesEvm().getStoredCarSize(matchingId, ids[i]))
+            const carSize = await handleEvmError(
+                this.contractsManager
+                    .StoragesEvm()
+                    .getStoredCarSize(matchingId, ids[i])
+            )
             inputCarsTotalSize += carSize
         }
 
-        await this.getTotalStoredSizeAssertion(matchingId, Number(totalSize.data) + inputCarsTotalSize)
+        await this.getTotalStoredSizeAssertion(
+            matchingId,
+            Number(totalSize.data) + inputCarsTotalSize
+        )
     }
-
 }

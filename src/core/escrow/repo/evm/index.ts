@@ -22,7 +22,7 @@ import {
     withCallMethod,
     withSendMethod,
     EvmOutput,
-    EvmTransactionOptions
+    EvmTransactionOptions,
 } from "@unipackage/net"
 import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
 import { DataswapMessage } from "../../../../message/types"
@@ -41,18 +41,19 @@ interface EscrowCallEvm {
      * @notice Get owner fund.
      * @param type The Escrow type for the credited funds.
      * @param owner The destination address for the credited funds.
-     * @param id The business id associated with the credited funds. 
+     * @param id The business id associated with the credited funds.
      */
     getOwnerFund(
         type: EscrowType,
         owner: string,
-        id: number): Promise<EvmOutput<Fund>>
+        id: number
+    ): Promise<EvmOutput<Fund>>
 
     /**
      * @notice Get beneficiariesList.
      * @param type The Escrow type for the credited funds.
      * @param owner The destination address for the credited funds.
-     * @param id The business id associated with the credited funds. 
+     * @param id The business id associated with the credited funds.
      */
     getBeneficiariesList(
         type: EscrowType,
@@ -64,7 +65,7 @@ interface EscrowCallEvm {
      * @notice Get beneficiary fund.
      * @param type The Escrow type for the credited funds.
      * @param owner The destination address for the credited funds.
-     * @param id The business id associated with the credited funds. 
+     * @param id The business id associated with the credited funds.
      * @param beneficiary The beneficiary address for the payment credited funds.
      */
     getBeneficiaryFund(
@@ -214,43 +215,36 @@ interface EscrowSendEvm {
 /**
  * Combined interface for EVM calls and transactions related to Escrow.
  */
-export interface EscrowOriginEvm
-    extends EscrowCallEvm,
-    EscrowSendEvm { }
+export interface EscrowOriginEvm extends EscrowCallEvm, EscrowSendEvm {}
 
 /**
  * Implementation of EscrowOriginEvm with specific EVM methods.
  */
-@withCallMethod(
-    [
-        "datasetsProof",
-        "storages",
-        "datacaps",
-        "getOwnerFund",
-        "getBeneficiariesList",
-        "getBeneficiaryFund"
-    ]
-)
-@withSendMethod(
-    [
-        "initDependencies",
-        "collateral",
-        "collateralRedeem",
-        "withdraw",
-        "payment",
-        "paymentSingleBeneficiary",
-        "paymentWithdraw",
-        "paymentTransfer",
-        "paymentRefund"
-    ]
-)
-export class EscrowOriginEvm extends EvmEx { }
+@withCallMethod([
+    "datasetsProof",
+    "storages",
+    "datacaps",
+    "getOwnerFund",
+    "getBeneficiariesList",
+    "getBeneficiaryFund",
+])
+@withSendMethod([
+    "initDependencies",
+    "collateral",
+    "collateralRedeem",
+    "withdraw",
+    "payment",
+    "paymentSingleBeneficiary",
+    "paymentWithdraw",
+    "paymentTransfer",
+    "paymentRefund",
+])
+export class EscrowOriginEvm extends EvmEx {}
 
 /**
  * Extended class for EscrowOriginEvm with additional message decoding.
  */
 export class EscrowEvm extends EscrowOriginEvm {
-
     /**
      * Decode a DataswapMessage from an EVM message.
      *

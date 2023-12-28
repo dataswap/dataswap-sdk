@@ -46,9 +46,17 @@ export class FilplusAssertion implements IFilplusAssertion {
      * @param {number} expectCount - The expected maximum replicas count.
      * @returns {Promise<void>}
      */
-    async getDatasetRuleMaxReplicasInCountryAssertion(countryCode: number, expectCount: number): Promise<void> {
-        let count = await handleEvmError(this.filplus.getDatasetRuleMaxReplicasInCountry(countryCode))
-        assert.isTrue(equal(expectCount, count.data), "Dataset rule max replicas in country should be expect count")
+    async getDatasetRuleMaxReplicasInCountryAssertion(
+        countryCode: number,
+        expectCount: number
+    ): Promise<void> {
+        let count = await handleEvmError(
+            this.filplus.getDatasetRuleMaxReplicasInCountry(countryCode)
+        )
+        assert.isTrue(
+            equal(expectCount, count.data),
+            "Dataset rule max replicas in country should be expect count"
+        )
     }
 
     /**
@@ -56,9 +64,16 @@ export class FilplusAssertion implements IFilplusAssertion {
      * @param {number} expectCount - The expected minimum regions count.
      * @returns {Promise<void>}
      */
-    async datasetRuleMinRegionsPerDatasetAssertion(expectCount: number): Promise<void> {
-        let count = await handleEvmError(this.filplus.datasetRuleMinRegionsPerDataset())
-        assert.isTrue(equal(expectCount, count.data), "Dataset rule min regions per dataset should be expect count")
+    async datasetRuleMinRegionsPerDatasetAssertion(
+        expectCount: number
+    ): Promise<void> {
+        let count = await handleEvmError(
+            this.filplus.datasetRuleMinRegionsPerDataset()
+        )
+        assert.isTrue(
+            equal(expectCount, count.data),
+            "Dataset rule min regions per dataset should be expect count"
+        )
     }
 
     /**
@@ -66,9 +81,16 @@ export class FilplusAssertion implements IFilplusAssertion {
      * @param {number} expectCount - The expected default maximum replicas count.
      * @returns {Promise<void>}
      */
-    async datasetRuleDefaultMaxReplicasPerCountryAssertion(expectCount: number): Promise<void> {
-        let count = await handleEvmError(this.filplus.datasetRuleDefaultMaxReplicasPerCountry())
-        assert.isTrue(equal(expectCount, count.data), "Dataset rule default max replicas per country should be expect count")
+    async datasetRuleDefaultMaxReplicasPerCountryAssertion(
+        expectCount: number
+    ): Promise<void> {
+        let count = await handleEvmError(
+            this.filplus.datasetRuleDefaultMaxReplicasPerCountry()
+        )
+        assert.isTrue(
+            equal(expectCount, count.data),
+            "Dataset rule default max replicas per country should be expect count"
+        )
     }
 
     /**
@@ -76,9 +98,16 @@ export class FilplusAssertion implements IFilplusAssertion {
      * @param {number} expectCount - The expected maximum replicas count.
      * @returns {Promise<void>}
      */
-    async datasetRuleMaxReplicasPerCityAssertion(expectCount: number): Promise<void> {
-        let count = await handleEvmError(this.filplus.datasetRuleMaxReplicasPerCity())
-        assert.isTrue(equal(expectCount, count.data), "Dataset rule max replicas per city should be expect count")
+    async datasetRuleMaxReplicasPerCityAssertion(
+        expectCount: number
+    ): Promise<void> {
+        let count = await handleEvmError(
+            this.filplus.datasetRuleMaxReplicasPerCity()
+        )
+        assert.isTrue(
+            equal(expectCount, count.data),
+            "Dataset rule max replicas per city should be expect count"
+        )
     }
 
     /**
@@ -86,9 +115,16 @@ export class FilplusAssertion implements IFilplusAssertion {
      * @param {number} expectProportion - The expected maximum proportion.
      * @returns {Promise<void>}
      */
-    async datasetRuleMaxProportionOfMappingFilesToDatasetAssertion(expectProportion: number): Promise<void> {
-        let count = await handleEvmError(this.filplus.datasetRuleMaxProportionOfMappingFilesToDataset())
-        assert.isTrue(equal(expectProportion, count.data), "Dataset rule max proportion of mappingFiles to dataset should be expect count")
+    async datasetRuleMaxProportionOfMappingFilesToDatasetAssertion(
+        expectProportion: number
+    ): Promise<void> {
+        let count = await handleEvmError(
+            this.filplus.datasetRuleMaxProportionOfMappingFilesToDataset()
+        )
+        assert.isTrue(
+            equal(expectProportion, count.data),
+            "Dataset rule max proportion of mappingFiles to dataset should be expect count"
+        )
     }
 
     /**
@@ -96,9 +132,16 @@ export class FilplusAssertion implements IFilplusAssertion {
      * @param {number} expectCount - The expected minimum SPs count.
      * @returns {Promise<void>}
      */
-    async datasetRuleMinSPsPerDatasetAssertion(expectCount: number): Promise<void> {
-        let count = await handleEvmError(this.filplus.datasetRuleMinSPsPerDataset())
-        assert.isTrue(equal(expectCount, count.data), "Dataset rule min SPs per dataset should be expect count")
+    async datasetRuleMinSPsPerDatasetAssertion(
+        expectCount: number
+    ): Promise<void> {
+        let count = await handleEvmError(
+            this.filplus.datasetRuleMinSPsPerDataset()
+        )
+        assert.isTrue(
+            equal(expectCount, count.data),
+            "Dataset rule min SPs per dataset should be expect count"
+        )
     }
 
     /**
@@ -106,9 +149,16 @@ export class FilplusAssertion implements IFilplusAssertion {
      * @param {number} expectCount - The expected maximum replicas count.
      * @returns {Promise<void>}
      */
-    async datasetRuleMaxReplicasPerSPAssertion(expectCount: number): Promise<void> {
-        let count = await handleEvmError(this.filplus.datasetRuleMaxReplicasPerSP())
-        assert.isTrue(equal(expectCount, count.data), "Dataset rule max replicas per SP should be expect count")
+    async datasetRuleMaxReplicasPerSPAssertion(
+        expectCount: number
+    ): Promise<void> {
+        let count = await handleEvmError(
+            this.filplus.datasetRuleMaxReplicasPerSP()
+        )
+        assert.isTrue(
+            equal(expectCount, count.data),
+            "Dataset rule max replicas per SP should be expect count"
+        )
     }
 
     /**
@@ -116,9 +166,16 @@ export class FilplusAssertion implements IFilplusAssertion {
      * @param {number} expectCount - The expected minimum total replicas count.
      * @returns {Promise<void>}
      */
-    async datasetRuleMinTotalReplicasPerDatasetAssertion(expectCount: number): Promise<void> {
-        let count = await handleEvmError(this.filplus.datasetRuleMinTotalReplicasPerDataset())
-        assert.isTrue(equal(expectCount, count.data), "Dataset rule min total replicas per dataset should be expect count")
+    async datasetRuleMinTotalReplicasPerDatasetAssertion(
+        expectCount: number
+    ): Promise<void> {
+        let count = await handleEvmError(
+            this.filplus.datasetRuleMinTotalReplicasPerDataset()
+        )
+        assert.isTrue(
+            equal(expectCount, count.data),
+            "Dataset rule min total replicas per dataset should be expect count"
+        )
     }
 
     /**
@@ -126,9 +183,16 @@ export class FilplusAssertion implements IFilplusAssertion {
      * @param {number} expectCount - The expected maximum total replicas count.
      * @returns {Promise<void>}
      */
-    async datasetRuleMaxTotalReplicasPerDatasetAssertion(expectCount: number): Promise<void> {
-        let count = await handleEvmError(this.filplus.datasetRuleMaxTotalReplicasPerDataset())
-        assert.isTrue(equal(expectCount, count.data), "Dataset rule max total replicas per dataset should be expect count")
+    async datasetRuleMaxTotalReplicasPerDatasetAssertion(
+        expectCount: number
+    ): Promise<void> {
+        let count = await handleEvmError(
+            this.filplus.datasetRuleMaxTotalReplicasPerDataset()
+        )
+        assert.isTrue(
+            equal(expectCount, count.data),
+            "Dataset rule max total replicas per dataset should be expect count"
+        )
     }
 
     /**
@@ -136,9 +200,16 @@ export class FilplusAssertion implements IFilplusAssertion {
      * @param {number} expectSize - The expected maximum allocated size.
      * @returns {Promise<void>}
      */
-    async datacapRulesMaxAllocatedSizePerTimeAssertion(expectSize: number): Promise<void> {
-        let count = await handleEvmError(this.filplus.datacapRulesMaxAllocatedSizePerTime())
-        assert.isTrue(equal(expectSize, count.data), "Dataset rule max allocated size per time should be expect count")
+    async datacapRulesMaxAllocatedSizePerTimeAssertion(
+        expectSize: number
+    ): Promise<void> {
+        let count = await handleEvmError(
+            this.filplus.datacapRulesMaxAllocatedSizePerTime()
+        )
+        assert.isTrue(
+            equal(expectSize, count.data),
+            "Dataset rule max allocated size per time should be expect count"
+        )
     }
 
     /**
@@ -146,9 +217,16 @@ export class FilplusAssertion implements IFilplusAssertion {
      * @param {number} expectPercentage - The expected maximum remaining percentage.
      * @returns {Promise<void>}
      */
-    async datacapRulesMaxRemainingPercentageForNextAssertion(expectPercentage: number): Promise<void> {
-        let count = await handleEvmError(this.filplus.datacapRulesMaxRemainingPercentageForNext())
-        assert.isTrue(equal(expectPercentage, count.data), "Dataset rule max remaining percentage for next should be expect count")
+    async datacapRulesMaxRemainingPercentageForNextAssertion(
+        expectPercentage: number
+    ): Promise<void> {
+        let count = await handleEvmError(
+            this.filplus.datacapRulesMaxRemainingPercentageForNext()
+        )
+        assert.isTrue(
+            equal(expectPercentage, count.data),
+            "Dataset rule max remaining percentage for next should be expect count"
+        )
     }
 
     /**
@@ -159,9 +237,19 @@ export class FilplusAssertion implements IFilplusAssertion {
      * @param {boolean} expectHas - The expected compliance status.
      * @returns {Promise<void>}
      */
-    async isCompliantRuleGeolocationAssertion(regions: number[], countrys: number[], citys: number[][], expectHas: boolean): Promise<void> {
-        let count = await handleEvmError(this.filplus.isCompliantRuleGeolocation(regions, countrys, citys))
-        assert.isTrue(equal(expectHas, count.data), "Is compliant rule geolocation should be expect")
+    async isCompliantRuleGeolocationAssertion(
+        regions: number[],
+        countrys: number[],
+        citys: number[][],
+        expectHas: boolean
+    ): Promise<void> {
+        let count = await handleEvmError(
+            this.filplus.isCompliantRuleGeolocation(regions, countrys, citys)
+        )
+        assert.isTrue(
+            equal(expectHas, count.data),
+            "Is compliant rule geolocation should be expect"
+        )
     }
 
     /**
@@ -171,9 +259,21 @@ export class FilplusAssertion implements IFilplusAssertion {
      * @param {boolean} expectHas - The expected compliance status.
      * @returns {Promise<void>}
      */
-    async isCompliantRuleMaxProportionOfMappingFilesToDatasetAssertion(mappingFilesSize: number, sourceSize: number, expectHas: boolean): Promise<void> {
-        let count = await handleEvmError(this.filplus.isCompliantRuleMaxProportionOfMappingFilesToDataset(mappingFilesSize, sourceSize))
-        assert.isTrue(equal(expectHas, count.data), "Is compliant rule max proportion of mappingFiles to dataset should be expect")
+    async isCompliantRuleMaxProportionOfMappingFilesToDatasetAssertion(
+        mappingFilesSize: number,
+        sourceSize: number,
+        expectHas: boolean
+    ): Promise<void> {
+        let count = await handleEvmError(
+            this.filplus.isCompliantRuleMaxProportionOfMappingFilesToDataset(
+                mappingFilesSize,
+                sourceSize
+            )
+        )
+        assert.isTrue(
+            equal(expectHas, count.data),
+            "Is compliant rule max proportion of mappingFiles to dataset should be expect"
+        )
     }
 
     /**
@@ -186,9 +286,27 @@ export class FilplusAssertion implements IFilplusAssertion {
      * @param {boolean} expectHas - The expected compliance status.
      * @returns {Promise<void>}
      */
-    async isCompliantRuleTotalReplicasPerDatasetAssertion(dataPreparers: string[][], storageProviders: string[][], regions: number[], countrys: number[], citys: number[][], expectHas: boolean): Promise<void> {
-        let count = await handleEvmError(this.filplus.isCompliantRuleTotalReplicasPerDataset(dataPreparers, storageProviders, regions, countrys, citys))
-        assert.isTrue(equal(expectHas, count.data), "Is compliant rule total replicas per dataset should be expect")
+    async isCompliantRuleTotalReplicasPerDatasetAssertion(
+        dataPreparers: string[][],
+        storageProviders: string[][],
+        regions: number[],
+        countrys: number[],
+        citys: number[][],
+        expectHas: boolean
+    ): Promise<void> {
+        let count = await handleEvmError(
+            this.filplus.isCompliantRuleTotalReplicasPerDataset(
+                dataPreparers,
+                storageProviders,
+                regions,
+                countrys,
+                citys
+            )
+        )
+        assert.isTrue(
+            equal(expectHas, count.data),
+            "Is compliant rule total replicas per dataset should be expect"
+        )
     }
 
     /**
@@ -199,9 +317,23 @@ export class FilplusAssertion implements IFilplusAssertion {
      * @param {boolean} expectHas - The expected compliance status.
      * @returns {Promise<void>}
      */
-    async isCompliantRuleMinSPsPerDatasetAssertion(requirementValue: number, totalExists: number, uniqueExists: number, expectHas: boolean): Promise<void> {
-        let count = await handleEvmError(this.filplus.isCompliantRuleMinSPsPerDataset(requirementValue, totalExists, uniqueExists))
-        assert.isTrue(equal(expectHas, count.data), "Is compliant rule min SPs per dataset should be expect")
+    async isCompliantRuleMinSPsPerDatasetAssertion(
+        requirementValue: number,
+        totalExists: number,
+        uniqueExists: number,
+        expectHas: boolean
+    ): Promise<void> {
+        let count = await handleEvmError(
+            this.filplus.isCompliantRuleMinSPsPerDataset(
+                requirementValue,
+                totalExists,
+                uniqueExists
+            )
+        )
+        assert.isTrue(
+            equal(expectHas, count.data),
+            "Is compliant rule min SPs per dataset should be expect"
+        )
     }
 
     /**
@@ -210,9 +342,17 @@ export class FilplusAssertion implements IFilplusAssertion {
      * @param {boolean} expectHas - The expected compliance status.
      * @returns {Promise<void>}
      */
-    async isCompliantRuleMaxReplicasPerSPAssertion(value: number, expectHas: boolean): Promise<void> {
-        let count = await handleEvmError(this.filplus.isCompliantRuleMaxReplicasPerSP(value))
-        assert.isTrue(equal(expectHas, count.data), "Is compliant rule max replicas per SP should be expect")
+    async isCompliantRuleMaxReplicasPerSPAssertion(
+        value: number,
+        expectHas: boolean
+    ): Promise<void> {
+        let count = await handleEvmError(
+            this.filplus.isCompliantRuleMaxReplicasPerSP(value)
+        )
+        assert.isTrue(
+            equal(expectHas, count.data),
+            "Is compliant rule max replicas per SP should be expect"
+        )
     }
 
     /**
@@ -220,8 +360,12 @@ export class FilplusAssertion implements IFilplusAssertion {
      * @param {number} newValue - The new minimum regions count.
      * @returns {Promise<void>}
      */
-    async setDatasetRuleMinRegionsPerDatasetAssertion(newValue: number): Promise<void> {
-        await handleEvmError(this.filplus.setDatasetRuleMinRegionsPerDataset(newValue))
+    async setDatasetRuleMinRegionsPerDatasetAssertion(
+        newValue: number
+    ): Promise<void> {
+        await handleEvmError(
+            this.filplus.setDatasetRuleMinRegionsPerDataset(newValue)
+        )
         this.datasetRuleMinRegionsPerDatasetAssertion(newValue)
     }
 
@@ -230,8 +374,12 @@ export class FilplusAssertion implements IFilplusAssertion {
      * @param {number} newValue - The new default maximum replicas count.
      * @returns {Promise<void>}
      */
-    async setDatasetRuleDefaultMaxReplicasPerCountryAssertion(newValue: number): Promise<void> {
-        await handleEvmError(this.filplus.setDatasetRuleDefaultMaxReplicasPerCountry(newValue))
+    async setDatasetRuleDefaultMaxReplicasPerCountryAssertion(
+        newValue: number
+    ): Promise<void> {
+        await handleEvmError(
+            this.filplus.setDatasetRuleDefaultMaxReplicasPerCountry(newValue)
+        )
         this.datasetRuleDefaultMaxReplicasPerCountryAssertion(newValue)
     }
 
@@ -241,8 +389,16 @@ export class FilplusAssertion implements IFilplusAssertion {
      * @param {number} newValue - The new maximum replicas count.
      * @returns {Promise<void>}
      */
-    async setDatasetRuleMaxReplicasInCountryAssertion(countryCode: number, newValue: number): Promise<void> {
-        await handleEvmError(this.filplus.setDatasetRuleMaxReplicasInCountry(countryCode, newValue))
+    async setDatasetRuleMaxReplicasInCountryAssertion(
+        countryCode: number,
+        newValue: number
+    ): Promise<void> {
+        await handleEvmError(
+            this.filplus.setDatasetRuleMaxReplicasInCountry(
+                countryCode,
+                newValue
+            )
+        )
         this.getDatasetRuleMaxReplicasInCountryAssertion(countryCode, newValue)
     }
 
@@ -251,8 +407,12 @@ export class FilplusAssertion implements IFilplusAssertion {
      * @param {number} newValue - The new maximum replicas count.
      * @returns {Promise<void>}
      */
-    async setDatasetRuleMaxReplicasPerCityAssertion(newValue: number): Promise<void> {
-        await handleEvmError(this.filplus.setDatasetRuleMaxReplicasPerCity(newValue))
+    async setDatasetRuleMaxReplicasPerCityAssertion(
+        newValue: number
+    ): Promise<void> {
+        await handleEvmError(
+            this.filplus.setDatasetRuleMaxReplicasPerCity(newValue)
+        )
         this.datasetRuleMaxReplicasPerCityAssertion(newValue)
     }
 
@@ -261,8 +421,14 @@ export class FilplusAssertion implements IFilplusAssertion {
      * @param {number} newValue - The new maximum proportion.
      * @returns {Promise<void>}
      */
-    async setDatasetRuleMaxProportionOfMappingFilesToDatasetAssertion(newValue: number): Promise<void> {
-        await handleEvmError(this.filplus.setDatasetRuleMaxProportionOfMappingFilesToDataset(newValue))
+    async setDatasetRuleMaxProportionOfMappingFilesToDatasetAssertion(
+        newValue: number
+    ): Promise<void> {
+        await handleEvmError(
+            this.filplus.setDatasetRuleMaxProportionOfMappingFilesToDataset(
+                newValue
+            )
+        )
         this.datasetRuleMaxProportionOfMappingFilesToDatasetAssertion(newValue)
     }
 
@@ -271,8 +437,12 @@ export class FilplusAssertion implements IFilplusAssertion {
      * @param {number} newValue - The new minimum SPs count.
      * @returns {Promise<void>}
      */
-    async setDatasetRuleMinSPsPerDatasetAssertion(newValue: number): Promise<void> {
-        await handleEvmError(this.filplus.setDatasetRuleMinSPsPerDataset(newValue))
+    async setDatasetRuleMinSPsPerDatasetAssertion(
+        newValue: number
+    ): Promise<void> {
+        await handleEvmError(
+            this.filplus.setDatasetRuleMinSPsPerDataset(newValue)
+        )
         this.datasetRuleMinSPsPerDatasetAssertion(newValue)
     }
 
@@ -281,8 +451,12 @@ export class FilplusAssertion implements IFilplusAssertion {
      * @param {number} newValue - The new maximum replicas count.
      * @returns {Promise<void>}
      */
-    async setDatasetRuleMaxReplicasPerSPAssertion(newValue: number): Promise<void> {
-        await handleEvmError(this.filplus.setDatasetRuleMaxReplicasPerSP(newValue))
+    async setDatasetRuleMaxReplicasPerSPAssertion(
+        newValue: number
+    ): Promise<void> {
+        await handleEvmError(
+            this.filplus.setDatasetRuleMaxReplicasPerSP(newValue)
+        )
         this.datasetRuleMaxReplicasPerSPAssertion(newValue)
     }
 
@@ -291,8 +465,12 @@ export class FilplusAssertion implements IFilplusAssertion {
      * @param {number} newValue - The new minimum total replicas count.
      * @returns {Promise<void>}
      */
-    async setDatasetRuleMinTotalReplicasPerDatasetAssertion(newValue: number): Promise<void> {
-        await handleEvmError(this.filplus.setDatasetRuleMinTotalReplicasPerDataset(newValue))
+    async setDatasetRuleMinTotalReplicasPerDatasetAssertion(
+        newValue: number
+    ): Promise<void> {
+        await handleEvmError(
+            this.filplus.setDatasetRuleMinTotalReplicasPerDataset(newValue)
+        )
         this.datasetRuleMinTotalReplicasPerDatasetAssertion(newValue)
     }
 
@@ -301,8 +479,12 @@ export class FilplusAssertion implements IFilplusAssertion {
      * @param {number} newValue - The new maximum total replicas count.
      * @returns {Promise<void>}
      */
-    async setDatasetRuleMaxTotalReplicasPerDatasetAssertion(newValue: number): Promise<void> {
-        await handleEvmError(this.filplus.setDatasetRuleMaxTotalReplicasPerDataset(newValue))
+    async setDatasetRuleMaxTotalReplicasPerDatasetAssertion(
+        newValue: number
+    ): Promise<void> {
+        await handleEvmError(
+            this.filplus.setDatasetRuleMaxTotalReplicasPerDataset(newValue)
+        )
         this.datasetRuleMaxTotalReplicasPerDatasetAssertion(newValue)
     }
 
@@ -311,8 +493,12 @@ export class FilplusAssertion implements IFilplusAssertion {
      * @param {number} newValue - The new maximum allocated size.
      * @returns {Promise<void>}
      */
-    async setDatacapRulesMaxAllocatedSizePerTimeAssertion(newValue: number): Promise<void> {
-        await handleEvmError(this.filplus.setDatacapRulesMaxAllocatedSizePerTime(newValue))
+    async setDatacapRulesMaxAllocatedSizePerTimeAssertion(
+        newValue: number
+    ): Promise<void> {
+        await handleEvmError(
+            this.filplus.setDatacapRulesMaxAllocatedSizePerTime(newValue)
+        )
         this.datacapRulesMaxAllocatedSizePerTimeAssertion(newValue)
     }
 
@@ -321,8 +507,12 @@ export class FilplusAssertion implements IFilplusAssertion {
      * @param {number} newValue - The new maximum remaining percentage.
      * @returns {Promise<void>}
      */
-    async setDatacapRulesMaxRemainingPercentageForNextAssertion(newValue: number): Promise<void> {
-        await handleEvmError(this.filplus.setDatacapRulesMaxRemainingPercentageForNext(newValue))
+    async setDatacapRulesMaxRemainingPercentageForNextAssertion(
+        newValue: number
+    ): Promise<void> {
+        await handleEvmError(
+            this.filplus.setDatacapRulesMaxRemainingPercentageForNext(newValue)
+        )
         this.datacapRulesMaxRemainingPercentageForNextAssertion(newValue)
     }
 }
