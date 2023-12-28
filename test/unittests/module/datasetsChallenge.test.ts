@@ -19,6 +19,7 @@
  ********************************************************************************/
 import { getContractsManager, getGenerator, getDatasetsHelper } from "../../fixtures"
 import { DatasetsAssertion } from "../../assertions/module/datasetsAssertion"
+import { ApproveDatasetTestKit } from "../../testkits/module/datasets/DatasetsMetadataTestKit"
 
 /**
  * Test suite for the datasets challenge functionality.
@@ -29,7 +30,6 @@ describe("datasetsChallenge", async () => {
      */
     before(function () {
         this.sharedData = {}
-        this.sharedData.datasetId = 0
         this.sharedData.generator = getGenerator()
         this.sharedData.contractsManager = getContractsManager()
         this.sharedData.datasetHelper = getDatasetsHelper()
@@ -38,4 +38,17 @@ describe("datasetsChallenge", async () => {
         )
     })
 
+    /**
+     * Tests submit chanllenge proof of dataset.
+     * This test case has already been covered in the 'approveDataset' test. Skipping it here.
+     */
+    it.skip("submitChallengeProof", async function () {
+        let testKit = new ApproveDatasetTestKit(
+            this.sharedData.datasetsAssertion!,
+            this.sharedData.generator!,
+            this.sharedData.contractsManager!,
+            getDatasetsHelper()
+        )
+        await testKit.run()
+    })
 })

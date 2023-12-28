@@ -38,7 +38,7 @@ export abstract class TestBase {
      */
     private async before(id?: number, ...args: any[]): Promise<number> {
         try {
-            if (!id) {
+            if (!id || id === 0) {
                 return await this.optionalBefore(...args)
             }
             return id

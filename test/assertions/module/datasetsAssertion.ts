@@ -677,8 +677,11 @@ export class DatasetsAssertion implements IDatasetsAssertion {
             datasetId,
             auditor
         ))
+        //TODO: https://github.com/dataswap/dataswapjs/issues/68
+        console.log("gets:")
+        console.log("expects:", expects)
         expect(equal(expects.leaves, challengeProof.data.leaves)).to.be.true
-        expect(equal(expects.paths, challengeProof.data.paths)).to.be.true
+        expect(equal(expects.paths, utils.convertToNumberArray(challengeProof.data.paths))).to.be.true
         expect(equal(expects.siblings, challengeProof.data.siblings)).to.be.true
     }
 
@@ -759,6 +762,30 @@ export class DatasetsAssertion implements IDatasetsAssertion {
                 privateKey: process.env.PRIVATE_KEY_DATASETAUDITOR as string
             }
         ))
+        //TODO: https://github.com/dataswap/dataswapjs/issues/68 
+        //await this.getDatasetChallengeProofsAssertion(
+        //    datasetId,
+        //    caller,
+        //    new DatasetChallenge({
+        //        leaves: leaves,
+        //        siblings: siblings,
+        //        paths: paths
+        //    })
+        //)
+
         await this.getDatasetChallengeProofsCountAssertion(datasetId, Number(count.data) + 1)
+        await this.isDatasetChallengeProofDuplicateAssertion(datasetId, caller, randomSeed, true)
+
+        let expectSubmissionCount: number
+        const carsCount = await handleEvmError(this.contractsManager.DatasetProofEvm().getDatasetProofCount(
+            datasetId,
+            DataType.Source
+        ))
+        if (Number(carsCount.data) < 1000) {
+            expectSubmissionCount = 1
+        } else {
+            expectSubmissionCount = carsCount / 1000 + 1
+        }
+        await this.getChallengeSubmissionCountAssertion(datasetId, expectSubmissionCount)
     }
 }
