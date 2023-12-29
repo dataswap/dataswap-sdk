@@ -268,6 +268,15 @@ export class EscrowEvm extends EscrowOriginEvm {
             case "paymentWithdraw":
             case "paymentTransfer":
             case "paymentRefund":
+                if (
+                    result.params.type == EscrowType.DatacapChunkCollateral ||
+                    result.params.type == EscrowType.DataPrepareFeeByClient ||
+                    result.params.type == EscrowType.DataPrepareFeeByProvider
+                ) {
+                    result.matchingId = Number(result.params.id)
+                } else {
+                    result.datasetId = Number(result.params.id)
+                }
                 break
             default:
                 return {

@@ -22,14 +22,14 @@
  * Enum representing the types of escrow, including collateral, fees, and other related operations.
  */
 export enum EscrowType {
-    DatacapCollateral, // The storage client collateral.
-    DatacapChunkCollateral, // The storage provider collateral.
-    DataAuditCollateral, // The dataset auditor collateral, for dispute
-    DataPrepareCollateral, // The data preparer collateral,for dispute
-    DatasetAuditFee, // The dataset auditor calculate fees.
-    TotalDataPrepareFeeByClient, // The data preparer calculate fees of dataset paid by storage client.
-    DataPrepareFeeByClient, // The data preparer calculate fees of matching paid by storage client.
-    DataPrepareFeeByProvider, // The data preparer calculate fees paid by storage provider.
+    DatacapCollateral, // The storage client collateral. index = datasetId
+    DatacapChunkCollateral, // The storage provider collateral. index = matchingId
+    DataAuditCollateral, // The dataset auditor collateral, for dispute. index = datasetId
+    DataPrepareCollateral, // The data preparer collateral,for dispute. index = datasetId
+    DatasetAuditFee, // The dataset auditor calculate fees. index = datasetId
+    TotalDataPrepareFeeByClient, // The data preparer calculate fees of dataset paid by storage client. index = datasetId
+    DataPrepareFeeByClient, // The data preparer calculate fees of matching paid by storage client. index = matchingId
+    DataPrepareFeeByProvider, // The data preparer calculate fees paid by storage provider. index = matchingId
 }
 
 /**
