@@ -269,7 +269,7 @@ export class Generator implements IGenerator {
         root: string,
         leafHashes: string[],
         leafSizes: number[],
-        mappingFilesAccessMethod: string
+        mappingFilesAccessMethod: string,
     ] {
         const isFakeData = fakedata !== undefined ? fakedata : false
 
@@ -340,7 +340,7 @@ export class Generator implements IGenerator {
         randomSeed: number,
         leaves: string[],
         siblings: string[][],
-        paths: number[]
+        paths: number[],
     ] {
         //TODO :Need to automatically generate verifiable challenge proofs.
         return [
@@ -376,9 +376,9 @@ export class Generator implements IGenerator {
      */
     generatorMatchingInfo(datasetId: number, index: number): MatchingMetadata {
         return new MatchingMetadata({
-            bidSelectionRule: BidSelectionRule.ImmediateAtMost,
+            bidSelectionRule: BidSelectionRule.HighestBid,
             biddingDelayBlockCount: 30,
-            biddingPeriodBlockCount: 1000,
+            biddingPeriodBlockCount: 20,
             storageCompletionPeriodBlocks: 100000,
             biddingThreshold: BigInt(1000000000),
             createdBlockNumber: 0,

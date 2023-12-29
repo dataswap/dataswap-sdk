@@ -25,103 +25,12 @@ import { IGenerator } from "../../../interfaces/setup/IGenerator"
 import { handleEvmError } from "../../../shared/error"
 import { DataType } from "../../../../src/shared/types/dataType"
 import { MatchingState } from "../../../../src/module/matching/metadata/types"
-import { DatasetState } from "../../../../src/shared/types/datasetType"
 
 /**
- * Represents a test kit for create matching metadata.
+ * Represents a test kit for cancel matching.
  * Extends from MatchingsTestBase.
  */
-export class CreateMatchingsMetadataTestKit extends MatchingsTestBase {
-    /**
-     * Constructor for MatchingsTestBase.
-     * @param _assertion - The assertion instance.
-     * @param _generator - The generator instance.
-     * @param _contractsManager - The contracts manager instance.
-     * @param _matchingsHelper - The matchings helper instance.
-     */
-    constructor(
-        _assertion: IMatchingsAssertion,
-        _generator: IGenerator,
-        _contractsManager: IContractsManager,
-        _matchingsHelper: IMatchingsHelper
-    ) {
-        super(_assertion, _generator, _contractsManager, _matchingsHelper)
-    }
-
-    /**
-     * Optional function executed before the action.
-     * @returns Promise resolving to a number.
-     */
-    async optionalBefore(): Promise<number> {
-        try {
-            const datasetId = this.matchingsHelper
-                .getDatasetsHelper()
-                .getWorkflowTargetId(DatasetState.DatasetApproved)
-            if (datasetId != 0) {
-                return 0
-            }
-            await this.matchingsHelper
-                .getDatasetsHelper()
-                .approvedDatasetWorkflow()
-            return 0
-        } catch (error) {
-            throw error
-        }
-    }
-
-    /**
-     * Action function to execute the create matching.
-     * @returns Promise resolving to a number.
-     */
-    async action(_: number): Promise<number> {
-        try {
-            const datasetId = this.matchingsHelper
-                .getDatasetsHelper()
-                .getWorkflowTargetId(DatasetState.DatasetApproved)
-            const datasetState = await handleEvmError(
-                this.contractsManager
-                    .DatasetMetadataEvm()
-                    .getDatasetState(datasetId)
-            )
-            if (
-                Number(datasetState.data) ==
-                Number(DatasetState.DatasetApproved)
-            ) {
-                this.matchingsHelper
-                    .getDatasetsHelper()
-                    .updateWorkflowTargetState(
-                        datasetId,
-                        DatasetState.DatasetApproved
-                    )
-            }
-
-            const replicaIndex = 0
-            const matchingMetadata = this.generator.generatorMatchingInfo(
-                datasetId,
-                replicaIndex
-            )
-            // Creating a new matching
-            const matchingId = await this.assertion.createMatchingAssertion(
-                process.env.DATASWAP_PROOFSUBMITTER as string,
-                datasetId,
-                replicaIndex,
-                matchingMetadata
-            )
-
-            this.matchingsHelper.setTargetDatasetId(matchingId, datasetId)
-
-            return matchingId
-        } catch (error) {
-            throw error
-        }
-    }
-}
-
-/**
- * Represents a test kit for pause matching.
- * Extends from MatchingsTestBase.
- */
-export class PauseMatchingTestKit extends MatchingsTestBase {
+export class CancelMatchingTestKit extends MatchingsTestBase {
     /**
      * Constructor for MatchingsTestBase.
      * @param _assertion - The assertion instance.
@@ -150,13 +59,8 @@ export class PauseMatchingTestKit extends MatchingsTestBase {
             if (matchingId != 0) {
                 return matchingId
             }
-
-            const datasetId = this.matchingsHelper
-                .getDatasetsHelper()
-                .getWorkflowTargetId(DatasetState.DatasetApproved)
             return await this.matchingsHelper.inProgressMatchingWorkflow(
-                DataType.MappingFiles,
-                datasetId
+                DataType.MappingFiles
             )
         } catch (error) {
             throw error
@@ -164,21 +68,20 @@ export class PauseMatchingTestKit extends MatchingsTestBase {
     }
 
     /**
-     * Action function to execute the create matching.
+     * Action function to execute the cancel matching.
      * @param matchingId - The matchingId.
      * @returns Promise resolving to a number.
      */
     async action(matchingId: number): Promise<number> {
         try {
-            await this.assertion.pauseMatchingAssertion(
+            await this.assertion.cancelMatchingAssertion(
                 process.env.DATASWAP_PROOFSUBMITTER as string,
                 matchingId,
-                MatchingState.Paused
+                MatchingState.Cancelled
             )
-
             this.matchingsHelper.updateWorkflowTargetState(
                 matchingId,
-                MatchingState.Paused
+                MatchingState.Cancelled
             )
             return matchingId
         } catch (error) {
@@ -188,11 +91,10 @@ export class PauseMatchingTestKit extends MatchingsTestBase {
 }
 
 /**
- * Represents a test kit for resume matching.
+ * Represents a test kit for bidding matching.
  * Extends from MatchingsTestBase.
  */
-export class ResumeMatchingTestKit extends MatchingsTestBase {
-    private dependentTestKit: PauseMatchingTestKit
+export class BiddingMatchingTestKit extends MatchingsTestBase {
     /**
      * Constructor for MatchingsTestBase.
      * @param _assertion - The assertion instance.
@@ -207,7 +109,85 @@ export class ResumeMatchingTestKit extends MatchingsTestBase {
         _matchingsHelper: IMatchingsHelper
     ) {
         super(_assertion, _generator, _contractsManager, _matchingsHelper)
-        this.dependentTestKit = new PauseMatchingTestKit(
+    }
+
+    /**
+     * Optional function executed before the action.
+     * @returns Promise resolving to a number.
+     */
+    async optionalBefore(): Promise<number> {
+        try {
+            const matchingId = this.matchingsHelper.getWorkflowTargetId(
+                MatchingState.InProgress
+            )
+            if (matchingId != 0) {
+                return matchingId
+            }
+            return await this.matchingsHelper.inProgressMatchingWorkflow(
+                DataType.MappingFiles
+            )
+        } catch (error) {
+            throw error
+        }
+    }
+
+    /**
+     * Action function to execute the bidding matching.
+     * @param matchingId - The matchingId.
+     * @returns Promise resolving to a number.
+     */
+    async action(matchingId: number): Promise<number> {
+        try {
+            const meta = await handleEvmError(
+                this.contractsManager
+                    .MatchingMetadataEvm()
+                    .getMatchingMetadata(matchingId)
+            )
+
+            await this.contractsManager
+                .MatchingBidsEvm()
+                .waitForBlockHeight(
+                    Number(
+                        meta.data.createdBlockNumber +
+                            meta.data.biddingDelayBlockCount +
+                            meta.data.pausedBlockCount
+                    ) + 5
+                )
+
+            await this.assertion.biddingAssertion(
+                process.env.DATASWAP_BIDDER as string,
+                matchingId,
+                BigInt(meta.data.biddingThreshold) + BigInt(10),
+                MatchingState.InProgress
+            )
+            return matchingId
+        } catch (error) {
+            throw error
+        }
+    }
+}
+
+/**
+ * Represents a test kit for close matching.
+ * Extends from MatchingsTestBase.
+ */
+export class CloseMatchingTestKit extends MatchingsTestBase {
+    private dependentTestKit: BiddingMatchingTestKit
+    /**
+     * Constructor for MatchingsTestBase.
+     * @param _assertion - The assertion instance.
+     * @param _generator - The generator instance.
+     * @param _contractsManager - The contracts manager instance.
+     * @param _matchingsHelper - The matchings helper instance.
+     */
+    constructor(
+        _assertion: IMatchingsAssertion,
+        _generator: IGenerator,
+        _contractsManager: IContractsManager,
+        _matchingsHelper: IMatchingsHelper
+    ) {
+        super(_assertion, _generator, _contractsManager, _matchingsHelper)
+        this.dependentTestKit = new BiddingMatchingTestKit(
             _assertion,
             _generator,
             _contractsManager,
@@ -222,7 +202,7 @@ export class ResumeMatchingTestKit extends MatchingsTestBase {
     async optionalBefore(): Promise<number> {
         try {
             const matchingId = this.matchingsHelper.getWorkflowTargetId(
-                MatchingState.Paused
+                MatchingState.InProgress
             )
             if (matchingId != 0) {
                 return matchingId
@@ -234,21 +214,40 @@ export class ResumeMatchingTestKit extends MatchingsTestBase {
     }
 
     /**
-     * Action function to execute the create matching.
+     * Action function to execute the close matching.
      * @param matchingId - The matchingId.
      * @returns Promise resolving to a number.
      */
     async action(matchingId: number): Promise<number> {
         try {
-            await this.assertion.resumeMatchingAssertion(
-                process.env.DATASWAP_PROOFSUBMITTER as string,
+            const meta = await handleEvmError(
+                this.contractsManager
+                    .MatchingMetadataEvm()
+                    .getMatchingMetadata(matchingId)
+            )
+
+            await this.contractsManager
+                .MatchingBidsEvm()
+                .waitForBlockHeight(
+                    Number(
+                        meta.data.createdBlockNumber +
+                            meta.data.biddingDelayBlockCount +
+                            meta.data.pausedBlockCount +
+                            meta.data.biddingPeriodBlockCount
+                    ) + 5
+                )
+
+            await this.assertion.closeMatchingAssertion(
+                process.env.DATASWAP_BIDDER as string,
                 matchingId,
-                MatchingState.InProgress
+                MatchingState.Completed,
+                process.env.DATASWAP_BIDDER as string
             )
             this.matchingsHelper.updateWorkflowTargetState(
                 matchingId,
-                MatchingState.InProgress
+                MatchingState.Completed
             )
+
             return matchingId
         } catch (error) {
             throw error

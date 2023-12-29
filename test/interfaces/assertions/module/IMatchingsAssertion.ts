@@ -348,12 +348,14 @@ export interface IMatchingsAssertion {
      * @param caller - The caller of contract
      * @param matchingId - The ID of the matching.
      * @param expectAmount - The expected bidding amount.
+     * @param expectState - The expected state of matching.
      * @returns A Promise resolving if the assertion is successful.
      */
     biddingAssertion(
         caller: string,
         matchingId: number,
-        expectAmount: bigint
+        expectAmount: bigint,
+        expectState: MatchingState
     ): Promise<void>
 
     /**
@@ -374,11 +376,13 @@ export interface IMatchingsAssertion {
      * @param caller - The caller of contract
      * @param matchingId - The ID of the matching to be closed.
      * @param matchingState - The expected state after closure.
+     * @param expectWinner  - The expected winner after closure.
      * @returns A Promise resolving if the assertion is successful.
      */
     closeMatchingAssertion(
         caller: string,
         matchingId: number,
-        matchingState: MatchingState
+        matchingState: MatchingState,
+        expectWinner: string
     ): Promise<void>
 }

@@ -31,6 +31,11 @@ import {
     CreateMatchingTargetTestKit,
     PublishMatchingTestKit,
 } from "../../testkits/module/matchings/MatchingsTargetTestKit"
+import {
+    BiddingMatchingTestKit,
+    CancelMatchingTestKit,
+    CloseMatchingTestKit,
+} from "../../testkits/module/matchings/MatchingsBidsTestKit"
 import { MatchingsAssertion } from "../../assertions/module/matchingsAssertion"
 
 /**
@@ -59,6 +64,17 @@ describe("matchings", async () => {
             process.env.DATASWAP_GOVERNANCE as string,
             process.env.MatchingsAddress as string,
             process.env.MatchingsBidsAddress as string
+        )
+    })
+
+    /**
+     * Tests assert dependencies addressed of matchingsBids.
+     */
+    it("assertBidsDependenciesAdresses", async function () {
+        await this.sharedData.matchingsAssertion.bidsInitDependenciesAssertion(
+            process.env.DATASWAP_GOVERNANCE as string,
+            process.env.MatchingsAddress as string,
+            process.env.MatchingsTargetAddress as string
         )
     })
 
@@ -104,11 +120,11 @@ describe("matchings", async () => {
     })
 
     /**
-     * Tests create matching metadata.
+     * Tests cancel matching.
      */
-    it("pauseMatching", async function () {
+    it("cancelMatching", async function () {
         const matchingId = this.sharedData.matchingId
-        const testKit = new PauseMatchingTestKit(
+        const testKit = new CancelMatchingTestKit(
             this.sharedData.matchingsAssertion!,
             this.sharedData.generator!,
             this.sharedData.contractsManager!,
@@ -118,11 +134,52 @@ describe("matchings", async () => {
     })
 
     /**
-     * Tests create matching metadata.
+     * Tests pause matching.
+     */
+    it("pauseMatching", async function () {
+        const testKit = new PauseMatchingTestKit(
+            this.sharedData.matchingsAssertion!,
+            this.sharedData.generator!,
+            this.sharedData.contractsManager!,
+            getMatchingsHelper()
+        )
+        this.sharedData.matchingId = await testKit.run()
+    })
+
+    /**
+     * Tests resume matching.
      */
     it("resumeMatching", async function () {
         const matchingId = this.sharedData.matchingId
         const testKit = new ResumeMatchingTestKit(
+            this.sharedData.matchingsAssertion!,
+            this.sharedData.generator!,
+            this.sharedData.contractsManager!,
+            getMatchingsHelper()
+        )
+        this.sharedData.matchingId = await testKit.run(matchingId)
+    })
+
+    /**
+     * Tests bidding matching.
+     */
+    it("biddingMatching", async function () {
+        const matchingId = this.sharedData.matchingId
+        const testKit = new BiddingMatchingTestKit(
+            this.sharedData.matchingsAssertion!,
+            this.sharedData.generator!,
+            this.sharedData.contractsManager!,
+            getMatchingsHelper()
+        )
+        this.sharedData.matchingId = await testKit.run(matchingId)
+    })
+
+    /**
+     * Tests close matching.
+     */
+    it("closeMatching", async function () {
+        const matchingId = this.sharedData.matchingId
+        const testKit = new CloseMatchingTestKit(
             this.sharedData.matchingsAssertion!,
             this.sharedData.generator!,
             this.sharedData.contractsManager!,

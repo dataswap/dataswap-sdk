@@ -623,7 +623,7 @@ export class MatchingsAssertion implements IMatchingsAssertion {
         matchingId: number,
         expectBidsCount: number
     ): Promise<void> {
-        let bidsCount = await handleEvmError(
+        const bidsCount = await handleEvmError(
             this.contractsManager
                 .MatchingBidsEvm()
                 .getMatchingBidsCount(matchingId)
@@ -646,7 +646,7 @@ export class MatchingsAssertion implements IMatchingsAssertion {
                 .MatchingBidsEvm()
                 .getMatchingWinner(matchingId)
         )
-        expect(expectWinner).to.be.equal(Number(winner.data))
+        expect(expectWinner).to.be.equal(winner.data)
     }
 
     /**
@@ -664,12 +664,8 @@ export class MatchingsAssertion implements IMatchingsAssertion {
                 .MatchingBidsEvm()
                 .getMatchingWinners(matchingIds)
         )
-        expect(expectWinners.length).to.be.equal(winners.data)
-        for (let i = 0; i < expectWinners.length; i++) {
-            await handleEvmError(
-                this.getMatchingWinnerAssertion(matchingIds[i], winners[i])
-            )
-        }
+        expect(expectWinners.length).to.be.equal(winners.data.length)
+        expect(equal(expectWinners, winners.data)).to.be.true
     }
 
     /**
@@ -684,12 +680,12 @@ export class MatchingsAssertion implements IMatchingsAssertion {
         bidder: string,
         expectRet: boolean
     ): Promise<void> {
-        let ret = await handleEvmError(
+        const ret = await handleEvmError(
             this.contractsManager
                 .MatchingBidsEvm()
                 .hasMatchingBid(matchingId, bidder)
         )
-        expect(expectRet).to.be(ret.data)
+        expect(expectRet).to.be.equal(ret.data)
     }
 
     /**
@@ -722,24 +718,52 @@ export class MatchingsAssertion implements IMatchingsAssertion {
      * @param caller - The caller of contract
      * @param matchingId - The ID of the matching.
      * @param expectAmount - The expected bidding amount.
+     * @param expectState - The expected state of matching.
      * @returns A Promise resolving if the assertion is successful.
      */
     async biddingAssertion(
         caller: string,
         matchingId: number,
-        expectAmount: bigint
+        expectAmount: bigint,
+        expectState: MatchingState
     ): Promise<void> {
+        const hasBidder = await handleEvmError(
+            this.contractsManager
+                .MatchingBidsEvm()
+                .hasMatchingBid(matchingId, caller)
+        )
+        const bidsCount = await handleEvmError(
+            this.contractsManager
+                .MatchingBidsEvm()
+                .getMatchingBidsCount(matchingId)
+        )
+
         this.contractsManager.MatchingBidsEvm().getWallet().setDefault(caller)
         await handleEvmError(
             this.contractsManager
                 .MatchingBidsEvm()
-                .bidding(matchingId, expectAmount)
+                .bidding(matchingId, expectAmount, {
+                    value: expectAmount,
+                })
         )
+
         await this.getMatchingBidAmountAssertion(
             matchingId,
             caller,
             expectAmount
         )
+
+        await this.hasMatchingBidAssertion(matchingId, caller, true)
+        let expectBidsCount = Number(bidsCount.data)
+        if (!hasBidder.data) {
+            expectBidsCount += 1
+        }
+        await this.getMatchingBidsCountAssertion(matchingId, expectBidsCount)
+        await this.getMatchingStateAssertion(matchingId, expectState)
+        if (expectState == MatchingState.Completed) {
+            await this.getMatchingWinnersAssertion([matchingId], [caller])
+            await this.getMatchingWinnerAssertion(matchingId, caller)
+        }
     }
 
     /**
@@ -758,6 +782,7 @@ export class MatchingsAssertion implements IMatchingsAssertion {
         await handleEvmError(
             this.contractsManager.MatchingBidsEvm().cancelMatching(matchingId)
         )
+
         await this.getMatchingStateAssertion(matchingId, expectState)
     }
 
@@ -766,17 +791,35 @@ export class MatchingsAssertion implements IMatchingsAssertion {
      * @param caller - The caller of contract
      * @param matchingId - The ID of the matching to be closed.
      * @param expectState  - The expected state after closure.
+     * @param expectWinner  - The expected winner after closure.
      * @returns A Promise resolving if the assertion is successful.
      */
     async closeMatchingAssertion(
         caller: string,
         matchingId: number,
-        expectState: MatchingState
+        expectState: MatchingState,
+        expectWinner: string
     ): Promise<void> {
+        const bidder = process.env.DATASWAP_BIDDER as string
+        let matchingBids = await handleEvmError(
+            this.contractsManager.MatchingBidsEvm().getMatchingBids(matchingId)
+        )
+        await this.isMatchingTargetMeetsFilPlusRequirementsAssertion(
+            matchingId,
+            expectWinner,
+            true
+        )
         this.contractsManager.MatchingBidsEvm().getWallet().setDefault(caller)
         await handleEvmError(
             this.contractsManager.MatchingBidsEvm().closeMatching(matchingId)
         )
         await this.getMatchingStateAssertion(matchingId, expectState)
+
+        if (expectState == MatchingState.Completed) {
+            await this.getMatchingWinnersAssertion([matchingId], [expectWinner])
+            await this.getMatchingWinnerAssertion(matchingId, expectWinner)
+            matchingBids.data.winner = expectWinner
+            await this.getMatchingBidsAssertion(matchingId, matchingBids.data)
+        }
     }
 }

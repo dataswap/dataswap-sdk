@@ -21,7 +21,6 @@
 import { IMatchingsHelper } from "../../interfaces/helper/module/IMatchingsHelper"
 import { BasicHelper } from "./basicHelper"
 import { MatchingState } from "../../../src/shared/types/matchingType"
-import { expect } from "chai"
 import { handleEvmError } from "../../shared/error"
 import { IGenerator } from "../../interfaces/setup/IGenerator"
 import { IContractsManager } from "../../interfaces/setup/IContractsManater"
@@ -31,6 +30,7 @@ import * as utils from "../../shared/utils"
 import { IMatchingsAssertion } from "../../interfaces/assertions/module/IMatchingsAssertion"
 import { MatchingsAssertion } from "../../assertions/module/matchingsAssertion"
 import { DatasetState } from "../../../src/shared/types/datasetType"
+import { BidSelectionRule } from "../../../src/module/matching/metadata/types"
 
 /**
  * Helper class for managing matchings in the system.
@@ -152,13 +152,17 @@ export class MatchingsHelper extends BasicHelper implements IMatchingsHelper {
             )
 
             const replicaIndex = 0
-            const matchingMetadata = this.generator.generatorMatchingInfo(
+            let matchingMetadata = this.generator.generatorMatchingInfo(
                 datasetId,
                 replicaIndex
             )
 
+            if (dataType == DataType.Source) {
+                matchingMetadata.biddingPeriodBlockCount = 75
+            }
+
             // Creating a new matching
-            let matchingId = await this.assertion.createMatchingAssertion(
+            const matchingId = await this.assertion.createMatchingAssertion(
                 process.env.DATASWAP_PROOFSUBMITTER as string,
                 datasetId,
                 replicaIndex,
@@ -217,7 +221,7 @@ export class MatchingsHelper extends BasicHelper implements IMatchingsHelper {
     ): Promise<number> {
         try {
             // Completes dependent workflow to create a new matching
-            let matchingId = await this.completeDependentWorkflow(
+            const matchingId = await this.completeDependentWorkflow(
                 Number(MatchingState.None),
                 async (): Promise<number> => {
                     return await this.createdMatchingWorkflow(
@@ -287,7 +291,7 @@ export class MatchingsHelper extends BasicHelper implements IMatchingsHelper {
     ): Promise<number> {
         try {
             // Completes dependent workflow to initiate the matching as in progress
-            let matchingId = await this.completeDependentWorkflow(
+            const matchingId = await this.completeDependentWorkflow(
                 Number(MatchingState.InProgress),
                 async (): Promise<number> => {
                     return await this.inProgressMatchingWorkflow(
@@ -337,37 +341,46 @@ export class MatchingsHelper extends BasicHelper implements IMatchingsHelper {
                 }
             )
 
-            // Sets the wallet default for MatchingBidsEvm
-            this.contractsManager
-                .MatchingBidsEvm()
-                .getWallet()
-                .setDefault(process.env.DATASWAP_BIDDER as string)
-
-            // Bids on the matching in progress
-            await handleEvmError(
-                this.contractsManager
-                    .MatchingBidsEvm()
-                    .bidding(matchingId, BigInt(10000000000), {
-                        value: this.contractsManager
-                            .MatchingBidsEvm()
-                            .generateWei("1", "ether"),
-                    })
-            )
-
-            // Closes the completed matching
-            await handleEvmError(
-                this.contractsManager
-                    .MatchingBidsEvm()
-                    .closeMatching(matchingId)
-            )
-
-            // Retrieves and validates the state of the completed matching
-            const matchingState = await handleEvmError(
+            const meta = await handleEvmError(
                 this.contractsManager
                     .MatchingMetadataEvm()
-                    .getMatchingState(matchingId)
+                    .getMatchingMetadata(matchingId)
             )
-            expect(BigInt(MatchingState.Completed)).to.equal(matchingState.data)
+
+            await this.contractsManager
+                .MatchingBidsEvm()
+                .waitForBlockHeight(
+                    Number(
+                        meta.data.createdBlockNumber +
+                            meta.data.biddingDelayBlockCount +
+                            meta.data.pausedBlockCount
+                    ) + 5
+                )
+
+            await this.assertion.biddingAssertion(
+                process.env.DATASWAP_BIDDER as string,
+                matchingId,
+                BigInt(meta.data.biddingThreshold) + BigInt(10),
+                MatchingState.Completed
+            )
+
+            await this.contractsManager
+                .MatchingBidsEvm()
+                .waitForBlockHeight(
+                    Number(
+                        meta.data.createdBlockNumber +
+                            meta.data.biddingDelayBlockCount +
+                            meta.data.pausedBlockCount +
+                            meta.data.biddingPeriodBlockCount
+                    ) + 5
+                )
+
+            await this.assertion.closeMatchingAssertion(
+                process.env.DATASWAP_BIDDER as string,
+                matchingId,
+                MatchingState.Completed,
+                process.env.DATASWAP_BIDDER as string
+            )
 
             // Updates the workflow target state to completed
             this.updateWorkflowTargetState(
