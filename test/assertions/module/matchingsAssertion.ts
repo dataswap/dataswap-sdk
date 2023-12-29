@@ -70,7 +70,7 @@ export class MatchingsAssertion implements IMatchingsAssertion {
                 .MatchingMetadataEvm()
                 .getMatchingState(matchingId)
         )
-        expect(expectState).to.equal(state.data)
+        expect(Number(expectState)).to.equal(Number(state.data))
     }
 
     /**
@@ -88,7 +88,33 @@ export class MatchingsAssertion implements IMatchingsAssertion {
                 .MatchingMetadataEvm()
                 .getMatchingMetadata(matchingId)
         )
-        expect(equal(expectMatchingMetadata, metadata.data)).to.be.true
+        expect(Number(expectMatchingMetadata.bidSelectionRule)).to.be.equal(
+            Number(metadata.data.bidSelectionRule)
+        )
+        expect(expectMatchingMetadata.biddingDelayBlockCount).to.be.equal(
+            Number(metadata.data.biddingDelayBlockCount)
+        )
+        expect(expectMatchingMetadata.biddingPeriodBlockCount).to.be.equal(
+            Number(metadata.data.biddingPeriodBlockCount)
+        )
+        expect(
+            expectMatchingMetadata.storageCompletionPeriodBlocks
+        ).to.be.equal(Number(metadata.data.storageCompletionPeriodBlocks))
+        expect(expectMatchingMetadata.biddingThreshold).to.be.equal(
+            metadata.data.biddingThreshold
+        )
+        expect(expectMatchingMetadata.additionalInfo).to.be.equal(
+            metadata.data.additionalInfo
+        )
+        expect(expectMatchingMetadata.initiator).to.be.equal(
+            metadata.data.initiator
+        )
+        expect(expectMatchingMetadata.pausedBlockCount).to.be.equal(
+            Number(metadata.data.pausedBlockCount)
+        )
+        expect(expectMatchingMetadata.matchingId).to.be.equal(
+            metadata.data.matchingId
+        )
     }
 
     /**
@@ -105,6 +131,9 @@ export class MatchingsAssertion implements IMatchingsAssertion {
         replicaIndex: number,
         expectMatchingMetadata: MatchingMetadata
     ): Promise<number> {
+        expectMatchingMetadata.initiator = process.env
+            .DATASWAP_PROOFSUBMITTER as string
+
         this.contractsManager
             .MatchingMetadataEvm()
             .getWallet()
@@ -134,13 +163,14 @@ export class MatchingsAssertion implements IMatchingsAssertion {
             .getEvmEventArgs(receipt!, "MatchingCreated")
 
         let matchingId = Number(ret.data.matchingId)
+        expectMatchingMetadata.matchingId = matchingId
 
         await this.getMatchingMetadataAssertion(
             matchingId,
             expectMatchingMetadata
         )
         await this.getMatchingInitiatorAssertion(matchingId, caller)
-
+        await this.getMatchingStateAssertion(matchingId, MatchingState.None)
         return matchingId
     }
 
@@ -239,7 +269,37 @@ export class MatchingsAssertion implements IMatchingsAssertion {
                 .MatchingTargetEvm()
                 .getMatchingTarget(matchingId)
         )
-        expect(equal(expectMatchingTarget, matchingTarget.data))
+        expect(expectMatchingTarget.datasetID).to.be.equal(
+            Number(matchingTarget.data.datasetID)
+        )
+        expect(expectMatchingTarget.size).to.be.equal(
+            Number(matchingTarget.data.size)
+        )
+        expect(expectMatchingTarget.dataType).to.be.equal(
+            Number(matchingTarget.data.dataType)
+        )
+        expect(
+            expectMatchingTarget.associatedMappingFilesMatchingID
+        ).to.be.equal(
+            Number(matchingTarget.data.associatedMappingFilesMatchingID)
+        )
+        expect(expectMatchingTarget.subsidy).to.be.equal(
+            BigInt(matchingTarget.data.subsidy)
+        )
+        expect(expectMatchingTarget.replicaIndex).to.be.equal(
+            Number(matchingTarget.data.replicaIndex)
+        )
+
+        expect(
+            equal(
+                expectMatchingTarget.cars,
+                utils.convertToNumberArray(matchingTarget.data.cars)
+            )
+        ).to.be.true
+
+        expect(expectMatchingTarget.matchingId).to.be.equal(
+            Number(matchingTarget.data.matchingId)
+        )
     }
 
     /**
@@ -391,7 +451,7 @@ export class MatchingsAssertion implements IMatchingsAssertion {
         )
 
         let expectData = new MatchingTarget({
-            datasetId: expectDatasetId,
+            datasetID: expectDatasetId,
             cars: [],
             size: 0,
             dataType: expectDataType,
@@ -402,7 +462,8 @@ export class MatchingsAssertion implements IMatchingsAssertion {
             matchingId: matchingId,
         })
 
-        this.getMatchingTargetAssertion(matchingId, expectData)
+        await this.getMatchingTargetAssertion(matchingId, expectData)
+        await this.getMatchingStateAssertion(matchingId, MatchingState.None)
     }
 
     /**
@@ -423,6 +484,27 @@ export class MatchingsAssertion implements IMatchingsAssertion {
         expectCarsEnds: number[],
         expectComplete: boolean
     ): Promise<void> {
+        const cars = utils.mergeRangesToCompleteArray(
+            expectCarsStarts,
+            expectCarsEnds
+        )
+        const carsSize = await handleEvmError(
+            this.contractsManager.CarstoreEvm().getCarsSize(cars)
+        )
+        const target = await handleEvmError(
+            this.contractsManager
+                .MatchingTargetEvm()
+                .getMatchingTarget(matchingId)
+        )
+
+        await this.isMatchingTargetValidAssertion(
+            datasetId,
+            cars,
+            Number(carsSize.data),
+            Number(target.data.dataType) as DataType,
+            Number(target.data.associatedMappingFilesMatchingID),
+            true
+        )
         this.contractsManager.MatchingTargetEvm().getWallet().setDefault(caller)
         await handleEvmError(
             this.contractsManager

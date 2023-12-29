@@ -181,7 +181,7 @@ export class MatchingTargetOriginEvm extends EvmEx {}
  * Extended class for MatchingTargetEvm with additional message decoding.
  */
 export class MatchingTargetEvm extends MatchingTargetOriginEvm {
-    async getDatasetTarget(
+    async getMatchingTarget(
         matchingId: number
     ): Promise<EvmOutput<MatchingTarget>> {
         const metaRes = await super.getMatchingTarget(matchingId)

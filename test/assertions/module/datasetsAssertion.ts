@@ -61,6 +61,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
         expect(expectData.sizeInBytes).to.be.equal(metaData.data.sizeInBytes)
         expect(expectData.isPublic).to.be.equal(metaData.data.isPublic)
         expect(expectData.version).to.be.equal(metaData.data.version)
+        expect(datasetId).to.be.equal(metaData.data.datasetId)
     }
 
     /**
@@ -1010,8 +1011,6 @@ export class DatasetsAssertion implements IDatasetsAssertion {
                 .getDatasetChallengeProofs(datasetId, auditor)
         )
         //TODO: https://github.com/dataswap/dataswapjs/issues/68
-        console.log("gets:")
-        console.log("expects:", expects)
         expect(equal(expects.leaves, challengeProof.data.leaves)).to.be.true
         expect(
             equal(
@@ -1019,7 +1018,8 @@ export class DatasetsAssertion implements IDatasetsAssertion {
                 utils.convertToNumberArray(challengeProof.data.paths)
             )
         ).to.be.true
-        expect(equal(expects.siblings, challengeProof.data.siblings)).to.be.true
+        expect(equal(expects.siblingss, challengeProof.data.siblingss)).to.be
+            .true
     }
 
     /**

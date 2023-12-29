@@ -26,6 +26,8 @@ import { Generator } from "./testkits/setup/generator"
 import { IDatasetsHelper } from "./interfaces/helper/module/IDatasetshelper"
 import { DatasetsHelper } from "./helpers/module/datasetsHelper"
 import { DataswapTestSetup } from "./testkits/setup/dataswapTestSetup"
+import { IMatchingsHelper } from "./interfaces/helper/module/IMatchingsHelper"
+import { MatchingsHelper } from "./helpers/module/matchingsHelper"
 
 // Import test environmental parameters
 function setup() {
@@ -35,6 +37,7 @@ function setup() {
 let contractsManagerInstance: IContractsManager | null = null
 let generatorInstance: IGenerator | null = null
 let datasetHelperInstance: IDatasetsHelper | null = null
+let matchinHelperInstance: IMatchingsHelper | null = null
 
 /**
  * Gets the contracts manager instance.
@@ -70,6 +73,17 @@ export function getDatasetsHelper(): IDatasetsHelper {
 }
 
 /**
+ * Gets the matchings helper instance.
+ * Throws an error if matchingHelper is not initialized.
+ */
+export function getMatchingsHelper(): IMatchingsHelper {
+    if (!matchinHelperInstance) {
+        throw new Error("MatchingHelper not initialized")
+    }
+    return matchinHelperInstance
+}
+
+/**
  * Global setup function for Mocha tests.
  * Sets up required instances and runs necessary initializations.
  */
@@ -82,6 +96,13 @@ export async function mochaGlobalSetup() {
         generatorInstance,
         contractsManagerInstance
     )
+
+    matchinHelperInstance = new MatchingsHelper(
+        generatorInstance,
+        contractsManagerInstance,
+        datasetHelperInstance
+    )
+
     let testSetup = new DataswapTestSetup(contractsManagerInstance)
     await testSetup.run()
 }

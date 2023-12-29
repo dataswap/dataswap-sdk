@@ -26,7 +26,7 @@ import { DataType } from "../../../../shared/types/dataType"
  * @interface
  */
 export interface MatchingTarget {
-    datasetId: number
+    datasetID: number
     cars: number[]
     size: number
     dataType: DataType

@@ -26,7 +26,7 @@ import { IGenerator } from "../../interfaces/setup/IGenerator"
 import { DatasetRequirements } from "../../../src/shared/types/datasetType"
 import { DataType } from "../../../src/shared/types/dataType"
 import { BidSelectionRule } from "../../../src/module/matching/metadata/types"
-//import { MerkleTree } from 'merkle-tree-gen'
+import { MatchingMetadata } from "../../../src/module/matching/metadata/types"
 
 /**
  * Generates requirement actors based on count and element count for each actor.
@@ -161,11 +161,9 @@ const challengeProof = {
 }
 
 export class Generator implements IGenerator {
-    private datasetsNextReplicaIndexMap: Map<number, number>
     private proofRootsMap: Map<number, Map<DataType, string>>
-    private nonce = 100
+    private nonce = 300
     constructor() {
-        this.datasetsNextReplicaIndexMap = new Map<number, number>()
         this.proofRootsMap = new Map<number, Map<DataType, string>>()
     }
 
@@ -211,7 +209,7 @@ export class Generator implements IGenerator {
         duplicateCount?: number
     ): DatasetRequirements {
         //TODO: Duplicate Data Generation Feature
-        return {
+        let requirements: DatasetRequirements = {
             dataPreparers: generateRequirementActors(
                 replicasCount,
                 elementCountInReplica
@@ -227,6 +225,11 @@ export class Generator implements IGenerator {
                 elementCountInReplica
             ),
         } as DatasetRequirements
+        requirements.dataPreparers[0][0] = process.env
+            .DATASWAP_PROOFSUBMITTER as string
+        requirements.storageProviders[0][0] = process.env
+            .DATASWAP_BIDDER as string
+        return requirements
     }
 
     /**
@@ -371,47 +374,21 @@ export class Generator implements IGenerator {
      * @param index - The index of the dataset.
      * @returns Information about bid selection rule, bidding delay, storage completion, threshold, and additional info.
      */
-    generatorMatchingInfo(
-        datasetId: number,
-        index: number
-    ): [
-        bidSelectionRule: BidSelectionRule,
-        biddingDelayBlockCount: number,
-        biddingPeriodBlockCount: number,
-        storageCompletionPeriodBlocks: number,
-        biddingThreshold: bigint,
-        additionalInfo: string,
-    ] {
-        return [
-            BidSelectionRule.HighestBid,
-            10,
-            300,
-            10000,
-            BigInt(1000000000),
-            "none",
-        ]
+    generatorMatchingInfo(datasetId: number, index: number): MatchingMetadata {
+        return new MatchingMetadata({
+            bidSelectionRule: BidSelectionRule.ImmediateAtMost,
+            biddingDelayBlockCount: 15,
+            biddingPeriodBlockCount: 300,
+            storageCompletionPeriodBlocks: 10000,
+            biddingThreshold: BigInt(1000000000),
+            createdBlockNumber: 0,
+            additionalInfo: "none",
+            initiator: "",
+            pausedBlockCount: 0,
+            matchingId: 0,
+        })
     }
 
-    /**
-     * Determines the next replica index for a dataset.
-     * @param datasetId - The ID of the dataset.
-     * @param max - The maximum value for the index.
-     * @returns The next replica index for the dataset.
-     */
-    datasetNextReplicaIndex(datasetId: number, max: number): number {
-        let next = this.datasetsNextReplicaIndexMap.get(datasetId)
-        if (!next) {
-            this.datasetsNextReplicaIndexMap.set(datasetId, 1)
-            return 0
-        } else {
-            if (next + 1 >= max) {
-                this.datasetsNextReplicaIndexMap.set(datasetId, 0)
-            } else {
-                this.datasetsNextReplicaIndexMap.set(datasetId, next + 1)
-            }
-        }
-        return next
-    }
     /**
      * Retrieves the proof root for a specific dataset ID and data type.
      * @param id - The ID of the dataset.

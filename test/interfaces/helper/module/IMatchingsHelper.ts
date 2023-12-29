@@ -20,6 +20,7 @@
 
 import { IHelper } from "./IHelpler"
 import { DataType } from "../../../../src/shared/types/dataType"
+import { IDatasetsHelper } from "./IDatasetshelper"
 
 /**
  * Represents a helper interface for matchings.
@@ -86,4 +87,10 @@ export interface IMatchingsHelper extends IHelper {
         dataType: DataType,
         targetDatasetId?: number
     ): Promise<number>
+
+    /**
+     * Retrieves the datasets helper instance.
+     * @returns {IDatasetsHelper} The datasets helper instance.
+     */
+    getDatasetsHelper(): IDatasetsHelper
 }
