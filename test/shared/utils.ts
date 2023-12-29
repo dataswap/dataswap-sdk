@@ -19,6 +19,9 @@
  ********************************************************************************/
 
 import { ethers } from "ethers"
+import { EvmOutput } from "@unipackage/net"
+import { DataswapMessage } from "../../src/message/types"
+import { Message } from "@unipackage/filecoin" // Replace with the actual path to your TypeScript file
 
 /**
  * Retrieves the value of an environment variable by its name.
@@ -203,4 +206,85 @@ export function numberToBytes32(num: number): string {
     }
 
     return hexString
+}
+
+/**
+ * Create expect messgae.
+ * @param method The message method.
+ * @param params The message params.
+ * @param returns The message returns.
+ * @param datasetId The dataset id.
+ * @param matchingId The matching id.
+ * @returns The message object.
+ */
+export function createExpectMessage(method: string, params: object, returns: string, datasetId?: number, matchingId?: number): EvmOutput<DataswapMessage> {
+    return {
+        ok: true,
+        data: {
+            cid: {
+                "/": "bafy2bzacebnjyelld3l7nxbtzqxg7ljs7sjsbkalz3szorwmu3wkulaqph6mm",
+            },
+            height: 1213438,
+            timestamp: "",
+            from: "f410fcwzis33wz3sofrlh466gog5xahlthgzqezasapy",
+            to: "f410fai7exftlsq6igc35jsxij7twcza3feadlmtrjla",
+            method: method,
+            params: params,
+            status: 0,
+            return: returns,
+            ...(datasetId !== undefined && { datasetId }),
+            ...(matchingId !== undefined && { matchingId }),
+        },
+    }
+}
+
+/**
+ * Create target messgae.
+ * @param params The message params.
+ * @param returns The message returns.
+ * @returns The message object.
+ */
+export function createTargetMessage(params: string, returns: string): Message {
+    return new Message({
+        Height: 1213438,
+        Replayed: true,
+        MsgCid: {
+            "/": "bafy2bzacebnjyelld3l7nxbtzqxg7ljs7sjsbkalz3szorwmu3wkulaqph6mm",
+        },
+        Msg: {
+            Version: 0,
+            To: "f410fai7exftlsq6igc35jsxij7twcza3feadlmtrjla",
+            From: "f410fcwzis33wz3sofrlh466gog5xahlthgzqezasapy",
+            Nonce: 550,
+            Value: "0",
+            GasLimit: 35862045,
+            GasFeeCap: "4128217110",
+            GasPremium: "2057242745",
+            Method: 3844450837,
+            Params: params,
+            CID: {
+                "/": "bafy2bzacedwcmokyjjyju2a7s6tsdvakcjwzztgpmbvdabk7v7zdadsqndxec",
+            },
+        },
+        MsgRct: {
+            ExitCode: 0,
+            Return: returns,
+            GasUsed: 28697436,
+            EventsRoot: {
+                "/": "bafy2bzacebkqi5zhbxevtqfadttyoguh2parrfe3qkh7rlfgxfux3eyhihzq6",
+            },
+        },
+        GasCost: {
+            Message: {
+                "/": "bafy2bzacedwcmokyjjyju2a7s6tsdvakcjwzztgpmbvdabk7v7zdadsqndxec",
+            },
+            GasUsed: "28697436",
+            BaseFeeBurn: "2869743600",
+            OverEstimationBurn: "107225700",
+            MinerPenalty: "0",
+            MinerTip: "73776931897113525",
+            Refund: "74269372894507125",
+            TotalCost: "73776934874082825",
+        },
+    })
 }
