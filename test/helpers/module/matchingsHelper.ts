@@ -68,24 +68,33 @@ export class MatchingsHelper extends BasicHelper implements IMatchingsHelper {
      * @param matchingId - The ID of the matching.
      * @returns The dataset ID linked with the matching ID if available, otherwise undefined.
      */
-    private async _getTargetDatasetId(matchingId: number): Promise<number> {
+    async getTargetDatasetId(matchingId: number): Promise<number> {
         const target = await handleEvmError(
             this.contractsManager
                 .MatchingTargetEvm()
                 .getMatchingTarget(matchingId)
         )
-        return Number(target.data.datasetID)
+
+        let datasetId = Number(target.data.datasetID)
+
+        if (datasetId === 0) {
+            let ret = this.matchingDatasetIdMap.get(matchingId)
+            if (ret) {
+                datasetId = ret
+            }
+        }
+
+        return datasetId
     }
 
     /**
-     * Sets the dataset ID associated with a matching.
+     * Sets the target dataset ID for a particular matching ID.
      * @param matchingId - The ID of the matching.
-     * @param datasetId - The ID of the dataset to associate with the matching.
+     * @param datasetId - The ID of the dataset to be set as the target.
      */
-    private _setTargetDatasetId(matchingId: number, datasetId: number): void {
+    setTargetDatasetId(matchingId: number, datasetId: number): void {
         this.matchingDatasetIdMap.set(matchingId, datasetId)
     }
-
     /**
      * Retrieves the associated mapping files' matching ID for a given matching.
      * @param matchingId - The ID of the matching.
@@ -189,6 +198,7 @@ export class MatchingsHelper extends BasicHelper implements IMatchingsHelper {
                 associatedMatchingId,
                 replicaIndex
             )
+            this.updateWorkflowTargetState(matchingId, MatchingState.None)
             return matchingId
         } catch (error) {
             throw error
@@ -219,7 +229,7 @@ export class MatchingsHelper extends BasicHelper implements IMatchingsHelper {
 
             // Completes dependent workflow to create a new matching
             // Retrieves the dataset ID associated with the matching
-            const datasetId = await this._getTargetDatasetId(matchingId)
+            const datasetId = await this.getTargetDatasetId(matchingId)
 
             // Fetches the count of proofs for the dataset and data type
             let matchingCarsCount = await handleEvmError(
@@ -256,6 +266,8 @@ export class MatchingsHelper extends BasicHelper implements IMatchingsHelper {
                 ends,
                 true
             )
+
+            this.updateWorkflowTargetState(matchingId, MatchingState.InProgress)
 
             return matchingId
         } catch (error) {

@@ -528,6 +528,12 @@ export class MatchingsAssertion implements IMatchingsAssertion {
             expectCarsEnds
         )
         this.isMatchingContainsCarsAssertion(matchingId, expectIds, true)
+        if (expectComplete) {
+            await this.getMatchingStateAssertion(
+                matchingId,
+                MatchingState.InProgress
+            )
+        }
     }
 
     // MatchingsBids

@@ -27,13 +27,16 @@ import {
     PauseMatchingTestKit,
     ResumeMatchingTestKit,
 } from "../../testkits/module/matchings/MatchingsTestKit"
+import {
+    CreateMatchingTargetTestKit,
+    PublishMatchingTestKit,
+} from "../../testkits/module/matchings/MatchingsTargetTestKit"
 import { MatchingsAssertion } from "../../assertions/module/matchingsAssertion"
-import { DataType } from "../../../src/shared/types/dataType"
 
 /**
  * Test suite for the Matchings functionality.
  */
-describe("matchingsmetadata", async () => {
+describe("matchings", async () => {
     /**
      * Setup before running the test suite.
      */
@@ -48,45 +51,83 @@ describe("matchingsmetadata", async () => {
             this.sharedData.contractsManager
         )
     })
+    /**
+     * Tests assert dependencies addressed of matchingsTarget.
+     */
+    it("assertTargetDependenciesAdresses", async function () {
+        await this.sharedData.matchingsAssertion.targetInitDependenciesAssertion(
+            process.env.DATASWAP_GOVERNANCE as string,
+            process.env.MatchingsAddress as string,
+            process.env.MatchingsBidsAddress as string
+        )
+    })
 
     /**
      * Tests create matching metadata.
      */
     it("createMatchingsMetadata", async function () {
-        let testKit = new CreateMatchingsMetadataTestKit(
+        const testKit = new CreateMatchingsMetadataTestKit(
             this.sharedData.matchingsAssertion!,
             this.sharedData.generator!,
             this.sharedData.contractsManager!,
             getMatchingsHelper()
         )
-        await testKit.run()
+        this.sharedData.matchingId = await testKit.run()
+    })
+
+    /**
+     * Tests create matching target.
+     */
+    it("createMatchingsTarget", async function () {
+        const matchingId = this.sharedData.matchingId
+        const testKit = new CreateMatchingTargetTestKit(
+            this.sharedData.matchingsAssertion!,
+            this.sharedData.generator!,
+            this.sharedData.contractsManager!,
+            getMatchingsHelper()
+        )
+        this.sharedData.matchingId = await testKit.run(matchingId)
+    })
+
+    /**
+     * Tests publish matching.
+     */
+    it("publishMatching", async function () {
+        const matchingId = this.sharedData.matchingId
+        const testKit = new PublishMatchingTestKit(
+            this.sharedData.matchingsAssertion!,
+            this.sharedData.generator!,
+            this.sharedData.contractsManager!,
+            getMatchingsHelper()
+        )
+        this.sharedData.matchingId = await testKit.run(matchingId)
     })
 
     /**
      * Tests create matching metadata.
      */
     it("pauseMatching", async function () {
-        let testKit = new PauseMatchingTestKit(
+        const matchingId = this.sharedData.matchingId
+        const testKit = new PauseMatchingTestKit(
             this.sharedData.matchingsAssertion!,
             this.sharedData.generator!,
             this.sharedData.contractsManager!,
             getMatchingsHelper()
         )
-        let matchingId = await testKit.run()
-        this.sharedData.matchingId = matchingId
+        this.sharedData.matchingId = await testKit.run(matchingId)
     })
 
     /**
      * Tests create matching metadata.
      */
     it("resumeMatching", async function () {
-        let testKit = new ResumeMatchingTestKit(
+        const matchingId = this.sharedData.matchingId
+        const testKit = new ResumeMatchingTestKit(
             this.sharedData.matchingsAssertion!,
             this.sharedData.generator!,
             this.sharedData.contractsManager!,
             getMatchingsHelper()
         )
-        let matchingId = this.sharedData.matchingId
-        await testKit.run(matchingId)
+        this.sharedData.matchingId = await testKit.run(matchingId)
     })
 })

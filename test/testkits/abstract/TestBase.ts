@@ -29,6 +29,7 @@ export abstract class TestBase {
      * @returns A promise resolving to a number (0 by default).
      */
     async optionalBefore(...args: any[]): Promise<number> {
+        // If the current business does not generate an ID, return 0.
         return 0
     }
 

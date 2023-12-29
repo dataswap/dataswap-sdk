@@ -93,4 +93,18 @@ export interface IMatchingsHelper extends IHelper {
      * @returns {IDatasetsHelper} The datasets helper instance.
      */
     getDatasetsHelper(): IDatasetsHelper
+
+    /**
+     * Helper function to retrieve the dataset ID associated with a matching.
+     * @param matchingId - The ID of the matching.
+     * @returns The dataset ID linked with the matching ID if available, otherwise undefined.
+     */
+    getTargetDatasetId(matchingId: number): Promise<number>
+
+    /**
+     * Sets the target dataset ID for a particular matching ID.
+     * @param matchingId - The ID of the matching.
+     * @param datasetId - The ID of the dataset to be set as the target.
+     */
+    setTargetDatasetId(matchingId: number, datasetId: number): void
 }
