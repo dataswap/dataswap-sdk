@@ -84,11 +84,6 @@ export class CreateMatchingTargetTestKit extends MatchingsTestBase {
                     .getWorkflowTargetId(DatasetState.DatasetApproved)
             }
 
-            console.log(
-                "CreateMatchingTargetTestKit datasetId:%d,matchingId:%d",
-                datasetId,
-                matchingId
-            )
             // Creating target for the matching
             await this.assertion.createTargetAssertion(
                 process.env.DATASWAP_PROOFSUBMITTER as string,
