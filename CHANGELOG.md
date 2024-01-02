@@ -1,5 +1,12 @@
 
 
+## [0.5.1](https://github.com/dataswap/dataswapjs/compare/0.5.0...0.5.1) (2024-01-02)
+
+
+### Bug Fixes
+
+* 🐛 datasetmeta datastore ([c6c823d](https://github.com/dataswap/dataswapjs/commit/c6c823d27712581f66887433bd0e34a649e26c5c))
+
 # [0.5.0](https://github.com/dataswap/dataswapjs/compare/0.4.0...0.5.0) (2024-01-02)
 
 
