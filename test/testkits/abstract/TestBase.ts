@@ -76,7 +76,7 @@ export abstract class TestBase {
     async run(id?: number, ...args: any[]): Promise<number> {
         try {
             let targetId = await this.before(id, ...args)
-            let ret = await this.action(targetId, ...args)
+            const ret = await this.action(targetId, ...args)
             if (targetId === 0) {
                 targetId = ret
             }

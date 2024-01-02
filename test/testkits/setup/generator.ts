@@ -173,7 +173,7 @@ export class Generator implements IGenerator {
      * @returns The generated dataset metadata.
      */
     generateDatasetMetadata(accessMethod?: string): DatasetMetadata {
-        let random: string = utils.generateRandomString(7)
+        const random: string = utils.generateRandomString(7)
         let ret = new DatasetMetadata({
             title: "title-" + random,
             industry: "industry-" + random,
@@ -274,13 +274,13 @@ export class Generator implements IGenerator {
         const isFakeData = fakedata !== undefined ? fakedata : false
 
         if (isFakeData) {
-            let root = utils.numberToBytes32(this.nonce)
+            const root = utils.numberToBytes32(this.nonce)
             this.nonce++
-            let [leafHashs, leafSizes] = this._generateFakeLeaves(
+            const [leafHashs, leafSizes] = this._generateFakeLeaves(
                 leavesCount,
                 dataType
             )
-            let accessMethod = utils.generateRandomString(7)
+            const accessMethod = utils.generateRandomString(7)
             return [root, leafHashs, leafSizes, accessMethod]
         }
 
@@ -293,7 +293,7 @@ export class Generator implements IGenerator {
             ]
         }
 
-        let accessMethod: string =
+        const accessMethod: string =
             "mappingfilesAccessMethod:" + utils.generateRandomString(7)
         return [
             mapingFiles.root,
@@ -364,7 +364,7 @@ export class Generator implements IGenerator {
      * @returns The generated Ethereum account consisting of address and private key.
      */
     async generatorEthAccount(): Promise<[string, string]> {
-        let wallet = Wallet.createRandom(++this.nonce)
+        const wallet = Wallet.createRandom(++this.nonce)
         return [await wallet.getAddress(), wallet.privateKey]
     }
 

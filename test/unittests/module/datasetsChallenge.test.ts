@@ -47,7 +47,7 @@ describe("datasetsChallenge", async () => {
      * This test case has already been covered in the 'approveDataset' test. Skipping it here.
      */
     it.skip("submitChallengeProof", async function () {
-        let testKit = new ApproveDatasetTestKit(
+        const testKit = new ApproveDatasetTestKit(
             this.sharedData.datasetsAssertion!,
             this.sharedData.generator!,
             this.sharedData.contractsManager!,

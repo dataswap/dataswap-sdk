@@ -59,7 +59,7 @@ const contracts: [string, new (...args: any[]) => any][] = [
 ]
 
 function initWallet(url: string): IWallet {
-    let wallet = new Wallet(url)
+    const wallet = new Wallet(url)
     wallet.add(process.env.PRIVATE_KEY as string)
     wallet.add(process.env.PRIVATE_KEY_BIDDER as string)
     wallet.add(process.env.PRIVATE_KEY_DATASETAUDITOR as string)
@@ -74,13 +74,13 @@ export class ContractsManager implements IContractsManager {
 
     constructor() {
         // Get the RPC URL for the network
-        let url = utils.getNetworkRpcURL()
+        const url = utils.getNetworkRpcURL()
 
         // Instantiate contract instances for each contract name
         contracts.forEach(([contractName, evmConstructor]) => {
-            let contractAddress = utils.getContractAddress(contractName)
+            const contractAddress = utils.getContractAddress(contractName)
 
-            let wallet = initWallet(url)
+            const wallet = initWallet(url)
             // Load contract ABI
             const contractAbi = require(
                 `@dataswapcore/contracts/abi/v0.8/${contractName}.json`
@@ -107,7 +107,7 @@ export class ContractsManager implements IContractsManager {
         try {
             const roleBytes = ethers.utils.toUtf8Bytes(role)
             const hash = ethers.utils.keccak256(roleBytes)
-            let ret = await handleEvmError(
+            const ret = await handleEvmError(
                 this.RolesEvm().hasRole(hash, contractAddress)
             )
             if (ret.data) {
@@ -175,12 +175,12 @@ export class ContractsManager implements IContractsManager {
      */
     private async setupDatasetsDependencies(): Promise<void> {
         try {
-            let datasetProofAddress =
+            const datasetProofAddress =
                 this.contractsAddresses.get("DatasetsProof")
             if (!datasetProofAddress) {
                 throw new Error("cant get datasetsProof address in env")
             }
-            let ret = await handleEvmError(
+            const ret = await handleEvmError(
                 this.DatasetMetadataEvm().datasetsProof()
             )
             if ((ret.data as string) === datasetProofAddress) {
@@ -204,13 +204,13 @@ export class ContractsManager implements IContractsManager {
      */
     private async setupDatasetsProofDependencies(): Promise<void> {
         try {
-            let datasetChallengeAddress =
+            const datasetChallengeAddress =
                 this.contractsAddresses.get("DatasetsChallenge")
             if (!datasetChallengeAddress) {
                 throw new Error("cant get datasetsChallenge address in env")
             }
 
-            let ret = await handleEvmError(
+            const ret = await handleEvmError(
                 this.DatasetProofEvm().datasetsChallenge()
             )
             if ((ret.data as string) === datasetChallengeAddress) {
@@ -234,20 +234,20 @@ export class ContractsManager implements IContractsManager {
      */
     private async setupMatchingsBidsDependencies(): Promise<void> {
         try {
-            let matchingsAddress = this.contractsAddresses.get("Matchings")
+            const matchingsAddress = this.contractsAddresses.get("Matchings")
             if (!matchingsAddress) {
                 throw new Error("cant get matchings ddress in env")
             }
-            let matchingsTargetAddress =
+            const matchingsTargetAddress =
                 this.contractsAddresses.get("MatchingsTarget")
             if (!matchingsTargetAddress) {
                 throw new Error("cant get matchingsTarget ddress in env")
             }
 
             let ret = await handleEvmError(this.MatchingBidsEvm().matchings())
-            let retMatchingsAddress = ret.data as string
+            const retMatchingsAddress = ret.data as string
             ret = await handleEvmError(this.MatchingBidsEvm().matchingsTarget())
-            let retMatchingsTargetAddress = ret.data as string
+            const retMatchingsTargetAddress = ret.data as string
 
             if (
                 retMatchingsAddress === matchingsAddress &&
@@ -276,20 +276,20 @@ export class ContractsManager implements IContractsManager {
      */
     private async setupMatchingsTargetDependencies(): Promise<void> {
         try {
-            let matchingsAddress = this.contractsAddresses.get("Matchings")
+            const matchingsAddress = this.contractsAddresses.get("Matchings")
             if (!matchingsAddress) {
                 throw new Error("cant get matchings ddress in env")
             }
-            let matchingsBidsAddress =
+            const matchingsBidsAddress =
                 this.contractsAddresses.get("MatchingsBids")
             if (!matchingsBidsAddress) {
                 throw new Error("cant get matchingsBids ddress in env")
             }
 
             let ret = await handleEvmError(this.MatchingTargetEvm().matchings())
-            let retMatchingsAddress = ret.data as string
+            const retMatchingsAddress = ret.data as string
             ret = await handleEvmError(this.MatchingTargetEvm().matchingsBids())
-            let retMatchingsBidsAddress = ret.data as string
+            const retMatchingsBidsAddress = ret.data as string
 
             if (
                 retMatchingsAddress === matchingsAddress &&
@@ -318,26 +318,26 @@ export class ContractsManager implements IContractsManager {
      */
     private async setupEscrowDependencies(): Promise<void> {
         try {
-            let datasetProofAddress =
+            const datasetProofAddress =
                 this.contractsAddresses.get("DatasetsProof")
             if (!datasetProofAddress) {
                 throw new Error("cant get datasetsProof address in env")
             }
-            let storagesAddress = this.contractsAddresses.get("Storages")
+            const storagesAddress = this.contractsAddresses.get("Storages")
             if (!storagesAddress) {
                 throw new Error("cant get storages address in env")
             }
-            let datacapsAddress = this.contractsAddresses.get("Datacaps")
+            const datacapsAddress = this.contractsAddresses.get("Datacaps")
             if (!datacapsAddress) {
                 throw new Error("cant get datacaps address in env")
             }
 
             let ret = await handleEvmError(this.EscrowEvm().datasetsProof())
-            let retDatasetProofAddress = ret.data as string
+            const retDatasetProofAddress = ret.data as string
             ret = await handleEvmError(this.EscrowEvm().storages())
-            let retStoragesAddress = ret.data as string
+            const retStoragesAddress = ret.data as string
             ret = await handleEvmError(this.EscrowEvm().datacaps())
-            let retDatacapsAddress = ret.data as string
+            const retDatacapsAddress = ret.data as string
 
             if (
                 retDatasetProofAddress === datasetProofAddress &&

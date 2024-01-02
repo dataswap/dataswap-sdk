@@ -48,7 +48,7 @@ describe("datasetsRequirement", async () => {
      */
     it("submitRequirement", async function () {
         try {
-            let testKit = new SubmitRequirementTestKit(
+            const testKit = new SubmitRequirementTestKit(
                 this.sharedData.datasetsAssertion!,
                 this.sharedData.generator!,
                 this.sharedData.contractsManager!
