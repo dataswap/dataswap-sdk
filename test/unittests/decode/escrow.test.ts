@@ -70,7 +70,7 @@ describe("EscrowContractMessageDecoder", () => {
             )
 
             expect(contractMessage.data?.params).to.deep.include(
-                <ValueFields<DatasetMetadata>>contractMessage.data?.params
+                expectCollateralMessage.data?.params
             )
         })
 
@@ -99,7 +99,7 @@ describe("EscrowContractMessageDecoder", () => {
                 expectPaymentMessage.data
             )
             expect(contractMessage.data?.params).to.deep.include(
-                <ValueFields<DatasetMetadata>>contractMessage.data?.params
+                expectPaymentMessage.data?.params
             )
         })
 
@@ -129,7 +129,7 @@ describe("EscrowContractMessageDecoder", () => {
                 expectPaymentMessage.data
             )
             expect(contractMessage.data?.params).to.deep.include(
-                <ValueFields<DatasetMetadata>>contractMessage.data?.params
+                expectPaymentMessage.data?.params
             )
         })
 
@@ -158,7 +158,7 @@ describe("EscrowContractMessageDecoder", () => {
                 expectPaymentMessage.data
             )
             expect(contractMessage.data?.params).to.deep.include(
-                <ValueFields<DatasetMetadata>>contractMessage.data?.params
+                expectPaymentMessage.data?.params
             )
         })
     })
