@@ -1,5 +1,12 @@
 
 
+## [0.5.2](https://github.com/dataswap/dataswapjs/compare/0.5.1...0.5.2) (2024-01-02)
+
+
+### Bug Fixes
+
+* 🐛 dataswapmessage model ([b0f9988](https://github.com/dataswap/dataswapjs/commit/b0f998806a2dd07f7bec831131e89af17df40176))
+
 ## [0.5.1](https://github.com/dataswap/dataswapjs/compare/0.5.0...0.5.1) (2024-01-02)
 
 
