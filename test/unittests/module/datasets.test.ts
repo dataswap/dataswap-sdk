@@ -63,7 +63,7 @@ describe("datasetsmetadata", async () => {
      * Tests successful submission of dataset metadata.
      */
     it("submitMetadata", async function () {
-        let testKit = new SubmitMetadataTestKit(
+        const testKit = new SubmitMetadataTestKit(
             this.sharedData.datasetsAssertion!,
             this.sharedData.generator!,
             this.sharedData.contractsManager!,
@@ -76,7 +76,7 @@ describe("datasetsmetadata", async () => {
      * Tests approve metadata of Datasets.
      */
     it("approveMetadata", async function () {
-        let testKit = new ApproveDatasetMetadataTestKit(
+        const testKit = new ApproveDatasetMetadataTestKit(
             this.sharedData.datasetsAssertion!,
             this.sharedData.generator!,
             this.sharedData.contractsManager!,
@@ -89,7 +89,7 @@ describe("datasetsmetadata", async () => {
      * Tests reject metadata of Datasets.
      */
     it("rejectDatasetMetadata", async function () {
-        let testKit = new RejectDatasetMetadataTestKit(
+        const testKit = new RejectDatasetMetadataTestKit(
             this.sharedData.datasetsAssertion!,
             this.sharedData.generator!,
             this.sharedData.contractsManager!
@@ -101,7 +101,7 @@ describe("datasetsmetadata", async () => {
      * Tests reject dataset.
      */
     it("rejectDataset", async function () {
-        let testKit = new RejectDatasetTestKit(
+        const testKit = new RejectDatasetTestKit(
             this.sharedData.datasetsAssertion!,
             this.sharedData.generator!,
             this.sharedData.contractsManager!
@@ -113,7 +113,7 @@ describe("datasetsmetadata", async () => {
      * Tests approve dataset.
      */
     it("approveDataset", async function () {
-        let testKit = new ApproveDatasetTestKit(
+        const testKit = new ApproveDatasetTestKit(
             this.sharedData.datasetsAssertion!,
             this.sharedData.generator!,
             this.sharedData.contractsManager!,

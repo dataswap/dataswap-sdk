@@ -60,13 +60,13 @@ describe("datasetsProof", async () => {
      * Tests successful submission of dataset proof root.
      */
     it("submitDatasetProofRoot", async function () {
-        let testKit = new SubmitDatasetProofRootTestKit(
+        const testKit = new SubmitDatasetProofRootTestKit(
             this.sharedData.datasetsAssertion!,
             this.sharedData.generator!,
             this.sharedData.contractsManager!,
             this.sharedData.datasetHelper
         )
-        let datasetId = await testKit.run()
+        const datasetId = await testKit.run()
         this.sharedData.datasetId = datasetId
     })
 
@@ -74,30 +74,29 @@ describe("datasetsProof", async () => {
      * Tests successful submission of dataset proof.
      */
     it("submitDatasetProof", async function () {
-        let testKit = new SubmitDatasetProofTestKit(
+        const testKit = new SubmitDatasetProofTestKit(
             this.sharedData.datasetsAssertion!,
             this.sharedData.generator!,
             this.sharedData.contractsManager!,
             this.sharedData.datasetHelper
         )
 
-        let datasetId = this.sharedData.datasetId
-        datasetId = await testKit.run(datasetId)
-        this.sharedData.datasetId = datasetId
+        const datasetId = this.sharedData.datasetId
+        this.sharedData.datasetId = await testKit.run(datasetId)
     })
 
     /**
      * Tests submission of dataset proof completed.
      */
     it("submitDatasetProofCompleted", async function () {
-        let testKit = new SubmitDatasetProofCompletedTestKit(
+        const testKit = new SubmitDatasetProofCompletedTestKit(
             this.sharedData.datasetsAssertion!,
             this.sharedData.generator!,
             this.sharedData.contractsManager!,
             this.sharedData.datasetHelper
         )
 
-        let datasetId = this.sharedData.datasetId
+        const datasetId = this.sharedData.datasetId
         await testKit.run(datasetId)
     })
 })

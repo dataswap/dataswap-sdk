@@ -160,8 +160,8 @@ export class SubmitDatasetProofTestKit extends DatasetsTestBase {
     async action(datasetId: number): Promise<number> {
         try {
             let dataType = DataType.MappingFiles
-            let rootHash = this.generator.getProofRoot(datasetId, dataType)
-            let [leafHashes, leafSizes] = this.generator.getDatasetProof(
+            const rootHash = this.generator.getProofRoot(datasetId, dataType)
+            const [leafHashes, leafSizes] = this.generator.getDatasetProof(
                 rootHash!,
                 dataType,
                 true
@@ -178,11 +178,11 @@ export class SubmitDatasetProofTestKit extends DatasetsTestBase {
             )
 
             dataType = DataType.Source
-            let sourceRootHash = this.generator.getProofRoot(
+            const sourceRootHash = this.generator.getProofRoot(
                 datasetId,
                 dataType
             )
-            let [sourceLeafHashes, sourceLeafSizes] =
+            const [sourceLeafHashes, sourceLeafSizes] =
                 this.generator.getDatasetProof(sourceRootHash!, dataType, true)
 
             await this.assertion.submitDatasetProofAssertion(
@@ -241,7 +241,7 @@ export class SubmitDatasetProofCompletedTestKit extends DatasetsTestBase {
      */
     async optionalBefore(): Promise<number> {
         try {
-            let datasetId = await this.dependentTestKit.run()
+            const datasetId = await this.dependentTestKit.run()
             return datasetId
         } catch (error) {
             throw error
@@ -255,12 +255,12 @@ export class SubmitDatasetProofCompletedTestKit extends DatasetsTestBase {
      */
     async action(datasetId: number): Promise<number> {
         try {
-            let datacapCollateral = await handleEvmError(
+            const datacapCollateral = await handleEvmError(
                 this.contractsManager
                     .DatasetProofEvm()
                     .getDatasetAppendCollateral(datasetId)
             )
-            let auditorFees = await handleEvmError(
+            const auditorFees = await handleEvmError(
                 this.contractsManager
                     .DatasetProofEvm()
                     .getDatasetDataAuditorFeesRequirement(datasetId)

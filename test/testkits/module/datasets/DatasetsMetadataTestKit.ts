@@ -54,14 +54,15 @@ export class SubmitMetadataTestKit extends DatasetsTestBase {
      */
     async action(_: number): Promise<number> {
         try {
-            let datasetMetadata = this.generator.generateDatasetMetadata()
-            let clientId = 101
+            const datasetMetadata = this.generator.generateDatasetMetadata()
+            const clientId = 101
 
-            let datasetId = await this.assertion.submitDatasetMetadataAssertion(
-                process.env.DATASWAP_METADATASUBMITTER as string,
-                clientId,
-                datasetMetadata
-            )
+            const datasetId =
+                await this.assertion.submitDatasetMetadataAssertion(
+                    process.env.DATASWAP_METADATASUBMITTER as string,
+                    clientId,
+                    datasetMetadata
+                )
 
             return datasetId
         } catch (error) {
@@ -271,14 +272,13 @@ export class ApproveDatasetTestKit extends DatasetsTestBase {
      */
     async optionalBefore(): Promise<number> {
         try {
-            let datasetId = this.datasetsHelper.getWorkflowTargetId(
+            const datasetId = this.datasetsHelper.getWorkflowTargetId(
                 DatasetState.DatasetProofSubmitted
             )
             if (datasetId != 0) {
                 return datasetId
             }
             return await this.datasetsHelper.proofSubmittedDatasetWorkflow()
-            //return [datasetId]
         } catch (error) {
             throw error
         }
@@ -292,11 +292,11 @@ export class ApproveDatasetTestKit extends DatasetsTestBase {
     async action(datasetId: number): Promise<number> {
         try {
             // Getting the root hash and generating challenge proof
-            let rootHash = this.generator.getProofRoot(
+            const rootHash = this.generator.getProofRoot(
                 datasetId,
                 DataType.Source
             )
-            let [randomSeed, leaves, siblings, paths] =
+            const [randomSeed, leaves, siblings, paths] =
                 this.generator.generateDatasetChallengeProof(rootHash!)
 
             // Submitting challenge proofs
