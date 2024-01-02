@@ -118,16 +118,16 @@ export interface IFilplusAssertion {
 
     /**
      * Asserts whether a set of geolocation parameters complies with a rule.
-     * @param {number[]} regions - The regions for the rule.
-     * @param {number[]} countrys - The countries for the rule.
-     * @param {number[][]} citys - The cities for the rule.
+     * @param {bigint[]} regions - The regions for the rule.
+     * @param {bigint[]} countrys - The countries for the rule.
+     * @param {bigint[][]} citys - The cities for the rule.
      * @param {boolean} expectHas - The expected compliance status.
      * @returns {Promise<void>}
      */
     isCompliantRuleGeolocationAssertion(
-        regions: number[],
-        countrys: number[],
-        citys: number[][],
+        regions: bigint[],
+        countrys: bigint[],
+        citys: bigint[][],
         expectHas: boolean
     ): Promise<void>
 
@@ -148,18 +148,18 @@ export interface IFilplusAssertion {
      * Asserts whether the total replicas per dataset comply with a rule.
      * @param {string[][]} dataPreparers - The data preparers for the rule.
      * @param {string[][]} storageProviders - The storage providers for the rule.
-     * @param {number[]} regions - The regions for the rule.
-     * @param {number[]} countrys - The countries for the rule.
-     * @param {number[][]} citys - The cities for the rule.
+     * @param {bigint[]} regions - The regions for the rule.
+     * @param {bigint[]} countrys - The countries for the rule.
+     * @param {bigint[][]} citys - The cities for the rule.
      * @param {boolean} expectHas - The expected compliance status.
      * @returns {Promise<void>}
      */
     isCompliantRuleTotalReplicasPerDatasetAssertion(
         dataPreparers: string[][],
         storageProviders: string[][],
-        regions: number[],
-        countrys: number[],
-        citys: number[][],
+        regions: bigint[],
+        countrys: bigint[],
+        citys: bigint[][],
         expectHas: boolean
     ): Promise<void>
 

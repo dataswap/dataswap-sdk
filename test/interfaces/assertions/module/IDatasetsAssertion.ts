@@ -21,8 +21,10 @@
 import { DatasetState } from "../../../../src/shared/types/datasetType"
 import { DatasetMetadata } from "../../../../src/module/dataset/metadata/types"
 import { DataType } from "../../../../src/shared/types/dataType"
-import { DatasetRequirement } from "../../../../src/module/dataset/requirement/types"
-import { DatasetRequirements } from "../../../../src/shared/types/datasetType"
+import {
+    DatasetRequirement,
+    DatasetRequirements,
+} from "../../../../src/module/dataset/requirement/types"
 import { DatasetChallenge } from "../../../../src/module/dataset/challenge/types"
 
 export interface IDatasetsAssertion {

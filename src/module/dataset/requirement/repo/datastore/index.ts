@@ -17,3 +17,33 @@
  *  See the MIT License or the Apache License for the specific language governing permissions and
  *  limitations under the respective licenses.
  ********************************************************************************/
+
+import { DataStore } from "@unipackage/datastore"
+import { ValueFields } from "@unipackage/utils"
+import { DatasetRequirement } from "../../types"
+import { DatasetRequirementDocument, DatasetRequirementModel } from "./model"
+import { MongooseDataStore } from "@unipackage/datastore"
+
+/**
+ * Class representing a MongoDB datastore for DatasetRequirement entities.
+ * Extends the DataStore class with DatasetRequirement and DatasetRequirementDocument.
+ * @class
+ */
+export class DatasetRequirementMongoDatastore extends DataStore<
+    ValueFields<DatasetRequirement>,
+    DatasetRequirementDocument
+> {
+    /**
+     * Creates an instance of DatasetRequirementMongoDatastore.
+     * @param {string} uri - The MongoDB connection URI.
+     * @constructor
+     */
+    constructor(uri: string) {
+        super(
+            new MongooseDataStore<
+                ValueFields<DatasetRequirement>,
+                DatasetRequirementDocument
+            >(DatasetRequirementModel, uri)
+        )
+    }
+}
