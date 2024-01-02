@@ -94,7 +94,7 @@ const DatasetMetadataSchema = new Schema<DatasetMetadataDocument>({
  * @constant
  */
 const DatasetMetadataModel =
-    mongoose.models.Message ||
+    mongoose.models.DatasetMetadata ||
     mongoose.model<DatasetMetadataDocument>(
         "DatasetMetadata",
         DatasetMetadataSchema
