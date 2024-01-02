@@ -1,5 +1,17 @@
 
 
+# [0.5.0](https://github.com/dataswap/dataswapjs/compare/0.4.0...0.5.0) (2024-01-02)
+
+
+### Bug Fixes
+
+* 🐛 datasetmeta datastore issues ([dc8bbd8](https://github.com/dataswap/dataswapjs/commit/dc8bbd8732bda8b5254ce94b3f642978181579c1))
+
+
+### Features
+
+* 🎸 add test code for matchingsbids ([ffcc394](https://github.com/dataswap/dataswapjs/commit/ffcc39405253d2299be348c41d230366607ce62f)), closes [#38](https://github.com/dataswap/dataswapjs/issues/38)
+
 # [0.4.0](https://github.com/dataswap/dataswapjs/compare/0.3.0...0.4.0) (2024-01-02)
 
 
