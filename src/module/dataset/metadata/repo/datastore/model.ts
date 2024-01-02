@@ -61,7 +61,7 @@ const DatasetMetadataSchema = new Schema<DatasetMetadataDocument>({
         index: { unique: true },
     },
     sizeInBytes: {
-        type: Number,
+        type: BigInt,
         required: [true, "Please provide the sizeInBytes"],
     },
     isPublic: {
@@ -69,7 +69,7 @@ const DatasetMetadataSchema = new Schema<DatasetMetadataDocument>({
         required: [true, "Please provide the isPublic"],
     },
     version: {
-        type: Number,
+        type: BigInt,
         required: [true, "Please provide the version"],
     },
     datasetId: {
