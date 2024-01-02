@@ -1,5 +1,20 @@
 
 
+# [0.4.0](https://github.com/dataswap/dataswapjs/compare/0.3.0...0.4.0) (2024-01-02)
+
+
+### Bug Fixes
+
+* 🐛 compile issues ([bc73a2a](https://github.com/dataswap/dataswapjs/commit/bc73a2acc1f46eff7c645dd42940bb9382d920c9))
+* 🐛 compiles issue ([e8c535b](https://github.com/dataswap/dataswapjs/commit/e8c535b3d8cc77c04d5bd2b74416ceab36d6a4d3))
+
+
+### Features
+
+* 🎸 add get message sample when decode ([4cf1317](https://github.com/dataswap/dataswapjs/commit/4cf131782ee1ff78985cb11bba73eacd611b2aaf))
+* 🎸 add test code for matchings ([6093d6f](https://github.com/dataswap/dataswapjs/commit/6093d6f00d4533b62f99292c3519a300cd49a5f6)), closes [#6](https://github.com/dataswap/dataswapjs/issues/6)
+* 🎸 add test code for matchingstarget ([469f91e](https://github.com/dataswap/dataswapjs/commit/469f91ebadb802e2d53e5cf586a73ac6bcbd0d4c)), closes [#36](https://github.com/dataswap/dataswapjs/issues/36)
+
 # [0.3.0](https://github.com/dataswap/dataswapjs/compare/0.2.0...0.3.0) (2023-12-28)
 
 
