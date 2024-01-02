@@ -27,9 +27,11 @@ import { Entity } from "@unipackage/ddd"
 export interface DatasetRequirement {
     dataPreparers: string[]
     storageProviders: string[]
-    regionCode: number
-    countryCode: number
-    cityCodes: number[]
+    regionCode: bigint
+    countryCode: bigint
+    cityCodes: bigint[]
+    index?: number
+    datasetId?: number
 }
 
 /**
@@ -38,3 +40,39 @@ export interface DatasetRequirement {
  * @extends {Entity<DatasetRequirement>}
  */
 export class DatasetRequirement extends Entity<DatasetRequirement> {}
+
+/**
+ * Interface representing the requirements for a dataset, including data preparers, storage providers, and geographic codes.
+ */
+export interface DatasetRequirements {
+    dataPreparers: string[][]
+    storageProviders: string[][]
+    regions: bigint[]
+    countrys: bigint[]
+    citys: bigint[][]
+    amount: bigint
+    datasetId?: number
+}
+
+/**
+ * Class representing a dataset requirements entity.
+ * @class
+ * @extends {Entity<DatasetRequirements>}
+ */
+export class DatasetRequirements extends Entity<DatasetRequirements> {}
+
+/**
+ * Interface representing the requirements params for submitDatasetReplicaRequirements
+ */
+export interface SubmitRequirementsParams {
+    requirements: DatasetRequirement[]
+    amount: bigint
+    datasetId?: number
+}
+
+/**
+ * Class representing a SubmitRequirementsParams entity.
+ * @class
+ * @extends {Entity<SubmitRequirementsParams>}
+ */
+export class SubmitRequirementsParams extends Entity<SubmitRequirementsParams> {}

@@ -217,7 +217,13 @@ export function numberToBytes32(num: number): string {
  * @param matchingId The matching id.
  * @returns The message object.
  */
-export function createExpectMessage(method: string, params: object, returns: string, datasetId?: number, matchingId?: number): EvmOutput<DataswapMessage> {
+export function createExpectMessage(
+    method: string,
+    params: object,
+    returns: string,
+    datasetId?: number,
+    matchingId?: number
+): EvmOutput<DataswapMessage> {
     return {
         ok: true,
         data: {

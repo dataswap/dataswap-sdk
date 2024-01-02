@@ -25,8 +25,10 @@ import { DatasetMetadata } from "../../../src/module/dataset/metadata/types"
 import { DatasetState } from "../../../src/shared/types/datasetType"
 import { IDatasetsAssertion } from "../../interfaces/assertions/module/IDatasetsAssertion"
 import { equal } from "@unipackage/utils"
-import { DatasetRequirement } from "../../../src/module/dataset/requirement/types"
-import { DatasetRequirements } from "../../../src/shared/types/datasetType"
+import {
+    DatasetRequirement,
+    DatasetRequirements,
+} from "../../../src/module/dataset/requirement/types"
 import * as utils from "../../shared/utils"
 import { DataType } from "../../../src/shared/types/dataType"
 import { DatasetChallenge } from "../../../src/module/dataset/challenge/types"
@@ -395,23 +397,16 @@ export class DatasetsAssertion implements IDatasetsAssertion {
             )
         )
         expect(true).to.equal(
-            equal(
-                Number(requirement.data?.regionCode),
-                expectRequirement.regionCode
-            )
+            equal(requirement.data?.regionCode, expectRequirement.regionCode)
         )
         expect(true).to.equal(
-            equal(
-                Number(requirement.data?.countryCode),
-                expectRequirement.countryCode
-            )
+            equal(requirement.data?.countryCode, expectRequirement.countryCode)
         )
         expect(true).to.equal(
-            equal(
-                utils.convertToNumberArray(requirement.data!.cityCodes),
-                expectRequirement.cityCodes
-            )
+            equal(requirement.data!.cityCodes, expectRequirement.cityCodes)
         )
+        expect(expectRequirement.index).to.be.equal(index)
+        expect(expectRequirement.datasetId).to.be.equal(datasetId)
     }
 
     /**
@@ -459,9 +454,9 @@ export class DatasetsAssertion implements IDatasetsAssertion {
                         datasetId,
                         expectRequirements.dataPreparers,
                         expectRequirements.storageProviders,
-                        expectRequirements.regionCodes,
-                        expectRequirements.countryCodes,
-                        expectRequirements.cityCodes,
+                        expectRequirements.regions,
+                        expectRequirements.countrys,
+                        expectRequirements.citys,
                         expectAmount
                     )
             )
@@ -473,9 +468,11 @@ export class DatasetsAssertion implements IDatasetsAssertion {
             const expectRequirement = new DatasetRequirement({
                 dataPreparers: expectRequirements.dataPreparers[index],
                 storageProviders: expectRequirements.storageProviders[index],
-                regionCode: expectRequirements.regionCodes[index],
-                countryCode: expectRequirements.countryCodes[index],
-                cityCodes: expectRequirements.cityCodes[index],
+                regionCode: expectRequirements.regions[index],
+                countryCode: expectRequirements.countrys[index],
+                cityCodes: expectRequirements.citys[index],
+                index: index,
+                datasetId: datasetId,
             })
             await this.getDatasetReplicaRequirementAssertion(
                 datasetId,

@@ -23,7 +23,7 @@ import * as utils from "../../shared/utils"
 import { ethers } from "ethers"
 import { DatasetMetadata } from "../../../src/module/dataset/metadata/types/index"
 import { IGenerator } from "../../interfaces/setup/IGenerator"
-import { DatasetRequirements } from "../../../src/shared/types/datasetType"
+import { DatasetRequirements } from "../../../src/module/dataset/requirement/types"
 import { DataType } from "../../../src/shared/types/dataType"
 import { BidSelectionRule } from "../../../src/module/matching/metadata/types"
 import { MatchingMetadata } from "../../../src/module/matching/metadata/types"
@@ -55,10 +55,10 @@ function generateRequirementActors(
  * @param count - The count of elements in the array.
  * @returns An array of numbers.
  */
-function generateArray(count: number): number[] {
-    let ret: number[] = []
+function generateArray(count: number): bigint[] {
+    let ret: bigint[] = []
     for (let i = 0; i < count; i++) {
-        let rand = utils.getRandomInt(i * 1000, (i + 1) * 1000 - 1)
+        let rand = BigInt(utils.getRandomInt(i * 1000, (i + 1) * 1000 - 1))
         ret.push(rand)
     }
     return ret
@@ -73,12 +73,14 @@ function generateArray(count: number): number[] {
 function generateTwoDimensionalArray(
     count: number,
     elementCountInActor: number
-): number[][] {
-    let ret: number[][] = []
+): bigint[][] {
+    let ret: bigint[][] = []
     for (let i = 0; i < count; i++) {
-        let requirement: number[] = []
+        let requirement: bigint[] = []
         for (let j = 0; j < elementCountInActor; j++) {
-            let rand = utils.getRandomInt(j * 1000000, (j + 1) * 1000000 - 1)
+            const rand = BigInt(
+                utils.getRandomInt(j * 1000000, (j + 1) * 1000000 - 1)
+            )
             requirement.push(rand)
         }
         ret.push(requirement)
@@ -218,12 +220,13 @@ export class Generator implements IGenerator {
                 replicasCount,
                 elementCountInReplica
             ),
-            regionCodes: generateArray(replicasCount),
-            countryCodes: generateArray(replicasCount),
-            cityCodes: generateTwoDimensionalArray(
+            regions: generateArray(replicasCount),
+            countrys: generateArray(replicasCount),
+            citys: generateTwoDimensionalArray(
                 replicasCount,
                 elementCountInReplica
             ),
+            amount: BigInt(0),
         } as DatasetRequirements
         requirements.dataPreparers[0][0] = process.env
             .DATASWAP_PROOFSUBMITTER as string

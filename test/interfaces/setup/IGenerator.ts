@@ -19,7 +19,7 @@
  ********************************************************************************/
 
 import { DatasetMetadata } from "../../../src/module/dataset/metadata/types"
-import { DatasetRequirements } from "../../../src/shared/types/datasetType"
+import { DatasetRequirements } from "../../../src/module/dataset/requirement/types"
 import { DataType } from "../../../src/shared/types/dataType"
 import { MatchingMetadata } from "../../../src/module/matching/metadata/types"
 

@@ -100,9 +100,9 @@ interface FilplusCallEvm {
      * @param citys The geolocation citys
      */
     isCompliantRuleGeolocation(
-        regions: number[],
-        countrys: number[],
-        citys: number[][]
+        regions: bigint[],
+        countrys: bigint[],
+        citys: bigint[][]
     ): Promise<EvmOutput<boolean>>
 
     /**
@@ -126,9 +126,9 @@ interface FilplusCallEvm {
     isCompliantRuleTotalReplicasPerDataset(
         dataPreparers: string[][],
         storageProviders: string[][],
-        regions: number[],
-        countrys: number[],
-        citys: number[][]
+        regions: bigint[],
+        countrys: bigint[],
+        citys: bigint[][]
     ): Promise<EvmOutput<boolean>>
 
     /**

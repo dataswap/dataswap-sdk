@@ -152,27 +152,27 @@ describe("filplus", () => {
             this.sharedData.generator.generateDatasetRequirements(5, 1)
 
         await filplusAssertion.isCompliantRuleGeolocationAssertion(
-            requirements.regionCodes,
-            requirements.countryCodes,
-            requirements.cityCodes,
+            requirements.regions,
+            requirements.countrys,
+            requirements.citys,
             true
         )
         await filplusAssertion.isCompliantRuleGeolocationAssertion(
-            [1, 1, 1, 1, 1],
-            requirements.countryCodes,
-            requirements.cityCodes,
+            [BigInt(1), BigInt(1), BigInt(1), BigInt(1), BigInt(1)],
+            requirements.countrys,
+            requirements.citys,
             false
         )
         await filplusAssertion.isCompliantRuleGeolocationAssertion(
-            requirements.regionCodes,
-            [1, 1, 1, 1, 1],
-            requirements.cityCodes,
+            requirements.regions,
+            [BigInt(1), BigInt(1), BigInt(1), BigInt(1), BigInt(1)],
+            requirements.citys,
             false
         )
         await filplusAssertion.isCompliantRuleGeolocationAssertion(
-            requirements.regionCodes,
-            requirements.countryCodes,
-            [[1], [1], [1], [1], [1]],
+            requirements.regions,
+            requirements.countrys,
+            [[BigInt(1)], [BigInt(1)], [BigInt(1)], [BigInt(1)], [BigInt(1)]],
             false
         )
     })
@@ -187,33 +187,33 @@ describe("filplus", () => {
         await filplusAssertion.isCompliantRuleTotalReplicasPerDatasetAssertion(
             requirements.dataPreparers,
             requirements.storageProviders,
-            requirements.regionCodes,
-            requirements.countryCodes,
-            requirements.cityCodes,
+            requirements.regions,
+            requirements.countrys,
+            requirements.citys,
             true
         )
         await filplusAssertion.isCompliantRuleTotalReplicasPerDatasetAssertion(
             requirements.dataPreparers,
             requirements.storageProviders,
-            [1, 1, 1, 1, 1],
-            requirements.countryCodes,
-            requirements.cityCodes,
+            [BigInt(1), BigInt(1), BigInt(1), BigInt(1), BigInt(1)],
+            requirements.countrys,
+            requirements.citys,
             false
         )
         await filplusAssertion.isCompliantRuleTotalReplicasPerDatasetAssertion(
             requirements.dataPreparers,
             requirements.storageProviders,
-            requirements.regionCodes,
-            [1, 1, 1, 1, 1],
-            requirements.cityCodes,
+            requirements.regions,
+            [BigInt(1), BigInt(1), BigInt(1), BigInt(1), BigInt(1)],
+            requirements.citys,
             false
         )
         await filplusAssertion.isCompliantRuleTotalReplicasPerDatasetAssertion(
             requirements.dataPreparers,
             requirements.storageProviders,
-            requirements.regionCodes,
-            requirements.countryCodes,
-            [[1], [1], [1], [1], [1]],
+            requirements.regions,
+            requirements.countrys,
+            [[BigInt(1)], [BigInt(1)], [BigInt(1)], [BigInt(1)], [BigInt(1)]],
             false
         )
 
@@ -234,17 +234,17 @@ describe("filplus", () => {
         await filplusAssertion.isCompliantRuleTotalReplicasPerDatasetAssertion(
             dataPreparers,
             requirements.storageProviders,
-            requirements.regionCodes,
-            requirements.countryCodes,
-            requirements.cityCodes,
+            requirements.regions,
+            requirements.countrys,
+            requirements.citys,
             false
         )
         await filplusAssertion.isCompliantRuleTotalReplicasPerDatasetAssertion(
             requirements.dataPreparers,
             storageProviders,
-            requirements.regionCodes,
-            requirements.countryCodes,
-            requirements.cityCodes,
+            requirements.regions,
+            requirements.countrys,
+            requirements.citys,
             false
         )
     })

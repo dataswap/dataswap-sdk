@@ -30,14 +30,3 @@ export enum DatasetState {
     DatasetProofSubmitted, // Proof of dataset submitted.
     DatasetApproved, // Dataset has been approved.
 }
-
-/**
- * Interface representing the requirements for a dataset, including data preparers, storage providers, and geographic codes.
- */
-export interface DatasetRequirements {
-    dataPreparers: string[][]
-    storageProviders: string[][]
-    regionCodes: number[]
-    countryCodes: number[]
-    cityCodes: number[][]
-}

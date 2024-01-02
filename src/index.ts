@@ -22,13 +22,16 @@ export { Car, CarReplica } from "./core/carstore/types"
 export { Fund } from "./core/escrow/types"
 export { DataswapMessage } from "./message/types"
 export { DatasetMetadata } from "./module/dataset/metadata/types"
-export { DatasetRequirement } from "./module/dataset/requirement/types"
+export {
+    DatasetRequirement,
+    DatasetRequirements,
+} from "./module/dataset/requirement/types"
 export { DatasetChallenge } from "./module/dataset/challenge/types"
 export { MatchingMetadata } from "./module/matching/metadata/types"
 export { MatchingTarget } from "./module/matching/target/types"
 export { MatchingBids } from "./module/matching/bids/types"
 export { CarReplicaState } from "./shared/types/carstoreType"
-export { DatasetRequirements, DatasetState } from "./shared/types/datasetType"
+export { DatasetState } from "./shared/types/datasetType"
 export { DataType } from "./shared/types/dataType"
 export { EscrowOperateType, EscrowType } from "./shared/types/escrowType"
 export { EvmEngine, EvmEx, Wallet } from "./shared/types/evmEngineType"

@@ -27,7 +27,7 @@ import {
 } from "@unipackage/net"
 import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
 import { DataswapMessage } from "../../../../../message/types"
-import { DatasetRequirement } from "../../types"
+import { DatasetRequirement, DatasetRequirements } from "../../types"
 import { EvmEx } from "../../../../../shared/types/evmEngineType"
 
 /**
@@ -81,9 +81,9 @@ interface DatasetRequirementSendEvm {
         datasetId: number,
         dataPreparers: string[][],
         storageProviders: string[][],
-        regions: number[],
-        countrys: number[],
-        citys: number[][],
+        regions: bigint[],
+        countrys: bigint[],
+        citys: bigint[][],
         _amount: bigint,
         options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
@@ -110,6 +110,27 @@ export class DatasetRequirementOriginEvm extends EvmEx {}
  * Extended class for DatasetRequirementEvm with additional message decoding.
  */
 export class DatasetRequirementEvm extends DatasetRequirementOriginEvm {
+    async getDatasetReplicaRequirement(
+        datasetId: number,
+        index: number
+    ): Promise<EvmOutput<DatasetRequirement>> {
+        const metaRes = await super.getDatasetReplicaRequirement(
+            datasetId,
+            index
+        )
+        if (metaRes.ok && metaRes.data) {
+            return {
+                ok: true,
+                data: new DatasetRequirement({
+                    ...metaRes.data,
+                    index: index,
+                    datasetId: datasetId,
+                }),
+            }
+        }
+        return metaRes
+    }
+
     decodeMessage(msg: Message): EvmOutput<DataswapMessage> {
         const decoder = new ContractMessageDecoder(this)
         const decodeRes = decoder.decode(msg)
@@ -120,7 +141,26 @@ export class DatasetRequirementEvm extends DatasetRequirementOriginEvm {
         let result: DataswapMessage = decodeRes.data!.value() as DataswapMessage
         switch (decodeRes.data!.method) {
             case "submitDatasetReplicaRequirements":
-                result.datasetId = result.params.datasetId
+                const requirements = (
+                    result.params as DatasetRequirements
+                ).citys.map((citys, index) => {
+                    return {
+                        dataPreparers: result.params.dataPreparers[index],
+                        storageProviders: result.params.storageProviders[index],
+                        regionCode: result.params.regions[index],
+                        countryCode: result.params.countrys[index],
+                        cityCodes: result.params.citys[index],
+                        index,
+                        datasetId: Number(result.params.datasetId),
+                    } as DatasetRequirement
+                })
+                const params = {
+                    requirements: requirements,
+                    amount: result.params.amount,
+                    datasetId: Number(result.params.datasetId),
+                }
+                result.datasetId = Number(result.params.datasetId)
+                result.params = params
                 break
             default:
                 return {
