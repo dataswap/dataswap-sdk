@@ -12,6 +12,7 @@
     "isolatedModules": false,
     "experimentalDecorators": true,
     "jsx": "react",
+    "skipLibCheck": true,
     "incremental": false,
   },
   "include": [
