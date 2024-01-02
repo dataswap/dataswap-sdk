@@ -79,7 +79,7 @@ const DataswapMessageSchema = new Schema<DataswapMessageDocument>({
  * @constant
  */
 const DataswapMessageModel =
-    mongoose.models.Message ||
+    mongoose.models.DataswapMessage ||
     mongoose.model<DataswapMessageDocument>(
         "DataswapMessage",
         DataswapMessageSchema
