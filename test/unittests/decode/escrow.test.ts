@@ -52,7 +52,7 @@ describe("EscrowContractMessageDecoder", () => {
                 {
                     type: BigInt(0),
                     owner: "0x09C6DEE9DB5e7dF2b18283c0CFCf714fEDB692d7",
-                    id: BigInt(1),
+                    datasetId: 1,
                     amount: BigInt(100),
                 },
                 "0x",
@@ -83,7 +83,7 @@ describe("EscrowContractMessageDecoder", () => {
                 {
                     type: BigInt(4),
                     owner: "0x09C6DEE9DB5e7dF2b18283c0CFCf714fEDB692d7",
-                    id: BigInt(1),
+                    datasetId: 1,
                     amount: BigInt(100),
                 },
                 "0x",
@@ -112,7 +112,7 @@ describe("EscrowContractMessageDecoder", () => {
                 {
                     type: BigInt(4),
                     owner: "0xca942f0fd39185d971d1d58E151645e596FC7Eff",
-                    id: BigInt(1),
+                    datasetId: 1,
                     beneficiary: "0x09C6DEE9DB5e7dF2b18283c0CFCf714fEDB692d7",
                     amount: BigInt(100),
                 },
@@ -142,7 +142,7 @@ describe("EscrowContractMessageDecoder", () => {
                 {
                     type: BigInt(5),
                     owner: "0x09C6DEE9DB5e7dF2b18283c0CFCf714fEDB692d7",
-                    id: BigInt(1),
+                    datasetId: 1,
                     amount: BigInt(100),
                 },
                 "0x",

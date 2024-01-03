@@ -274,9 +274,12 @@ export class EscrowEvm extends EscrowOriginEvm {
                     result.params.type == EscrowType.DataPrepareFeeByProvider
                 ) {
                     result.matchingId = Number(result.params.id)
+                    result.params.matchingId = result.matchingId
                 } else {
                     result.datasetId = Number(result.params.id)
+                    result.params.datasetId = result.datasetId
                 }
+                delete result.params.id
                 break
             default:
                 return {
