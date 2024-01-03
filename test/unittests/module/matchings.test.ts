@@ -37,6 +37,7 @@ import {
     CloseMatchingTestKit,
 } from "../../testkits/module/matchings/MatchingsBidsTestKit"
 import { MatchingsAssertion } from "../../assertions/module/matchingsAssertion"
+import { DatasetState } from "../../../src/shared/types/datasetType"
 
 /**
  * Test suite for the Matchings functionality.

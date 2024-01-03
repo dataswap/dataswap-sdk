@@ -377,17 +377,17 @@ export class Generator implements IGenerator {
      * @param index - The index of the dataset.
      * @returns Information about bid selection rule, bidding delay, storage completion, threshold, and additional info.
      */
-    generatorMatchingInfo(datasetId: number, index: number): MatchingMetadata {
+    generatorMatchingInfo(datasetId: number, index: bigint): MatchingMetadata {
         return new MatchingMetadata({
             bidSelectionRule: BidSelectionRule.HighestBid,
-            biddingDelayBlockCount: 30,
-            biddingPeriodBlockCount: 20,
-            storageCompletionPeriodBlocks: 100000,
+            biddingDelayBlockCount: BigInt(30),
+            biddingPeriodBlockCount: BigInt(20),
+            storageCompletionPeriodBlocks: BigInt(100000),
             biddingThreshold: BigInt(1000000000),
-            createdBlockNumber: 0,
+            createdBlockNumber: BigInt(0),
             additionalInfo: "none",
             initiator: "",
-            pausedBlockCount: 0,
+            pausedBlockCount: BigInt(0),
             matchingId: 0,
         })
     }

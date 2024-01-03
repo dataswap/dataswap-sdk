@@ -17,3 +17,33 @@
  *  See the MIT License or the Apache License for the specific language governing permissions and
  *  limitations under the respective licenses.
  ********************************************************************************/
+
+import { DataStore } from "@unipackage/datastore"
+import { ValueFields } from "@unipackage/utils"
+import { MatchingMetadata } from "../../types"
+import { MatchingMetadataDocument, MatchingMetadataModel } from "./model"
+import { MongooseDataStore } from "@unipackage/datastore"
+
+/**
+ * Class representing a MongoDB datastore for MatchingMetadata entities.
+ * Extends the DataStore class with MatchingMetadata and MatchingMetadataDocument.
+ * @class
+ */
+export class MatchingMetadataMongoDatastore extends DataStore<
+    ValueFields<MatchingMetadata>,
+    MatchingMetadataDocument
+> {
+    /**
+     * Creates an instance of MatchingMetadataMongoDatastore.
+     * @param {string} uri - The MongoDB connection URI.
+     * @constructor
+     */
+    constructor(uri: string) {
+        super(
+            new MongooseDataStore<
+                ValueFields<MatchingMetadata>,
+                MatchingMetadataDocument
+            >(MatchingMetadataModel, uri)
+        )
+    }
+}

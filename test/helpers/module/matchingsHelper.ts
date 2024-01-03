@@ -154,14 +154,14 @@ export class MatchingsHelper extends BasicHelper implements IMatchingsHelper {
                     .getDatasetReplicasCount(datasetId)
             )
 
-            const replicaIndex = 0
+            const replicaIndex = BigInt(0)
             let matchingMetadata = this.generator.generatorMatchingInfo(
                 datasetId,
                 replicaIndex
             )
 
             if (dataType == DataType.Source) {
-                matchingMetadata.biddingPeriodBlockCount = 75
+                matchingMetadata.biddingPeriodBlockCount = BigInt(75)
             }
 
             // Creating a new matching
@@ -203,7 +203,7 @@ export class MatchingsHelper extends BasicHelper implements IMatchingsHelper {
                 datasetId,
                 dataType,
                 associatedMatchingId,
-                replicaIndex
+                Number(replicaIndex)
             )
             this.updateWorkflowTargetState(matchingId, MatchingState.None)
             return matchingId
