@@ -17,3 +17,31 @@
  *  See the MIT License or the Apache License for the specific language governing permissions and
  *  limitations under the respective licenses.
  ********************************************************************************/
+import { DataStore } from "@unipackage/datastore"
+import { ValueFields } from "@unipackage/utils"
+import { DatasetChallenge } from "../../types"
+import { DatasetChallengeDocument, DatasetChallengeModel } from "./model"
+import { MongooseDataStore } from "@unipackage/datastore"
+/**
+ * Class representing a MongoDB datastore for DatasetChallenge entities.
+ * Extends the DataStore class with DatasetChallenge and DatasetChallengeDocument.
+ * @class
+ */
+export class DatasetChallengeMongoDatastore extends DataStore<
+    ValueFields<DatasetChallenge>,
+    DatasetChallengeDocument
+> {
+    /**
+     * Creates an instance of DatasetChallengeMongoDatastore.
+     * @param {string} uri - The MongoDB connection URI.
+     * @constructor
+     */
+    constructor(uri: string) {
+        super(
+            new MongooseDataStore<
+                ValueFields<DatasetChallenge>,
+                DatasetChallengeDocument
+            >(DatasetChallengeModel, uri)
+        )
+    }
+}

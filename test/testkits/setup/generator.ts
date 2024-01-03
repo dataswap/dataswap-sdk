@@ -133,7 +133,7 @@ const sourcesFiles = {
     ],
 }
 const challengeProof = {
-    randomSeed: 1232131,
+    randomSeed: BigInt(1232131),
     leaves: [
         "0xadacd58b8058f1c749ad8763f5b8e46d69ff5ae98fd6e32277c5de50f5fdff2b",
     ],
@@ -159,12 +159,12 @@ const challengeProof = {
             "0x7ea8b1c4a9f6045bdff6ab808a9e38b4a6f267744f2a263dd67978ab0589fb32",
         ],
     ],
-    paths: [0x2e78d],
+    paths: [BigInt(0x2e78d)],
 }
 
 export class Generator implements IGenerator {
     private proofRootsMap: Map<number, Map<DataType, string>>
-    private nonce = 300
+    private nonce = 100
     constructor() {
         this.proofRootsMap = new Map<number, Map<DataType, string>>()
     }
@@ -272,7 +272,7 @@ export class Generator implements IGenerator {
         root: string,
         leafHashes: string[],
         leafSizes: number[],
-        mappingFilesAccessMethod: string
+        mappingFilesAccessMethod: string,
     ] {
         const isFakeData = fakedata !== undefined ? fakedata : false
 
@@ -340,10 +340,10 @@ export class Generator implements IGenerator {
     generateDatasetChallengeProof(
         root: string
     ): [
-        randomSeed: number,
+        randomSeed: bigint,
         leaves: string[],
         siblings: string[][],
-        paths: number[]
+        paths: bigint[],
     ] {
         //TODO :Need to automatically generate verifiable challenge proofs.
         return [
