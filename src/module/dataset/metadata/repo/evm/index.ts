@@ -233,10 +233,10 @@ export class DatasetMetadataEvm extends DatasetMetadataOriginEvm {
                 result.params.createdBlockNumber = result.height
                 result.params.datasetId = result.datasetId
                 break
-            case "approveDataset" ||
-                "approveDatasetMetadata" ||
-                "rejectDataset" ||
-                "rejectDatasetMetadata":
+            case "approveDataset":
+            case "approveDatasetMetadata":
+            case "rejectDataset":
+            case "rejectDatasetMetadata":
                 result.datasetId = result.params.datasetId
                 break
             default:

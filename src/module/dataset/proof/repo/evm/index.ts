@@ -29,7 +29,7 @@ import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
 import { DataswapMessage } from "../../../../../message/types"
 import { DataType } from "../../../../../shared/types/dataType"
 import { EvmEx } from "../../../../../shared/types/evmEngineType"
-
+import { DatasetProofMetadata, DatasetProofs } from "../../types"
 /**
  * Interface representing the Ethereum Virtual Machine (EVM) call structure for a dataset proof.
  * @interface
@@ -272,16 +272,24 @@ export class DatasetProofEvm extends DatasetProofOriginEvm {
 
         let result: DataswapMessage = decodeRes.data!.value() as DataswapMessage
         switch (decodeRes.data!.method) {
-            case "submitDatasetProofRoot" ||
-                "submitDatasetProof" ||
-                "submitDatasetProofCompleted" ||
-                "appendDatasetFunds":
-                result.datasetId = result.params.datasetId
+            case "submitDatasetProofRoot":
+            case "submitDatasetProof":
+                result.params.dataType = Number(
+                    result.params.dataType
+                ) as DataType
+                result.datasetId = Number(result.params.datasetId)
+                result.params.datasetId = result.datasetId
+                break
+            case "submitDatasetProofCompleted":
+            case "appendDatasetFunds":
+                result.datasetId = Number(result.params.datasetId)
+                result.params.datasetId = result.datasetId
                 break
             default:
+                console.log("method:", decodeRes.data!.method)
                 return {
                     ok: false,
-                    error: "Not support method!",
+                    error: "Not support method!%s",
                 }
         }
 
