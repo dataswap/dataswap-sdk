@@ -53,7 +53,7 @@ jobs:
 
             - name: deploy localnet
               run: |
-                  docker run -d -p 1234:1234  --name localnet dataswap/lotus-devnet:0.1.5
+                  docker run -d -p 1234:1234  --name localnet dataswap/lotus-devnet:0.1.7
 
             - name: Test
               env:
