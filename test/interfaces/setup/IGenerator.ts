@@ -109,7 +109,7 @@ export interface IGenerator {
      * @param index - Index of the dataset.
      * @returns An array containing bid selection rule, delay block counts, storage completion blocks, threshold, and additional information.
      */
-    generatorMatchingInfo(datasetId: number, index: number): MatchingMetadata
+    generatorMatchingInfo(datasetId: number, index: bigint): MatchingMetadata
 
     /**
      * Retrieves the proof root for a dataset ID and data type.

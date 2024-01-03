@@ -95,7 +95,7 @@ export class CreateMatchingsMetadataTestKit extends MatchingsTestBase {
                     )
             }
 
-            const replicaIndex = 0
+            const replicaIndex = BigInt(0)
             const matchingMetadata = this.generator.generatorMatchingInfo(
                 datasetId,
                 replicaIndex

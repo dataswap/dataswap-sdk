@@ -73,7 +73,7 @@ export interface IMatchingsAssertion {
     createMatchingAssertion(
         caller: string,
         datasetId: number,
-        replicaIndex: number,
+        replicaIndex: bigint,
         expectMatchingMetadata: MatchingMetadata
     ): Promise<number>
 

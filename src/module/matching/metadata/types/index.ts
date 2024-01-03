@@ -34,15 +34,17 @@ export enum BidSelectionRule {
  */
 export interface MatchingMetadata {
     bidSelectionRule: BidSelectionRule
-    biddingDelayBlockCount: number
-    biddingPeriodBlockCount: number
-    storageCompletionPeriodBlocks: number
+    biddingDelayBlockCount: bigint
+    biddingPeriodBlockCount: bigint
+    storageCompletionPeriodBlocks: bigint
     biddingThreshold: bigint
-    createdBlockNumber: number
     additionalInfo: string
-    initiator: string
-    pausedBlockCount: number
+    initiator?: string
+    createdBlockNumber?: bigint
+    pausedBlockCount?: bigint
+    replicaIndex?: bigint
     matchingId?: number
+    datasetId?: number
 }
 
 /**

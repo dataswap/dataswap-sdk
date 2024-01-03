@@ -91,18 +91,18 @@ export class MatchingsAssertion implements IMatchingsAssertion {
                 .MatchingMetadataEvm()
                 .getMatchingMetadata(matchingId)
         )
-        expect(Number(expectMatchingMetadata.bidSelectionRule)).to.be.equal(
-            Number(metadata.data.bidSelectionRule)
+        expect(expectMatchingMetadata.bidSelectionRule).to.be.equal(
+            metadata.data.bidSelectionRule
         )
         expect(expectMatchingMetadata.biddingDelayBlockCount).to.be.equal(
-            Number(metadata.data.biddingDelayBlockCount)
+            metadata.data.biddingDelayBlockCount
         )
         expect(expectMatchingMetadata.biddingPeriodBlockCount).to.be.equal(
-            Number(metadata.data.biddingPeriodBlockCount)
+            metadata.data.biddingPeriodBlockCount
         )
         expect(
             expectMatchingMetadata.storageCompletionPeriodBlocks
-        ).to.be.equal(Number(metadata.data.storageCompletionPeriodBlocks))
+        ).to.be.equal(metadata.data.storageCompletionPeriodBlocks)
         expect(expectMatchingMetadata.biddingThreshold).to.be.equal(
             metadata.data.biddingThreshold
         )
@@ -113,7 +113,7 @@ export class MatchingsAssertion implements IMatchingsAssertion {
             metadata.data.initiator
         )
         expect(expectMatchingMetadata.pausedBlockCount).to.be.equal(
-            Number(metadata.data.pausedBlockCount)
+            metadata.data.pausedBlockCount
         )
         expect(expectMatchingMetadata.matchingId).to.be.equal(
             metadata.data.matchingId
@@ -131,7 +131,7 @@ export class MatchingsAssertion implements IMatchingsAssertion {
     async createMatchingAssertion(
         caller: string,
         datasetId: number,
-        replicaIndex: number,
+        replicaIndex: bigint,
         expectMatchingMetadata: MatchingMetadata
     ): Promise<number> {
         expectMatchingMetadata.initiator = process.env

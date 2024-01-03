@@ -79,11 +79,11 @@ interface MatchingMetadataSendEvm {
     createMatching(
         datasetId: number,
         bidSelectionRule: BidSelectionRule,
-        biddingDelayBlockCount: number,
-        biddingPeriodBlockCount: number,
-        storageCompletionPeriodBlocks: number,
+        biddingDelayBlockCount: bigint,
+        biddingPeriodBlockCount: bigint,
+        storageCompletionPeriodBlocks: bigint,
         biddingThreshold: bigint,
-        replicaIndex: number,
+        replicaIndex: bigint,
         additionalInfo: string,
         options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
@@ -135,12 +135,16 @@ export class MatchingMetadataEvm extends MatchingMetadataOriginEvm {
     ): Promise<EvmOutput<MatchingMetadata>> {
         const metaRes = await super.getMatchingMetadata(matchingId)
         if (metaRes.ok && metaRes.data) {
+            let data = new MatchingMetadata({
+                ...metaRes.data,
+                matchingId: matchingId,
+            })
+            data.bidSelectionRule = Number(
+                data.bidSelectionRule
+            ) as BidSelectionRule
             return {
                 ok: true,
-                data: new MatchingMetadata({
-                    ...metaRes.data,
-                    matchingId: matchingId,
-                }),
+                data: data,
             }
         }
         return metaRes
@@ -157,6 +161,13 @@ export class MatchingMetadataEvm extends MatchingMetadataOriginEvm {
         switch (decodeRes.data!.method) {
             case "createMatching":
                 result.matchingId = Number(result.return)
+                result.params.datasetId = Number(result.params.datasetId)
+                result.params.bidSelectionRule = Number(
+                    result.params.bidSelectionRule
+                ) as BidSelectionRule
+                result.params.matchingId = result.matchingId
+                result.params.initiator = result.from
+                result.params.createdBlockNumber = BigInt(result.height)
                 break
             case "pauseMatching" || "resumeMatching":
                 result.matchingId = result.params.matchingId
