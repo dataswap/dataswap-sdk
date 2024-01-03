@@ -75,7 +75,7 @@ interface DatasetChallengeCallEvm {
     isDatasetChallengeProofDuplicate(
         datasetId: number,
         auditor: string,
-        randomSeed: number
+        randomSeed: bigint
     ): Promise<EvmOutput<boolean>>
 }
 
@@ -96,10 +96,10 @@ interface DatasetChallengeSendEvm {
      */
     submitDatasetChallengeProofs(
         datasetId: number,
-        randomSeed: number,
+        randomSeed: bigint,
         leaves: string[],
         siblings: string[][],
-        paths: number[],
+        paths: bigint[],
         options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
 }
@@ -128,6 +128,33 @@ export class DatasetChallengeOriginEvm extends EvmEx {}
  */
 export class DatasetChallengeEvm extends DatasetChallengeOriginEvm {
     /**
+     * Get proofs for a dataset challenge.
+     * @param datasetId - ID of the dataset.
+     * @param auditor - Auditor's address.
+     * @returns EvmOutput containing DatasetChallenge information.
+     */
+    async getDatasetChallengeProofs(
+        datasetId: number,
+        auditor: string
+    ): Promise<EvmOutput<DatasetChallenge>> {
+        const metaRes = await super.getDatasetChallengeProofs(
+            datasetId,
+            auditor
+        )
+        if (metaRes.ok && metaRes.data) {
+            return {
+                ok: true,
+                data: new DatasetChallenge({
+                    ...metaRes.data,
+                    datasetId: datasetId,
+                    auditor: auditor,
+                }),
+            }
+        }
+        return metaRes
+    }
+
+    /**
      * Decode a DataswapMessage from an EVM message.
      *
      * @param msg - Message to decode.
@@ -143,7 +170,9 @@ export class DatasetChallengeEvm extends DatasetChallengeOriginEvm {
         let result: DataswapMessage = decodeRes.data!.value() as DataswapMessage
         switch (decodeRes.data!.method) {
             case "submitDatasetChallengeProofs":
-                result.datasetId = result.params.datasetId
+                result.datasetId = Number(result.params.datasetId)
+                result.params.datasetId = result.datasetId
+                result.params.auditor = result.from
                 break
             default:
                 return {

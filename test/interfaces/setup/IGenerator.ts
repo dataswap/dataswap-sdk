@@ -61,7 +61,7 @@ export interface IGenerator {
         root: string,
         leafHashes: string[],
         leafSizes: number[],
-        mappingFilesAccessMethod: string
+        mappingFilesAccessMethod: string,
     ]
 
     /**
@@ -85,10 +85,10 @@ export interface IGenerator {
     generateDatasetChallengeProof(
         root: string
     ): [
-        randomSeed: number,
+        randomSeed: bigint,
         leaves: string[],
         siblings: string[][],
-        paths: number[]
+        paths: bigint[],
     ]
 
     /**

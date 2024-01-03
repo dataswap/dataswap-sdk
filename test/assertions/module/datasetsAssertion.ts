@@ -1010,16 +1010,9 @@ export class DatasetsAssertion implements IDatasetsAssertion {
                 .DatasetChallengeEvm()
                 .getDatasetChallengeProofs(datasetId, auditor)
         )
-        //TODO: https://github.com/dataswap/dataswapjs/issues/68
         expect(equal(expects.leaves, challengeProof.data.leaves)).to.be.true
-        expect(
-            equal(
-                expects.paths,
-                utils.convertToNumberArray(challengeProof.data.paths)
-            )
-        ).to.be.true
-        expect(equal(expects.siblingss, challengeProof.data.siblingss)).to.be
-            .true
+        expect(equal(expects.paths, challengeProof.data.paths)).to.be.true
+        expect(equal(expects.siblings, challengeProof.data.siblings)).to.be.true
     }
 
     /**
@@ -1069,7 +1062,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
     async isDatasetChallengeProofDuplicateAssertion(
         datasetId: number,
         auditor: string,
-        randomSeed: number,
+        randomSeed: bigint,
         expectRet: boolean
     ): Promise<void> {
         const ret = await handleEvmError(
@@ -1097,10 +1090,10 @@ export class DatasetsAssertion implements IDatasetsAssertion {
     async submitDatasetChallengeProofsAssertion(
         caller: string,
         datasetId: number,
-        randomSeed: number,
+        randomSeed: bigint,
         leaves: string[],
         siblings: string[][],
-        paths: number[]
+        paths: bigint[]
     ): Promise<void> {
         const count = await handleEvmError(
             this.contractsManager
@@ -1127,16 +1120,16 @@ export class DatasetsAssertion implements IDatasetsAssertion {
                     }
                 )
         )
-        //TODO: https://github.com/dataswap/dataswapjs/issues/68
-        //await this.getDatasetChallengeProofsAssertion(
-        //    datasetId,
-        //    caller,
-        //    new DatasetChallenge({
-        //        leaves: leaves,
-        //        siblings: siblings,
-        //        paths: paths
-        //    })
-        //)
+
+        await this.getDatasetChallengeProofsAssertion(
+            datasetId,
+            caller,
+            new DatasetChallenge({
+                leaves: leaves,
+                siblings: siblings,
+                paths: paths,
+            })
+        )
 
         await this.getDatasetChallengeProofsCountAssertion(
             datasetId,

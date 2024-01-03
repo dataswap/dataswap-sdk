@@ -513,7 +513,7 @@ export interface IDatasetsAssertion {
     isDatasetChallengeProofDuplicateAssertion(
         datasetId: number,
         auditor: string,
-        randomSeed: number,
+        randomSeed: bigint,
         expectRet: boolean
     ): Promise<void>
 
@@ -530,9 +530,9 @@ export interface IDatasetsAssertion {
     submitDatasetChallengeProofsAssertion(
         caller: string,
         datasetId: number,
-        randomSeed: number,
+        randomSeed: bigint,
         leaves: string[],
         siblings: string[][],
-        paths: number[]
+        paths: bigint[]
     ): Promise<void>
 }
