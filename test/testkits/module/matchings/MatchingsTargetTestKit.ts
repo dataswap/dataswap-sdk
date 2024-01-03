@@ -27,10 +27,7 @@ import { DataType } from "../../../../src/shared/types/dataType"
 import { MatchingState } from "../../../../src/module/matching/metadata/types"
 import { DatasetState } from "../../../../src/shared/types/datasetType"
 import { CreateMatchingsMetadataTestKit } from "./MatchingsTestKit"
-import {
-    convertToNumberArray,
-    splitNumbers,
-} from "../../../../src/shared/arrayUtils"
+import { splitBigInts } from "../../../../src/shared/arrayUtils"
 /**
  * Represents a test kit for create matching target.
  * Extends from MatchingsTestBase.
@@ -94,7 +91,7 @@ export class CreateMatchingTargetTestKit extends MatchingsTestBase {
                 datasetId,
                 DataType.MappingFiles,
                 0,
-                0
+                BigInt(0)
             )
             this.matchingsHelper.updateWorkflowTargetState(
                 matchingId,
@@ -186,9 +183,7 @@ export class PublishMatchingTestKit extends MatchingsTestBase {
             const carsIds = await handleEvmError(
                 this.contractsManager.CarstoreEvm().getCarsIds(cars.data)
             )
-            const { starts, ends } = splitNumbers(
-                convertToNumberArray(carsIds.data)
-            )
+            const { starts, ends } = splitBigInts(carsIds.data)
 
             // Publishes the in-progress matching
             await this.assertion.publishMatchingAssertion(

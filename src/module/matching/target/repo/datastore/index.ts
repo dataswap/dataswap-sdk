@@ -17,3 +17,33 @@
  *  See the MIT License or the Apache License for the specific language governing permissions and
  *  limitations under the respective licenses.
  ********************************************************************************/
+
+import { DataStore } from "@unipackage/datastore"
+import { ValueFields } from "@unipackage/utils"
+import { MatchingTarget } from "../../types"
+import { MatchingTargetDocument, MatchingTargetModel } from "./model"
+import { MongooseDataStore } from "@unipackage/datastore"
+
+/**
+ * Class representing a MongoDB datastore for MatchingTarget entities.
+ * Extends the DataStore class with MatchingTarget and MatchingTargetDocument.
+ * @class
+ */
+export class MatchingTargetMongoDatastore extends DataStore<
+    ValueFields<MatchingTarget>,
+    MatchingTargetDocument
+> {
+    /**
+     * Creates an instance of MatchingTargetMongoDatastore.
+     * @param {string} uri - The MongoDB connection URI.
+     * @constructor
+     */
+    constructor(uri: string) {
+        super(
+            new MongooseDataStore<
+                ValueFields<MatchingTarget>,
+                MatchingTargetDocument
+            >(MatchingTargetModel, uri)
+        )
+    }
+}

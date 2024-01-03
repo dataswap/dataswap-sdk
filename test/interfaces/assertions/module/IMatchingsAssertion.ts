@@ -143,7 +143,7 @@ export interface IMatchingsAssertion {
      */
     isMatchingContainsCarAssertion(
         matchingId: number,
-        id: number,
+        id: bigint,
         expectRet: boolean
     ): Promise<void>
 
@@ -156,7 +156,7 @@ export interface IMatchingsAssertion {
      */
     isMatchingContainsCarsAssertion(
         matchingId: number,
-        ids: number[],
+        ids: bigint[],
         expectRet: boolean
     ): Promise<void>
 
@@ -172,8 +172,8 @@ export interface IMatchingsAssertion {
      */
     isMatchingTargetValidAssertion(
         datasetId: number,
-        cars: number[],
-        size: number,
+        cars: bigint[],
+        size: bigint,
         dataType: DataType,
         associatedMappingFilesMatchingId: number,
         expectRet: boolean
@@ -221,7 +221,7 @@ export interface IMatchingsAssertion {
         expectDatasetId: number,
         expectDataType: DataType,
         expectAssociatedMappingFilesMatchingId: number,
-        expectReplicaIndex: number
+        expectReplicaIndex: bigint
     ): Promise<void>
 
     /**
@@ -238,8 +238,8 @@ export interface IMatchingsAssertion {
         caller: string,
         matchingId: number,
         datasetId: number,
-        expectCarsStarts: number[],
-        expectCarsEnds: number[],
+        expectCarsStarts: bigint[],
+        expectCarsEnds: bigint[],
         expectComplete: boolean
     ): Promise<void>
 

@@ -27,12 +27,13 @@ import { DataType } from "../../../../shared/types/dataType"
  */
 export interface MatchingTarget {
     datasetID: number
-    cars: number[]
-    size: number
+    cars: bigint[]
+    size: bigint
     dataType: DataType
     associatedMappingFilesMatchingID: number
-    replicaIndex: number
+    replicaIndex: bigint
     subsidy: bigint
+    complete?: boolean
     matchingId?: number
 }
 

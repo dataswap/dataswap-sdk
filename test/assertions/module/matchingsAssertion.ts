@@ -29,8 +29,8 @@ import { DataType } from "../../../src/shared/types/dataType"
 import { handleEvmError } from "../../shared/error"
 import { equal } from "@unipackage/utils"
 import {
+    mergeBigIntRangesToCompleteArray,
     convertToNumberArray,
-    mergeNumberRangesToCompleteArray,
 } from "../../../src/shared/arrayUtils"
 
 export class MatchingsAssertion implements IMatchingsAssertion {
@@ -273,35 +273,27 @@ export class MatchingsAssertion implements IMatchingsAssertion {
                 .getMatchingTarget(matchingId)
         )
         expect(expectMatchingTarget.datasetID).to.be.equal(
-            Number(matchingTarget.data.datasetID)
+            matchingTarget.data.datasetID
         )
-        expect(expectMatchingTarget.size).to.be.equal(
-            Number(matchingTarget.data.size)
-        )
+        expect(expectMatchingTarget.size).to.be.equal(matchingTarget.data.size)
         expect(expectMatchingTarget.dataType).to.be.equal(
-            Number(matchingTarget.data.dataType)
+            matchingTarget.data.dataType
         )
         expect(
             expectMatchingTarget.associatedMappingFilesMatchingID
-        ).to.be.equal(
-            Number(matchingTarget.data.associatedMappingFilesMatchingID)
-        )
+        ).to.be.equal(matchingTarget.data.associatedMappingFilesMatchingID)
         expect(expectMatchingTarget.subsidy).to.be.equal(
-            BigInt(matchingTarget.data.subsidy)
+            matchingTarget.data.subsidy
         )
         expect(expectMatchingTarget.replicaIndex).to.be.equal(
-            Number(matchingTarget.data.replicaIndex)
+            matchingTarget.data.replicaIndex
         )
 
-        expect(
-            equal(
-                expectMatchingTarget.cars,
-                convertToNumberArray(matchingTarget.data.cars)
-            )
-        ).to.be.true
+        expect(equal(expectMatchingTarget.cars, matchingTarget.data.cars)).to.be
+            .true
 
         expect(expectMatchingTarget.matchingId).to.be.equal(
-            Number(matchingTarget.data.matchingId)
+            matchingTarget.data.matchingId
         )
     }
 
@@ -314,7 +306,7 @@ export class MatchingsAssertion implements IMatchingsAssertion {
      */
     async isMatchingContainsCarAssertion(
         matchingId: number,
-        id: number,
+        id: bigint,
         expectRet: boolean
     ): Promise<void> {
         let ret = await handleEvmError(
@@ -334,7 +326,7 @@ export class MatchingsAssertion implements IMatchingsAssertion {
      */
     async isMatchingContainsCarsAssertion(
         matchingId: number,
-        ids: number[],
+        ids: bigint[],
         expectRet: boolean
     ): Promise<void> {
         let ret = await handleEvmError(
@@ -357,8 +349,8 @@ export class MatchingsAssertion implements IMatchingsAssertion {
      */
     async isMatchingTargetValidAssertion(
         datasetId: number,
-        cars: number[],
-        size: number,
+        cars: bigint[],
+        size: bigint,
         dataType: DataType,
         associatedMappingFilesMatchingId: number,
         expectRet: boolean
@@ -438,7 +430,7 @@ export class MatchingsAssertion implements IMatchingsAssertion {
         expectDatasetId: number,
         expectDataType: DataType,
         expectAssociatedMappingFilesMatchingId: number,
-        expectReplicaIndex: number
+        expectReplicaIndex: bigint
     ): Promise<void> {
         this.contractsManager.MatchingTargetEvm().getWallet().setDefault(caller)
         await handleEvmError(
@@ -456,7 +448,7 @@ export class MatchingsAssertion implements IMatchingsAssertion {
         let expectData = new MatchingTarget({
             datasetID: expectDatasetId,
             cars: [],
-            size: 0,
+            size: BigInt(0),
             dataType: expectDataType,
             associatedMappingFilesMatchingID:
                 expectAssociatedMappingFilesMatchingId,
@@ -483,16 +475,18 @@ export class MatchingsAssertion implements IMatchingsAssertion {
         caller: string,
         matchingId: number,
         datasetId: number,
-        expectCarsStarts: number[],
-        expectCarsEnds: number[],
+        expectCarsStarts: bigint[],
+        expectCarsEnds: bigint[],
         expectComplete: boolean
     ): Promise<void> {
-        const cars = mergeNumberRangesToCompleteArray(
+        const cars = mergeBigIntRangesToCompleteArray(
             expectCarsStarts,
             expectCarsEnds
         )
         const carsSize = await handleEvmError(
-            this.contractsManager.CarstoreEvm().getCarsSize(cars)
+            this.contractsManager
+                .CarstoreEvm()
+                .getCarsSize(convertToNumberArray(cars))
         )
         const target = await handleEvmError(
             this.contractsManager
@@ -503,9 +497,9 @@ export class MatchingsAssertion implements IMatchingsAssertion {
         await this.isMatchingTargetValidAssertion(
             datasetId,
             cars,
-            Number(carsSize.data),
-            Number(target.data.dataType) as DataType,
-            Number(target.data.associatedMappingFilesMatchingID),
+            carsSize.data,
+            target.data.dataType,
+            target.data.associatedMappingFilesMatchingID,
             true
         )
         this.contractsManager.MatchingTargetEvm().getWallet().setDefault(caller)
@@ -526,7 +520,7 @@ export class MatchingsAssertion implements IMatchingsAssertion {
             expectCarsStarts[0],
             true
         )
-        let expectIds = mergeNumberRangesToCompleteArray(
+        let expectIds = mergeBigIntRangesToCompleteArray(
             expectCarsStarts,
             expectCarsEnds
         )

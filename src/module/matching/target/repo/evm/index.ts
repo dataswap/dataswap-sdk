@@ -29,6 +29,7 @@ import { DataswapMessage } from "../../../../../message/types"
 import { MatchingTarget } from "../../types"
 import { DataType } from "../../../../../shared/types/dataType"
 import { EvmEx } from "../../../../../shared/types/evmEngineType"
+import { mergeBigIntRangesToCompleteArray } from "../../../../../shared/arrayUtils"
 
 /**
  * Interface for making Ethereum Virtual Machine (EVM) calls related to matching targets.
@@ -61,7 +62,7 @@ interface MatchingTargetCallEvm {
      */
     isMatchingContainsCar(
         matchingId: number,
-        id: number
+        id: bigint
     ): Promise<EvmOutput<boolean>>
     /**
      * Checks if multiple car hashes are present in a matching identified by its ID.
@@ -71,7 +72,7 @@ interface MatchingTargetCallEvm {
      */
     isMatchingContainsCars(
         matchingId: number,
-        ids: number[]
+        ids: bigint[]
     ): Promise<EvmOutput<boolean>>
     /**
      * Checks if a matching target is valid based on specified parameters.
@@ -84,8 +85,8 @@ interface MatchingTargetCallEvm {
      */
     isMatchingTargetValid(
         datasetId: number,
-        cars: number[],
-        size: number,
+        cars: bigint[],
+        size: bigint,
         dataType: DataType,
         associatedMappingFilesMatchingId: number
     ): Promise<EvmOutput<boolean>>
@@ -133,7 +134,7 @@ interface MatchingTargetSendEvm {
         datasetId: number,
         dataType: DataType,
         associatedMappingFilesMatchingId: number,
-        replicaIndex: number,
+        replicaIndex: bigint,
         options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
     /**
@@ -149,8 +150,8 @@ interface MatchingTargetSendEvm {
     publishMatching(
         matchingId: number,
         datasetId: number,
-        carsStarts: number[],
-        carsEnds: number[],
+        carsStarts: bigint[],
+        carsEnds: bigint[],
         complete: boolean,
         options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
@@ -186,12 +187,18 @@ export class MatchingTargetEvm extends MatchingTargetOriginEvm {
     ): Promise<EvmOutput<MatchingTarget>> {
         const metaRes = await super.getMatchingTarget(matchingId)
         if (metaRes.ok && metaRes.data) {
+            let data = new MatchingTarget({
+                ...metaRes.data,
+                matchingId: matchingId,
+            })
+            data.datasetID = Number(metaRes.data.datasetID)
+            data.dataType = Number(data.dataType) as DataType
+            data.associatedMappingFilesMatchingID = Number(
+                data.associatedMappingFilesMatchingID
+            )
             return {
                 ok: true,
-                data: new MatchingTarget({
-                    ...metaRes.data,
-                    matchingId: matchingId,
-                }),
+                data: data,
             }
         }
         return metaRes
@@ -206,9 +213,37 @@ export class MatchingTargetEvm extends MatchingTargetOriginEvm {
 
         let result: DataswapMessage = decodeRes.data!.value() as DataswapMessage
         switch (decodeRes.data!.method) {
-            case "createTarget" || "publishMatching":
-                result.datasetId = result.params.datasetId
-                result.matchingId = result.params.matchingId
+            case "createTarget":
+                {
+                    const params = {
+                        matchingId: Number(result.params.matchingId),
+                        datasetID: Number(result.params.datasetId),
+                        dataType: Number(result.params.dataType) as DataType,
+                        associatedMappingFilesMatchingID: Number(
+                            result.params.associatedMappingFilesMatchingID
+                        ),
+                        replicaIndex: result.params.replicaIndex,
+                    }
+                    result.params = params
+                    result.datasetId = Number(result.params.datasetID)
+                    result.matchingId = Number(result.params.matchingId)
+                }
+                break
+            case "publishMatching":
+                {
+                    const params = {
+                        matchingId: Number(result.params.matchingId),
+                        datasetID: Number(result.params.datasetId),
+                        cars: mergeBigIntRangesToCompleteArray(
+                            result.params.carsStarts,
+                            result.params.carsEnds
+                        ),
+                        complete: result.params.complete,
+                    }
+                    result.params = params
+                    result.datasetId = Number(result.params.datasetID)
+                    result.matchingId = Number(result.params.matchingId)
+                }
                 break
             case "initDependencies":
                 break
