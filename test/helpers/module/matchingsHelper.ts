@@ -26,14 +26,11 @@ import { IGenerator } from "../../interfaces/setup/IGenerator"
 import { IContractsManager } from "../../interfaces/setup/IContractsManater"
 import { IDatasetsHelper } from "../../interfaces/helper/module/IDatasetshelper"
 import { DataType } from "../../../src/shared/types/dataType"
+import { splitBigInts } from "../../../src/shared/arrayUtils"
 import { IMatchingsAssertion } from "../../interfaces/assertions/module/IMatchingsAssertion"
 import { MatchingsAssertion } from "../../assertions/module/matchingsAssertion"
 import { DatasetState } from "../../../src/shared/types/datasetType"
 import { BidSelectionRule } from "../../../src/module/matching/metadata/types"
-import {
-    convertToNumberArray,
-    splitNumbers,
-} from "../../../src/shared/arrayUtils"
 
 /**
  * Helper class for managing matchings in the system.
@@ -203,7 +200,7 @@ export class MatchingsHelper extends BasicHelper implements IMatchingsHelper {
                 datasetId,
                 dataType,
                 associatedMatchingId,
-                Number(replicaIndex)
+                replicaIndex
             )
             this.updateWorkflowTargetState(matchingId, MatchingState.None)
             return matchingId
@@ -260,9 +257,7 @@ export class MatchingsHelper extends BasicHelper implements IMatchingsHelper {
             const carsIds = await handleEvmError(
                 this.contractsManager.CarstoreEvm().getCarsIds(cars.data)
             )
-            const { starts, ends } = splitNumbers(
-                convertToNumberArray(carsIds.data)
-            )
+            const { starts, ends } = splitBigInts(carsIds.data)
 
             // Publishes the in-progress matching
             await this.assertion.publishMatchingAssertion(
