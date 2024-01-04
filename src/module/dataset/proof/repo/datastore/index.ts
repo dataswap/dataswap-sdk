@@ -19,12 +19,10 @@
  ********************************************************************************/
 import { DataStore } from "@unipackage/datastore"
 import { ValueFields } from "@unipackage/utils"
-import { DatasetProofMetadata, DatasetProofs } from "../../types"
+import { DatasetProofMetadata } from "../../types"
 import {
     DatasetProofMetadataDocument,
     DatasetProofMetadataSchema,
-    DatasetProofsDocument,
-    DatasetProofsSchema,
 } from "./model"
 import { MongooseDataStore, DatabaseConnection } from "@unipackage/datastore"
 
@@ -48,29 +46,6 @@ export class DatasetProofMetadataMongoDatastore extends DataStore<
                 ValueFields<DatasetProofMetadata>,
                 DatasetProofMetadataDocument
             >("DatasetProofMetadata", DatasetProofMetadataSchema, connection)
-        )
-    }
-}
-/**
- * Class representing a MongoDB datastore for DatasetProofs entities.
- * Extends the DataStore class with DatasetProofs and DatasetProofsDocument.
- * @class
- */
-export class DatasetProofsMongoDatastore extends DataStore<
-    ValueFields<DatasetProofs>,
-    DatasetProofsDocument
-> {
-    /**
-     * Creates an instance of DatasetProofsMongoDatastore.
-     * @param {string} uri - The MongoDB connection URI.
-     * @constructor
-     */
-    constructor(connection: DatabaseConnection) {
-        super(
-            new MongooseDataStore<
-                ValueFields<DatasetProofs>,
-                DatasetProofsDocument
-            >("DatasetProofs", DatasetProofsSchema, connection)
         )
     }
 }

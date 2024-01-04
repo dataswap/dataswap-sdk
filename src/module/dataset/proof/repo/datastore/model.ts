@@ -20,7 +20,7 @@
 
 import mongoose, { Schema, Document } from "mongoose"
 import { ValueFields } from "@unipackage/utils"
-import { DatasetProofMetadata, DatasetProofs } from "../../types"
+import { DatasetProofMetadata } from "../../types"
 
 /**
  * Interface representing a DatasetProofMetadataDocument, extending DatasetProofMetadata and Document.
@@ -38,10 +38,12 @@ const DatasetProofMetadataSchema = new Schema<DatasetProofMetadataDocument>({
     datasetId: {
         type: Number,
         required: [true, "Please provide the datasetId"],
+        index: true,
     },
     dataType: {
         type: Number,
         required: [true, "Please provide the datatype"],
+        index: true,
     },
     mappingFilesAccessMethod: {
         type: String,
@@ -51,50 +53,7 @@ const DatasetProofMetadataSchema = new Schema<DatasetProofMetadataDocument>({
         type: String,
         required: [true, "Please provide the root hash of dataset proof"],
     },
-})
+}).index({ datasetId: 1, dataType: 1 }, { unique: true })
 
 export { DatasetProofMetadataSchema }
 export type { DatasetProofMetadataDocument }
-
-/**
- * Interface representing a DatasetProofsDocument, extending DatasetProofs and Document.
- * @interface
- */
-interface DatasetProofsDocument extends ValueFields<DatasetProofs>, Document {}
-
-/**
- * Schema definition for the DatasetProofMetadata collection.
- * @constant
- */
-const DatasetProofsSchema = new Schema<DatasetProofsDocument>({
-    datasetId: {
-        type: Number,
-        required: [true, "Please provide the datasetId"],
-    },
-    dataType: {
-        type: Number,
-        required: [true, "Please provide the datatype"],
-    },
-    leafHashes: {
-        type: [String],
-        required: [true, "Please provide the hash of leaves"],
-    },
-    leafIndex: {
-        type: Number,
-        required: [true, "Please provide the index of leaves start"],
-    },
-    leafSizes: {
-        type: [Number],
-        required: [true, "Please provide the size of leaves"],
-    },
-    completed: {
-        type: Boolean,
-        required: [
-            true,
-            "Please provide the submission progress status for proots, whether it's completed or not",
-        ],
-    },
-})
-
-export { DatasetProofsSchema }
-export type { DatasetProofsDocument }
