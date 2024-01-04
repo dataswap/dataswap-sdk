@@ -40,11 +40,11 @@ const MatchingTargetSchema = new Schema<MatchingTargetDocument>({
         required: [true, "Please provide the datasetId"],
     },
     cars: {
-        type: [Number],
+        type: [BigInt],
         required: [true, "Please provide the cars"],
     },
     size: {
-        type: Number,
+        type: BigInt,
         required: [true, "Please provide the size of cars"],
     },
     dataType: {
@@ -59,11 +59,11 @@ const MatchingTargetSchema = new Schema<MatchingTargetDocument>({
         ],
     },
     replicaIndex: {
-        type: Number,
+        type: BigInt,
         required: [true, "Please provide the index of replica of dataset"],
     },
     subsidy: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: BigInt,
         required: [true, "Please provide the subsidy of target"],
     },
     complete: {
@@ -76,6 +76,7 @@ const MatchingTargetSchema = new Schema<MatchingTargetDocument>({
     matchingId: {
         type: Number,
         required: [true, "Please provide the matchingId"],
+        index: { unique: true },
     },
 })
 
