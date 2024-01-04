@@ -237,7 +237,8 @@ export class DatasetMetadataEvm extends DatasetMetadataOriginEvm {
             case "approveDatasetMetadata":
             case "rejectDataset":
             case "rejectDatasetMetadata":
-                result.datasetId = result.params.datasetId
+                result.datasetId = Number(result.params.datasetId)
+                result.params.datasetId = result.datasetId
                 break
             default:
                 return {

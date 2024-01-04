@@ -169,8 +169,10 @@ export class MatchingMetadataEvm extends MatchingMetadataOriginEvm {
                 result.params.initiator = result.from
                 result.params.createdBlockNumber = BigInt(result.height)
                 break
-            case "pauseMatching" || "resumeMatching":
-                result.matchingId = result.params.matchingId
+            case "pauseMatching":
+            case "resumeMatching":
+                result.matchingId = Number(result.params.matchingId)
+                result.params.matchingId = result.matchingId
                 break
             default:
                 return {
