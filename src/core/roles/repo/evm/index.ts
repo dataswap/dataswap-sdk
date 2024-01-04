@@ -155,6 +155,7 @@ export class RolesEvm extends RolesOriginEvm {
 
         let result: DataswapMessage = decodeRes.data!.value() as DataswapMessage
         switch (decodeRes.data!.method) {
+            case "grantRole":
             case "acceptOwnership":
             case "pendingOwner":
             case "renounceOwnership":
