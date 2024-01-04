@@ -484,9 +484,7 @@ export class MatchingsAssertion implements IMatchingsAssertion {
             expectCarsEnds
         )
         const carsSize = await handleEvmError(
-            this.contractsManager
-                .CarstoreEvm()
-                .getCarsSize(convertToNumberArray(cars))
+            this.contractsManager.CarstoreEvm().getCarsSize(cars)
         )
         const target = await handleEvmError(
             this.contractsManager

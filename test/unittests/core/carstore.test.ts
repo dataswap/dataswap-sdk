@@ -55,19 +55,23 @@ describe("carstore", () => {
      * Test case for the `getCar` method.
      */
     it("getCar", async function () {
-        let size = await handleEvmError(carstore.getCarSize(1))
-        let datasetId = await handleEvmError(carstore.getCarDatasetId(1))
-        let hash = await handleEvmError(carstore.getCarHash(1))
-        let replicasCount = await handleEvmError(
-            carstore.getCarReplicasCount(1)
+        let size = await handleEvmError(carstore.getCarSize(BigInt(1)))
+        let datasetId = await handleEvmError(
+            carstore.getCarDatasetId(BigInt(1))
         )
-        let matchingIds = await handleEvmError(carstore.getCarMatchingIds(1))
+        let hash = await handleEvmError(carstore.getCarHash(BigInt(1)))
+        let replicasCount = await handleEvmError(
+            carstore.getCarReplicasCount(BigInt(1))
+        )
+        let matchingIds = await handleEvmError(
+            carstore.getCarMatchingIds(BigInt(1))
+        )
 
         await carstoreAssertion.getCarAssertion(
-            1,
+            BigInt(1),
             new Car({
                 hash: hash.data,
-                id: 1,
+                id: BigInt(1),
                 datasetId: datasetId.data,
                 size: size.data,
                 replicasCount: replicasCount.data,
@@ -80,21 +84,26 @@ describe("carstore", () => {
      * Test case for the `getCarsId` method.
      */
     it("getCarsId", async function () {
-        let hashs = await handleEvmError(carstore.getCarsHashs([1, 2]))
-        let size = await handleEvmError(carstore.getCarSize(1))
-        size += await handleEvmError(carstore.getCarSize(2))
+        let hashs = await handleEvmError(
+            carstore.getCarsHashs([BigInt(1), BigInt(2)])
+        )
+        let size = await handleEvmError(carstore.getCarSize(BigInt(1)))
+        size += await handleEvmError(carstore.getCarSize(BigInt(2)))
 
         await Promise.all([
-            carstoreAssertion.getCarIdAssertion(hashs.data[0], 1),
+            carstoreAssertion.getCarIdAssertion(hashs.data[0], BigInt(1)),
             carstoreAssertion.getCarsIdsAssertion(hashs.data, [
                 BigInt(1),
                 BigInt(2),
             ]),
-            carstoreAssertion.hasCarAssertion(1, true),
+            carstoreAssertion.hasCarAssertion(BigInt(1), true),
             carstoreAssertion.hasCarHashAssertion(hashs.data[0], true),
-            carstoreAssertion.hasCarsAssertion([1, 2], true),
+            carstoreAssertion.hasCarsAssertion([BigInt(1), BigInt(2)], true),
             carstoreAssertion.hasCarsHashsAssertion(hashs.data, true),
-            carstoreAssertion.getCarsSizeAssertion([1, 2], size),
+            carstoreAssertion.getCarsSizeAssertion(
+                [BigInt(1), BigInt(2)],
+                size
+            ),
         ])
     })
 
@@ -111,14 +120,17 @@ describe("carstore", () => {
      */
     it.skip("getCarReplica", async function () {
         let claimId = await handleEvmError(
-            carstore.getCarReplicaFilecoinClaimId(1, 1)
+            carstore.getCarReplicaFilecoinClaimId(BigInt(1), 1)
         )
-        let state = await handleEvmError(carstore.getCarReplicaState(1, 1))
+        let state = await handleEvmError(
+            carstore.getCarReplicaState(BigInt(1), 1)
+        )
 
         await carstoreAssertion.getCarReplicaAssertion(
-            1,
+            BigInt(1),
             1,
             new CarReplica({
+                matchingId: 1,
                 filecoinClaimId: claimId.data,
                 state: state.data,
             })
@@ -130,6 +142,6 @@ describe("carstore", () => {
      * @Note: Depends on the environment, no need to run every time.
      */
     it.skip("hasCarReplicaAssertion", async function () {
-        await carstoreAssertion.hasCarReplicaAssertion(1, 1, true)
+        await carstoreAssertion.hasCarReplicaAssertion(BigInt(1), 1, true)
     })
 })
