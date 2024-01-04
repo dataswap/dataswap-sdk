@@ -21,8 +21,6 @@
 import { describe } from "mocha"
 import assert from "assert"
 import { expect } from "chai"
-import { DatasetMetadata } from "../../../src/module/dataset/metadata/types"
-import { ValueFields } from "@unipackage/utils"
 import { createExpectMessage, createTargetMessage } from "../../shared/utils"
 import { getContractsManager } from "../../fixtures"
 import { EscrowEvm } from "../../../src/core/escrow/repo/evm"
