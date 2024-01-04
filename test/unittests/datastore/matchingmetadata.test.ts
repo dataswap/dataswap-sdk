@@ -28,14 +28,18 @@ import { describe, it } from "mocha"
 const { expect } = chai
 
 const sampleMatchingMetadata: ValueFields<MatchingMetadata> = {
-    additionalInfo: "none",
     bidSelectionRule: BidSelectionRule.HighestBid,
     biddingDelayBlockCount: BigInt(30),
     biddingPeriodBlockCount: BigInt(20),
-    biddingThreshold: BigInt(1000000000),
-    datasetId: 1,
-    replicaIndex: BigInt(0),
     storageCompletionPeriodBlocks: BigInt(100000),
+    biddingThreshold: BigInt(1000000000),
+    additionalInfo: "none",
+    initiator: "f410fhuebctou6znv3xghmceeesoz2gxegxpoopw46jq",
+    createdBlockNumber: BigInt(100),
+    pausedBlockCount: BigInt(0),
+    replicaIndex: BigInt(0),
+    matchingId: 1,
+    datasetId: 1,
 }
 /**
  * Test suite for the Matchings contract MatchingMetadataMongoDatastore functionality.
@@ -64,7 +68,7 @@ describe("MatchingMetadataMongoDatastore", () => {
     })
 
     describe("save", () => {
-        // TODO: debug when ci
+        //@note: Testing individually is normal, but there are issues when integrated into the CI testing environment."
         it.skip("should save a MatchingMetadata to the datastore", async () => {
             const createRes = await datastore.CreateOrupdateByUniqueIndexes(
                 sampleMatchingMetadata
@@ -73,7 +77,7 @@ describe("MatchingMetadataMongoDatastore", () => {
             expect(createRes.ok).to.be.true
 
             const res = await datastore.find({
-                conditions: [{ matchingId: 1 }],
+                conditions: [{ datasetId: 1 }],
             })
             expect(res.ok).to.be.true
             expect(res.data).to.be.not.undefined
