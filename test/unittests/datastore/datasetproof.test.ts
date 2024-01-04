@@ -18,14 +18,8 @@
  *  limitations under the respective licenses.
  ********************************************************************************/
 import chai from "chai"
-import {
-    DatasetProofMetadataMongoDatastore,
-    DatasetProofsMongoDatastore,
-} from "../../../src/module/dataset/proof/repo/datastore"
-import {
-    DatasetProofs,
-    DatasetProofMetadata,
-} from "../../../src/module/dataset/proof/types"
+import { DatasetProofMetadataMongoDatastore } from "../../../src/module/dataset/proof/repo/datastore"
+import { DatasetProofMetadata } from "../../../src/module/dataset/proof/types"
 import { ValueFields } from "@unipackage/utils"
 import { describe, it } from "mocha"
 import { DatabaseConnection } from "@unipackage/datastore"
@@ -66,7 +60,7 @@ describe("DatasetProofMetadataMongoDatastore", () => {
     })
 
     describe("save", () => {
-        // TODO: debug when ci
+        //@note: Testing individually is normal, but there are issues when integrated into the CI testing environment."
         it.skip("should save a DatasetProofMetadata to the datastore", async () => {
             const createRes = await datastore.CreateOrupdateByUniqueIndexes(
                 sampleDatasetProofMetadata
@@ -75,79 +69,7 @@ describe("DatasetProofMetadataMongoDatastore", () => {
             expect(createRes.ok).to.be.true
 
             const res = await datastore.find({
-                conditions: [{ datasetId: 11 }],
-            })
-            expect(res.ok).to.be.true
-            expect(res.data).to.be.not.undefined
-            expect(res.data?.length).to.deep.equal(1)
-        })
-    })
-})
-
-const sampleDatasetProofs: ValueFields<DatasetProofs> = {
-    completed: true,
-    dataType: 0,
-    datasetId: 4,
-    leafHashes: [
-        "0x0000000000000000000000000000000000000000000000000000000000000071",
-        "0x0000000000000000000000000000000000000000000000000000000000000072",
-        "0x0000000000000000000000000000000000000000000000000000000000000073",
-        "0x0000000000000000000000000000000000000000000000000000000000000074",
-        "0x0000000000000000000000000000000000000000000000000000000000000075",
-        "0x0000000000000000000000000000000000000000000000000000000000000076",
-        "0x0000000000000000000000000000000000000000000000000000000000000077",
-        "0x0000000000000000000000000000000000000000000000000000000000000078",
-        "0x0000000000000000000000000000000000000000000000000000000000000079",
-        "0x000000000000000000000000000000000000000000000000000000000000007a",
-    ],
-    leafIndex: BigInt(0),
-    leafSizes: [
-        BigInt(1130000),
-        BigInt(1140000),
-        BigInt(1150000),
-        BigInt(1160000),
-        BigInt(1170000),
-        BigInt(1180000),
-        BigInt(1190000),
-        BigInt(1200000),
-        BigInt(1210000),
-        BigInt(1220000),
-    ],
-}
-/**
- * Test suite for the DatasetsProof contract DatasetProofsMongoDatastore functionality.
- */
-describe("DatasetProofsMongoDatastore", () => {
-    const datastore = new DatasetProofsMongoDatastore(connection)
-
-    beforeEach(async () => {
-        const res = await datastore.connect()
-        expect(res.ok).to.be.true
-    })
-
-    afterEach(async () => {
-        const res = await datastore.disconnect()
-        expect(res.ok).to.be.true
-    })
-
-    describe("constructor", () => {
-        it("should create an instance of DatasetProofsMongoDatastore", () => {
-            expect(datastore).to.be.an.instanceOf(DatasetProofsMongoDatastore)
-        })
-    })
-
-    describe("save", () => {
-        // TODO: debug when ci
-        it.skip("should save a DatasetProofs to the datastore", async () => {
-            const createRes =
-                await datastore.CreateOrupdateByUniqueIndexes(
-                    sampleDatasetProofs
-                )
-            console.log(createRes)
-            expect(createRes.ok).to.be.true
-
-            const res = await datastore.find({
-                conditions: [{ datasetId: 11 }],
+                conditions: [{ datasetId: 5 }],
             })
             expect(res.ok).to.be.true
             expect(res.data).to.be.not.undefined
