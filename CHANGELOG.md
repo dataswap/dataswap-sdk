@@ -1,5 +1,25 @@
 
 
+# [0.6.0](https://github.com/dataswap/dataswapjs/compare/0.5.2...0.6.0) (2024-01-04)
+
+
+### Bug Fixes
+
+* 🐛 add array utils ([b723917](https://github.com/dataswap/dataswapjs/commit/b7239179b9ae8aa35a92ae30ca130c089ab50148)), closes [#103](https://github.com/dataswap/dataswapjs/issues/103)
+* 🐛 Escrow decode params comparison expression ([3fdf891](https://github.com/dataswap/dataswapjs/commit/3fdf891d14dddc7fab179b0f3dbffca587402ef3)), closes [#92](https://github.com/dataswap/dataswapjs/issues/92)
+
+
+### Features
+
+* 🎸 add decode for datasets challenge proof ([2a6374e](https://github.com/dataswap/dataswapjs/commit/2a6374e1324305ec5efde838273a044ebf7a213b)), closes [#75](https://github.com/dataswap/dataswapjs/issues/75)
+* 🎸 add decode for datasets proof ([565749e](https://github.com/dataswap/dataswapjs/commit/565749e9d91de0df0147217f4f111d1f0e853fca)), closes [#50](https://github.com/dataswap/dataswapjs/issues/50)
+* 🎸 add decode for datasets requirement ([88a45d9](https://github.com/dataswap/dataswapjs/commit/88a45d9d2276935453c7e18c82e5cea8d764fe97)), closes [#46](https://github.com/dataswap/dataswapjs/issues/46)
+* 🎸 add decode for matching bids ([f4c952b](https://github.com/dataswap/dataswapjs/commit/f4c952b205695bcfb048c6e6f288d28910920d26)), closes [#76](https://github.com/dataswap/dataswapjs/issues/76)
+* 🎸 add decode for matchings metadata ([1861a22](https://github.com/dataswap/dataswapjs/commit/1861a224ace8f0ee3d6bf91da1c02d5d3f4ebd9c)), closes [#47](https://github.com/dataswap/dataswapjs/issues/47)
+* 🎸 add decode for matchings target ([7b787f7](https://github.com/dataswap/dataswapjs/commit/7b787f799d5ec13d80b7fcc531568cafa5945867)), closes [#48](https://github.com/dataswap/dataswapjs/issues/48)
+* 🎸 Add escrow datastore function ([3e2f41f](https://github.com/dataswap/dataswapjs/commit/3e2f41f061cb1b6e10cd18284b95723ac37601d9)), closes [#97](https://github.com/dataswap/dataswapjs/issues/97)
+* 🎸 update filecoin -> 1.6.0 ([864d5d6](https://github.com/dataswap/dataswapjs/commit/864d5d6bd29930b9c56d36a329b845626f48174d))
+
 ## [0.5.2](https://github.com/dataswap/dataswapjs/compare/0.5.1...0.5.2) (2024-01-02)
 
 
