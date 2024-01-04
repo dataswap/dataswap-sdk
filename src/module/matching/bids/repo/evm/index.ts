@@ -194,8 +194,11 @@ export class MatchingBidsEvm extends MatchingBidsOriginEvm {
 
         let result: DataswapMessage = decodeRes.data!.value() as DataswapMessage
         switch (decodeRes.data!.method) {
-            case "bidding" || "cancelMatching" || "closeMatching":
-                result.matchingId = result.params.matchingId
+            case "bidding":
+            case "cancelMatching":
+            case "closeMatching":
+                result.matchingId = Number(result.params.matchingId)
+                result.params.matchingId = result.matchingId
                 break
             case "initDependencies":
                 break
