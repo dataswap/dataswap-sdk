@@ -1,5 +1,16 @@
 
 
+# [0.8.0](https://github.com/dataswap/dataswapjs/compare/0.7.0...0.8.0) (2024-01-04)
+
+
+### Features
+
+* 🎸 CarReplica interface add matchingId property ([1d72741](https://github.com/dataswap/dataswapjs/commit/1d72741b67196bb43fbe32e6974fafcb1e7e37e7)), closes [#128](https://github.com/dataswap/dataswapjs/issues/128)
+* 🎸 datastore for datasetsrequirement ([5845be9](https://github.com/dataswap/dataswapjs/commit/5845be9def04795affb1ccb2d1f23a07cb4c2726)), closes [#106](https://github.com/dataswap/dataswapjs/issues/106)
+* 🎸 datastore for matchings target ([47cfb88](https://github.com/dataswap/dataswapjs/commit/47cfb88b1b56343d307d512edca18ea3ab2c5b3e)), closes [#107](https://github.com/dataswap/dataswapjs/issues/107)
+* 🎸 datastore for matchingss metadata ([2c2a398](https://github.com/dataswap/dataswapjs/commit/2c2a398fabeb277cc9013b02423e0c545e44ca0a)), closes [#108](https://github.com/dataswap/dataswapjs/issues/108)
+* 🎸 upgrade datastore to 2.0.0 ([d24b847](https://github.com/dataswap/dataswapjs/commit/d24b84792fe54440e2469ff98810db46a68514bf))
+
 # [0.7.0](https://github.com/dataswap/dataswapjs/compare/0.6.0...0.7.0) (2024-01-04)
 
 
