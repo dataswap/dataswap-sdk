@@ -40,24 +40,20 @@ const MatchingMetadataSchema = new Schema<MatchingMetadataDocument>({
         required: [true, "Please provide the bidSelectionRule"],
     },
     biddingDelayBlockCount: {
-        type: Number,
+        type: BigInt,
         required: [true, "Please provide the biddingDelayBlockCount"],
     },
     biddingPeriodBlockCount: {
-        type: Number,
+        type: BigInt,
         required: [true, "Please provide the biddingPeriodBlockCount"],
     },
     storageCompletionPeriodBlocks: {
-        type: Number,
+        type: BigInt,
         required: [true, "Please provide the storageCompletionPeriodBlocks"],
     },
     biddingThreshold: {
-        type: mongoose.Schema.Types.ObjectId,
+        type: String,
         required: [true, "Please provide the biddingThreshold"],
-    },
-    createdBlockNumber: {
-        type: Number,
-        required: [true, "Please provide the createdBlockNumber"],
     },
     additionalInfo: {
         type: String,
@@ -67,13 +63,26 @@ const MatchingMetadataSchema = new Schema<MatchingMetadataDocument>({
         type: String,
         required: [true, "Please provide the initiator"],
     },
+    createdBlockNumber: {
+        type: BigInt,
+        required: [true, "Please provide the createdBlockNumber"],
+    },
     pausedBlockCount: {
-        type: Number,
+        type: BigInt,
         required: [true, "Please provide the pausedBlockCount"],
+    },
+    replicaIndex: {
+        type: BigInt,
+        required: [true, "Please provide the replicaIndex"],
     },
     matchingId: {
         type: Number,
         required: [true, "Please provide the matchingId"],
+        index: { unique: true },
+    },
+    datasetId: {
+        type: Number,
+        required: [true, "Please provide the datasetId"],
     },
 })
 
