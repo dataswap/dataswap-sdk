@@ -28,29 +28,29 @@ import { CarReplicaState } from "../../../../src/shared/types/carstoreType"
 export interface ICarstoreAssertion {
     /**
      * Asserts the details of a car with a specific ID.
-     * @param {number} id - The ID of the car.
+     * @param {bigint} id - The ID of the car.
      * @param {Car} expectCar - The expected details of the car.
      * @returns {Promise<void>}
      */
-    getCarAssertion(id: number, expectCar: Car): Promise<void>
+    getCarAssertion(id: bigint, expectCar: Car): Promise<void>
 
     /**
      * Asserts the total size of multiple cars with specific IDs.
-     * @param {number[]} ids - The IDs of the cars.
-     * @param {number} expectSize - The expected total size of the cars.
+     * @param {bigint[]} ids - The IDs of the cars.
+     * @param {bigint} expectSize - The expected total size of the cars.
      * @returns {Promise<void>}
      */
-    getCarsSizeAssertion(ids: number[], expectSize: number): Promise<void>
+    getCarsSizeAssertion(ids: bigint[], expectSize: bigint): Promise<void>
 
     /**
      * Asserts the details of a car replica with specific IDs.
-     * @param {number} id - The ID of the car.
+     * @param {bigint} id - The ID of the car.
      * @param {number} matchingId - The ID of the matching car.
      * @param {CarReplica} expectCarReplica - The expected details of the car replica.
      * @returns {Promise<void>}
      */
     getCarReplicaAssertion(
-        id: number,
+        id: bigint,
         matchingId: number,
         expectCarReplica: CarReplica
     ): Promise<void>
@@ -58,15 +58,15 @@ export interface ICarstoreAssertion {
     /**
      * Asserts the ID of a car with a specific hash.
      * @param {string} hash - The hash of the car.
-     * @param {number} expectId - The expected ID of the car.
+     * @param {bigint} expectId - The expected ID of the car.
      * @returns {Promise<void>}
      */
-    getCarIdAssertion(hash: string, expectId: number): Promise<void>
+    getCarIdAssertion(hash: string, expectId: bigint): Promise<void>
 
     /**
      * Asserts the IDs of cars with specific hashes.
      * @param {string[]} hashs - The hashes of the cars to check.
-     * @param {number[]} expectIds - The expected IDs of the cars.
+     * @param {bigint[]} expectIds - The expected IDs of the cars.
      * @returns {Promise<void>}
      */
     getCarsIdsAssertion(hashs: string[], expectIds: bigint[]): Promise<void>
@@ -87,21 +87,21 @@ export interface ICarstoreAssertion {
 
     /**
      * Asserts the existence of a car with a specific ID.
-     * @param {number} id - The ID of the car.
+     * @param {bigint} id - The ID of the car.
      * @param {boolean} expectHas - The expected existence status.
      * @returns {Promise<void>}
      */
-    hasCarAssertion(id: number, expectHas: boolean): Promise<void>
+    hasCarAssertion(id: bigint, expectHas: boolean): Promise<void>
 
     /**
      * Asserts the existence of a car replica with specific IDs.
-     * @param {number} id - The ID of the car.
+     * @param {bigint} id - The ID of the car.
      * @param {number} matchingId - The ID of the matching car.
      * @param {boolean} expectHas - The expected existence status.
      * @returns {Promise<void>}
      */
     hasCarReplicaAssertion(
-        id: number,
+        id: bigint,
         matchingId: number,
         expectHas: boolean
     ): Promise<void>
@@ -116,9 +116,9 @@ export interface ICarstoreAssertion {
 
     /**
      * Asserts the existence of cars with specific IDs.
-     * @param {number[]} ids - The IDs of the cars to check.
+     * @param {bigint[]} ids - The IDs of the cars to check.
      * @param {boolean} expectHas - The expected existence status.
      * @returns {Promise<void>}
      */
-    hasCarsAssertion(ids: number[], expectHas: boolean): Promise<void>
+    hasCarsAssertion(ids: bigint[], expectHas: boolean): Promise<void>
 }

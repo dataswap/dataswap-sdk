@@ -29,10 +29,10 @@ import { CarReplicaState } from "../../../shared/types/carstoreType"
 export interface Car {
     hash: string // car hash
     datasetId: number // Index of approved dataset
-    size: number //car size
-    replicasCount: number // Replica count
+    size: bigint //car size
+    replicasCount: bigint // Replica count
     matchingIds: number[] // Matching Ids.
-    id: number // The id associated with the car.
+    id: bigint // The id associated with the car.
 }
 
 /**
@@ -40,8 +40,9 @@ export interface Car {
  * @interface
  */
 export interface CarReplica {
+    matchingId: number // The matchingId associated with the replica
     state: CarReplicaState // Current state of the replica
-    filecoinClaimId: number // ID of the Filecoin claim associated with the replica's storage
+    filecoinClaimId: bigint // ID of the Filecoin claim associated with the replica's storage
 }
 
 /**
@@ -52,10 +53,10 @@ export class Car extends Entity<Car> {
     constructor(data?: ValueFields<Car>) {
         super({
             hash: data?.hash || "",
-            id: data?.id || 0,
+            id: data?.id || BigInt(0),
             datasetId: data?.datasetId || 0,
-            size: data?.size || 0,
-            replicasCount: data?.replicasCount || 0,
+            size: data?.size || BigInt(0),
+            replicasCount: data?.replicasCount || BigInt(0),
             matchingIds: data?.matchingIds || [],
         })
     }
@@ -68,7 +69,8 @@ export class Car extends Entity<Car> {
 export class CarReplica extends Entity<CarReplica> {
     constructor(data?: ValueFields<CarReplica>) {
         super({
-            filecoinClaimId: data?.filecoinClaimId || 0,
+            matchingId: data?.matchingId || 0,
+            filecoinClaimId: data?.filecoinClaimId || BigInt(0),
             state: data?.state || CarReplicaState.None,
         })
     }
