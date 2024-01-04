@@ -27,12 +27,12 @@ const { expect } = chai
 
 const sampleMatchingTarget: ValueFields<MatchingTarget> = {
     datasetID: 1,
+    cars: [BigInt(1)],
+    size: BigInt(1111),
     dataType: DataType.MappingFiles,
     associatedMappingFilesMatchingID: 0,
     replicaIndex: BigInt(0),
     subsidy: BigInt(0),
-    cars: [BigInt(1)],
-    size: BigInt(1111),
     complete: true,
     matchingId: 2,
 }
@@ -60,7 +60,7 @@ describe("MatchingTargetMongoDatastore", () => {
 
     describe("save", () => {
         //@note: Testing individually is normal, but there are issues when integrated into the CI testing environment."
-        it.skip("should save a DatasetMetadata to the datastore", async () => {
+        it.skip("should save a MatchingTarget to the datastore", async () => {
             const createRes =
                 await datastore.CreateOrupdateByUniqueIndexes(
                     sampleMatchingTarget
