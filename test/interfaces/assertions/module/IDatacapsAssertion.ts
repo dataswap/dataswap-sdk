@@ -80,7 +80,7 @@ export interface IDatacapsAssertion {
      */
     getTotalDatacapAllocationRequirementAssertion(
         matchingId: number,
-        expectTotalDatacapRequirement: bigint 
+        expectTotalDatacapRequirement: bigint
     ): Promise<void>
 
     /**

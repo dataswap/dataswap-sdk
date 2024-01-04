@@ -28,7 +28,10 @@ import { MatchingBids } from "../../../src/module/matching/bids/types"
 import { DataType } from "../../../src/shared/types/dataType"
 import { handleEvmError } from "../../shared/error"
 import { equal } from "@unipackage/utils"
-import * as utils from "../../shared/utils"
+import {
+    convertToNumberArray,
+    mergeNumberRangesToCompleteArray,
+} from "../../../src/shared/arrayUtils"
 
 export class MatchingsAssertion implements IMatchingsAssertion {
     private contractsManager: IContractsManager
@@ -293,7 +296,7 @@ export class MatchingsAssertion implements IMatchingsAssertion {
         expect(
             equal(
                 expectMatchingTarget.cars,
-                utils.convertToNumberArray(matchingTarget.data.cars)
+                convertToNumberArray(matchingTarget.data.cars)
             )
         ).to.be.true
 
@@ -484,7 +487,7 @@ export class MatchingsAssertion implements IMatchingsAssertion {
         expectCarsEnds: number[],
         expectComplete: boolean
     ): Promise<void> {
-        const cars = utils.mergeRangesToCompleteArray(
+        const cars = mergeNumberRangesToCompleteArray(
             expectCarsStarts,
             expectCarsEnds
         )
@@ -523,7 +526,7 @@ export class MatchingsAssertion implements IMatchingsAssertion {
             expectCarsStarts[0],
             true
         )
-        let expectIds = utils.mergeRangesToCompleteArray(
+        let expectIds = mergeNumberRangesToCompleteArray(
             expectCarsStarts,
             expectCarsEnds
         )

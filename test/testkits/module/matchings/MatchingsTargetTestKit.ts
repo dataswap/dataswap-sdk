@@ -27,7 +27,10 @@ import { DataType } from "../../../../src/shared/types/dataType"
 import { MatchingState } from "../../../../src/module/matching/metadata/types"
 import { DatasetState } from "../../../../src/shared/types/datasetType"
 import { CreateMatchingsMetadataTestKit } from "./MatchingsTestKit"
-import * as utils from "../../../shared/utils"
+import {
+    convertToNumberArray,
+    splitNumbers,
+} from "../../../../src/shared/arrayUtils"
 /**
  * Represents a test kit for create matching target.
  * Extends from MatchingsTestBase.
@@ -183,8 +186,8 @@ export class PublishMatchingTestKit extends MatchingsTestBase {
             const carsIds = await handleEvmError(
                 this.contractsManager.CarstoreEvm().getCarsIds(cars.data)
             )
-            const { starts, ends } = utils.splitNumbers(
-                utils.convertToNumberArray(carsIds.data)
+            const { starts, ends } = splitNumbers(
+                convertToNumberArray(carsIds.data)
             )
 
             // Publishes the in-progress matching

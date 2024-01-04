@@ -23,7 +23,7 @@ import { IContractsManager } from "../../interfaces/setup/IContractsManater"
 import { expect } from "chai"
 import { handleEvmError } from "../../shared/error"
 import { equal } from "@unipackage/utils"
-import * as utils from "../../shared/utils"
+import { convertToNumberArray } from "../../../src/shared/arrayUtils"
 
 export class StoragesAssertion implements IStoragesAssertion {
     private contractsManager: IContractsManager
@@ -44,8 +44,7 @@ export class StoragesAssertion implements IStoragesAssertion {
         let cars = await handleEvmError(
             this.contractsManager.StoragesEvm().getStoredCars(matchingId)
         )
-        expect(equal(expectCarIds, utils.convertToNumberArray(cars.data))).to.be
-            .true
+        expect(equal(expectCarIds, convertToNumberArray(cars.data))).to.be.true
     }
 
     /**
