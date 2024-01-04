@@ -49,7 +49,7 @@ interface DatasetRequirementCallEvm {
      */
     getDatasetReplicaRequirement(
         datasetId: number,
-        index: number
+        index: bigint
     ): Promise<EvmOutput<DatasetRequirement>>
     /**
      *  Get dataset pre conditional
@@ -112,7 +112,7 @@ export class DatasetRequirementOriginEvm extends EvmEx {}
 export class DatasetRequirementEvm extends DatasetRequirementOriginEvm {
     async getDatasetReplicaRequirement(
         datasetId: number,
-        index: number
+        index: bigint
     ): Promise<EvmOutput<DatasetRequirement>> {
         const metaRes = await super.getDatasetReplicaRequirement(
             datasetId,
@@ -143,14 +143,14 @@ export class DatasetRequirementEvm extends DatasetRequirementOriginEvm {
             case "submitDatasetReplicaRequirements":
                 const requirements = (
                     result.params as DatasetRequirements
-                ).citys.map((citys, index) => {
+                ).citys.map((_, index) => {
                     return {
                         dataPreparers: result.params.dataPreparers[index],
                         storageProviders: result.params.storageProviders[index],
                         regionCode: result.params.regions[index],
                         countryCode: result.params.countrys[index],
                         cityCodes: result.params.citys[index],
-                        index,
+                        index: BigInt(index),
                         datasetId: Number(result.params.datasetId),
                     } as DatasetRequirement
                 })

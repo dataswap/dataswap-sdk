@@ -30,7 +30,7 @@ export interface DatasetRequirement {
     regionCode: bigint
     countryCode: bigint
     cityCodes: bigint[]
-    index?: number
+    index?: bigint
     datasetId?: number
 }
 

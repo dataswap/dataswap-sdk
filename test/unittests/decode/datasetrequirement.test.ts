@@ -58,7 +58,7 @@ describe("DatasetsRequirementMessageDecoder", () => {
                                 "0x253d87fD415cbE26f530CA401Ce8AA113C32f1f5",
                             ],
                             datasetId: 11,
-                            index: 0,
+                            index: BigInt(0),
                             regionCode: BigInt(585),
                             storageProviders: [
                                 "0xca942f0fd39185d971d1d58E151645e596FC7Eff",
@@ -79,7 +79,7 @@ describe("DatasetsRequirementMessageDecoder", () => {
                                 "0x192b12ff82304dA9E5D37B425755757d647a2b31",
                             ],
                             datasetId: 11,
-                            index: 1,
+                            index: BigInt(1),
                             regionCode: BigInt(1094),
                             storageProviders: [
                                 "0x184Aca59cA6724D3ea7D347FCec3d3f6B71E996c",
@@ -100,7 +100,7 @@ describe("DatasetsRequirementMessageDecoder", () => {
                                 "0x4681Ea9e8097d149cD12C048A942124D3BCE1dcF",
                             ],
                             datasetId: 11,
-                            index: 2,
+                            index: BigInt(2),
                             regionCode: BigInt(2763),
                             storageProviders: [
                                 "0xaCd80C6A5839e4d80748916870A2f596ae052777",
@@ -121,7 +121,7 @@ describe("DatasetsRequirementMessageDecoder", () => {
                                 "0xB641A97f2F9da332EE74af96d2F701BA639608A2",
                             ],
                             datasetId: 11,
-                            index: 3,
+                            index: BigInt(3),
                             regionCode: BigInt(3474),
                             storageProviders: [
                                 "0x0d86402Ee34ff4cEf2051B815267d408f46e4fbB",
@@ -142,7 +142,7 @@ describe("DatasetsRequirementMessageDecoder", () => {
                                 "0xB8DF85865D0268c1C927EF0Eb7C3d54f034BBBE1",
                             ],
                             datasetId: 11,
-                            index: 4,
+                            index: BigInt(4),
                             regionCode: BigInt(4211),
                             storageProviders: [
                                 "0xE22211411a799A2196f5D6E49Cc9930B5604F1d2",
