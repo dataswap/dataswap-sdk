@@ -1,5 +1,17 @@
 
 
+# [0.7.0](https://github.com/dataswap/dataswapjs/compare/0.6.0...0.7.0) (2024-01-04)
+
+
+### Bug Fixes
+
+* 🐛 Correct parsing issues with datasetId and matchingId ([f4f873a](https://github.com/dataswap/dataswapjs/commit/f4f873aa8f312e2c2d0d5f1463908380363235fb)), closes [#116](https://github.com/dataswap/dataswapjs/issues/116)
+
+
+### Features
+
+* 🎸 upgrade datastore to 1.0.0 ([84d458a](https://github.com/dataswap/dataswapjs/commit/84d458a138b9dd06661203b2a89d52ffc3c95e99))
+
 # [0.6.0](https://github.com/dataswap/dataswapjs/compare/0.5.2...0.6.0) (2024-01-04)
 
 

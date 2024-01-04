@@ -1,6 +1,6 @@
 {
   "name": "@dataswapjs/dataswapjs",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "dataswap sdk",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
