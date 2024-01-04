@@ -44,24 +44,25 @@ const DatasetRequirementSchema = new Schema<DatasetRequirementDocument>({
         required: [true, "Please provide the storageProviders"],
     },
     regionCode: {
-        type: Number,
+        type: BigInt,
         required: [true, "Please provide the region code"],
     },
     countryCode: {
-        type: Number,
+        type: BigInt,
         required: [true, "Please provide the country code"],
     },
     cityCodes: {
-        type: [Number],
+        type: [BigInt],
         required: [true, "Please provide the city codes"],
     },
     index: {
-        type: Number,
+        type: BigInt,
         required: [true, "Please provide the index of the requirement"],
     },
     datasetId: {
         type: Number,
         required: [true, "Please provide the datasetId"],
+        index: { unique: true },
     },
 })
 
@@ -70,7 +71,7 @@ const DatasetRequirementSchema = new Schema<DatasetRequirementDocument>({
  * @constant
  */
 const DatasetRequirementModel =
-    mongoose.models.Message ||
+    mongoose.models.DatasetRequirement ||
     mongoose.model<DatasetRequirementDocument>(
         "DatasetRequirement",
         DatasetRequirementSchema

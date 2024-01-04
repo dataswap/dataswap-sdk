@@ -37,7 +37,7 @@ const sampleDatasetRequirements: ValueFields<DatasetRequirement> = {
     regionCode: BigInt(585),
     countryCode: BigInt(517),
     cityCodes: [BigInt(202186), BigInt(1302254), BigInt(2236269)],
-    index: 0,
+    index: BigInt(0),
     datasetId: 11,
 }
 
@@ -69,7 +69,7 @@ describe("DatasetRequirementsMongoDatastore", () => {
     })
 
     describe("save", () => {
-        // TODO: debug when ci
+        //@note: Testing individually is normal, but there are issues when integrated into the CI testing environment."
         it.skip("should save a DatasetRequirements to the datastore", async () => {
             const createRes = await datastore.CreateOrupdateByUniqueIndexes(
                 sampleDatasetRequirements

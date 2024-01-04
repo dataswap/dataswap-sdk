@@ -377,7 +377,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
      */
     async getDatasetReplicaRequirementAssertion(
         datasetId: number,
-        index: number,
+        index: bigint,
         expectRequirement: DatasetRequirement
     ): Promise<void> {
         const requirement = await handleEvmError(
@@ -472,12 +472,12 @@ export class DatasetsAssertion implements IDatasetsAssertion {
                 regionCode: expectRequirements.regions[index],
                 countryCode: expectRequirements.countrys[index],
                 cityCodes: expectRequirements.citys[index],
-                index: index,
+                index: BigInt(index),
                 datasetId: datasetId,
             })
             await this.getDatasetReplicaRequirementAssertion(
                 datasetId,
-                index,
+                BigInt(index),
                 expectRequirement
             )
 

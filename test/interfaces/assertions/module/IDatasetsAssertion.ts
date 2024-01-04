@@ -200,7 +200,7 @@ export interface IDatasetsAssertion {
      */
     getDatasetReplicaRequirementAssertion(
         datasetId: number,
-        index: number,
+        index: bigint,
         expectRequirement: DatasetRequirement
     ): Promise<void>
 
