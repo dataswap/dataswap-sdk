@@ -41,9 +41,9 @@ describe("DatasetChallengeMessageDecoder", () => {
          * Test case for submitDatasetChallengeProofs decode functionality.
          */
         it("submitDatasetChallengeProofs should ok", async function (this: Context) {
-            const expectDecodeResout = createExpectMessage(
-                "submitDatasetChallengeProofs",
-                {
+            const expectDecodeResout = createExpectMessage({
+                method: "submitDatasetChallengeProofs",
+                params: {
                     auditor: "f410fcwzis33wz3sofrlh466gog5xahlthgzqezasapy",
                     datasetId: 1,
                     leaves: [
@@ -74,13 +74,13 @@ describe("DatasetChallengeMessageDecoder", () => {
                         ],
                     ],
                 },
-                "0x",
-                1
-            )
-            const message = createTargetMessage(
-                "WQPEV8owTwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASzQMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa2s1YuAWPHHSa2HY/W45G1p/1rpj9bjInfF3lD1/f8rAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAS67H1PZG3dx3b57x3Wr1vG7iWeModoSevoTzXm9LeQxHLrH9jZ/0iVxH1nB1zxFX/YyEuDn19ff9DByFjrejqH0xxxXrzrAo4nLXJ+/io8V2rL9nu46PpbKnef9jb4u8ImE52jJI3azIvAxIZh81/PYqmuUGsdti9jWwpMJLsNTt/QYjszFC+3RTzIcBQHHouqczYwIWYyd0JAYIha3rsPeVUvdXAA+goVlcH9AlHtcp93etYi4Jan0Bfc2NyiZ4C3DfQ8s8Zs3pL2ZxlCD+hsKBgbFxCM+lJarf9rCb8tzmiIRV5QtiK1D5z+6/AlU8G0moXZTqeKtagtEel2h78PVE1vFLIE0MoXhLojcxKq3XTGwdmZVUC3qlSvZDD23kQH/65czXCYVxVlzgRWIB2YeHu6Ce9bH9xAHSYW9W2tDaLH6MXwhomMF+EUw+TVB/AK6JCNrxKdL4EsfYYbzlOPrrIvQHXri53pzwlT4UQlRTQ0Beo4B+8WjeB4YFfzIYUGYgkswdMYDx4oxu1piwTWkWNXuZ7G/yPHFLmwnEZwje87FrA53WSgvmtAEsmEjSPg8wc7ukFj4SpRY/LNw6ZJWrCy4eilpByKl+CyOyOZ47943wxPEcRMmw4/ctjvXMg735zztruR8HnLR4zMYvDiXJ+uwu2//A6Jas+1GgqTimcUHpKVtHfR/gZbcckTp6LetEONTSmW1C9kMaaslu1IX6oscSp9gRb3/argIqeOLSm8md0TyomPdZ5eKsFifsyAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALnjQ==",
-                "QA=="
-            )
+                returns: "0x",
+                datasetId: 1,
+            })
+            const message = createTargetMessage({
+                params: "WQPEV8owTwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAASzQMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa2s1YuAWPHHSa2HY/W45G1p/1rpj9bjInfF3lD1/f8rAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAS67H1PZG3dx3b57x3Wr1vG7iWeModoSevoTzXm9LeQxHLrH9jZ/0iVxH1nB1zxFX/YyEuDn19ff9DByFjrejqH0xxxXrzrAo4nLXJ+/io8V2rL9nu46PpbKnef9jb4u8ImE52jJI3azIvAxIZh81/PYqmuUGsdti9jWwpMJLsNTt/QYjszFC+3RTzIcBQHHouqczYwIWYyd0JAYIha3rsPeVUvdXAA+goVlcH9AlHtcp93etYi4Jan0Bfc2NyiZ4C3DfQ8s8Zs3pL2ZxlCD+hsKBgbFxCM+lJarf9rCb8tzmiIRV5QtiK1D5z+6/AlU8G0moXZTqeKtagtEel2h78PVE1vFLIE0MoXhLojcxKq3XTGwdmZVUC3qlSvZDD23kQH/65czXCYVxVlzgRWIB2YeHu6Ce9bH9xAHSYW9W2tDaLH6MXwhomMF+EUw+TVB/AK6JCNrxKdL4EsfYYbzlOPrrIvQHXri53pzwlT4UQlRTQ0Beo4B+8WjeB4YFfzIYUGYgkswdMYDx4oxu1piwTWkWNXuZ7G/yPHFLmwnEZwje87FrA53WSgvmtAEsmEjSPg8wc7ukFj4SpRY/LNw6ZJWrCy4eilpByKl+CyOyOZ47943wxPEcRMmw4/ctjvXMg735zztruR8HnLR4zMYvDiXJ+uwu2//A6Jas+1GgqTimcUHpKVtHfR/gZbcckTp6LetEONTSmW1C9kMaaslu1IX6oscSp9gRb3/argIqeOLSm8md0TyomPdZ5eKsFifsyAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALnjQ==",
+                returns: "QA==",
+            })
 
             const decodedMessage = getContractsManager()
                 .DatasetChallengeEvm()

@@ -41,20 +41,19 @@ describe("MatchingsBidsMessageDecoder", () => {
          * Test case for bidding decode functionality.
          */
         it("bidding should ok", async function (this: Context) {
-            const expectDecodeResout = createExpectMessage(
-                "bidding",
-                {
+            const expectDecodeResout = createExpectMessage({
+                method: "bidding",
+                params: {
                     amount: BigInt(1000000010),
                     matchingId: 2,
                 },
-                "0x",
-                undefined,
-                2
-            )
-            const message = createTargetMessage(
-                "WESW/XewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAO5rKCg==",
-                "QA=="
-            )
+                returns: "0x",
+                matchingId: 2,
+            })
+            const message = createTargetMessage({
+                params: "WESW/XewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAO5rKCg==",
+                returns: "QA==",
+            })
 
             const decodedMessage = getContractsManager()
                 .MatchingBidsEvm()
@@ -71,19 +70,18 @@ describe("MatchingsBidsMessageDecoder", () => {
          * Test case for closeMatching decode functionality.
          */
         it("closeMatching should ok", async function (this: Context) {
-            const expectDecodeResout = createExpectMessage(
-                "closeMatching",
-                {
+            const expectDecodeResout = createExpectMessage({
+                method: "closeMatching",
+                params: {
                     matchingId: 2,
                 },
-                "0x",
-                undefined,
-                2
-            )
-            const message = createTargetMessage(
-                "WCQFBQepAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=",
-                "QA=="
-            )
+                returns: "0x",
+                matchingId: 2,
+            })
+            const message = createTargetMessage({
+                params: "WCQFBQepAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=",
+                returns: "QA==",
+            })
 
             const decodedMessage = getContractsManager()
                 .MatchingBidsEvm()
@@ -100,19 +98,18 @@ describe("MatchingsBidsMessageDecoder", () => {
          * Test case for cancelMatching decode functionality.
          */
         it("cancelMatching should ok", async function (this: Context) {
-            const expectDecodeResout = createExpectMessage(
-                "cancelMatching",
-                {
+            const expectDecodeResout = createExpectMessage({
+                method: "cancelMatching",
+                params: {
                     matchingId: 1,
                 },
-                "0x",
-                undefined,
-                1
-            )
-            const message = createTargetMessage(
-                "WCQSyWGMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE=",
-                "QA=="
-            )
+                returns: "0x",
+                matchingId: 1,
+            })
+            const message = createTargetMessage({
+                params: "WCQSyWGMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE=",
+                returns: "QA==",
+            })
 
             const decodedMessage = getContractsManager()
                 .MatchingBidsEvm()

@@ -45,17 +45,17 @@ describe("FilplusContractMessageDecoder", () => {
          * Test case for setDatasetRuleMinRegionsPerDataset decode functionality.
          */
         it("setDatasetRuleMinRegionsPerDataset Decode", async function () {
-            const expectMessage = createExpectMessage(
-                "setDatasetRuleMinRegionsPerDataset",
-                {
+            const expectMessage = createExpectMessage({
+                method: "setDatasetRuleMinRegionsPerDataset",
+                params: {
                     newValue: BigInt(5),
                 },
-                "0x"
-            )
-            const targetMessage = createTargetMessage(
-                "WCSzY+H1AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU=",
-                "QA=="
-            )
+                returns: "0x",
+            })
+            const targetMessage = createTargetMessage({
+                params: "WCSzY+H1AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU=",
+                returns: "QA==",
+            })
 
             const contractMessage = filplus.decodeMessage(targetMessage)
             assert.deepStrictEqual(contractMessage.data, expectMessage.data)
@@ -69,17 +69,17 @@ describe("FilplusContractMessageDecoder", () => {
          * Test case for setDatasetRuleDefaultMaxReplicasPerCountry decode functionality.
          */
         it("setDatasetRuleDefaultMaxReplicasPerCountry Decode", async function () {
-            const expectMessage = createExpectMessage(
-                "setDatasetRuleDefaultMaxReplicasPerCountry",
-                {
+            const expectMessage = createExpectMessage({
+                method: "setDatasetRuleDefaultMaxReplicasPerCountry",
+                params: {
                     newValue: BigInt(5),
                 },
-                "0x"
-            )
-            const targetMessage = createTargetMessage(
-                "WCSOL34HAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU=",
-                "QA=="
-            )
+                returns: "0x",
+            })
+            const targetMessage = createTargetMessage({
+                params: "WCSOL34HAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU=",
+                returns: "QA==",
+            })
 
             const contractMessage = filplus.decodeMessage(targetMessage)
             assert.deepStrictEqual(contractMessage.data, expectMessage.data)
@@ -93,18 +93,18 @@ describe("FilplusContractMessageDecoder", () => {
          * Test case for setDatasetRuleMaxReplicasInCountry decode functionality.
          */
         it("setDatasetRuleMaxReplicasInCountry Decode", async function () {
-            const expectMessage = createExpectMessage(
-                "setDatasetRuleMaxReplicasInCountry",
-                {
+            const expectMessage = createExpectMessage({
+                method: "setDatasetRuleMaxReplicasInCountry",
+                params: {
                     countryCode: BigInt(5),
                     newValue: BigInt(5),
                 },
-                "0x"
-            )
-            const targetMessage = createTargetMessage(
-                "WEQiup65AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABQ==",
-                "QA=="
-            )
+                returns: "0x",
+            })
+            const targetMessage = createTargetMessage({
+                params: "WEQiup65AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABQ==",
+                returns: "QA==",
+            })
 
             const contractMessage = filplus.decodeMessage(targetMessage)
             assert.deepStrictEqual(contractMessage.data, expectMessage.data)
@@ -118,17 +118,17 @@ describe("FilplusContractMessageDecoder", () => {
          * Test case for setDatasetRuleMaxReplicasPerCity decode functionality.
          */
         it("setDatasetRuleMaxReplicasPerCity Decode", async function () {
-            const expectMessage = createExpectMessage(
-                "setDatasetRuleMaxReplicasPerCity",
-                {
+            const expectMessage = createExpectMessage({
+                method: "setDatasetRuleMaxReplicasPerCity",
+                params: {
                     newValue: BigInt(5),
                 },
-                "0x"
-            )
-            const targetMessage = createTargetMessage(
-                "WCSbps89AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU=",
-                "QA=="
-            )
+                returns: "0x",
+            })
+            const targetMessage = createTargetMessage({
+                params: "WCSbps89AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU=",
+                returns: "QA==",
+            })
 
             const contractMessage = filplus.decodeMessage(targetMessage)
             assert.deepStrictEqual(contractMessage.data, expectMessage.data)
@@ -142,17 +142,17 @@ describe("FilplusContractMessageDecoder", () => {
          * Test case for setDatasetRuleMaxProportionOfMappingFilesToDataset decode functionality.
          */
         it("setDatasetRuleMaxProportionOfMappingFilesToDataset Decode", async function () {
-            const expectMessage = createExpectMessage(
-                "setDatasetRuleMaxProportionOfMappingFilesToDataset",
-                {
+            const expectMessage = createExpectMessage({
+                method: "setDatasetRuleMaxProportionOfMappingFilesToDataset",
+                params: {
                     newValue: BigInt(5),
                 },
-                "0x"
-            )
-            const targetMessage = createTargetMessage(
-                "WCSlS/rzAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU=",
-                "QA=="
-            )
+                returns: "0x",
+            })
+            const targetMessage = createTargetMessage({
+                params: "WCSlS/rzAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU=",
+                returns: "QA==",
+            })
 
             const contractMessage = filplus.decodeMessage(targetMessage)
             assert.deepStrictEqual(contractMessage.data, expectMessage.data)
@@ -166,17 +166,17 @@ describe("FilplusContractMessageDecoder", () => {
          * Test case for setDatasetRuleMinSPsPerDataset decode functionality.
          */
         it("setDatasetRuleMinSPsPerDataset Decode", async function () {
-            const expectMessage = createExpectMessage(
-                "setDatasetRuleMinSPsPerDataset",
-                {
+            const expectMessage = createExpectMessage({
+                method: "setDatasetRuleMinSPsPerDataset",
+                params: {
                     newValue: BigInt(5),
                 },
-                "0x"
-            )
-            const targetMessage = createTargetMessage(
-                "WCS3evW5AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU=",
-                "QA=="
-            )
+                returns: "0x",
+            })
+            const targetMessage = createTargetMessage({
+                params: "WCS3evW5AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU=",
+                returns: "QA==",
+            })
 
             const contractMessage = filplus.decodeMessage(targetMessage)
             assert.deepStrictEqual(contractMessage.data, expectMessage.data)
@@ -190,17 +190,17 @@ describe("FilplusContractMessageDecoder", () => {
          * Test case for setDatasetRuleMaxReplicasPerSP decode functionality.
          */
         it("setDatasetRuleMaxReplicasPerSP Decode", async function () {
-            const expectMessage = createExpectMessage(
-                "setDatasetRuleMaxReplicasPerSP",
-                {
+            const expectMessage = createExpectMessage({
+                method: "setDatasetRuleMaxReplicasPerSP",
+                params: {
                     newValue: BigInt(5),
                 },
-                "0x"
-            )
-            const targetMessage = createTargetMessage(
-                "WCRaxHsnAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU=",
-                "QA=="
-            )
+                returns: "0x",
+            })
+            const targetMessage = createTargetMessage({
+                params: "WCRaxHsnAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU=",
+                returns: "QA==",
+            })
 
             const contractMessage = filplus.decodeMessage(targetMessage)
             assert.deepStrictEqual(contractMessage.data, expectMessage.data)
@@ -214,17 +214,17 @@ describe("FilplusContractMessageDecoder", () => {
          * Test case for setDatasetRuleMinTotalReplicasPerDataset decode functionality.
          */
         it("setDatasetRuleMinTotalReplicasPerDataset Decode", async function () {
-            const expectMessage = createExpectMessage(
-                "setDatasetRuleMinTotalReplicasPerDataset",
-                {
+            const expectMessage = createExpectMessage({
+                method: "setDatasetRuleMinTotalReplicasPerDataset",
+                params: {
                     newValue: BigInt(5),
                 },
-                "0x"
-            )
-            const targetMessage = createTargetMessage(
-                "WCRZGrxRAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU=",
-                "QA=="
-            )
+                returns: "0x",
+            })
+            const targetMessage = createTargetMessage({
+                params: "WCRZGrxRAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU=",
+                returns: "QA==",
+            })
 
             const contractMessage = filplus.decodeMessage(targetMessage)
             assert.deepStrictEqual(contractMessage.data, expectMessage.data)
@@ -238,17 +238,17 @@ describe("FilplusContractMessageDecoder", () => {
          * Test case for setDatasetRuleMaxTotalReplicasPerDataset decode functionality.
          */
         it("setDatasetRuleMaxTotalReplicasPerDataset Decode", async function () {
-            const expectMessage = createExpectMessage(
-                "setDatasetRuleMaxTotalReplicasPerDataset",
-                {
+            const expectMessage = createExpectMessage({
+                method: "setDatasetRuleMaxTotalReplicasPerDataset",
+                params: {
                     newValue: BigInt(5),
                 },
-                "0x"
-            )
-            const targetMessage = createTargetMessage(
-                "WCRSbLi/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU=",
-                "QA=="
-            )
+                returns: "0x",
+            })
+            const targetMessage = createTargetMessage({
+                params: "WCRSbLi/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU=",
+                returns: "QA==",
+            })
 
             const contractMessage = filplus.decodeMessage(targetMessage)
             assert.deepStrictEqual(contractMessage.data, expectMessage.data)
@@ -262,17 +262,17 @@ describe("FilplusContractMessageDecoder", () => {
          * Test case for setDatacapRulesMaxAllocatedSizePerTime decode functionality.
          */
         it("setDatacapRulesMaxAllocatedSizePerTime Decode", async function () {
-            const expectMessage = createExpectMessage(
-                "setDatacapRulesMaxAllocatedSizePerTime",
-                {
+            const expectMessage = createExpectMessage({
+                method: "setDatacapRulesMaxAllocatedSizePerTime",
+                params: {
                     newValue: BigInt(5),
                 },
-                "0x"
-            )
-            const targetMessage = createTargetMessage(
-                "WCQubiGBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU=",
-                "QA=="
-            )
+                returns: "0x",
+            })
+            const targetMessage = createTargetMessage({
+                params: "WCQubiGBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU=",
+                returns: "QA==",
+            })
 
             const contractMessage = filplus.decodeMessage(targetMessage)
             assert.deepStrictEqual(contractMessage.data, expectMessage.data)
@@ -286,17 +286,17 @@ describe("FilplusContractMessageDecoder", () => {
          * Test case for setDatacapRulesMaxRemainingPercentageForNext decode functionality.
          */
         it("setDatacapRulesMaxRemainingPercentageForNext Decode", async function () {
-            const expectMessage = createExpectMessage(
-                "setDatacapRulesMaxRemainingPercentageForNext",
-                {
+            const expectMessage = createExpectMessage({
+                method: "setDatacapRulesMaxRemainingPercentageForNext",
+                params: {
                     newValue: BigInt(5),
                 },
-                "0x"
-            )
-            const targetMessage = createTargetMessage(
-                "WCSQF+XaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU=",
-                "QA=="
-            )
+                returns: "0x",
+            })
+            const targetMessage = createTargetMessage({
+                params: "WCSQF+XaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU=",
+                returns: "QA==",
+            })
 
             const contractMessage = filplus.decodeMessage(targetMessage)
             assert.deepStrictEqual(contractMessage.data, expectMessage.data)

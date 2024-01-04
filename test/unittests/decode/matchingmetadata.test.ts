@@ -42,9 +42,9 @@ describe("MatchingMetadataMessageDecoder", () => {
          * Test case for createMatching decode functionality.
          */
         it("createMatching should ok", async function (this: Context) {
-            const expectDecodeResout = createExpectMessage(
-                "createMatching",
-                {
+            const expectDecodeResout = createExpectMessage({
+                method: "createMatching",
+                params: {
                     additionalInfo: "none",
                     bidSelectionRule: BidSelectionRule.HighestBid,
                     biddingDelayBlockCount: BigInt(30),
@@ -57,14 +57,14 @@ describe("MatchingMetadataMessageDecoder", () => {
                     initiator: "f410fcwzis33wz3sofrlh466gog5xahlthgzqezasapy",
                     matchingId: 1,
                 },
-                "0x0000000000000000000000000000000000000000000000000000000000000001",
-                undefined,
-                1
-            )
-            const message = createTargetMessage(
-                "WQFEKzTLxQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABhqAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAO5rKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABG5vbmUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-                "WCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=="
-            )
+                returns:
+                    "0x0000000000000000000000000000000000000000000000000000000000000001",
+                matchingId: 1,
+            })
+            const message = createTargetMessage({
+                params: "WQFEKzTLxQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABhqAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAO5rKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABG5vbmUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+                returns: "WCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ==",
+            })
 
             const decodedMessage = getContractsManager()
                 .MatchingMetadataEvm()
@@ -80,19 +80,18 @@ describe("MatchingMetadataMessageDecoder", () => {
          * Test case for pauseMatching decode functionality.
          */
         it("pauseMatching should ok", async function (this: Context) {
-            const expectDecodeResout = createExpectMessage(
-                "pauseMatching",
-                {
+            const expectDecodeResout = createExpectMessage({
+                method: "pauseMatching",
+                params: {
                     matchingId: 2,
                 },
-                "0x",
-                undefined,
-                2
-            )
-            const message = createTargetMessage(
-                "WCSSGR5sAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=",
-                "QA=="
-            )
+                returns: "0x",
+                matchingId: 2,
+            })
+            const message = createTargetMessage({
+                params: "WCSSGR5sAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=",
+                returns: "QA==",
+            })
 
             const decodedMessage = getContractsManager()
                 .MatchingMetadataEvm()
@@ -108,19 +107,18 @@ describe("MatchingMetadataMessageDecoder", () => {
          * Test case for pauseMatching decode functionality.
          */
         it("resumeMatching should ok", async function (this: Context) {
-            const expectDecodeResout = createExpectMessage(
-                "resumeMatching",
-                {
+            const expectDecodeResout = createExpectMessage({
+                method: "resumeMatching",
+                params: {
                     matchingId: 2,
                 },
-                "0x",
-                undefined,
-                2
-            )
-            const message = createTargetMessage(
-                "WCQe0lFjAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=",
-                "QA=="
-            )
+                returns: "0x",
+                matchingId: 2,
+            })
+            const message = createTargetMessage({
+                params: "WCQe0lFjAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=",
+                returns: "QA==",
+            })
 
             const decodedMessage = getContractsManager()
                 .MatchingMetadataEvm()

@@ -42,23 +42,23 @@ describe("MatchingsTargetMessageDecoder", () => {
          * Test case for createTarget decode functionality.
          */
         it("createTarget should ok", async function (this: Context) {
-            const expectDecodeResout = createExpectMessage(
-                "createTarget",
-                {
+            const expectDecodeResout = createExpectMessage({
+                method: "createTarget",
+                params: {
                     associatedMappingFilesMatchingID: 0,
                     dataType: DataType.MappingFiles,
                     datasetID: 1,
                     matchingId: 2,
                     replicaIndex: BigInt(0),
                 },
-                "0x",
-                1,
-                2
-            )
-            const message = createTargetMessage(
-                "WKTyEOArAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-                "QA=="
-            )
+                returns: "0x",
+                datasetId: 1,
+                matchingId: 2,
+            })
+            const message = createTargetMessage({
+                params: "WKTyEOArAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+                returns: "QA==",
+            })
 
             const decodedMessage = getContractsManager()
                 .MatchingTargetEvm()
@@ -75,22 +75,22 @@ describe("MatchingsTargetMessageDecoder", () => {
          * Test case for publishMatching decode functionality.
          */
         it("publishMatching should ok", async function (this: Context) {
-            const expectDecodeResout = createExpectMessage(
-                "publishMatching",
-                {
+            const expectDecodeResout = createExpectMessage({
+                method: "publishMatching",
+                params: {
                     cars: [BigInt(1)],
                     complete: true,
                     datasetID: 1,
                     matchingId: 2,
                 },
-                "0x",
-                1,
-                2
-            )
-            const message = createTargetMessage(
-                "WQEkA4L0HQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ==",
-                "QA=="
-            )
+                returns: "0x",
+                datasetId: 1,
+                matchingId: 2,
+            })
+            const message = createTargetMessage({
+                params: "WQEkA4L0HQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ==",
+                returns: "QA==",
+            })
 
             const decodedMessage = getContractsManager()
                 .MatchingTargetEvm()

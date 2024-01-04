@@ -41,9 +41,9 @@ describe("DatasetsContractMessageDecoder", () => {
          */
         it("submitDatasetMetadata should ok", async function (this: Context) {
             this.timeout(10000)
-            const expectDecodeResout = createExpectMessage(
-                "submitDatasetMetadata",
-                {
+            const expectDecodeResout = createExpectMessage({
+                method: "submitDatasetMetadata",
+                params: {
                     client: BigInt(1420),
                     title: "title-0i4zeet",
                     industry: "industry-0i4zeet",
@@ -58,13 +58,14 @@ describe("DatasetsContractMessageDecoder", () => {
                     createdBlockNumber: 1213438,
                     datasetId: 1,
                 },
-                "0x0000000000000000000000000000000000000000000000000000000000000001",
-                1
-            )
-            const message = createTargetMessage(
-                "WQLEkl3YoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABOIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA10aXRsZS0waTR6ZWV0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQaW5kdXN0cnktMGk0emVldAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD2RhdGFzZXQtMGk0emVldAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABNkZXNjcmlwdGlvbi0waTR6ZWV0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWYXdzOi8vc2RmYS5jb20tMGk0emVldAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGWRhdGFzd2FwLmNvbS90ZXN0LTBpNHplZXQAAAAAAAAA",
-                "WCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=="
-            )
+                returns:
+                    "0x0000000000000000000000000000000000000000000000000000000000000001",
+                datasetId: 1,
+            })
+            const message = createTargetMessage({
+                params: "WQLEkl3YoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABOIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA10aXRsZS0waTR6ZWV0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQaW5kdXN0cnktMGk0emVldAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD2RhdGFzZXQtMGk0emVldAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABNkZXNjcmlwdGlvbi0waTR6ZWV0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWYXdzOi8vc2RmYS5jb20tMGk0emVldAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGWRhdGFzd2FwLmNvbS90ZXN0LTBpNHplZXQAAAAAAAAA",
+                returns: "WCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ==",
+            })
 
             const decodedMessage = getContractsManager()
                 .DatasetMetadataEvm()
@@ -82,18 +83,18 @@ describe("DatasetsContractMessageDecoder", () => {
          */
         it("approveDatasetMetadata should ok", async function (this: Context) {
             this.timeout(10000)
-            const expectDecodeResout = createExpectMessage(
-                "approveDatasetMetadata",
-                {
+            const expectDecodeResout = createExpectMessage({
+                method: "approveDatasetMetadata",
+                params: {
                     datasetId: 1,
                 },
-                "0x",
-                1
-            )
-            const message = createTargetMessage(
-                "WCTkcU7YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE=",
-                "QA=="
-            )
+                returns: "0x",
+                datasetId: 1,
+            })
+            const message = createTargetMessage({
+                params: "WCTkcU7YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE=",
+                returns: "QA==",
+            })
 
             const decodedMessage = getContractsManager()
                 .DatasetMetadataEvm()
@@ -109,18 +110,18 @@ describe("DatasetsContractMessageDecoder", () => {
          */
         it("approveDataset should ok", async function (this: Context) {
             this.timeout(10000)
-            const expectDecodeResout = createExpectMessage(
-                "approveDataset",
-                {
+            const expectDecodeResout = createExpectMessage({
+                method: "approveDataset",
+                params: {
                     datasetId: 2,
                 },
-                "0x",
-                2
-            )
-            const message = createTargetMessage(
-                "WCTvN30dAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=",
-                "QA=="
-            )
+                returns: "0x",
+                datasetId: 2,
+            })
+            const message = createTargetMessage({
+                params: "WCTvN30dAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=",
+                returns: "QA==",
+            })
 
             const decodedMessage = getContractsManager()
                 .DatasetMetadataEvm()
@@ -136,18 +137,18 @@ describe("DatasetsContractMessageDecoder", () => {
          */
         it("rejectDatasetMetadata should ok", async function (this: Context) {
             this.timeout(10000)
-            const expectDecodeResout = createExpectMessage(
-                "rejectDatasetMetadata",
-                {
+            const expectDecodeResout = createExpectMessage({
+                method: "rejectDatasetMetadata",
+                params: {
                     datasetId: 3,
                 },
-                "0x",
-                3
-            )
-            const message = createTargetMessage(
-                "WCRQzFSrAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAM=",
-                "QA=="
-            )
+                returns: "0x",
+                datasetId: 3,
+            })
+            const message = createTargetMessage({
+                params: "WCRQzFSrAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAM=",
+                returns: "QA==",
+            })
 
             const decodedMessage = getContractsManager()
                 .DatasetMetadataEvm()
@@ -163,18 +164,18 @@ describe("DatasetsContractMessageDecoder", () => {
          */
         it("rejectDataset should ok", async function (this: Context) {
             this.timeout(10000)
-            const expectDecodeResout = createExpectMessage(
-                "rejectDataset",
-                {
+            const expectDecodeResout = createExpectMessage({
+                method: "rejectDataset",
+                params: {
                     datasetId: 7,
                 },
-                "0x",
-                7
-            )
-            const message = createTargetMessage(
-                "WCRJQh5rAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAc=",
-                "QA=="
-            )
+                returns: "0x",
+                datasetId: 7,
+            })
+            const message = createTargetMessage({
+                params: "WCRJQh5rAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAc=",
+                returns: "QA==",
+            })
 
             const decodedMessage = getContractsManager()
                 .DatasetMetadataEvm()
