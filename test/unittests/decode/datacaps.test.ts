@@ -46,19 +46,19 @@ describe("DatacapsContractMessageDecoder", () => {
          * Test case for addDatacapChunkCollateral decode functionality.
          */
         it("addDatacapChunkCollateral Decode", async function () {
-            const expectCollateralMessage = createExpectMessage(
-                "addDatacapChunkCollateral",
-                {
+            const expectCollateralMessage = createExpectMessage({
+                method: "addDatacapChunkCollateral",
+                params: {
                     matchingId: BigInt(1),
                 },
-                "0x",
-                undefined,
-                1
-            )
-            const addDatacapChunkCollateralMessage = createTargetMessage(
-                "WCTgiCkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE=",
-                "QA=="
-            )
+                returns: "0x",
+                datasetId: undefined,
+                matchingId: 1,
+            })
+            const addDatacapChunkCollateralMessage = createTargetMessage({
+                params: "WCTgiCkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE=",
+                returns: "QA==",
+            })
 
             const contractMessage = datacaps.decodeMessage(
                 addDatacapChunkCollateralMessage
@@ -77,19 +77,20 @@ describe("DatacapsContractMessageDecoder", () => {
          * Test case for requestAllocateDatacap decode functionality.
          */
         it("requestAllocateDatacap Decode", async function () {
-            const expectPaymentMessage = createExpectMessage(
-                "requestAllocateDatacap",
-                {
+            const expectPaymentMessage = createExpectMessage({
+                method: "requestAllocateDatacap",
+                params: {
                     matchingId: BigInt(1),
                 },
-                "0x00000000000000000000000000000000000000000000000000000000078285c5",
-                undefined,
-                1
-            )
-            const requestAllocateDatacapMessage = createTargetMessage(
-                "WCRtauZ8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE=",
-                "WCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB4KFxQ=="
-            )
+                returns:
+                    "0x00000000000000000000000000000000000000000000000000000000078285c5",
+                datasetId: undefined,
+                matchingId: 1,
+            })
+            const requestAllocateDatacapMessage = createTargetMessage({
+                params: "WCRtauZ8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE=",
+                returns: "WCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB4KFxQ==",
+            })
             const contractMessage = datacaps.decodeMessage(
                 requestAllocateDatacapMessage
             )

@@ -45,21 +45,21 @@ describe("EscrowContractMessageDecoder", () => {
          * Test case for collateral decode functionality.
          */
         it("collateral Decode", async function () {
-            const expectCollateralMessage = createExpectMessage(
-                "collateral",
-                {
+            const expectCollateralMessage = createExpectMessage({
+                method: "collateral",
+                params: {
                     type: BigInt(0),
                     owner: "0x09C6DEE9DB5e7dF2b18283c0CFCf714fEDB692d7",
                     datasetId: 1,
                     amount: BigInt(100),
                 },
-                "0x",
-                1
-            )
-            const collateralMessage = createTargetMessage(
-                "WITON73nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJxt7p21598rGCg8DPz3FP7baS1wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGQ",
-                "QA=="
-            )
+                returns: "0x",
+                datasetId: 1,
+            })
+            const collateralMessage = createTargetMessage({
+                params: "WITON73nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJxt7p21598rGCg8DPz3FP7baS1wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGQ",
+                returns: "QA==",
+            })
 
             const contractMessage = escrow.decodeMessage(collateralMessage)
             assert.deepStrictEqual(
@@ -76,21 +76,21 @@ describe("EscrowContractMessageDecoder", () => {
          * Test case for payment decode functionality.
          */
         it("payment Decode", async function () {
-            const expectPaymentMessage = createExpectMessage(
-                "payment",
-                {
+            const expectPaymentMessage = createExpectMessage({
+                method: "payment",
+                params: {
                     type: BigInt(4),
                     owner: "0x09C6DEE9DB5e7dF2b18283c0CFCf714fEDB692d7",
                     datasetId: 1,
                     amount: BigInt(100),
                 },
-                "0x",
-                1
-            )
-            const paymentMessage = createTargetMessage(
-                "WITqEsdCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAJxt7p21598rGCg8DPz3FP7baS1wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGQ",
-                "QA=="
-            )
+                returns: "0x",
+                datasetId: 1,
+            })
+            const paymentMessage = createTargetMessage({
+                params: "WITqEsdCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAJxt7p21598rGCg8DPz3FP7baS1wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGQ",
+                returns: "QA==",
+            })
             const contractMessage = escrow.decodeMessage(paymentMessage)
             assert.deepStrictEqual(
                 contractMessage.data,
@@ -105,22 +105,22 @@ describe("EscrowContractMessageDecoder", () => {
          * Test case for payment sigle beneficiary decode functionality.
          */
         it("paymentSingleBeneficiary Decode", async function () {
-            const expectPaymentMessage = createExpectMessage(
-                "paymentSingleBeneficiary",
-                {
+            const expectPaymentMessage = createExpectMessage({
+                method: "paymentSingleBeneficiary",
+                params: {
                     type: BigInt(4),
                     owner: "0xca942f0fd39185d971d1d58E151645e596FC7Eff",
                     datasetId: 1,
                     beneficiary: "0x09C6DEE9DB5e7dF2b18283c0CFCf714fEDB692d7",
                     amount: BigInt(100),
                 },
-                "0x",
-                1
-            )
-            const paymentMessage = createTargetMessage(
-                "WKRy588YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAADKlC8P05GF2XHR1Y4VFkXllvx+/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAACcbe6dteffKxgoPAz89xT+22ktcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAZA==",
-                "QA=="
-            )
+                returns: "0x",
+                datasetId: 1,
+            })
+            const paymentMessage = createTargetMessage({
+                params: "WKRy588YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAADKlC8P05GF2XHR1Y4VFkXllvx+/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAACcbe6dteffKxgoPAz89xT+22ktcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAZA==",
+                returns: "QA==",
+            })
             const contractMessage = escrow.decodeMessage(paymentMessage)
             assert.deepStrictEqual(
                 contractMessage.data,
@@ -135,21 +135,21 @@ describe("EscrowContractMessageDecoder", () => {
          * Test case for payment transfer decode functionality.
          */
         it("paymentTransfer Decode", async function () {
-            const expectPaymentMessage = createExpectMessage(
-                "paymentTransfer",
-                {
+            const expectPaymentMessage = createExpectMessage({
+                method: "paymentTransfer",
+                params: {
                     type: BigInt(5),
                     owner: "0x09C6DEE9DB5e7dF2b18283c0CFCf714fEDB692d7",
                     datasetId: 1,
                     amount: BigInt(100),
                 },
-                "0x",
-                1
-            )
-            const paymentMessage = createTargetMessage(
-                "WIS6ZVXsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAAAJxt7p21598rGCg8DPz3FP7baS1wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGQ=",
-                "QA=="
-            )
+                returns: "0x",
+                datasetId: 1,
+            })
+            const paymentMessage = createTargetMessage({
+                params: "WIS6ZVXsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAAAJxt7p21598rGCg8DPz3FP7baS1wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGQ=",
+                returns: "QA==",
+            })
             const contractMessage = escrow.decodeMessage(paymentMessage)
             assert.deepStrictEqual(
                 contractMessage.data,

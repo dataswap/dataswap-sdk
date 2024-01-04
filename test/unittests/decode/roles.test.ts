@@ -45,18 +45,18 @@ describe("RolesContractMessageDecoder", () => {
          * Test case for grantRole decode functionality.
          */
         it("grantRole Decode", async function () {
-            const expectMessage = createExpectMessage(
-                "grantRole",
-                {
+            const expectMessage = createExpectMessage({
+                method: "grantRole",
+                params: {
                     role: "0x56d96069d0c85d21b8d789da2cd39ba97ceec51143707e32ecb8343eb4258a9c",
                     account: "0x5Ab1B36e259E0251262Ed2c9a3BD8C9f73470320",
                 },
-                "0x"
-            )
-            const targetMessage = createTargetMessage(
-                "WEQvL/FdVtlgadDIXSG414naLNObqXzuxRFDcH4y7Lg0PrQlipwAAAAAAAAAAAAAAABasbNuJZ4CUSYu0smjvYyfc0cDIA==",
-                "QA=="
-            )
+                returns: "0x",
+            })
+            const targetMessage = createTargetMessage({
+                params: "WEQvL/FdVtlgadDIXSG414naLNObqXzuxRFDcH4y7Lg0PrQlipwAAAAAAAAAAAAAAABasbNuJZ4CUSYu0smjvYyfc0cDIA==",
+                returns: "QA==",
+            })
 
             const contractMessage = roles.decodeMessage(targetMessage)
             assert.deepStrictEqual(contractMessage.data, expectMessage.data)
@@ -70,13 +70,16 @@ describe("RolesContractMessageDecoder", () => {
          * Test case for acceptOwnership decode functionality.
          */
         it("acceptOwnership Decode", async function () {
-            const expectMessage = createExpectMessage(
-                "acceptOwnership",
-                {},
-                "0x"
-            )
+            const expectMessage = createExpectMessage({
+                method: "acceptOwnership",
+                params: {},
+                returns: "0x",
+            })
 
-            const targetMessage = createTargetMessage("RHm6UJc=", "QA==")
+            const targetMessage = createTargetMessage({
+                params: "RHm6UJc=",
+                returns: "QA==",
+            })
 
             const contractMessage = roles.decodeMessage(targetMessage)
             contractMessage.data!.params = {}
@@ -91,15 +94,17 @@ describe("RolesContractMessageDecoder", () => {
          * Test case for transferOwnership decode functionality.
          */
         it("transferOwnership Decode", async function () {
-            const expectMessage = createExpectMessage(
-                "transferOwnership",
-                { newOwner: "0x09C6DEE9DB5e7dF2b18283c0CFCf714fEDB692d7" },
-                "0x"
-            )
-            const targetMessage = createTargetMessage(
-                "WCTy/eOLAAAAAAAAAAAAAAAACcbe6dteffKxgoPAz89xT+22ktc=",
-                "QA=="
-            )
+            const expectMessage = createExpectMessage({
+                method: "transferOwnership",
+                params: {
+                    newOwner: "0x09C6DEE9DB5e7dF2b18283c0CFCf714fEDB692d7",
+                },
+                returns: "0x",
+            })
+            const targetMessage = createTargetMessage({
+                params: "WCTy/eOLAAAAAAAAAAAAAAAACcbe6dteffKxgoPAz89xT+22ktc=",
+                returns: "QA==",
+            })
 
             const contractMessage = roles.decodeMessage(targetMessage)
             assert.deepStrictEqual(contractMessage.data, expectMessage.data)

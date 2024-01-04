@@ -144,13 +144,13 @@ export function numberToBytes32(num: number): string {
  * @param matchingId The matching id.
  * @returns The message object.
  */
-export function createExpectMessage(
-    method: string,
-    params: object,
-    returns: string,
-    datasetId?: number,
+export function createExpectMessage(options: {
+    method: string
+    params: object
+    returns: string
+    datasetId?: number
     matchingId?: number
-): EvmOutput<DataswapMessage> {
+}): EvmOutput<DataswapMessage> {
     return {
         ok: true,
         data: {
@@ -161,12 +161,16 @@ export function createExpectMessage(
             timestamp: "",
             from: "f410fcwzis33wz3sofrlh466gog5xahlthgzqezasapy",
             to: "f410fai7exftlsq6igc35jsxij7twcza3feadlmtrjla",
-            method: method,
-            params: params,
+            method: options.method,
+            params: options.params,
             status: 0,
-            return: returns,
-            ...(datasetId !== undefined && { datasetId }),
-            ...(matchingId !== undefined && { matchingId }),
+            return: options.returns,
+            ...(options.datasetId !== undefined && {
+                datasetId: options.datasetId,
+            }),
+            ...(options.matchingId !== undefined && {
+                matchingId: options.matchingId,
+            }),
         },
     }
 }
@@ -177,7 +181,10 @@ export function createExpectMessage(
  * @param returns The message returns.
  * @returns The message object.
  */
-export function createTargetMessage(params: string, returns: string): Message {
+export function createTargetMessage(options: {
+    params: string
+    returns: string
+}): Message {
     return new Message({
         Height: 1213438,
         Replayed: true,
@@ -194,14 +201,14 @@ export function createTargetMessage(params: string, returns: string): Message {
             GasFeeCap: "4128217110",
             GasPremium: "2057242745",
             Method: 3844450837,
-            Params: params,
+            Params: options.params,
             CID: {
                 "/": "bafy2bzacedwcmokyjjyju2a7s6tsdvakcjwzztgpmbvdabk7v7zdadsqndxec",
             },
         },
         MsgRct: {
             ExitCode: 0,
-            Return: returns,
+            Return: options.returns,
             GasUsed: 28697436,
             EventsRoot: {
                 "/": "bafy2bzacebkqi5zhbxevtqfadttyoguh2parrfe3qkh7rlfgxfux3eyhihzq6",
