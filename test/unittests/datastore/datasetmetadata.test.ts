@@ -22,6 +22,7 @@ import { DatasetMetadataMongoDatastore } from "../../../src/module/dataset/metad
 import { DatasetMetadata } from "../../../src/module/dataset/metadata/types"
 import { ValueFields } from "@unipackage/utils"
 import { describe, it } from "mocha"
+import { DatabaseConnection } from "@unipackage/datastore"
 const { expect } = chai
 
 const sampleDatasetMetadata: ValueFields<DatasetMetadata> = {
@@ -41,9 +42,10 @@ const sampleDatasetMetadata: ValueFields<DatasetMetadata> = {
 }
 
 describe("DatasetMetadataMongoDatastore", () => {
-    const datastore = new DatasetMetadataMongoDatastore(
+    const connection = DatabaseConnection.getInstance(
         "mongodb://127.0.0.1:27017/datastore"
     )
+    const datastore = new DatasetMetadataMongoDatastore(connection)
 
     beforeEach(async () => {
         const res = await datastore.connect()

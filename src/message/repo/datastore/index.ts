@@ -21,7 +21,7 @@
 import { DataStore } from "@unipackage/datastore"
 import { DataswapMessage } from "../../types"
 import { DataswapMessageDocument, DataswapMessageModel } from "./model"
-import { MongooseDataStore } from "@unipackage/datastore"
+import { MongooseDataStore, DatabaseConnection } from "@unipackage/datastore"
 
 /**
  * Class representing a MongoDB datastore for DataswapMessage entities.
@@ -37,11 +37,11 @@ export class DataswapMessageMongoDatastore extends DataStore<
      * @param {string} uri - The MongoDB connection URI.
      * @constructor
      */
-    constructor(uri: string) {
+    constructor(connection: DatabaseConnection) {
         super(
             new MongooseDataStore<DataswapMessage, DataswapMessageDocument>(
                 DataswapMessageModel,
-                uri
+                connection
             )
         )
     }

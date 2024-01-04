@@ -25,6 +25,7 @@ import {
 } from "../../../src/module/matching/metadata/types"
 import { ValueFields } from "@unipackage/utils"
 import { describe, it } from "mocha"
+import { DatabaseConnection } from "@unipackage/datastore"
 const { expect } = chai
 
 const sampleMatchingMetadata: ValueFields<MatchingMetadata> = {
@@ -41,9 +42,10 @@ const sampleMatchingMetadata: ValueFields<MatchingMetadata> = {
  * Test suite for the Matchings contract MatchingMetadataMongoDatastore functionality.
  */
 describe("MatchingMetadataMongoDatastore", () => {
-    const datastore = new MatchingMetadataMongoDatastore(
+    const connection = DatabaseConnection.getInstance(
         "mongodb://127.0.0.1:27017/datastore"
     )
+    const datastore = new MatchingMetadataMongoDatastore(connection)
 
     beforeEach(async () => {
         const res = await datastore.connect()
