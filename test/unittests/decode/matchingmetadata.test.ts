@@ -39,9 +39,9 @@ describe("MatchingMetadataMessageDecoder", () => {
      */
     describe("#decoder", () => {
         /**
-         * Test case for MatchingMetadata decode functionality.
+         * Test case for createMatching decode functionality.
          */
-        it("should ok", async function (this: Context) {
+        it("createMatching should ok", async function (this: Context) {
             const expectDecodeResout = createExpectMessage(
                 "createMatching",
                 {
@@ -64,6 +64,62 @@ describe("MatchingMetadataMessageDecoder", () => {
             const message = createTargetMessage(
                 "WQFEKzTLxQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABhqAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAO5rKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABG5vbmUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
                 "WCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=="
+            )
+
+            const decodedMessage = getContractsManager()
+                .MatchingMetadataEvm()
+                .decodeMessage(message)
+            assert.deepStrictEqual(decodedMessage.data, expectDecodeResout.data)
+
+            expect(expectDecodeResout.data!.params).to.deep.include(
+                <ValueFields<MatchingMetadata>>decodedMessage.data!.params
+            )
+        })
+
+        /**
+         * Test case for pauseMatching decode functionality.
+         */
+        it("pauseMatching should ok", async function (this: Context) {
+            const expectDecodeResout = createExpectMessage(
+                "pauseMatching",
+                {
+                    matchingId: 2,
+                },
+                "0x",
+                undefined,
+                2
+            )
+            const message = createTargetMessage(
+                "WCSSGR5sAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=",
+                "QA=="
+            )
+
+            const decodedMessage = getContractsManager()
+                .MatchingMetadataEvm()
+                .decodeMessage(message)
+            assert.deepStrictEqual(decodedMessage.data, expectDecodeResout.data)
+
+            expect(expectDecodeResout.data!.params).to.deep.include(
+                <ValueFields<MatchingMetadata>>decodedMessage.data!.params
+            )
+        })
+
+        /**
+         * Test case for pauseMatching decode functionality.
+         */
+        it("resumeMatching should ok", async function (this: Context) {
+            const expectDecodeResout = createExpectMessage(
+                "resumeMatching",
+                {
+                    matchingId: 2,
+                },
+                "0x",
+                undefined,
+                2
+            )
+            const message = createTargetMessage(
+                "WCQe0lFjAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAI=",
+                "QA=="
             )
 
             const decodedMessage = getContractsManager()
