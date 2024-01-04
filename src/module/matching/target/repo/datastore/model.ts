@@ -80,16 +80,5 @@ const MatchingTargetSchema = new Schema<MatchingTargetDocument>({
     },
 })
 
-/**
- * Model for the MatchingTargetModel collection.
- * @constant
- */
-const MatchingTargetModel =
-    mongoose.models.MatchingTarget ||
-    mongoose.model<MatchingTargetDocument>(
-        "MatchingTarget",
-        MatchingTargetSchema
-    )
-
-export { MatchingTargetModel }
+export { MatchingTargetSchema }
 export type { MatchingTargetDocument }

@@ -20,7 +20,7 @@
 
 import { DataStore } from "@unipackage/datastore"
 import { DataswapMessage } from "../../types"
-import { DataswapMessageDocument, DataswapMessageModel } from "./model"
+import { DataswapMessageDocument, DataswapMessageSchema } from "./model"
 import { MongooseDataStore, DatabaseConnection } from "@unipackage/datastore"
 
 /**
@@ -40,7 +40,8 @@ export class DataswapMessageMongoDatastore extends DataStore<
     constructor(connection: DatabaseConnection) {
         super(
             new MongooseDataStore<DataswapMessage, DataswapMessageDocument>(
-                DataswapMessageModel,
+                "DataswapMessage",
+                DataswapMessageSchema,
                 connection
             )
         )

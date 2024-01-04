@@ -20,8 +20,8 @@
 
 import { DataStore, DatabaseConnection } from "@unipackage/datastore"
 import { ValueFields } from "@unipackage/utils"
-import { DatasetRequirement } from "../../types"
-import { DatasetRequirementDocument, DatasetRequirementModel } from "./model"
+import { DatasetRequirement, DatasetRequirements } from "../../types"
+import { DatasetRequirementDocument, DatasetRequirementSchema } from "./model"
 import { MongooseDataStore } from "@unipackage/datastore"
 
 /**
@@ -43,7 +43,7 @@ export class DatasetRequirementMongoDatastore extends DataStore<
             new MongooseDataStore<
                 ValueFields<DatasetRequirement>,
                 DatasetRequirementDocument
-            >(DatasetRequirementModel, connection)
+            >("DatasetRequirement", DatasetRequirementSchema, connection)
         )
     }
 }

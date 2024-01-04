@@ -22,9 +22,9 @@ import { ValueFields } from "@unipackage/utils"
 import { DatasetProofMetadata, DatasetProofs } from "../../types"
 import {
     DatasetProofMetadataDocument,
-    DatasetProofMetadataModel,
+    DatasetProofMetadataSchema,
     DatasetProofsDocument,
-    DatasetProofsModel,
+    DatasetProofsSchema,
 } from "./model"
 import { MongooseDataStore, DatabaseConnection } from "@unipackage/datastore"
 
@@ -47,7 +47,7 @@ export class DatasetProofMetadataMongoDatastore extends DataStore<
             new MongooseDataStore<
                 ValueFields<DatasetProofMetadata>,
                 DatasetProofMetadataDocument
-            >(DatasetProofMetadataModel, connection)
+            >("DatasetProofMetadata", DatasetProofMetadataSchema, connection)
         )
     }
 }
@@ -70,7 +70,7 @@ export class DatasetProofsMongoDatastore extends DataStore<
             new MongooseDataStore<
                 ValueFields<DatasetProofs>,
                 DatasetProofsDocument
-            >(DatasetProofsModel, connection)
+            >("DatasetProofs", DatasetProofsSchema, connection)
         )
     }
 }

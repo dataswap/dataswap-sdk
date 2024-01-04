@@ -53,18 +53,7 @@ const DatasetProofMetadataSchema = new Schema<DatasetProofMetadataDocument>({
     },
 })
 
-/**
- * Model for the DatasetProofMetadataModel collection.
- * @constant
- */
-const DatasetProofMetadataModel =
-    mongoose.models.DatasetProofMetadata ||
-    mongoose.model<DatasetProofMetadataDocument>(
-        "DatasetProofMetadata",
-        DatasetProofMetadataSchema
-    )
-
-export { DatasetProofMetadataModel }
+export { DatasetProofMetadataSchema }
 export type { DatasetProofMetadataDocument }
 
 /**
@@ -107,13 +96,5 @@ const DatasetProofsSchema = new Schema<DatasetProofsDocument>({
     },
 })
 
-/**
- * Model for the DatasetProofsModel collection.
- * @constant
- */
-const DatasetProofsModel =
-    mongoose.models.DatasetProofs ||
-    mongoose.model<DatasetProofsDocument>("DatasetProofs", DatasetProofsSchema)
-
-export { DatasetProofsModel }
+export { DatasetProofsSchema }
 export type { DatasetProofsDocument }

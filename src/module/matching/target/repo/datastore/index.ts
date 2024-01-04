@@ -21,7 +21,7 @@
 import { DataStore, DatabaseConnection } from "@unipackage/datastore"
 import { ValueFields } from "@unipackage/utils"
 import { MatchingTarget } from "../../types"
-import { MatchingTargetDocument, MatchingTargetModel } from "./model"
+import { MatchingTargetDocument, MatchingTargetSchema } from "./model"
 import { MongooseDataStore } from "@unipackage/datastore"
 
 /**
@@ -43,7 +43,7 @@ export class MatchingTargetMongoDatastore extends DataStore<
             new MongooseDataStore<
                 ValueFields<MatchingTarget>,
                 MatchingTargetDocument
-            >(MatchingTargetModel, connection)
+            >("MatchingTarget", MatchingTargetSchema, connection)
         )
     }
 }

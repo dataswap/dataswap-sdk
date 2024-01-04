@@ -21,7 +21,7 @@
 import { DataStore, DatabaseConnection } from "@unipackage/datastore"
 import { ValueFields } from "@unipackage/utils"
 import { MatchingMetadata } from "../../types"
-import { MatchingMetadataDocument, MatchingMetadataModel } from "./model"
+import { MatchingMetadataDocument, MatchingMetadataSchema } from "./model"
 import { MongooseDataStore } from "@unipackage/datastore"
 
 /**
@@ -43,7 +43,7 @@ export class MatchingMetadataMongoDatastore extends DataStore<
             new MongooseDataStore<
                 ValueFields<MatchingMetadata>,
                 MatchingMetadataDocument
-            >(MatchingMetadataModel, connection)
+            >("MatchingMetadataSchema", MatchingMetadataSchema, connection)
         )
     }
 }

@@ -86,16 +86,5 @@ const MatchingMetadataSchema = new Schema<MatchingMetadataDocument>({
     },
 })
 
-/**
- * Model for the MatchingMetadataModel collection.
- * @constant
- */
-const MatchingMetadataModel =
-    mongoose.models.MatchingMetadata ||
-    mongoose.model<MatchingMetadataDocument>(
-        "MatchingMetadata",
-        MatchingMetadataSchema
-    )
-
-export { MatchingMetadataModel }
+export { MatchingMetadataSchema }
 export type { MatchingMetadataDocument }

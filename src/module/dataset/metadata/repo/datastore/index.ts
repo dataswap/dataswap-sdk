@@ -21,7 +21,7 @@
 import { DataStore } from "@unipackage/datastore"
 import { ValueFields } from "@unipackage/utils"
 import { DatasetMetadata } from "../../types"
-import { DatasetMetadataDocument, DatasetMetadataModel } from "./model"
+import { DatasetMetadataDocument, DatasetMetadataSchema } from "./model"
 import { MongooseDataStore, DatabaseConnection } from "@unipackage/datastore"
 
 /**
@@ -43,7 +43,7 @@ export class DatasetMetadataMongoDatastore extends DataStore<
             new MongooseDataStore<
                 ValueFields<DatasetMetadata>,
                 DatasetMetadataDocument
-            >(DatasetMetadataModel, connection)
+            >("DatasetMetadata", DatasetMetadataSchema, connection)
         )
     }
 }

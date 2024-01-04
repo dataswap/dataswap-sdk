@@ -66,16 +66,5 @@ const DatasetRequirementSchema = new Schema<DatasetRequirementDocument>({
     },
 })
 
-/**
- * Model for the DatasetRequirementModel collection.
- * @constant
- */
-const DatasetRequirementModel =
-    mongoose.models.DatasetRequirement ||
-    mongoose.model<DatasetRequirementDocument>(
-        "DatasetRequirement",
-        DatasetRequirementSchema
-    )
-
-export { DatasetRequirementModel }
+export { DatasetRequirementSchema }
 export type { DatasetRequirementDocument }

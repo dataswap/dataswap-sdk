@@ -89,16 +89,5 @@ const DatasetMetadataSchema = new Schema<DatasetMetadataDocument>({
     },
 })
 
-/**
- * Model for the DatasetMetadataModel collection.
- * @constant
- */
-const DatasetMetadataModel =
-    mongoose.models.DatasetMetadata ||
-    mongoose.model<DatasetMetadataDocument>(
-        "DatasetMetadata",
-        DatasetMetadataSchema
-    )
-
-export { DatasetMetadataModel }
+export { DatasetMetadataSchema }
 export type { DatasetMetadataDocument }

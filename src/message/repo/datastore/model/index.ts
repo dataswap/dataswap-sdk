@@ -74,16 +74,5 @@ const DataswapMessageSchema = new Schema<DataswapMessageDocument>({
     },
 })
 
-/**
- * Model for the DataswapMessage collection.
- * @constant
- */
-const DataswapMessageModel =
-    mongoose.models.DataswapMessage ||
-    mongoose.model<DataswapMessageDocument>(
-        "DataswapMessage",
-        DataswapMessageSchema
-    )
-
-export { DataswapMessageModel }
+export { DataswapMessageSchema }
 export type { DataswapMessageDocument }
