@@ -21,8 +21,6 @@
 import { Entity } from "@unipackage/ddd"
 import { ValueFields } from "@unipackage/utils"
 
-import { EscrowType } from "../../../shared/types/escrowType"
-
 /**
  * Represents a Fund entity.
  * @interface
@@ -47,40 +45,6 @@ export class Fund extends Entity<Fund> {
             collateraled: data?.collateraled || BigInt(0),
             burned: data?.burned || BigInt(0),
             createdBlockNumber: data?.createdBlockNumber || 0,
-        })
-    }
-}
-
-/**
- * Represents a Escrow entity.
- * @interface
- */
-export interface Escrow {
-    type: EscrowType
-    owner: string
-    datasetId?: number
-    matchingId?: number
-    beneficiary?: string
-    amount?: bigint
-}
-
-/**
- * Represents a Escrow entity with default values.
- * @class
- */
-export class Escrow extends Entity<Escrow> {
-    constructor(data?: ValueFields<Escrow>) {
-        super({
-            type: data?.type || EscrowType.DatacapCollateral,
-            owner: data?.owner || "",
-            ...(data?.datasetId !== undefined && { datasetId: data.datasetId }),
-            ...(data?.matchingId !== undefined && {
-                matchingId: data.matchingId,
-            }),
-            ...(data?.beneficiary !== undefined && {
-                beneficiary: data.beneficiary,
-            }),
-            ...(data?.amount !== undefined && { amount: data.amount }),
         })
     }
 }
