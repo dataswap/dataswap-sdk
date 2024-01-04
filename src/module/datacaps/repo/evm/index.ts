@@ -162,7 +162,7 @@ export class DatacapsEvm extends DatacapsOriginEvm {
         switch (decodeRes.data!.method) {
             case "addDatacapChunkCollateral":
             case "requestAllocateDatacap":
-                result.matchingId = result.params.matchingId
+                result.matchingId = Number(result.params.matchingId)
                 break
             default:
                 return {
