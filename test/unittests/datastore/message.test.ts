@@ -21,6 +21,7 @@ import chai from "chai"
 import { DataswapMessageMongoDatastore } from "../../../src/message/repo/datastore"
 import { DataswapMessage } from "../../../src/message/types"
 import { describe, it } from "mocha"
+import { DatabaseConnection } from "@unipackage/datastore"
 const { expect } = chai
 
 const sampleDataswapMessage: DataswapMessage = {
@@ -38,9 +39,10 @@ const sampleDataswapMessage: DataswapMessage = {
 }
 
 describe("DataswapMessageMongoDatastore", () => {
-    const datastore = new DataswapMessageMongoDatastore(
+    const connection = DatabaseConnection.getInstance(
         "mongodb://127.0.0.1:27017/datastore"
     )
+    const datastore = new DataswapMessageMongoDatastore(connection)
 
     describe("constructor", () => {
         it("should create an instance of DataswapMessageMongoDatastore", () => {

@@ -18,7 +18,7 @@
  *  limitations under the respective licenses.
  ********************************************************************************/
 
-import { DataStore } from "@unipackage/datastore"
+import { DataStore, DatabaseConnection } from "@unipackage/datastore"
 import { ValueFields } from "@unipackage/utils"
 import { MatchingMetadata } from "../../types"
 import { MatchingMetadataDocument, MatchingMetadataModel } from "./model"
@@ -38,12 +38,12 @@ export class MatchingMetadataMongoDatastore extends DataStore<
      * @param {string} uri - The MongoDB connection URI.
      * @constructor
      */
-    constructor(uri: string) {
+    constructor(connection: DatabaseConnection) {
         super(
             new MongooseDataStore<
                 ValueFields<MatchingMetadata>,
                 MatchingMetadataDocument
-            >(MatchingMetadataModel, uri)
+            >(MatchingMetadataModel, connection)
         )
     }
 }

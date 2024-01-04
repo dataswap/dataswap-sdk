@@ -23,6 +23,7 @@ import { MatchingTarget } from "../../../src/module/matching/target/types"
 import { ValueFields } from "@unipackage/utils"
 import { describe, it } from "mocha"
 import { DataType } from "../../../src/shared/types/dataType"
+import { DatabaseConnection } from "@unipackage/datastore"
 const { expect } = chai
 
 const sampleMatchingTarget: ValueFields<MatchingTarget> = {
@@ -38,9 +39,10 @@ const sampleMatchingTarget: ValueFields<MatchingTarget> = {
 }
 
 describe("MatchingTargetMongoDatastore", () => {
-    const datastore = new MatchingTargetMongoDatastore(
+    const connection = DatabaseConnection.getInstance(
         "mongodb://127.0.0.1:27017/datastore"
     )
+    const datastore = new MatchingTargetMongoDatastore(connection)
 
     beforeEach(async () => {
         const res = await datastore.connect()

@@ -22,7 +22,7 @@ import { DataStore } from "@unipackage/datastore"
 import { ValueFields } from "@unipackage/utils"
 import { DatasetMetadata } from "../../types"
 import { DatasetMetadataDocument, DatasetMetadataModel } from "./model"
-import { MongooseDataStore } from "@unipackage/datastore"
+import { MongooseDataStore, DatabaseConnection } from "@unipackage/datastore"
 
 /**
  * Class representing a MongoDB datastore for DatasetMetadata entities.
@@ -38,12 +38,12 @@ export class DatasetMetadataMongoDatastore extends DataStore<
      * @param {string} uri - The MongoDB connection URI.
      * @constructor
      */
-    constructor(uri: string) {
+    constructor(connection: DatabaseConnection) {
         super(
             new MongooseDataStore<
                 ValueFields<DatasetMetadata>,
                 DatasetMetadataDocument
-            >(DatasetMetadataModel, uri)
+            >(DatasetMetadataModel, connection)
         )
     }
 }

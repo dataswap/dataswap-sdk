@@ -22,6 +22,7 @@ import { DatasetRequirementMongoDatastore } from "../../../src/module/dataset/re
 import { DatasetRequirement } from "../../../src/module/dataset/requirement/types"
 import { ValueFields } from "@unipackage/utils"
 import { describe, it } from "mocha"
+import { DatabaseConnection } from "@unipackage/datastore"
 const { expect } = chai
 
 const sampleDatasetRequirements: ValueFields<DatasetRequirement> = {
@@ -44,9 +45,10 @@ const sampleDatasetRequirements: ValueFields<DatasetRequirement> = {
  * Test suite for the DatasetsRequirement contract DatasetRequirementMongoDatastore functionality.
  */
 describe("DatasetRequirementsMongoDatastore", () => {
-    const datastore = new DatasetRequirementMongoDatastore(
+    const connection = DatabaseConnection.getInstance(
         "mongodb://127.0.0.1:27017/datastore"
     )
+    const datastore = new DatasetRequirementMongoDatastore(connection)
 
     beforeEach(async () => {
         const res = await datastore.connect()

@@ -28,8 +28,12 @@ import {
 } from "../../../src/module/dataset/proof/types"
 import { ValueFields } from "@unipackage/utils"
 import { describe, it } from "mocha"
+import { DatabaseConnection } from "@unipackage/datastore"
 const { expect } = chai
 
+const connection = DatabaseConnection.getInstance(
+    "mongodb://127.0.0.1:27017/datastore"
+)
 const sampleDatasetProofMetadata: ValueFields<DatasetProofMetadata> = {
     datasetId: 5,
     dataType: 1,
@@ -41,9 +45,7 @@ const sampleDatasetProofMetadata: ValueFields<DatasetProofMetadata> = {
  * Test suite for the DatasetsProof contract DatasetProofMetadataMongoDatastore functionality.
  */
 describe("DatasetProofMetadataMongoDatastore", () => {
-    const datastore = new DatasetProofMetadataMongoDatastore(
-        "mongodb://127.0.0.1:27017/datastore"
-    )
+    const datastore = new DatasetProofMetadataMongoDatastore(connection)
 
     beforeEach(async () => {
         const res = await datastore.connect()
@@ -116,9 +118,7 @@ const sampleDatasetProofs: ValueFields<DatasetProofs> = {
  * Test suite for the DatasetsProof contract DatasetProofsMongoDatastore functionality.
  */
 describe("DatasetProofsMongoDatastore", () => {
-    const datastore = new DatasetProofsMongoDatastore(
-        "mongodb://127.0.0.1:27017/datastore"
-    )
+    const datastore = new DatasetProofsMongoDatastore(connection)
 
     beforeEach(async () => {
         const res = await datastore.connect()

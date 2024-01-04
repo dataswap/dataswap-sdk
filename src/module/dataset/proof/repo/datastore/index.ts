@@ -26,7 +26,7 @@ import {
     DatasetProofsDocument,
     DatasetProofsModel,
 } from "./model"
-import { MongooseDataStore } from "@unipackage/datastore"
+import { MongooseDataStore, DatabaseConnection } from "@unipackage/datastore"
 
 /**
  * Class representing a MongoDB datastore for DatasetProofMetadata entities.
@@ -42,12 +42,12 @@ export class DatasetProofMetadataMongoDatastore extends DataStore<
      * @param {string} uri - The MongoDB connection URI.
      * @constructor
      */
-    constructor(uri: string) {
+    constructor(connection: DatabaseConnection) {
         super(
             new MongooseDataStore<
                 ValueFields<DatasetProofMetadata>,
                 DatasetProofMetadataDocument
-            >(DatasetProofMetadataModel, uri)
+            >(DatasetProofMetadataModel, connection)
         )
     }
 }
@@ -65,12 +65,12 @@ export class DatasetProofsMongoDatastore extends DataStore<
      * @param {string} uri - The MongoDB connection URI.
      * @constructor
      */
-    constructor(uri: string) {
+    constructor(connection: DatabaseConnection) {
         super(
             new MongooseDataStore<
                 ValueFields<DatasetProofs>,
                 DatasetProofsDocument
-            >(DatasetProofsModel, uri)
+            >(DatasetProofsModel, connection)
         )
     }
 }
