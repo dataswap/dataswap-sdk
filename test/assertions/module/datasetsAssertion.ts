@@ -30,6 +30,7 @@ import {
     DatasetRequirements,
 } from "../../../src/module/dataset/requirement/types"
 import * as utils from "../../shared/utils"
+import { convertToNumberArray } from "../../../src/shared/arrayUtils"
 import { DataType } from "../../../src/shared/types/dataType"
 import { DatasetChallenge } from "../../../src/module/dataset/challenge/types"
 
@@ -863,7 +864,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
         )
         await this.isDatasetContainsCarsAssertion(
             datasetId,
-            utils.convertToNumberArray(carsIds.data),
+            convertToNumberArray(carsIds.data),
             true
         )
         await this.isDatasetContainsCarAssertion(
