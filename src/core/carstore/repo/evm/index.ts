@@ -29,105 +29,105 @@ import { EvmEx } from "../../../../shared/types/evmEngineType"
 interface CarstoreCallEvm {
     /**
      * @notice Get the car information associated with a car.
-     * @param id Car ID to check.
+     * @param carId Car ID to check.
      * @return The car information.
      */
-    getCar(id: bigint): Promise<EvmOutput<Car>>
+    getCar(carId: bigint): Promise<EvmOutput<Car>>
 
     /**
      * @notice Get the dataset ID associated with a car.
-     * @param id Car ID to check.
+     * @param carId Car ID to check.
      * @return The car size of the car.
      */
-    getCarSize(id: bigint): Promise<EvmOutput<bigint>>
+    getCarSize(carId: bigint): Promise<EvmOutput<bigint>>
 
     /**
      * @notice Get the total size of cars based on an array of car IDs.
-     * @param ids An array of car IDs for which to calculate the size.
+     * @param carIds An array of car IDs for which to calculate the size.
      * @return The total size of cars.
      */
-    getCarsSize(ids: bigint[]): Promise<EvmOutput<bigint>>
+    getCarsSize(carIds: bigint[]): Promise<EvmOutput<bigint>>
 
     /**
      * @notice Get the dataset ID associated with a car.
-     * @param id Car ID to check.
+     * @param carId Car ID to check.
      * @return The dataset ID of the car.
      * NOTE: a car only belongs a datasets
      */
-    getCarDatasetId(id: bigint): Promise<EvmOutput<number>>
+    getCarDatasetId(carId: bigint): Promise<EvmOutput<number>>
 
     /**
-     * @notice Get the matching ids of a replica associated with a car.
-     * @param id Car ID associated with the replica.
-     * @return The matching ids of the car's replica.
+     * @notice Get the matching carIds of a replica associated with a car.
+     * @param carId Car ID associated with the replica.
+     * @return The matching carIds of the car's replica.
      */
-    getCarMatchingIds(id: bigint): Promise<EvmOutput<number[]>>
+    getCarMatchingIds(carId: bigint): Promise<EvmOutput<number[]>>
 
     /**
      * @notice Get the replica details associated with a car.
-     * @param id Car ID associated with the replica.
+     * @param carId Car ID associated with the replica.
      * @param matchingId Matching ID of the replica.
      * @return The dataset ID, state, and Filecoin claim ID of the replica.
      */
     getCarReplica(
-        id: bigint,
+        carId: bigint,
         matchingId: number
     ): Promise<EvmOutput<CarReplica>>
 
     /**
      * @notice Get the count of replicas associated with a car.
-     * @param id Car ID for which to retrieve the replica count.
+     * @param carId Car ID for which to retrieve the replica count.
      * @return The count of replicas associated with the car.
      */
-    getCarReplicasCount(id: bigint): Promise<EvmOutput<bigint>>
+    getCarReplicasCount(carId: bigint): Promise<EvmOutput<bigint>>
 
     /**
      * @notice Get the Filecoin claim ID associated with a specific replica of a car.
-     * @param id Car ID associated with the replica.
+     * @param carId Car ID associated with the replica.
      * @param matchingId Matching ID of the replica.
      * @return The Filecoin claim ID of the replica.
      */
     getCarReplicaFilecoinClaimId(
-        id: bigint,
+        carId: bigint,
         matchingId: number
     ): Promise<EvmOutput<bigint>>
 
     /**
      * @notice Get the state of a replica associated with a car.
-     * @param id Car ID associated with the replica.
+     * @param carId Car ID associated with the replica.
      * @param matchingId Matching ID of the replica.
      * @return The state of the replica.
      */
     getCarReplicaState(
-        id: bigint,
+        carId: bigint,
         matchingId: number
     ): Promise<EvmOutput<CarReplicaState>>
 
     /**
-     * @notice Get the hash of car based on the car id.
-     * @param id Car ID which to get car hash.
+     * @notice Get the hash of car based on the car carId.
+     * @param carId Car ID which to get car hash.
      * @return The hash of the car.
      */
-    getCarHash(id: bigint): Promise<EvmOutput<string>>
+    getCarHash(carId: bigint): Promise<EvmOutput<string>>
 
     /**
      * @notice Get the hashs of cars based on an array of car IDs.
-     * @param ids An array of car IDs for which to get car hashs.
+     * @param carIds An array of car IDs for which to get car hashs.
      * @return The hashs of cars.
      */
-    getCarsHashs(ids: bigint[]): Promise<EvmOutput<string[]>>
+    getCarsHashs(carIds: bigint[]): Promise<EvmOutput<string[]>>
 
     /**
-     * @notice Get the car's id based on the car's hash.
-     * @param hash The hash which to get car id.
-     * @return The id of the car.
+     * @notice Get the car's carId based on the car's hash.
+     * @param hash The hash which to get car carId.
+     * @return The carId of the car.
      */
     getCarId(hash: string): Promise<EvmOutput<bigint>>
 
     /**
-     * @notice Get the ids of cars based on an array of car hashs.
+     * @notice Get the carIds of cars based on an array of car hashs.
      * @param hashs An array of car hashs for which to cat car hashs.
-     * @return The ids of cars.
+     * @return The carIds of cars.
      */
     getCarsIds(hashs: string[]): Promise<EvmOutput<bigint[]>>
 
@@ -140,18 +140,21 @@ interface CarstoreCallEvm {
 
     /**
      * @notice Check if a car exists based on its ID.
-     * @param id Car ID to check.
+     * @param carId Car ID to check.
      * @return True if the car exists, false otherwise.
      */
-    hasCar(id: bigint): Promise<EvmOutput<boolean>>
+    hasCar(carId: bigint): Promise<EvmOutput<boolean>>
 
     /**
      * @notice Check if a replica exists within a car based on its matching ID.
-     * @param id Car ID to check.
+     * @param carId Car ID to check.
      * @param matchingId Matching ID of the replica to check.
      * @return True if the replica exists, false otherwise.
      */
-    hasCarReplica(id: bigint, matchingId: number): Promise<EvmOutput<boolean>>
+    hasCarReplica(
+        carId: bigint,
+        matchingId: number
+    ): Promise<EvmOutput<boolean>>
 
     /**
      * @notice Check if a car exists based on its Hashs.
@@ -163,10 +166,10 @@ interface CarstoreCallEvm {
 
     /**
      * @notice Check if multiple cars exist based on their IDs.
-     * @param ids Array of car IDs to check.
+     * @param carIds Array of car IDs to check.
      * @return True if all specified cars exist, false if any one does not exist.
      */
-    hasCars(ids: bigint[]): Promise<EvmOutput<boolean>>
+    hasCars(carIds: bigint[]): Promise<EvmOutput<boolean>>
 
     /**
      * @returns The cars count
@@ -216,17 +219,17 @@ export class CarstoreOriginEvm extends EvmEx {}
 export class CarstoreEvm extends CarstoreOriginEvm {
     /**
      * Get information about a specific car.
-     * @param id - The unique identifier of the car.
+     * @param carId - The unique carIdentifier of the car.
      * @returns A Promise object containing car information.
      */
-    async getCar(id: bigint): Promise<EvmOutput<Car>> {
-        const metaRes = await super.getCar(id)
+    async getCar(carId: bigint): Promise<EvmOutput<Car>> {
+        const metaRes = await super.getCar(carId)
         if (metaRes.ok && metaRes.data) {
             return {
                 ok: true,
                 data: new Car({
                     ...metaRes.data,
-                    id: id,
+                    carId: carId,
                 }),
             }
         }
@@ -235,15 +238,15 @@ export class CarstoreEvm extends CarstoreOriginEvm {
 
     /**
      * Get information about a specific car replica.
-     * @param id - The unique identifier of the car.
-     * @param matchingId - Matching identifier.
+     * @param carId - The unique carIdentifier of the car.
+     * @param matchingId - Matching carIdentifier.
      * @returns A Promise object containing car replica information.
      */
     async getCarReplica(
-        id: bigint,
+        carId: bigint,
         matchingId: number
     ): Promise<EvmOutput<CarReplica>> {
-        const metaRes = await super.getCarReplica(id, matchingId)
+        const metaRes = await super.getCarReplica(carId, matchingId)
         if (metaRes.ok && metaRes.data) {
             return {
                 ok: true,
