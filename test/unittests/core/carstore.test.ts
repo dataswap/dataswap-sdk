@@ -71,7 +71,7 @@ describe("carstore", () => {
             BigInt(1),
             new Car({
                 hash: hash.data,
-                id: BigInt(1),
+                carId: BigInt(1),
                 datasetId: datasetId.data,
                 size: size.data,
                 replicasCount: replicasCount.data,

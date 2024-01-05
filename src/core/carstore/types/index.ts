@@ -32,7 +32,7 @@ export interface Car {
     size: bigint //car size
     replicasCount: bigint // Replica count
     matchingIds: number[] // Matching Ids.
-    id: bigint // The id associated with the car.
+    carId: bigint // The id associated with the car.
 }
 
 /**
@@ -52,8 +52,8 @@ export interface CarReplica {
 export class Car extends Entity<Car> {
     constructor(data?: ValueFields<Car>) {
         super({
-            hash: data?.hash || "",
-            id: data?.id || BigInt(0),
+            hash: data?.hash || "0",
+            carId: data?.carId || BigInt(0),
             datasetId: data?.datasetId || 0,
             size: data?.size || BigInt(0),
             replicasCount: data?.replicasCount || BigInt(0),
