@@ -26,6 +26,10 @@ export {
     DatasetRequirement,
     DatasetRequirements,
 } from "./module/dataset/requirement/types"
+export {
+    DatasetProofs,
+    DatasetProofMetadata,
+} from "./module/dataset/proof/types"
 export { DatasetChallenge } from "./module/dataset/challenge/types"
 export { MatchingMetadata } from "./module/matching/metadata/types"
 export { MatchingTarget } from "./module/matching/target/types"
@@ -55,3 +59,11 @@ export { DatacapsEvm } from "./module/datacaps/repo/evm"
 
 export { DataswapMessageMongoDatastore } from "./message/repo/datastore"
 export { DatasetMetadataMongoDatastore } from "./module/dataset/metadata/repo/datastore"
+export {
+    CarMongoDatastore,
+    CarReplicaMongoDatastore,
+} from "./core/carstore/repo/datastore"
+export { DatasetProofMetadataMongoDatastore } from "./module/dataset/proof/repo/datastore"
+export { DatasetRequirementMongoDatastore } from "./module/dataset/requirement/repo/datastore"
+export { MatchingMetadataMongoDatastore } from "./module/matching/metadata/repo/datastore"
+export { MatchingTargetMongoDatastore } from "./module/matching/target/repo/datastore"
