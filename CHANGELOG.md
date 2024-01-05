@@ -1,5 +1,12 @@
 
 
+# [0.10.0](https://github.com/dataswap/dataswapjs/compare/0.9.0...0.10.0) (2024-01-05)
+
+
+### Features
+
+* 🎸 Add the exports for data types and datastore ([293f5ca](https://github.com/dataswap/dataswapjs/commit/293f5ca695e4a957da407448690e63ac99936fd6)), closes [#131](https://github.com/dataswap/dataswapjs/issues/131)
+
 # [0.9.0](https://github.com/dataswap/dataswapjs/compare/0.8.0...0.9.0) (2024-01-05)
 
 
