@@ -1,5 +1,19 @@
 
 
+# [0.9.0](https://github.com/dataswap/dataswapjs/compare/0.8.0...0.9.0) (2024-01-05)
+
+
+### Bug Fixes
+
+* 🐛 ci issue ([d6f4e16](https://github.com/dataswap/dataswapjs/commit/d6f4e164ae44c94b8a685306652c2e5848880883))
+* 🐛 update net version->2.5.2 ([60d0514](https://github.com/dataswap/dataswapjs/commit/60d051435c4a0eee35bbdfe86233d181205e7e95))
+
+
+### Features
+
+* 🎸 Add car and carReplica datastore ([453ef2c](https://github.com/dataswap/dataswapjs/commit/453ef2c058fd932d4b3cc28be104be08237eabee)), closes [#109](https://github.com/dataswap/dataswapjs/issues/109) [#110](https://github.com/dataswap/dataswapjs/issues/110)
+* 🎸 datastore for datasets proof ([3d4f937](https://github.com/dataswap/dataswapjs/commit/3d4f937419950bb4c59fa5b5c6e00300617ff994)), closes [#126](https://github.com/dataswap/dataswapjs/issues/126)
+
 # [0.8.0](https://github.com/dataswap/dataswapjs/compare/0.7.0...0.8.0) (2024-01-04)
 
 
