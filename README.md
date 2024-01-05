@@ -74,7 +74,6 @@ Configure test private key information to .env file. eg: .env.localnet.example
 
 ```sh
 npm run localnet:setup
-source .env
 ```
 
 #### Localnet start
@@ -101,19 +100,11 @@ npm run localnet:stop
 npm run localnet:clear
 ```
 
-### Network
-
-Configure test private key information, network rpc url and contract address to .env file. eg: .env.example
-
-```shell
-source .env
-```
-
 ## Author
 
 👤 **dataswap**
-  * GitHub: [@dataswap](https://github.com/dataswap)
 
+* GitHub: [@dataswap](https://github.com/dataswap)
 
 ## 🤝 Contributing
 
