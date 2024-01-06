@@ -18,7 +18,7 @@
  *  limitations under the respective licenses.
  ********************************************************************************/
 
-import mongoose, { Schema, Document } from "mongoose"
+import { Schema, Document } from "mongoose"
 import { ValueFields } from "@unipackage/utils"
 import { DatasetRequirement } from "../../types"
 

@@ -23,6 +23,10 @@ import { CarReplica } from "../../core/carstore/types"
 import { MatchingTarget } from "../../module/matching/target/types"
 import { ValueFields } from "@unipackage/utils"
 import { CarReplicaState } from "../types/carstoreType"
+import {
+    DatasetRequirements,
+    DatasetRequirement,
+} from "../../module/dataset/requirement/types"
 
 /**
  * Converts the provided data to an array of CarReplica objects using the specified options.
@@ -48,4 +52,27 @@ export async function convertToCarReplicasArray(options: {
         )
     }
     return ret
+}
+
+/**
+ * Converts a DatasetRequirements object to an array of DatasetRequirement objects.
+ *
+ * @param datasetRequirements - The DatasetRequirements object to convert.
+ * @returns An array of DatasetRequirement objects.
+ */
+export function convertToRequirementArray(
+    datasetRequirments: DatasetRequirements
+): DatasetRequirement[] {
+    const requirements = datasetRequirments.citys.map((_, index) => {
+        return {
+            dataPreparers: datasetRequirments.dataPreparers[index],
+            storageProviders: datasetRequirments.storageProviders[index],
+            regionCode: datasetRequirments.regions[index],
+            countryCode: datasetRequirments.countrys[index],
+            cityCodes: datasetRequirments.citys[index],
+            index: BigInt(index),
+            datasetId: Number(datasetRequirments.datasetId),
+        } as DatasetRequirement
+    })
+    return requirements
 }
