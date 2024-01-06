@@ -19,10 +19,12 @@
  ********************************************************************************/
 
 import { CarstoreEvm } from "../../core/carstore/repo/evm"
-import { CarReplica } from "../../core/carstore/types"
+import { DatasetRequirementEvm } from "../../module/dataset/requirement/repo/evm"
+import { CarReplica, Car } from "../../core/carstore/types"
 import { MatchingTarget } from "../../module/matching/target/types"
 import { ValueFields } from "@unipackage/utils"
 import { CarReplicaState } from "../types/carstoreType"
+import { DatasetProofs } from "../../module/dataset/proof/types"
 import {
     DatasetRequirements,
     DatasetRequirement,
@@ -41,7 +43,6 @@ export async function convertToCarReplicasArray(options: {
     let ret: CarReplica[] = []
 
     for (let index = 0; index < options.target.cars.length; index++) {
-        options.carstorEvm.getCarsSize
         ret.push(
             new CarReplica({
                 matchingId: options.target.matchingId,
@@ -49,6 +50,51 @@ export async function convertToCarReplicasArray(options: {
                 state: CarReplicaState.None,
                 filecoinClaimId: BigInt(0),
             } as ValueFields<CarReplica>)
+        )
+    }
+    return ret
+}
+
+/**
+ * Converts the provided data to an array of Car objects using the specified options.
+ *
+ * @param options - An object containing the necessary parameters for conversion.
+ * @returns A Promise resolving to an array of Car objects.
+ */
+export async function convertToCarArray(options: {
+    carstorEvm: CarstoreEvm
+    requirementEvm: DatasetRequirementEvm
+    proofs: DatasetProofs
+}): Promise<Car[]> {
+    if (options.proofs.leafHashes.length !== options.proofs.leafSizes.length) {
+        throw new Error("invalid dataset proofs")
+    }
+
+    let ret: Car[] = []
+
+    for (let index = 0; index < options.proofs.leafHashes.length; index++) {
+        const carId = await options.carstorEvm.getCarId(
+            options.proofs.leafHashes[index]
+        )
+        if (!carId.ok || !carId.data) {
+            throw carId.error
+        }
+        const replicaCount =
+            await options.requirementEvm.getDatasetReplicasCount(
+                options.proofs.datasetId
+            )
+        if (!replicaCount.ok || !replicaCount.data) {
+            throw replicaCount.error
+        }
+        ret.push(
+            new Car({
+                hash: options.proofs.leafHashes[index],
+                datasetId: options.proofs.datasetId,
+                size: options.proofs.leafSizes[index],
+                carId: carId.data,
+                replicasCount: BigInt(replicaCount.data),
+                matchingIds: [],
+            } as ValueFields<Car>)
         )
     }
     return ret
