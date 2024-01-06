@@ -141,26 +141,8 @@ export class DatasetRequirementEvm extends DatasetRequirementOriginEvm {
         let result: DataswapMessage = decodeRes.data!.value() as DataswapMessage
         switch (decodeRes.data!.method) {
             case "submitDatasetReplicaRequirements":
-                const requirements = (
-                    result.params as DatasetRequirements
-                ).citys.map((_, index) => {
-                    return {
-                        dataPreparers: result.params.dataPreparers[index],
-                        storageProviders: result.params.storageProviders[index],
-                        regionCode: result.params.regions[index],
-                        countryCode: result.params.countrys[index],
-                        cityCodes: result.params.citys[index],
-                        index: BigInt(index),
-                        datasetId: Number(result.params.datasetId),
-                    } as DatasetRequirement
-                })
-                const params = {
-                    requirements: requirements,
-                    amount: result.params.amount,
-                    datasetId: Number(result.params.datasetId),
-                }
                 result.datasetId = Number(result.params.datasetId)
-                result.params = params
+                result.params.datasetId = result.datasetId
                 break
             default:
                 return {

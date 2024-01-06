@@ -60,19 +60,3 @@ export interface DatasetRequirements {
  * @extends {Entity<DatasetRequirements>}
  */
 export class DatasetRequirements extends Entity<DatasetRequirements> {}
-
-/**
- * Interface representing the requirements params for submitDatasetReplicaRequirements
- */
-export interface SubmitRequirementsParams {
-    requirements: DatasetRequirement[]
-    amount: bigint
-    datasetId?: number
-}
-
-/**
- * Class representing a SubmitRequirementsParams entity.
- * @class
- * @extends {Entity<SubmitRequirementsParams>}
- */
-export class SubmitRequirementsParams extends Entity<SubmitRequirementsParams> {}
