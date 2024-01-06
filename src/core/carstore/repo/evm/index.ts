@@ -253,6 +253,7 @@ export class CarstoreEvm extends CarstoreOriginEvm {
                 data: new CarReplica({
                     ...metaRes.data,
                     matchingId: matchingId,
+                    carId: carId,
                 }),
             }
         }

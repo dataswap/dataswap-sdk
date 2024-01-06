@@ -43,6 +43,7 @@ export interface CarReplica {
     matchingId: number // The matchingId associated with the replica
     state: CarReplicaState // Current state of the replica
     filecoinClaimId: bigint // ID of the Filecoin claim associated with the replica's storage
+    carId?: bigint // The id associated with the car.
 }
 
 /**
@@ -72,6 +73,7 @@ export class CarReplica extends Entity<CarReplica> {
             matchingId: data?.matchingId || 0,
             filecoinClaimId: data?.filecoinClaimId || BigInt(0),
             state: data?.state || CarReplicaState.None,
+            carId: data?.carId || BigInt(0),
         })
     }
 }
