@@ -18,7 +18,7 @@
  *  limitations under the respective licenses.
  ********************************************************************************/
 
-import mongoose, { Schema, Document } from "mongoose"
+import { Schema, Document } from "mongoose"
 import { ValueFields } from "@unipackage/utils"
 import { Car, CarReplica } from "../../types"
 
@@ -74,6 +74,11 @@ interface CarReplicaDocument extends ValueFields<CarReplica>, Document {}
  * @constant
  */
 const CarReplicaSchema = new Schema<CarReplicaDocument>({
+    carId: {
+        type: BigInt,
+        required: [true, "Please provide the carId"],
+        index: { unique: true },
+    },
     matchingId: {
         type: Number,
         required: [true, "Please provide the matchingId"],
