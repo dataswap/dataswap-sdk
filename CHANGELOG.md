@@ -1,5 +1,12 @@
 
 
+## [0.10.1](https://github.com/dataswap/dataswapjs/compare/0.10.0...0.10.1) (2024-01-06)
+
+
+### Bug Fixes
+
+* 🐛 add carId to CarReplica ([914d356](https://github.com/dataswap/dataswapjs/commit/914d35686e5fe4cd9c6aa1dbfe46c9c71e0b0c40)), closes [#134](https://github.com/dataswap/dataswapjs/issues/134)
+
 # [0.10.0](https://github.com/dataswap/dataswapjs/compare/0.9.0...0.10.0) (2024-01-05)
 
 
