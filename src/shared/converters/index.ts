@@ -29,6 +29,7 @@ import {
     DatasetRequirements,
     DatasetRequirement,
 } from "../../module/dataset/requirement/types"
+import { MatchingBids, MatchingBid } from "../../module/matching/bids/types"
 
 /**
  * Converts the provided data to an array of CarReplica objects using the specified options.
@@ -121,4 +122,23 @@ export function convertToRequirementArray(
         } as DatasetRequirement
     })
     return requirements
+}
+
+/**
+ * Converts the provided MatchingBids data to an array of MatchingBid objects.
+ *
+ * @param matchingBids - The MatchingBids data to be converted.
+ * @returns An array of MatchingBid objects.
+ */
+export function convertToMatchingBidArray(
+    matchingBids: MatchingBids
+): MatchingBid[] {
+    return matchingBids.bidders.map((_, index) => {
+        return {
+            bidder: matchingBids.bidders[index],
+            amount: matchingBids.amounts[index],
+            complyFilplusRule: matchingBids.complyFilplusRules[index],
+            matchingId: Number(matchingBids.matchingId),
+        } as MatchingBid
+    })
 }
