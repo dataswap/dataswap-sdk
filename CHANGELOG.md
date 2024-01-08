@@ -1,5 +1,15 @@
 
 
+# [0.11.0](https://github.com/dataswap/dataswapjs/compare/0.10.1...0.11.0) (2024-01-08)
+
+
+### Features
+
+* 🎸 convert datasetproofs to cars ([893d815](https://github.com/dataswap/dataswapjs/commit/893d815ba99439a09d802bd98bc83c077d01ee11)), closes [#136](https://github.com/dataswap/dataswapjs/issues/136)
+* 🎸 define matchingbid ([172846d](https://github.com/dataswap/dataswapjs/commit/172846d54eed3e84ff36f4f72f749e615b6cef43)), closes [#143](https://github.com/dataswap/dataswapjs/issues/143)
+* 🎸 tools to convert DatasetRequirements ([ebf1695](https://github.com/dataswap/dataswapjs/commit/ebf16951a313fd7daa0b8fb37d080ec81bb5ae68)), closes [#135](https://github.com/dataswap/dataswapjs/issues/135)
+* 🎸 tools to convert matching target to car replicas ([937fc1d](https://github.com/dataswap/dataswapjs/commit/937fc1de2ee0a4e25b672b27f19bf8d281d2e7bf)), closes [#137](https://github.com/dataswap/dataswapjs/issues/137)
+
 ## [0.10.1](https://github.com/dataswap/dataswapjs/compare/0.10.0...0.10.1) (2024-01-06)
 
 
