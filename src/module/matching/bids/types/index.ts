@@ -37,3 +37,20 @@ export interface MatchingBids {
  * @class
  */
 export class MatchingBids extends Entity<MatchingBids> {}
+
+/**
+ * Interface representing the data structure for matching bid.
+ * @interface
+ */
+export interface MatchingBid {
+    bidder: string
+    amount: bigint
+    complyFilplusRule: boolean
+    matchingId?: number
+}
+
+/**
+ * Class representing the entity for matching bid.
+ * @class
+ */
+export class MatchingBid extends Entity<MatchingBid> {}
