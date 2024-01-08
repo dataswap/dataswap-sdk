@@ -281,6 +281,8 @@ export class EscrowEvm extends EscrowOriginEvm {
                 }
                 delete result.params.id
                 break
+            case "initDependencies":
+                break
             default:
                 return {
                     ok: false,

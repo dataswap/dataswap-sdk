@@ -237,8 +237,11 @@ export class DatasetMetadataEvm extends DatasetMetadataOriginEvm {
             case "approveDatasetMetadata":
             case "rejectDataset":
             case "rejectDatasetMetadata":
+            case "addDatasetUsedSize":
                 result.datasetId = Number(result.params.datasetId)
                 result.params.datasetId = result.datasetId
+                break
+            case "initDependencies":
                 break
             default:
                 return {
