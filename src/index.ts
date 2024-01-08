@@ -33,8 +33,7 @@ export {
 export { DatasetChallenge } from "./module/dataset/challenge/types"
 export { MatchingMetadata } from "./module/matching/metadata/types"
 export { MatchingTarget } from "./module/matching/target/types"
-export { MatchingBids } from "./module/matching/bids/types"
-export { MatchingBid } from "./module/matching/bids/types"
+export { MatchingBids, MatchingBid } from "./module/matching/bids/types"
 export { CarReplicaState } from "./shared/types/carstoreType"
 export { DatasetState } from "./shared/types/datasetType"
 export { DataType } from "./shared/types/dataType"
@@ -68,3 +67,10 @@ export { DatasetProofMetadataMongoDatastore } from "./module/dataset/proof/repo/
 export { DatasetRequirementMongoDatastore } from "./module/dataset/requirement/repo/datastore"
 export { MatchingMetadataMongoDatastore } from "./module/matching/metadata/repo/datastore"
 export { MatchingTargetMongoDatastore } from "./module/matching/target/repo/datastore"
+export {
+    convertToCarReplicasArray,
+    convertToCarArray,
+    convertToRequirementArray,
+    convertToMatchingBidArray,
+    mergeMatchingTarget,
+} from "./shared/converters"

@@ -30,6 +30,7 @@ import {
     DatasetRequirement,
 } from "../../module/dataset/requirement/types"
 import { MatchingBids, MatchingBid } from "../../module/matching/bids/types"
+import { MatchingTargetEvm } from "../../module/matching/target/repo/evm"
 
 /**
  * Converts the provided data to an array of CarReplica objects using the specified options.
@@ -141,4 +142,34 @@ export function convertToMatchingBidArray(
             matchingId: Number(matchingBids.matchingId),
         } as MatchingBid
     })
+}
+
+/**
+ * Merges the provided MatchingTarget objects, ensuring the matchingIds are the same.
+ *
+ * @param options - An object containing the MatchingTargetEvm instance and the original
+ * and new MatchingTarget objects to be merged.
+ * @returns A Promise resolving to the merged MatchingTarget object.
+ */
+export async function mergeMatchingTarget(options: {
+    matchingTargetEvm: MatchingTargetEvm
+    originMatchingTarget: MatchingTarget
+    newMatchingTarget: MatchingTarget
+}): Promise<MatchingTarget> {
+    if (
+        options.originMatchingTarget.matchingId !==
+        options.newMatchingTarget.matchingId
+    ) {
+        throw new Error("Cannot merge two targets with different matchingIds")
+    }
+    const target = await options.matchingTargetEvm.getMatchingTarget(
+        options.originMatchingTarget.matchingId!
+    )
+    if (!target.ok) {
+        throw target.error
+    }
+    if (!target.data) {
+        throw new Error("get matchingTarget failed")
+    }
+    return target.data as MatchingTarget
 }
