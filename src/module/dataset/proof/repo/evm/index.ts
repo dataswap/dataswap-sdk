@@ -285,6 +285,8 @@ export class DatasetProofEvm extends DatasetProofOriginEvm {
                 result.datasetId = Number(result.params.datasetId)
                 result.params.datasetId = result.datasetId
                 break
+            case "initDependencies":
+                break
             default:
                 console.log("method:", decodeRes.data!.method)
                 return {
