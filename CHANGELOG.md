@@ -1,5 +1,12 @@
 
 
+# [0.12.0](https://github.com/dataswap/dataswapjs/compare/0.11.0...0.12.0) (2024-01-08)
+
+
+### Features
+
+* 🎸 add merge tool for matchingTarget ([781cd5a](https://github.com/dataswap/dataswapjs/commit/781cd5a1be5e7daffc4136b637aea5c7989becf9)), closes [#145](https://github.com/dataswap/dataswapjs/issues/145)
+
 # [0.11.0](https://github.com/dataswap/dataswapjs/compare/0.10.1...0.11.0) (2024-01-08)
 
 
