@@ -1,5 +1,17 @@
 
 
+# [0.13.0](https://github.com/dataswap/dataswapjs/compare/0.12.3...0.13.0) (2024-01-09)
+
+
+### Bug Fixes
+
+* 🐛 Modify the database name for MatchingMetadata ([875e355](https://github.com/dataswap/dataswapjs/commit/875e3558c3f524dcd6ef0ea28e82c930748a275b)), closes [#149](https://github.com/dataswap/dataswapjs/issues/149)
+
+
+### Features
+
+* 🎸 Encapsulation of the data storage utility ([a6b5608](https://github.com/dataswap/dataswapjs/commit/a6b560859f885273db22e494f5a56412bf8343fe)), closes [#150](https://github.com/dataswap/dataswapjs/issues/150) [#151](https://github.com/dataswap/dataswapjs/issues/151)
+
 ## [0.12.3](https://github.com/dataswap/dataswapjs/compare/0.12.2...0.12.3) (2024-01-09)
 
 
