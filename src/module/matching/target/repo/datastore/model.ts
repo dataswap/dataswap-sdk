@@ -41,11 +41,9 @@ const MatchingTargetSchema = new Schema<MatchingTargetDocument>({
     },
     cars: {
         type: [BigInt],
-        required: [true, "Please provide the cars"],
     },
     size: {
         type: BigInt,
-        required: [true, "Please provide the size of cars"],
     },
     dataType: {
         type: Number,
@@ -53,10 +51,6 @@ const MatchingTargetSchema = new Schema<MatchingTargetDocument>({
     },
     associatedMappingFilesMatchingID: {
         type: Number,
-        required: [
-            true,
-            "Please provide the matching id associated mapping files",
-        ],
     },
     replicaIndex: {
         type: BigInt,
@@ -64,14 +58,9 @@ const MatchingTargetSchema = new Schema<MatchingTargetDocument>({
     },
     subsidy: {
         type: BigInt,
-        required: [true, "Please provide the subsidy of target"],
     },
     complete: {
         type: Boolean,
-        required: [
-            true,
-            "Please provide the completion status of the target submission",
-        ],
     },
     matchingId: {
         type: Number,

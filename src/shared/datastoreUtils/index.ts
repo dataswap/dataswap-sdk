@@ -70,7 +70,7 @@ export async function storeCars(options: {
  * @param options.target - MatchingTarget to be updated with the stored car replicas.
  * @returns A Promise resolving to a Result indicating the success or failure of the operation.
  */
-export async function storeCarReplicass(options: {
+export async function storeCarReplicas(options: {
     carReplicaDatastore: CarReplicaMongoDatastore
     target: MatchingTarget
 }): Promise<Result<any>> {
