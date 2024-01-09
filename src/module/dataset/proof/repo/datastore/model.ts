@@ -47,7 +47,6 @@ const DatasetProofMetadataSchema = new Schema<DatasetProofMetadataDocument>({
     },
     mappingFilesAccessMethod: {
         type: String,
-        required: [true, "Please provide the access method of mapping files"],
     },
     rootHash: {
         type: String,

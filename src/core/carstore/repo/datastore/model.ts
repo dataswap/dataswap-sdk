@@ -86,11 +86,9 @@ const CarReplicaSchema = new Schema<CarReplicaDocument>({
     },
     state: {
         type: Number,
-        required: [true, "Please provide the state"],
     },
     filecoinClaimId: {
         type: BigInt,
-        required: [true, "Please provide the filecoinClaimId"],
     },
 })
 

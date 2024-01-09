@@ -57,7 +57,6 @@ const MatchingMetadataSchema = new Schema<MatchingMetadataDocument>({
     },
     additionalInfo: {
         type: String,
-        required: [true, "Please provide the additionalInfo"],
     },
     initiator: {
         type: String,
@@ -69,7 +68,6 @@ const MatchingMetadataSchema = new Schema<MatchingMetadataDocument>({
     },
     pausedBlockCount: {
         type: BigInt,
-        required: [true, "Please provide the pausedBlockCount"],
     },
     replicaIndex: {
         type: BigInt,
