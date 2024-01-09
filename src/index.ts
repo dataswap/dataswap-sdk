@@ -76,6 +76,6 @@ export {
 } from "./shared/converters"
 export {
     storeCars,
-    storeCarReplicass,
+    storeCarReplicas,
     storeMatchingtarget,
 } from "./shared/datastoreUtils"
