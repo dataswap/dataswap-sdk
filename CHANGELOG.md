@@ -1,5 +1,12 @@
 
 
+## [0.12.3](https://github.com/dataswap/dataswapjs/compare/0.12.2...0.12.3) (2024-01-09)
+
+
+### Bug Fixes
+
+* 🐛 some prop is not require ([528aef5](https://github.com/dataswap/dataswapjs/commit/528aef56433cf3880ae10d92cf719b02f961d194))
+
 ## [0.12.2](https://github.com/dataswap/dataswapjs/compare/0.12.1...0.12.2) (2024-01-09)
 
 
