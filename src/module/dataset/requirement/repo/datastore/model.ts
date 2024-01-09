@@ -62,9 +62,10 @@ const DatasetRequirementSchema = new Schema<DatasetRequirementDocument>({
     datasetId: {
         type: Number,
         required: [true, "Please provide the datasetId"],
-        index: { unique: true },
     },
 })
+
+DatasetRequirementSchema.index({ index: 1, datasetId: 1 }, { unique: true })
 
 export { DatasetRequirementSchema }
 export type { DatasetRequirementDocument }
