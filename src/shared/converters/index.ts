@@ -38,17 +38,16 @@ import { MatchingTargetEvm } from "../../module/matching/target/repo/evm"
  * @param options - An object containing the necessary parameters for conversion.
  * @returns A Promise resolving to an array of CarReplica objects.
  */
-export async function convertToCarReplicasArray(options: {
-    carstorEvm: CarstoreEvm
+export function convertToCarReplicasArray(
     target: MatchingTarget
-}): Promise<CarReplica[]> {
+): CarReplica[] {
     let ret: CarReplica[] = []
 
-    for (let index = 0; index < options.target.cars.length; index++) {
+    for (let index = 0; index < target.cars.length; index++) {
         ret.push(
             new CarReplica({
-                matchingId: options.target.matchingId,
-                carId: options.target.cars[index],
+                matchingId: target.matchingId,
+                carId: target.cars[index],
                 state: CarReplicaState.None,
                 filecoinClaimId: BigInt(0),
             } as ValueFields<CarReplica>)
@@ -64,7 +63,7 @@ export async function convertToCarReplicasArray(options: {
  * @returns A Promise resolving to an array of Car objects.
  */
 export async function convertToCarArray(options: {
-    carstorEvm: CarstoreEvm
+    carstoreEvm: CarstoreEvm
     requirementEvm: DatasetRequirementEvm
     proofs: DatasetProofs
 }): Promise<Car[]> {
@@ -75,7 +74,7 @@ export async function convertToCarArray(options: {
     let ret: Car[] = []
 
     for (let index = 0; index < options.proofs.leafHashes.length; index++) {
-        const carId = await options.carstorEvm.getCarId(
+        const carId = await options.carstoreEvm.getCarId(
             options.proofs.leafHashes[index]
         )
         if (!carId.ok || !carId.data) {
