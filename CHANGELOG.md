@@ -1,5 +1,12 @@
 
 
+## [0.13.1](https://github.com/dataswap/dataswapjs/compare/0.13.0...0.13.1) (2024-01-09)
+
+
+### Bug Fixes
+
+* 🐛 fix matching target model ([d59e476](https://github.com/dataswap/dataswapjs/commit/d59e476b7f54877a01a898854f83bef91c05ec8f)), closes [#154](https://github.com/dataswap/dataswapjs/issues/154)
+
 # [0.13.0](https://github.com/dataswap/dataswapjs/compare/0.12.3...0.13.0) (2024-01-09)
 
 
