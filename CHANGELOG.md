@@ -1,5 +1,12 @@
 
 
+## [0.12.2](https://github.com/dataswap/dataswapjs/compare/0.12.1...0.12.2) (2024-01-09)
+
+
+### Bug Fixes
+
+* 🐛 requirement unique index ([e5c23e3](https://github.com/dataswap/dataswapjs/commit/e5c23e33b75ded66591c5db64908f8efbf06acc9))
+
 ## [0.12.1](https://github.com/dataswap/dataswapjs/compare/0.12.0...0.12.1) (2024-01-09)
 
 
