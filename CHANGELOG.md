@@ -1,5 +1,12 @@
 
 
+## [0.12.1](https://github.com/dataswap/dataswapjs/compare/0.12.0...0.12.1) (2024-01-09)
+
+
+### Bug Fixes
+
+* 🐛 debug decodemessage faild ([9ee258a](https://github.com/dataswap/dataswapjs/commit/9ee258a08033909014c3988adf7a7f8258760832)), closes [#147](https://github.com/dataswap/dataswapjs/issues/147)
+
 # [0.12.0](https://github.com/dataswap/dataswapjs/compare/0.11.0...0.12.0) (2024-01-08)
 
 
