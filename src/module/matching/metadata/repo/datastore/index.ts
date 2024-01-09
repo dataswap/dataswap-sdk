@@ -43,7 +43,7 @@ export class MatchingMetadataMongoDatastore extends DataStore<
             new MongooseDataStore<
                 ValueFields<MatchingMetadata>,
                 MatchingMetadataDocument
-            >("MatchingMetadataSchema", MatchingMetadataSchema, connection)
+            >("MatchingMetadata", MatchingMetadataSchema, connection)
         )
     }
 }
