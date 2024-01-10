@@ -153,6 +153,28 @@ export class EscrowAssertion implements IEscrowAssertion {
     }
 
     /**
+     * Asserts the withdraw operation on the escrow.
+     * @param {EscrowType} type - The type of the escrow.
+     * @param {string} owner - The owner of the escrow.
+     * @param {number} id - The ID of the escrow.
+     * @returns {Promise<void>}
+     */
+    async withdrawAssertion(type: EscrowType, owner: string, id: number) {
+        let expectFund = new Fund()
+        let fund = await handleEvmError(
+            this.escrow.getOwnerFund(type, owner, id)
+        )
+        expectFund.total += fund.data.total
+        expectFund.collateraled += fund.data.collateraled
+
+        this.escrow.getWallet().setDefault(owner)
+        await handleEvmError(this.escrow.withdraw(type, owner, id))
+
+        expectFund.total = BigInt(0)
+        await this.getOwnerFundAssertion(type, owner, id, expectFund)
+    }
+
+    /**
      * Asserts the payment operation on the escrow.
      * @param {EscrowType} type - The type of the escrow.
      * @param {string} owner - The owner of the escrow.
