@@ -58,7 +58,6 @@ const DataswapMessageSchema = new Schema<DataswapMessageDocument>({
     },
     params: {
         type: Object,
-        required: [true, "Please provide the params"],
     },
     status: {
         type: String,
