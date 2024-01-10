@@ -1,5 +1,17 @@
 
 
+# [0.15.0](https://github.com/dataswap/dataswapjs/compare/0.13.2...0.15.0) (2024-01-10)
+
+
+### Bug Fixes
+
+* 🐛 version no ([3c02d4e](https://github.com/dataswap/dataswapjs/commit/3c02d4ec2899d2267bf68cab13607ba0c9532f55))
+
+
+### Features
+
+* 🎸 modifying bigint within complex type ([658f3e0](https://github.com/dataswap/dataswapjs/commit/658f3e06fbfd221a5bd762df14980dd5087cc3c2)), closes [#161](https://github.com/dataswap/dataswapjs/issues/161)
+
 ## [0.13.2](https://github.com/dataswap/dataswapjs/compare/0.13.1...0.13.2) (2024-01-10)
 
 
