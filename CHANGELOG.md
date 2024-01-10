@@ -1,5 +1,12 @@
 
 
+## [0.13.2](https://github.com/dataswap/dataswapjs/compare/0.13.1...0.13.2) (2024-01-10)
+
+
+### Bug Fixes
+
+* 🐛 Modify the params of the DataswapMessage to optional ([044cf18](https://github.com/dataswap/dataswapjs/commit/044cf1830145d0cf4e10adbb723e5a9febd197ec)), closes [#159](https://github.com/dataswap/dataswapjs/issues/159)
+
 ## [0.13.1](https://github.com/dataswap/dataswapjs/compare/0.13.0...0.13.1) (2024-01-09)
 
 
