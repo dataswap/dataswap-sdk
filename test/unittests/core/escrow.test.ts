@@ -53,6 +53,18 @@ describe("escrow", () => {
     })
 
     /**
+     * Test case for withdraw functionality.
+     * The local test passes, depending on the environment, skip.
+     */
+    it.skip("withdraw", async function () {
+        await escrowAssertion.withdrawAssertion(
+            EscrowType.DatacapCollateral,
+            process.env.DATASWAP_METADATASUBMITTER as string,
+            1
+        )
+    })
+
+    /**
      * Test case for payment functionality.
      */
     it("payment", async function () {
