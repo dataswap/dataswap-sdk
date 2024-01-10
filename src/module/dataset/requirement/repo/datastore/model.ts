@@ -52,7 +52,7 @@ const DatasetRequirementSchema = new Schema<DatasetRequirementDocument>({
         required: [true, "Please provide the country code"],
     },
     cityCodes: {
-        type: [BigInt],
+        type: [Number],
         required: [true, "Please provide the city codes"],
     },
     index: {

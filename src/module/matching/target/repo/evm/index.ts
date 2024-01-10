@@ -29,7 +29,10 @@ import { DataswapMessage } from "../../../../../message/types"
 import { MatchingTarget } from "../../types"
 import { DataType } from "../../../../../shared/types/dataType"
 import { EvmEx } from "../../../../../shared/types/evmEngineType"
-import { mergeBigIntRangesToCompleteArray } from "../../../../../shared/arrayUtils"
+import {
+    convertToStringArray,
+    mergeBigIntRangesToCompleteArray,
+} from "../../../../../shared/arrayUtils"
 
 /**
  * Interface for making Ethereum Virtual Machine (EVM) calls related to matching targets.
@@ -53,7 +56,7 @@ interface MatchingTargetCallEvm {
      * @param matchingId - The ID of the matching.
      * @returns A Promise resolving to the MatchingTarget object.
      */
-    getMatchingTarget(matchingId: number): Promise<EvmOutput<MatchingTarget>>
+    getMatchingTarget(matchingId: number): Promise<EvmOutput<any>>
     /**
      * Checks if a specific car hash is present in a matching identified by its ID.
      * @param matchingId - The ID of the matching.
@@ -191,6 +194,7 @@ export class MatchingTargetEvm extends MatchingTargetOriginEvm {
                 ...metaRes.data,
                 matchingId: matchingId,
             })
+            data.cars = convertToStringArray(metaRes.data.cars)
             data.datasetID = Number(metaRes.data.datasetID)
             data.dataType = Number(data.dataType) as DataType
             data.associatedMappingFilesMatchingID = Number(
@@ -199,7 +203,7 @@ export class MatchingTargetEvm extends MatchingTargetOriginEvm {
             return {
                 ok: true,
                 data: data,
-            }
+            } as EvmOutput<MatchingTarget>
         }
         return metaRes
     }
@@ -234,9 +238,11 @@ export class MatchingTargetEvm extends MatchingTargetOriginEvm {
                     const params = {
                         matchingId: Number(result.params.matchingId),
                         datasetID: Number(result.params.datasetId),
-                        cars: mergeBigIntRangesToCompleteArray(
-                            result.params.carsStarts,
-                            result.params.carsEnds
+                        cars: convertToStringArray(
+                            mergeBigIntRangesToCompleteArray(
+                                result.params.carsStarts,
+                                result.params.carsEnds
+                            )
                         ),
                         complete: result.params.complete,
                     }

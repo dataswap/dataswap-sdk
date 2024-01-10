@@ -36,7 +36,7 @@ const sampleDatasetRequirements: ValueFields<DatasetRequirement> = {
     ],
     regionCode: BigInt(585),
     countryCode: BigInt(517),
-    cityCodes: [BigInt(202186), BigInt(1302254), BigInt(2236269)],
+    cityCodes: [202186, 1302254, 2236269],
     index: BigInt(0),
     datasetId: 11,
 }

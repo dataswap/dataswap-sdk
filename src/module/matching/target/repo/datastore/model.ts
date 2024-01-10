@@ -40,7 +40,7 @@ const MatchingTargetSchema = new Schema<MatchingTargetDocument>({
         required: [true, "Please provide the datasetId"],
     },
     cars: {
-        type: [BigInt],
+        type: [String],
     },
     size: {
         type: BigInt,

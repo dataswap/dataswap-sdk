@@ -19,6 +19,15 @@
  ********************************************************************************/
 
 /**
+ * Converts an array of bigints to an array of strings.
+ * @param bigints - The array of bigints to be converted.
+ * @returns An array containing string representations of the provided bigints.
+ */
+export function convertToStringArray(bigints: bigint[]): string[] {
+    return bigints.map((big) => big.toString())
+}
+
+/**
  * Converts an array of numbers to an array of BigIntegers.
  * @param numbers - The array of numbers to convert.
  * @returns An array of BigIntegers.

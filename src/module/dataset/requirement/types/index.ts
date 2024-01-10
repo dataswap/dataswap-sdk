@@ -29,7 +29,7 @@ export interface DatasetRequirement {
     storageProviders: string[]
     regionCode: bigint
     countryCode: bigint
-    cityCodes: bigint[]
+    cityCodes: number[]
     index?: bigint
     datasetId?: number
 }

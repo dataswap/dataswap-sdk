@@ -471,7 +471,9 @@ export class DatasetsAssertion implements IDatasetsAssertion {
                 storageProviders: expectRequirements.storageProviders[index],
                 regionCode: expectRequirements.regions[index],
                 countryCode: expectRequirements.countrys[index],
-                cityCodes: expectRequirements.citys[index],
+                cityCodes: convertToNumberArray(
+                    expectRequirements.citys[index]
+                ),
                 index: BigInt(index),
                 datasetId: datasetId,
             })

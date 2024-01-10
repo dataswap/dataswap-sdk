@@ -29,6 +29,7 @@ import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
 import { DataswapMessage } from "../../../../../message/types"
 import { DatasetRequirement, DatasetRequirements } from "../../types"
 import { EvmEx } from "../../../../../shared/types/evmEngineType"
+import { convertToNumberArray } from "../../../../../shared/arrayUtils"
 
 /**
  * Interface representing the Ethereum Virtual Machine (EVM) call structure for dataset requirements.
@@ -119,13 +120,16 @@ export class DatasetRequirementEvm extends DatasetRequirementOriginEvm {
             index
         )
         if (metaRes.ok && metaRes.data) {
+            let data = new DatasetRequirement({
+                ...metaRes.data,
+                index: index,
+                datasetId: datasetId,
+            })
+            data.cityCodes = convertToNumberArray(data.cityCodes)
+
             return {
                 ok: true,
-                data: new DatasetRequirement({
-                    ...metaRes.data,
-                    index: index,
-                    datasetId: datasetId,
-                }),
+                data: data,
             }
         }
         return metaRes

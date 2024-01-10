@@ -28,7 +28,7 @@ const { expect } = chai
 
 const sampleMatchingTarget: ValueFields<MatchingTarget> = {
     datasetID: 1,
-    cars: [BigInt(1)],
+    cars: ["1"],
     size: BigInt(1111),
     dataType: DataType.MappingFiles,
     associatedMappingFilesMatchingID: 0,
