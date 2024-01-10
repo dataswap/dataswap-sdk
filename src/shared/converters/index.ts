@@ -31,6 +31,7 @@ import {
 } from "../../module/dataset/requirement/types"
 import { MatchingBids, MatchingBid } from "../../module/matching/bids/types"
 import { MatchingTargetEvm } from "../../module/matching/target/repo/evm"
+import { convertToNumberArray } from "../arrayUtils"
 
 /**
  * Converts the provided data to an array of CarReplica objects using the specified options.
@@ -47,7 +48,7 @@ export function convertToCarReplicasArray(
         ret.push(
             new CarReplica({
                 matchingId: target.matchingId,
-                carId: target.cars[index],
+                carId: BigInt(target.cars[index]),
                 state: CarReplicaState.None,
                 filecoinClaimId: BigInt(0),
             } as ValueFields<CarReplica>)
@@ -116,7 +117,7 @@ export function convertToRequirementArray(
             storageProviders: datasetRequirments.storageProviders[index],
             regionCode: datasetRequirments.regions[index],
             countryCode: datasetRequirments.countrys[index],
-            cityCodes: datasetRequirments.citys[index],
+            cityCodes: convertToNumberArray(datasetRequirments.citys[index]),
             index: BigInt(index),
             datasetId: Number(datasetRequirments.datasetId),
         } as DatasetRequirement

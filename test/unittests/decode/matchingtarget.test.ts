@@ -78,7 +78,7 @@ describe("MatchingsTargetMessageDecoder", () => {
             const expectDecodeResout = createExpectMessage({
                 method: "publishMatching",
                 params: {
-                    cars: [BigInt(1)],
+                    cars: ["1"],
                     complete: true,
                     datasetID: 1,
                     matchingId: 2,
