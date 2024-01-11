@@ -88,6 +88,19 @@ export interface IEscrowAssertion {
     ): Promise<void>
 
     /**
+     * Asserts the collateralRedeem operation on the escrow.
+     * @param {EscrowType} type - The type of the escrow.
+     * @param {string} owner - The owner of the escrow.
+     * @param {number} id - The ID of the escrow.
+     * @returns {Promise<void>}
+     */
+    collateralRedeemAssertion(
+        type: EscrowType,
+        owner: string,
+        id: number
+    ): Promise<void>
+
+    /**
      * Asserts the withdraw operation on the escrow.
      * @param {EscrowType} type - The type of the escrow.
      * @param {string} owner - The owner of the escrow.
