@@ -94,16 +94,6 @@ interface RolesSendEvm {
     ): Promise<EvmOutput<void>>
 
     /**
-     * @notice grantDataswapContractRole function to grant the dataswap contract role for dataswap contract. TODO: Move to governance
-     * @param contracts The contracts address of grant dataswap role
-     * @param options The options of transaction.
-     */
-    grantDataswapContractRole(
-        contracts: string[],
-        options?: EvmTransactionOptions
-    ): Promise<EvmOutput<void>>
-
-    /**
      * @notice Grants the specified role to the given account.
      * @param role The role to be granted.
      * @param account The account to which the role will be granted.
@@ -132,7 +122,6 @@ export interface RolesOriginEvm extends RolesCallEvm, RolesSendEvm {}
     "pendingOwner",
     "renounceOwnership",
     "transferOwnership",
-    "grantDataswapContractRole",
 ])
 export class RolesOriginEvm extends EvmEx {}
 
@@ -160,7 +149,6 @@ export class RolesEvm extends RolesOriginEvm {
             case "pendingOwner":
             case "renounceOwnership":
             case "transferOwnership":
-            case "grantDataswapContractRole":
                 break
             default:
                 return {
