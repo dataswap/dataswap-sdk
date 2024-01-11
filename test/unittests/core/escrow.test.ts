@@ -65,6 +65,18 @@ describe("escrow", () => {
     })
 
     /**
+     * Test case for collateralRedeem functionality.
+     * The local test passes, depending on the environment, skip.
+     */
+    it.skip("collateralRedeem", async function () {
+        await escrowAssertion.collateralRedeemAssertion(
+            EscrowType.DatacapCollateral,
+            process.env.DATASWAP_METADATASUBMITTER as string,
+            1
+        )
+    })
+
+    /**
      * Test case for payment functionality.
      */
     it("payment", async function () {

@@ -175,6 +175,22 @@ export class EscrowAssertion implements IEscrowAssertion {
     }
 
     /**
+     * Asserts the collateralRedeem operation on the escrow.
+     * @param {EscrowType} type - The type of the escrow.
+     * @param {string} owner - The owner of the escrow.
+     * @param {number} id - The ID of the escrow.
+     * @returns {Promise<void>}
+     */
+    async collateralRedeemAssertion(
+        type: EscrowType,
+        owner: string,
+        id: number
+    ) {
+        this.escrow.getWallet().setDefault(owner)
+        await handleEvmError(this.escrow.collateralRedeem(type, owner, id))
+    }
+
+    /**
      * Asserts the payment operation on the escrow.
      * @param {EscrowType} type - The type of the escrow.
      * @param {string} owner - The owner of the escrow.
