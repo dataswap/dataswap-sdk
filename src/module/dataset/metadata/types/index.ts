@@ -19,6 +19,7 @@
  ********************************************************************************/
 
 import { Entity } from "@unipackage/ddd"
+import { DatasetState } from "../../../../shared/types/datasetType"
 
 /**
  * Interface representing metadata information for a dataset.
@@ -38,7 +39,7 @@ export interface DatasetMetadata {
     isPublic: boolean
     version: bigint
     datasetId?: number
-    status?: string
+    status?: DatasetState
 }
 
 /**

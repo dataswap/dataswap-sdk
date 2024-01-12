@@ -112,7 +112,7 @@ export function convertToRequirementArray(
     datasetRequirments: DatasetRequirements
 ): DatasetRequirement[] {
     const requirements = datasetRequirments.citys.map((_, index) => {
-        return {
+        return new DatasetRequirement({
             dataPreparers: datasetRequirments.dataPreparers[index],
             storageProviders: datasetRequirments.storageProviders[index],
             regionCode: datasetRequirments.regions[index],
@@ -120,7 +120,8 @@ export function convertToRequirementArray(
             cityCodes: convertToNumberArray(datasetRequirments.citys[index]),
             index: BigInt(index),
             datasetId: Number(datasetRequirments.datasetId),
-        } as DatasetRequirement
+            matchings: [],
+        })
     })
     return requirements
 }

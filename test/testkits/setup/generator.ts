@@ -27,6 +27,7 @@ import { DatasetRequirements } from "../../../src/module/dataset/requirement/typ
 import { DataType } from "../../../src/shared/types/dataType"
 import { BidSelectionRule } from "../../../src/module/matching/metadata/types"
 import { MatchingMetadata } from "../../../src/module/matching/metadata/types"
+import { DatasetState } from "../../../src/shared/types/datasetType"
 
 /**
  * Generates requirement actors based on count and element count for each actor.
@@ -189,7 +190,7 @@ export class Generator implements IGenerator {
             isPublic: true,
             version: BigInt(1),
             datasetId: 0,
-            status: "",
+            status: DatasetState.None,
         })
         if (accessMethod) {
             ret.accessMethod = accessMethod
