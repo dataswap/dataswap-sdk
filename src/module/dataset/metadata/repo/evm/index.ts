@@ -217,6 +217,17 @@ export class DatasetMetadataEvm extends DatasetMetadataOriginEvm {
         return metaRes
     }
 
+    async getDatasetState(datasetId: number): Promise<EvmOutput<DatasetState>> {
+        const metaRes = await super.getDatasetState(datasetId)
+        if (metaRes.ok && metaRes.data) {
+            return {
+                ok: true,
+                data: Number(metaRes.data) as DatasetState,
+            }
+        }
+        return metaRes
+    }
+
     decodeMessage(msg: Message): EvmOutput<DataswapMessage> {
         const decoder = new ContractMessageDecoder(this)
         const decodeRes = decoder.decode(msg)

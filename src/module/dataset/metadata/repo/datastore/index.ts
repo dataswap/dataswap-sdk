@@ -23,6 +23,7 @@ import { ValueFields } from "@unipackage/utils"
 import { DatasetMetadata } from "../../types"
 import { DatasetMetadataDocument, DatasetMetadataSchema } from "./model"
 import { MongooseDataStore, DatabaseConnection } from "@unipackage/datastore"
+import { DatasetMetadataEvm } from "../evm"
 
 /**
  * Class representing a MongoDB datastore for DatasetMetadata entities.
@@ -44,6 +45,30 @@ export class DatasetMetadataMongoDatastore extends DataStore<
                 ValueFields<DatasetMetadata>,
                 DatasetMetadataDocument
             >("DatasetMetadata", DatasetMetadataSchema, connection)
+        )
+    }
+
+    /**
+     * Asynchronously updates dataset metadata using the provided options.
+     *
+     * @param options - The options object containing the necessary parameters.
+     *   - `datasetMetadataEvm`: The Ethereum Virtual Machine instance for dataset metadata.
+     *   - `datasetId`: The unique identifier of the dataset for which metadata is to be updated.
+     * @returns A promise representing the completion of the dataset metadata update operation.
+     */
+    async updateDatasetMetadataState(options: {
+        datasetMetadataEvm: DatasetMetadataEvm
+        datasetId: number
+    }) {
+        const state = await options.datasetMetadataEvm.getDatasetState(
+            options.datasetId
+        )
+        if (!state.ok) {
+            throw state.error
+        }
+        await this.update(
+            { conditions: [{ datasetId: options.datasetId }] },
+            { status: Number(state.data) }
         )
     }
 }

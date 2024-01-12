@@ -23,6 +23,8 @@ import { DatasetMetadata } from "../../../src/module/dataset/metadata/types"
 import { ValueFields } from "@unipackage/utils"
 import { describe, it } from "mocha"
 import { DatabaseConnection } from "@unipackage/datastore"
+import { DatasetState } from "../../../src/shared/types/datasetType"
+import { getContractsManager } from "../../fixtures"
 const { expect } = chai
 
 const sampleDatasetMetadata: ValueFields<DatasetMetadata> = {
@@ -37,8 +39,8 @@ const sampleDatasetMetadata: ValueFields<DatasetMetadata> = {
     sizeInBytes: BigInt(0),
     isPublic: true,
     version: BigInt(0),
-    datasetId: 0,
-    status: "a",
+    datasetId: 7,
+    status: DatasetState.MetadataRejected,
 }
 
 describe("DatasetMetadataMongoDatastore", () => {
@@ -78,6 +80,23 @@ describe("DatasetMetadataMongoDatastore", () => {
             expect(res.ok).to.be.true
             expect(res.data).to.be.not.undefined
             expect(res.data?.length).to.deep.equal(1)
+
+            await datastore.updateDatasetMetadataState({
+                datasetMetadataEvm: getContractsManager().DatasetMetadataEvm(),
+                datasetId: sampleDatasetMetadata.datasetId as number,
+            })
+
+            const updateRes = await datastore.find({
+                conditions: [{ datasetId: 7 }],
+            })
+            console.log(updateRes)
+            expect(updateRes.ok).to.be.true
+            expect(updateRes.data).to.be.not.undefined
+            expect(updateRes.data!.length).to.be.equal(1)
+            expect(updateRes.data![0].title).to.be.equal("a")
+            expect(updateRes.data![0].status).to.be.equal(
+                DatasetState.DatasetApproved
+            )
         })
     })
 })

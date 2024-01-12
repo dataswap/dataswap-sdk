@@ -77,7 +77,7 @@ const DatasetMetadataSchema = new Schema<DatasetMetadataDocument>({
         required: [true, "Please provide the datasetId"],
     },
     status: {
-        type: String,
+        type: Number,
     },
     submitter: {
         type: String,
