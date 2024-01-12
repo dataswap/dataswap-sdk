@@ -77,12 +77,12 @@ const CarReplicaSchema = new Schema<CarReplicaDocument>({
     carId: {
         type: BigInt,
         required: [true, "Please provide the carId"],
-        index: { unique: true },
+        index: true,
     },
     matchingId: {
         type: Number,
         required: [true, "Please provide the matchingId"],
-        index: { unique: true },
+        index: true,
     },
     state: {
         type: Number,
@@ -90,7 +90,7 @@ const CarReplicaSchema = new Schema<CarReplicaDocument>({
     filecoinClaimId: {
         type: BigInt,
     },
-})
+}).index({ carId: 1, matchingId: 1 }, { unique: true })
 
 export { CarReplicaSchema }
 export type { CarReplicaDocument }
