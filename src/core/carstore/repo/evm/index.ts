@@ -251,9 +251,10 @@ export class CarstoreEvm extends CarstoreOriginEvm {
             return {
                 ok: true,
                 data: new CarReplica({
-                    ...metaRes.data,
                     matchingId: matchingId,
                     carId: carId,
+                    state: Number(metaRes.data.state) as CarReplicaState,
+                    filecoinClaimId: metaRes.data.filecoinClaimId,
                 }),
             }
         }

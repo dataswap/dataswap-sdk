@@ -89,6 +89,50 @@ export class CarMongoDatastore extends DataStore<
         }
         return { ok: true, data: cars }
     }
+
+    /**
+     * Asynchronously updates replica of car in the datastore with the specified options.
+     *
+     * @param options - The options object containing the necessary parameters.
+     *   - `carDatastore`: The car datastore instance for data operations.
+     *   - `carId`: The unique identifier of the car to be updated.
+     *   - `matchingId`: The matching identifier associated with the car.
+     *   - `replicaIndex`: The replica index value for the update.
+     * @returns A promise representing the completion of the update operation.
+     */
+    async updateReplica(options: {
+        carstoreEvm: CarstoreEvm
+        carId: bigint
+        matchingId: number
+        replicaIndex: number
+    }): Promise<void> {
+        let car = await this.find({
+            conditions: [{ carId: options.carId }],
+        })
+        if (!car.ok) {
+            throw car.error
+        }
+        if (options.replicaIndex >= car.data![0].replicaInfos!.length) {
+            throw new Error("invalid index of replicas")
+        }
+
+        const carReplica = await options.carstoreEvm.getCarReplica(
+            options.carId,
+            options.matchingId
+        )
+
+        if (!carReplica.ok) {
+            throw carReplica.error
+        }
+
+        car.data![0].replicaInfos![options.replicaIndex] =
+            carReplica.data! as CarReplica
+
+        await this.update(
+            { conditions: [{ carId: options.carId }] },
+            { replicaInfos: car.data![0].replicaInfos }
+        )
+    }
 }
 
 /**

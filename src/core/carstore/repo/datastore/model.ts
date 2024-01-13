@@ -23,47 +23,6 @@ import { ValueFields } from "@unipackage/utils"
 import { Car, CarReplica } from "../../types"
 
 /**
- * Interface representing a CarDocument, extending Car and Document.
- * @interface
- */
-interface CarDocument extends ValueFields<Car>, Document {}
-
-/**
- * Schema definition for the Car collection.
- * @constant
- */
-const CarSchema = new Schema<CarDocument>({
-    hash: {
-        type: String,
-        required: [true, "Please provide the car hash "],
-    },
-    datasetId: {
-        type: Number,
-        required: [true, "Please provide the datasetId"],
-    },
-    size: {
-        type: BigInt,
-        required: [true, "Please provide the size"],
-    },
-    replicasCount: {
-        type: BigInt,
-        required: [true, "Please provide the replicasCount"],
-    },
-    matchingIds: {
-        type: [Number],
-        required: [true, "Please provide the matchingIds"],
-    },
-    carId: {
-        type: BigInt,
-        required: [true, "Please provide the carId"],
-        index: { unique: true },
-    },
-})
-
-export { CarSchema }
-export type { CarDocument }
-
-/**
  * Interface representing a CarReplicaDocument, extending CarReplica and Document.
  * @interface
  */
@@ -94,3 +53,44 @@ const CarReplicaSchema = new Schema<CarReplicaDocument>({
 
 export { CarReplicaSchema }
 export type { CarReplicaDocument }
+
+/**
+ * Interface representing a CarDocument, extending Car and Document.
+ * @interface
+ */
+interface CarDocument extends ValueFields<Car>, Document {}
+
+/**
+ * Schema definition for the Car collection.
+ * @constant
+ */
+const CarSchema = new Schema<CarDocument>({
+    hash: {
+        type: String,
+        required: [true, "Please provide the car hash "],
+    },
+    datasetId: {
+        type: Number,
+        required: [true, "Please provide the datasetId"],
+    },
+    size: {
+        type: BigInt,
+        required: [true, "Please provide the size"],
+    },
+    replicasCount: {
+        type: BigInt,
+        required: [true, "Please provide the replicasCount"],
+    },
+    replicaInfos: {
+        type: [CarReplicaSchema],
+        required: [true, "Please provide the replicaInfos"],
+    },
+    carId: {
+        type: BigInt,
+        required: [true, "Please provide the carId"],
+        index: { unique: true },
+    },
+})
+
+export { CarSchema }
+export type { CarDocument }

@@ -31,8 +31,9 @@ export interface Car {
     datasetId: number // Index of approved dataset
     size: bigint //car size
     replicasCount: bigint // Replica count
-    matchingIds: number[] // Matching Ids.
     carId: bigint // The id associated with the car.
+    matchingIds?: number[] // Matching Ids.
+    replicaInfos?: CarReplica[] // replica infos.
 }
 
 /**
@@ -59,6 +60,7 @@ export class Car extends Entity<Car> {
             size: data?.size || BigInt(0),
             replicasCount: data?.replicasCount || BigInt(0),
             matchingIds: data?.matchingIds || [],
+            replicaInfos: data?.replicaInfos || [],
         })
     }
 }
