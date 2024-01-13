@@ -66,7 +66,6 @@ describe("carstore", () => {
         let matchingIds = await handleEvmError(
             carstore.getCarMatchingIds(BigInt(1))
         )
-
         await carstoreAssertion.getCarAssertion(
             BigInt(1),
             new Car({

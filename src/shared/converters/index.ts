@@ -95,7 +95,20 @@ export async function convertToCarArray(options: {
                 size: options.proofs.leafSizes[index],
                 carId: carId.data,
                 replicasCount: BigInt(replicaCount.data),
-                matchingIds: [],
+                matchingIds: Array.from(
+                    { length: Number(replicaCount.data) },
+                    () => 0
+                ),
+                replicaInfos: Array.from(
+                    { length: Number(replicaCount.data) },
+                    () =>
+                        new CarReplica({
+                            carId: carId.data,
+                            matchingId: 0,
+                            filecoinClaimId: BigInt(0),
+                            state: CarReplicaState.None,
+                        })
+                ),
             } as ValueFields<Car>)
         )
     }

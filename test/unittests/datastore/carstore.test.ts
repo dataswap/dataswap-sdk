@@ -34,7 +34,23 @@ const { expect } = chai
 const connection = DatabaseConnection.getInstance(
     "mongodb://127.0.0.1:27017/datastore"
 )
-const sampleCar: ValueFields<Car> = new Car()
+const sampleCar: ValueFields<Car> = new Car({
+    hash: "0x189ddc51f6d7f675f307fbb9b692356d7c1b31acb024f6ca0154820be651922d",
+    carId: BigInt(1),
+    datasetId: 7,
+    size: BigInt(4614578),
+    replicasCount: BigInt(5),
+    replicaInfos: Array.from(
+        { length: 5 },
+        () =>
+            new CarReplica({
+                carId: BigInt(2),
+                matchingId: 0,
+                filecoinClaimId: BigInt(0),
+                state: CarReplicaState.None,
+            })
+    ),
+})
 /**
  * Test suite for the Carstore contract CarMongoDatastore functionality.
  */
@@ -66,11 +82,27 @@ describe("CarMongoDatastore", () => {
             expect(createRes.ok).to.be.true
 
             const res = await datastore.find({
-                conditions: [{ datasetId: 0 }],
+                conditions: [{ datasetId: 7 }],
             })
             expect(res.ok).to.be.true
             expect(res.data).to.be.not.undefined
             expect(res.data?.length).to.deep.equal(1)
+            await datastore.updateReplica({
+                carstoreEvm: getContractsManager().CarstoreEvm(),
+                carId: sampleCar.carId,
+                matchingId: 3,
+                replicaIndex: 0,
+            })
+            const updateRes = await datastore.find({
+                conditions: [{ datasetId: 7 }],
+            })
+            console.log("update Res:", updateRes)
+            expect(updateRes.ok).to.be.true
+            expect(updateRes.data).to.be.not.undefined
+            expect(updateRes.data?.length).to.deep.equal(1)
+            expect(updateRes.data![0].replicaInfos![0].state).to.be.equal(
+                CarReplicaState.Matched
+            )
         })
     })
 })
