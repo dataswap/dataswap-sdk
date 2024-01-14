@@ -23,6 +23,7 @@ import { DatasetRequirement } from "../../../src/module/dataset/requirement/type
 import { ValueFields } from "@unipackage/utils"
 import { describe, it } from "mocha"
 import { DatabaseConnection } from "@unipackage/datastore"
+import { getContractsManager } from "../../fixtures"
 const { expect } = chai
 
 const sampleDatasetRequirements: ValueFields<DatasetRequirement> = {
@@ -38,7 +39,8 @@ const sampleDatasetRequirements: ValueFields<DatasetRequirement> = {
     countryCode: BigInt(517),
     cityCodes: [202186, 1302254, 2236269],
     index: BigInt(0),
-    datasetId: 11,
+    datasetId: 7,
+    matchings: [],
 }
 
 /**
@@ -78,11 +80,54 @@ describe("DatasetRequirementsMongoDatastore", () => {
             expect(createRes.ok).to.be.true
 
             const res = await datastore.find({
-                conditions: [{ datasetId: 11 }],
+                conditions: [{ datasetId: 7, index: 0 }],
             })
             expect(res.ok).to.be.true
             expect(res.data).to.be.not.undefined
             expect(res.data?.length).to.deep.equal(1)
+            await datastore.addMatching({
+                matchingTarget: getContractsManager().MatchingTargetEvm(),
+                matchingMetadata: getContractsManager().MatchingMetadataEvm(),
+                datasetId: 7,
+                index: 0,
+                matchingId: 3,
+            })
+            const addRes = await datastore.find({
+                conditions: [{ datasetId: 7, index: 0 }],
+            })
+            console.log(addRes)
+            expect(addRes.ok).to.be.true
+            expect(addRes.data).to.be.not.undefined
+            expect(addRes.data?.length).to.deep.equal(1)
+            expect(addRes.data![0].matchings![0].matchingId).to.be.equal(3)
+            await datastore.updateMatchingData({
+                storages: getContractsManager().StoragesEvm(),
+                datasetId: 7,
+                index: 0,
+                matchingId: 3,
+            })
+            await datastore.updateMatchingState({
+                matchingMetadata: getContractsManager().MatchingMetadataEvm(),
+                datasetId: 7,
+                index: 0,
+                matchingId: 3,
+            })
+            const updateDataRes = await datastore.find({
+                conditions: [{ datasetId: 7, index: 0 }],
+            })
+            console.log(updateDataRes)
+            await datastore.removeMaching({
+                datasetId: 7,
+                index: 0,
+                matchingId: 3,
+            })
+            const deleteRes = await datastore.find({
+                conditions: [{ datasetId: 7, index: 0 }],
+            })
+            expect(deleteRes.ok).to.be.true
+            expect(deleteRes.data).to.be.not.undefined
+            expect(deleteRes.data?.length).to.deep.equal(1)
+            expect(deleteRes.data![0].matchings!.length).to.be.equal(0)
         })
     })
 })

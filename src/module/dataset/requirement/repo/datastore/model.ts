@@ -20,7 +20,43 @@
 
 import { Schema, Document } from "mongoose"
 import { ValueFields } from "@unipackage/utils"
-import { DatasetRequirement } from "../../types"
+import { DatasetRequirement, MatchingInfo } from "../../types"
+
+/**
+ * Interface representing a MatchingInfoDocument, extending MatchingInfo and Document.
+ * @interface
+ */
+interface MatchingInfoDocument extends ValueFields<MatchingInfo>, Document {}
+
+/**
+ * Schema definition for the MatchingInfo collection.
+ * @constant
+ */
+const MatchingInfoSchema = new Schema<MatchingInfoDocument>({
+    matchingId: {
+        type: Number,
+        required: [true, "Please provide the matchingId"],
+        index: { unique: true },
+    },
+    matchingState: {
+        type: Number,
+        required: [true, "Please provide the matchingState"],
+    },
+    finishedCount: {
+        type: Number,
+    },
+    totalCount: {
+        type: Number,
+        required: [true, "Please provide the total"],
+    },
+    finishedSize: {
+        type: BigInt,
+    },
+    totalSize: {
+        type: BigInt,
+        required: [true, "Please provide the totalSize"],
+    },
+})
 
 /**
  * Interface representing a DatasetRequirementDocument, extending DatasetRequirement and Document.
@@ -63,9 +99,10 @@ const DatasetRequirementSchema = new Schema<DatasetRequirementDocument>({
         type: Number,
         required: [true, "Please provide the datasetId"],
     },
-})
-
-DatasetRequirementSchema.index({ index: 1, datasetId: 1 }, { unique: true })
+    matchings: {
+        type: [MatchingInfoSchema],
+    },
+}).index({ index: 1, datasetId: 1 }, { unique: true })
 
 export { DatasetRequirementSchema }
 export type { DatasetRequirementDocument }

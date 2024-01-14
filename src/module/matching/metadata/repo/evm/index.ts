@@ -150,6 +150,19 @@ export class MatchingMetadataEvm extends MatchingMetadataOriginEvm {
         return metaRes
     }
 
+    async getMatchingState(
+        matchingId: number
+    ): Promise<EvmOutput<MatchingState>> {
+        const metaRes = await super.getMatchingState(matchingId)
+        if (metaRes.ok && metaRes.data) {
+            return {
+                ok: true,
+                data: Number(metaRes.data) as MatchingState,
+            }
+        }
+        return metaRes
+    }
+
     decodeMessage(msg: Message): EvmOutput<DataswapMessage> {
         const decoder = new ContractMessageDecoder(this)
         const decodeRes = decoder.decode(msg)
