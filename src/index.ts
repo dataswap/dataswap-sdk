@@ -74,8 +74,3 @@ export {
     convertToMatchingBidArray,
     mergeMatchingTarget,
 } from "./shared/converters"
-export {
-    storeCars,
-    storeCarReplicas,
-    storeMatchingtarget,
-} from "./shared/datastoreUtils"
