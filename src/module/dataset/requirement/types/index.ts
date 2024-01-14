@@ -19,6 +19,27 @@
  ********************************************************************************/
 
 import { Entity } from "@unipackage/ddd"
+import { MatchingState } from "../../../matching/metadata/types"
+
+/**
+ * Interface representing matching info of dataset requirements.
+ * @interface
+ */
+export interface MatchingInfo {
+    matchingId: number
+    matchingState: MatchingState
+    finishedCount?: number
+    totalCount: number
+    finishedSize?: bigint
+    totalSize: bigint
+}
+
+/**
+ * Class representing a matching info entity of dataset requirement.
+ * @class
+ * @extends {Entity<MatchingInfo>}
+ */
+export class MatchingInfo extends Entity<MatchingInfo> {}
 
 /**
  * Interface representing dataset requirements.
@@ -32,6 +53,7 @@ export interface DatasetRequirement {
     cityCodes: number[]
     index?: bigint
     datasetId?: number
+    matchings?: MatchingInfo[]
 }
 
 /**
