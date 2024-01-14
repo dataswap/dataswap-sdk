@@ -26,6 +26,9 @@ import { CarReplica, Car } from "../../../src/core/carstore/types"
 import { ValueFields } from "@unipackage/utils"
 import { describe, it } from "mocha"
 import { DatabaseConnection } from "@unipackage/datastore"
+import { CarReplicaState } from "../../../src/shared/types/carstoreType"
+import { getContractsManager } from "../../fixtures"
+
 const { expect } = chai
 
 const connection = DatabaseConnection.getInstance(
@@ -72,7 +75,12 @@ describe("CarMongoDatastore", () => {
     })
 })
 
-const sampleCarReplica: ValueFields<CarReplica> = new CarReplica()
+const sampleCarReplica: ValueFields<CarReplica> = new CarReplica({
+    matchingId: 3,
+    filecoinClaimId: BigInt(0),
+    state: CarReplicaState.None,
+    carId: BigInt(1),
+})
 /**
  * Test suite for the Carstore contract CarReplicaMongoDatastore functionality.
  */
@@ -104,11 +112,27 @@ describe("CarReplicaMongoDatastore", () => {
             expect(createRes.ok).to.be.true
 
             const res = await datastore.find({
-                conditions: [{ matchingId: 0 }],
+                conditions: [{ matchingId: 3 }],
             })
             expect(res.ok).to.be.true
             expect(res.data).to.be.not.undefined
             expect(res.data?.length).to.deep.equal(1)
+            expect(res.data![0].state).to.be.equal(CarReplicaState.None)
+            await datastore.updateState({
+                carstore: getContractsManager().CarstoreEvm(),
+                carId: BigInt(1),
+                matchingId: 3,
+            })
+            const updateRes = await datastore.find({
+                conditions: [{ matchingId: 3 }],
+            })
+            console.log(updateRes)
+            expect(updateRes.ok).to.be.true
+            expect(updateRes.data).to.be.not.undefined
+            expect(updateRes.data?.length).to.deep.equal(1)
+            expect(updateRes.data![0].state).to.be.equal(
+                CarReplicaState.Matched
+            )
         })
     })
 })
