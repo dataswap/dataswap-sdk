@@ -259,4 +259,25 @@ export class CarstoreEvm extends CarstoreOriginEvm {
         }
         return metaRes
     }
+
+    /**
+     * Asynchronously retrieves the state of a car replica with the specified parameters.
+     *
+     * @param carId - The unique identifier of the car.
+     * @param matchingId - The identifier of the matching associated with the car replica.
+     * @returns A promise that resolves to the Ethereum Virtual Machine output containing the car replica state.
+     */
+    async getCarReplicaState(
+        carId: bigint,
+        matchingId: number
+    ): Promise<EvmOutput<CarReplicaState>> {
+        const metaRes = await super.getCarReplicaState(carId, matchingId)
+        if (metaRes.ok && metaRes.data) {
+            return {
+                ok: true,
+                data: Number(metaRes.data) as CarReplicaState,
+            }
+        }
+        return metaRes
+    }
 }

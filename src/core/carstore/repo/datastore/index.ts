@@ -136,4 +136,41 @@ export class CarReplicaMongoDatastore extends DataStore<
         }
         return { ok: true, data: carReplicas }
     }
+
+    /**
+     * Asynchronously updates the state of a car with the specified parameters.
+     *
+     * @param options - The options object containing the necessary parameters.
+     *   - `carstore`: The Ethereum Virtual Machine instance for carstore.
+     *   - `carId`: The unique identifier of the car.
+     *   - `matchingId`: The identifier of the matching associated with the car.
+     */
+    async updateState(options: {
+        carstore: CarstoreEvm
+        carId: bigint
+        matchingId: number
+    }) {
+        try {
+            const state = await options.carstore.getCarReplicaState(
+                options.carId,
+                options.matchingId
+            )
+            if (!state.ok) {
+                throw state.error
+            }
+            await this.update(
+                {
+                    conditions: [
+                        {
+                            carId: options.carId,
+                            matchingId: options.matchingId,
+                        },
+                    ],
+                },
+                { state: Number(state.data) }
+            )
+        } catch (error) {
+            throw error
+        }
+    }
 }
