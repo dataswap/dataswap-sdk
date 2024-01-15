@@ -19,6 +19,7 @@
  ********************************************************************************/
 
 import { Entity } from "@unipackage/ddd"
+import { DatasetRequirement } from "../../../dataset/requirement/types"
 
 /// Enum representing the rules for determining the winning bid.
 export enum BidSelectionRule {
@@ -45,6 +46,13 @@ export interface MatchingMetadata {
     replicaIndex?: bigint
     matchingId?: number
     datasetId?: number
+    status?: MatchingState
+    size?: bigint
+    currentPrice?: bigint
+    requirement?: DatasetRequirement
+    biddingStartBlock?: bigint
+    biddingEndBlock?: bigint
+    subsidy?: bigint
 }
 
 /**

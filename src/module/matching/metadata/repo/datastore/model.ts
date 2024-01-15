@@ -21,6 +21,7 @@
 import mongoose, { Schema, Document } from "mongoose"
 import { ValueFields } from "@unipackage/utils"
 import { MatchingMetadata } from "../../types"
+import { DatasetRequirementSchema } from "../../../../dataset/requirement/repo/datastore/model"
 
 /**
  * Interface representing a MatchingMetadataDocument, extending MatchingMetadata and Document.
@@ -81,6 +82,27 @@ const MatchingMetadataSchema = new Schema<MatchingMetadataDocument>({
     datasetId: {
         type: Number,
         required: [true, "Please provide the datasetId"],
+    },
+    status: {
+        type: Number,
+    },
+    size: {
+        type: BigInt,
+    },
+    currentPrice: {
+        type: BigInt,
+    },
+    requirement: {
+        type: DatasetRequirementSchema,
+    },
+    biddingStartBlock: {
+        type: BigInt,
+    },
+    biddingEndBlock: {
+        type: BigInt,
+    },
+    subsidy: {
+        type: BigInt,
     },
 })
 

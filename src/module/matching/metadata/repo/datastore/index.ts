@@ -20,9 +20,15 @@
 
 import { DataStore, DatabaseConnection } from "@unipackage/datastore"
 import { ValueFields } from "@unipackage/utils"
-import { MatchingMetadata } from "../../types"
+import { BidSelectionRule, MatchingMetadata } from "../../types"
 import { MatchingMetadataDocument, MatchingMetadataSchema } from "./model"
 import { MongooseDataStore } from "@unipackage/datastore"
+import { MatchingTargetEvm } from "../../../target/repo/evm"
+import { MatchingMetadataEvm } from "../evm"
+import { DatasetRequirementEvm } from "../../../../dataset/requirement/repo/evm"
+import { MatchingBidsEvm } from "../../../bids/repo/evm"
+import { MatchingBid, MatchingBids } from "../../../bids/types"
+import { stat } from "fs"
 
 /**
  * Class representing a MongoDB datastore for MatchingMetadata entities.
@@ -45,5 +51,206 @@ export class MatchingMetadataMongoDatastore extends DataStore<
                 MatchingMetadataDocument
             >("MatchingMetadata", MatchingMetadataSchema, connection)
         )
+    }
+
+    /**
+     * Asynchronously stores data with the original matching metadata and the specified parameters.
+     *
+     * @param options - The options object containing the necessary parameters.
+     *   - `matchingMetadata`: The Ethereum Virtual Machine instance for matching metadata.
+     *   - `datasetRequirement`: The Ethereum Virtual Machine instance for dataset requirement.
+     *   - `origionMetadata`: The original matching metadata.
+     *   - `matchingId`: The identifier of the matching.
+     */
+    async storeWithOrigionMatchingMetadata(options: {
+        matchingMetadata: MatchingMetadataEvm
+        datasetRequirement: DatasetRequirementEvm
+        origionMetadata: MatchingMetadata
+        matchingId: number
+    }) {
+        try {
+            const state = await options.matchingMetadata.getMatchingState(
+                options.matchingId
+            )
+            if (!state.ok) {
+                throw state.error
+            }
+
+            options.origionMetadata.status = Number(state.data)
+
+            const requirement =
+                await options.datasetRequirement.getDatasetReplicaRequirement(
+                    options.origionMetadata.datasetId!,
+                    options.origionMetadata.replicaIndex!
+                )
+
+            if (!requirement.ok) {
+                throw requirement.error
+            }
+
+            options.origionMetadata.requirement = requirement.data
+            await this.CreateOrupdateByUniqueIndexes(options.origionMetadata)
+        } catch (error) {
+            throw error
+        }
+    }
+
+    /**
+     * Asynchronously updates the state of a matching with the specified parameters.
+     *
+     * @param options - The options object containing the necessary parameters.
+     *   - `matchingMetadata`: The Ethereum Virtual Machine instance for matching metadata.
+     *   - `matchingId`: The identifier of the matching to update its state.
+     */
+    async updateMatchingState(options: {
+        matchingMetadata: MatchingMetadataEvm
+        matchingId: number
+    }) {
+        try {
+            const state = await options.matchingMetadata.getMatchingState(
+                options.matchingId
+            )
+            if (!state.ok) {
+                throw state.error
+            }
+            await this.update(
+                { conditions: [{ matchingId: options.matchingId }] },
+                {
+                    status: Number(state.data),
+                }
+            )
+        } catch (error) {
+            throw error
+        }
+    }
+
+    /**
+     * Asynchronously updates the target info of a matching with the specified parameters.
+     *
+     * @param options - The options object containing the necessary parameters.
+     *   - `matchingTarget`: The Ethereum Virtual Machine instance for matching target.
+     *   - `matchingId`: The identifier of the matching to update its size.
+     */
+    async updateMatchingTargetInfo(options: {
+        matchingTarget: MatchingTargetEvm
+        matchingId: number
+    }) {
+        try {
+            const target = await options.matchingTarget.getMatchingTarget(
+                options.matchingId
+            )
+            if (!target.ok) {
+                throw target.error
+            }
+
+            await this.update(
+                { conditions: [{ matchingId: options.matchingId }] },
+                {
+                    size: target.data!.size,
+                    subsidy: target.data!.subsidy,
+                }
+            )
+        } catch (error) {
+            throw error
+        }
+    }
+
+    /**
+     * Private method to retrieve the best bid based on the specified rule and bids.
+     *
+     * @param rule - The bid selection rule.
+     * @param bids - The collection of matching bids.
+     * @returns The best matching bid based on the specified rule.
+     */
+    private _getBestBid(
+        rule: BidSelectionRule,
+        bids: MatchingBids
+    ): MatchingBid {
+        if (bids.bidders.length == 0) {
+            throw new Error("bids is none")
+        }
+        let best: MatchingBid = new MatchingBid({
+            bidder: bids.bidders[0],
+            amount: bids.amounts[0],
+            complyFilplusRule: bids.complyFilplusRules[0],
+            matchingId: bids.matchingId,
+        })
+        for (let i = 0; i < bids.bidders.length; i++) {
+            if (
+                rule === BidSelectionRule.ImmediateAtLeast ||
+                rule === BidSelectionRule.HighestBid
+            ) {
+                if (bids.amounts[i] > best.amount) {
+                    best = new MatchingBid({
+                        bidder: bids.bidders[0],
+                        amount: bids.amounts[0],
+                        complyFilplusRule: bids.complyFilplusRules[0],
+                        matchingId: bids.matchingId,
+                    })
+                }
+            } else {
+                if (bids.amounts[i] < best.amount) {
+                    best = new MatchingBid({
+                        bidder: bids.bidders[0],
+                        amount: bids.amounts[0],
+                        complyFilplusRule: bids.complyFilplusRules[0],
+                        matchingId: bids.matchingId,
+                    })
+                }
+            }
+        }
+
+        return best
+    }
+
+    /**
+     * Asynchronously updates the bidding information of a matching with the specified parameters.
+     *
+     * @param options - The options object containing the necessary parameters.
+     *   - `matchingMetadata`: The Ethereum Virtual Machine instance for matching metadata.
+     *   - `matchingBids`: The Ethereum Virtual Machine instance for matching bids.
+     *   - `matchingId`: The identifier of the matching to update its bidding information.
+     */
+    async updateMatchingBiddingInfo(options: {
+        matchingMetadata: MatchingMetadataEvm
+        matchingBids: MatchingBidsEvm
+        matchingId: number
+    }) {
+        try {
+            const metadata = await options.matchingMetadata.getMatchingMetadata(
+                options.matchingId
+            )
+            if (!metadata.ok) {
+                throw metadata.error
+            }
+            const bidSelectionRule = metadata.data!.bidSelectionRule
+
+            const bids = await options.matchingBids.getMatchingBids(
+                options.matchingId
+            )
+            if (!bids.ok) {
+                throw bids.error
+            }
+
+            const best = this._getBestBid(bidSelectionRule, bids.data!)
+
+            await this.update(
+                { conditions: [{ matchingId: options.matchingId }] },
+                {
+                    currentPrice: best.amount,
+                    biddingStartBlock:
+                        metadata.data!.createdBlockNumber! +
+                        metadata.data!.biddingDelayBlockCount +
+                        metadata.data!.pausedBlockCount!,
+                    biddingEndBlock:
+                        metadata.data!.createdBlockNumber! +
+                        metadata.data!.biddingDelayBlockCount +
+                        metadata.data!.pausedBlockCount! +
+                        metadata.data!.biddingPeriodBlockCount,
+                }
+            )
+        } catch (error) {
+            throw error
+        }
     }
 }
