@@ -142,6 +142,7 @@ export function numberToBytes32(num: number): string {
  * @param returns The message returns.
  * @param datasetId The dataset id.
  * @param matchingId The matching id.
+ * @param value The transaction value.
  * @returns The message object.
  */
 export function createExpectMessage(options: {
@@ -150,6 +151,7 @@ export function createExpectMessage(options: {
     returns: string
     datasetId?: number
     matchingId?: number
+    value?: string
 }): EvmOutput<DataswapMessage> {
     return {
         ok: true,
@@ -170,6 +172,12 @@ export function createExpectMessage(options: {
             }),
             ...(options.matchingId !== undefined && {
                 matchingId: options.matchingId,
+            }),
+            ...(options.value !== undefined && {
+                value: options.value,
+            }),
+            ...(options.value === undefined && {
+                value: "0",
             }),
         },
     }

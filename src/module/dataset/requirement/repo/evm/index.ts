@@ -143,6 +143,7 @@ export class DatasetRequirementEvm extends DatasetRequirementOriginEvm {
         }
 
         let result: DataswapMessage = decodeRes.data!.value() as DataswapMessage
+        result.value = msg.Msg.Value
         switch (decodeRes.data!.method) {
             case "submitDatasetReplicaRequirements":
                 result.datasetId = Number(result.params.datasetId)

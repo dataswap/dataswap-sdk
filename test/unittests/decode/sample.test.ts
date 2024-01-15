@@ -68,6 +68,7 @@ describe("ContractMessageDecoder", () => {
             status: 0,
             return: "0x0000000000000000000000000000000000000000000000000000000000000001",
             datasetId: 1,
+            value: "0",
         },
     }
 

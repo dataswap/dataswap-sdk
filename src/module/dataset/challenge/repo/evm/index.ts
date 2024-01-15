@@ -168,6 +168,7 @@ export class DatasetChallengeEvm extends DatasetChallengeOriginEvm {
         }
 
         let result: DataswapMessage = decodeRes.data!.value() as DataswapMessage
+        result.value = msg.Msg.Value
         switch (decodeRes.data!.method) {
             case "submitDatasetChallengeProofs":
                 result.datasetId = Number(result.params.datasetId)
