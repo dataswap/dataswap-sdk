@@ -181,6 +181,18 @@ export class MatchingMetadataEvm extends MatchingMetadataOriginEvm {
                 result.params.matchingId = result.matchingId
                 result.params.initiator = result.from
                 result.params.createdBlockNumber = BigInt(result.height)
+                result.params.biddingStartBlock =
+                    result.params.createdBlockNumber +
+                    BigInt(result.params.biddingDelayBlockCount)
+                result.params.biddingEndBlock =
+                    result.params.createdBlockNumber +
+                    BigInt(result.params.biddingDelayBlockCount) +
+                    BigInt(result.params.biddingPeriodBlockCount)
+                result.params.size = BigInt(0)
+                result.params.currentPrice = BigInt(
+                    result.params.biddingThreshold
+                )
+                result.params.subsidy = BigInt(0)
                 break
             case "pauseMatching":
             case "resumeMatching":

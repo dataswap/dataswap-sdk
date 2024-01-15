@@ -56,6 +56,11 @@ describe("MatchingMetadataMessageDecoder", () => {
                     createdBlockNumber: BigInt(1213438),
                     initiator: "f410fcwzis33wz3sofrlh466gog5xahlthgzqezasapy",
                     matchingId: 1,
+                    biddingStartBlock: BigInt(1213468),
+                    biddingEndBlock: BigInt(1213488),
+                    currentPrice: BigInt(1000000000),
+                    size: BigInt(0),
+                    subsidy: BigInt(0),
                 },
                 returns:
                     "0x0000000000000000000000000000000000000000000000000000000000000001",
