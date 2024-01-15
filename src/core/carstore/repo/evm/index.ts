@@ -19,6 +19,7 @@
  ********************************************************************************/
 
 import { withCallMethod, EvmOutput } from "@unipackage/net"
+import { dataCommitmentV1ToCID } from "../../../../shared/converters"
 import { Car, CarReplica } from "../../types"
 import { CarReplicaState } from "../../../../shared/types/carstoreType"
 import { EvmEx } from "../../../../shared/types/evmEngineType"
@@ -230,6 +231,7 @@ export class CarstoreEvm extends CarstoreOriginEvm {
                 data: new Car({
                     ...metaRes.data,
                     carId: carId,
+                    cid: await dataCommitmentV1ToCID(metaRes.data.hash),
                 }),
             }
         }

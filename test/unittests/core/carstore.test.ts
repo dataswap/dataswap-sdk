@@ -19,6 +19,7 @@
  ********************************************************************************/
 
 import { describe } from "mocha"
+import { dataCommitmentV1ToCID } from "../../../src/shared/converters"
 import { handleEvmError } from "../../shared/error"
 import { Car, CarReplica } from "../../../src/core/carstore/types"
 import { CarstoreEvm } from "../../../src/core/carstore/repo/evm"
@@ -55,15 +56,15 @@ describe("carstore", () => {
      * Test case for the `getCar` method.
      */
     it("getCar", async function () {
-        let size = await handleEvmError(carstore.getCarSize(BigInt(1)))
-        let datasetId = await handleEvmError(
+        const size = await handleEvmError(carstore.getCarSize(BigInt(1)))
+        const datasetId = await handleEvmError(
             carstore.getCarDatasetId(BigInt(1))
         )
-        let hash = await handleEvmError(carstore.getCarHash(BigInt(1)))
-        let replicasCount = await handleEvmError(
+        const hash = await handleEvmError(carstore.getCarHash(BigInt(1)))
+        const replicasCount = await handleEvmError(
             carstore.getCarReplicasCount(BigInt(1))
         )
-        let matchingIds = await handleEvmError(
+        const matchingIds = await handleEvmError(
             carstore.getCarMatchingIds(BigInt(1))
         )
         await carstoreAssertion.getCarAssertion(
@@ -75,6 +76,7 @@ describe("carstore", () => {
                 size: size.data,
                 replicasCount: replicasCount.data,
                 matchingIds: matchingIds.data,
+                cid: await dataCommitmentV1ToCID(hash.data),
             })
         )
     })

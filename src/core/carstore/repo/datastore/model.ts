@@ -90,6 +90,14 @@ const CarSchema = new Schema<CarDocument>({
         required: [true, "Please provide the carId"],
         index: { unique: true },
     },
+    cid: {
+        type: String,
+        required: [true, "Please provide the cid"],
+    },
+    dataType: {
+        type: Number,
+        required: [true, "Please provide the dataType"],
+    },
 })
 
 export { CarSchema }

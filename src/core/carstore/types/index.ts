@@ -34,6 +34,8 @@ export interface Car {
     carId: bigint // The id associated with the car.
     matchingIds?: number[] // Matching Ids.
     replicaInfos?: CarReplica[] // replica infos.
+    cid: string // The id associated with the car from filecoin.
+    dataType?: number // The car datatype.
 }
 
 /**
@@ -55,7 +57,9 @@ export class Car extends Entity<Car> {
     constructor(data?: ValueFields<Car>) {
         super({
             hash: data?.hash || "0",
+            cid: data?.cid || "0",
             carId: data?.carId || BigInt(0),
+            dataType: data?.dataType || 0,
             datasetId: data?.datasetId || 0,
             size: data?.size || BigInt(0),
             replicasCount: data?.replicasCount || BigInt(0),
