@@ -1,5 +1,27 @@
 
 
+# [0.16.0](https://github.com/dataswap/dataswapjs/compare/0.15.0...0.16.0) (2024-01-15)
+
+
+### Bug Fixes
+
+* 🐛 CarReplica primary key configuration issue ([0ab8114](https://github.com/dataswap/dataswapjs/commit/0ab8114743399cbd646a51b4132a9f432517a79f)), closes [#176](https://github.com/dataswap/dataswapjs/issues/176)
+* 🐛 move datastore utils to th datasotre ([c6b9b3e](https://github.com/dataswap/dataswapjs/commit/c6b9b3e97e5f34c29927fa624ad6e744201d4158)), closes [#187](https://github.com/dataswap/dataswapjs/issues/187)
+* 🐛 Remove grantDataswapContractRole duplicate interface ([7c8af83](https://github.com/dataswap/dataswapjs/commit/7c8af832c11a655a4223e9586c0b632008cd8022)), closes [#163](https://github.com/dataswap/dataswapjs/issues/163)
+
+
+### Features
+
+* 🎸 add bidding model ([7c1d0f9](https://github.com/dataswap/dataswapjs/commit/7c1d0f944b15f90cf7de6e8be07421ce547dd601)), closes [#172](https://github.com/dataswap/dataswapjs/issues/172)
+* 🎸 add update function for carreplica datastore ([e5b478f](https://github.com/dataswap/dataswapjs/commit/e5b478f4868d4c7ebe3786afd5f11a2d5f46ed43)), closes [#189](https://github.com/dataswap/dataswapjs/issues/189)
+* 🎸 Add value parameter when decoding payment functions ([d2ad8ed](https://github.com/dataswap/dataswapjs/commit/d2ad8edf38f965bdb18fd1646cd20588b5d5ef7a)), closes [#175](https://github.com/dataswap/dataswapjs/issues/175)
+* 🎸 Complete DatasetId field for Matching-related method ([9e5975e](https://github.com/dataswap/dataswapjs/commit/9e5975e41d4d17af66e38cf6ff0f59ecc0d53d33)), closes [#174](https://github.com/dataswap/dataswapjs/issues/174)
+* 🎸 Define Basic Params Info structures ([600c273](https://github.com/dataswap/dataswapjs/commit/600c2734736a293e42fe8836abdf34a97bdc2b4c)), closes [#186](https://github.com/dataswap/dataswapjs/issues/186)
+* 🎸 extend datasetrequirement ([1d38428](https://github.com/dataswap/dataswapjs/commit/1d384289c4542da3ca116dc58d8bedd4d582df6f)), closes [#171](https://github.com/dataswap/dataswapjs/issues/171)
+* 🎸 extend matching metadata ([1d55a4b](https://github.com/dataswap/dataswapjs/commit/1d55a4bea302f61cd3ef1eb16055b07ec369d528)), closes [#173](https://github.com/dataswap/dataswapjs/issues/173)
+* 🎸 update status in dataset metadata ([5f73a3b](https://github.com/dataswap/dataswapjs/commit/5f73a3b486676d72877024ffc3728e81d22d5b01)), closes [#167](https://github.com/dataswap/dataswapjs/issues/167)
+* 🎸 update the replicaInfos in car model ([d1be323](https://github.com/dataswap/dataswapjs/commit/d1be3237e628987b255edbcc5342632de6d6171d)), closes [#168](https://github.com/dataswap/dataswapjs/issues/168)
+
 # [0.15.0](https://github.com/dataswap/dataswapjs/compare/0.13.2...0.15.0) (2024-01-10)
 
 
