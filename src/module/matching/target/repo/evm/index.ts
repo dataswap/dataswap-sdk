@@ -216,6 +216,7 @@ export class MatchingTargetEvm extends MatchingTargetOriginEvm {
         }
 
         let result: DataswapMessage = decodeRes.data!.value() as DataswapMessage
+        result.value = msg.Msg.Value
         switch (decodeRes.data!.method) {
             case "createTarget":
                 {

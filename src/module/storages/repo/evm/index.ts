@@ -149,6 +149,7 @@ export class StoragesEvm extends StoragesOriginEvm {
         }
 
         let result: DataswapMessage = decodeRes.data!.value() as DataswapMessage
+        result.value = msg.Msg.Value
         switch (decodeRes.data!.method) {
             case "submitStorageClaimIds":
                 result.matchingId = result.params.matchingId

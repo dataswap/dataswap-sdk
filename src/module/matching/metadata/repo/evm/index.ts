@@ -171,6 +171,7 @@ export class MatchingMetadataEvm extends MatchingMetadataOriginEvm {
         }
 
         let result: DataswapMessage = decodeRes.data!.value() as DataswapMessage
+        result.value = msg.Msg.Value
         switch (decodeRes.data!.method) {
             case "createMatching":
                 result.matchingId = Number(result.return)

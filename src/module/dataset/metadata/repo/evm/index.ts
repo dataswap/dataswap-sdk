@@ -236,6 +236,7 @@ export class DatasetMetadataEvm extends DatasetMetadataOriginEvm {
         }
 
         let result: DataswapMessage = decodeRes.data!.value() as DataswapMessage
+        result.value = msg.Msg.Value
         switch (decodeRes.data!.method) {
             case "submitDatasetMetadata":
                 result.datasetId = Number(result.return)

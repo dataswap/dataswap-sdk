@@ -259,6 +259,7 @@ export class EscrowEvm extends EscrowOriginEvm {
         }
 
         let result: DataswapMessage = decodeRes.data!.value() as DataswapMessage
+        result.value = msg.Msg.Value
         switch (decodeRes.data!.method) {
             case "collateral":
             case "collateralRedeem":

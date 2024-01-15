@@ -326,6 +326,7 @@ export class FilplusEvm extends FilplusOriginEvm {
         }
 
         let result: DataswapMessage = decodeRes.data!.value() as DataswapMessage
+        result.value = msg.Msg.Value
         switch (decodeRes.data!.method) {
             case "setDatasetRuleMinRegionsPerDataset":
             case "setDatasetRuleDefaultMaxReplicasPerCountry":
