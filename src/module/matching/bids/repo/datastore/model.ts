@@ -18,39 +18,38 @@
  *  limitations under the respective licenses.
  ********************************************************************************/
 
-import { Entity } from "@unipackage/ddd"
+import { Schema, Document } from "mongoose"
+import { ValueFields } from "@unipackage/utils"
+import { MatchingBid } from "../../types"
 
 /**
- * Interface representing the data structure for matching bids.
+ * Interface representing a MatchingBidDocument, extending MatchingBid and Document.
  * @interface
  */
-export interface MatchingBids {
-    bidders: string[]
-    amounts: bigint[]
-    complyFilplusRules: boolean[]
-    winner: string
-    matchingId?: number
-}
+interface MatchingBidDocument extends ValueFields<MatchingBid>, Document {}
 
 /**
- * Class representing the entity for matching bids.
- * @class
+ * Schema definition for the MatchingBid collection.
+ * @constant
  */
-export class MatchingBids extends Entity<MatchingBids> {}
+const MatchingBidSchema = new Schema<MatchingBidDocument>({
+    bidder: {
+        type: String,
+        required: [true, "Please provide the bidder"],
+    },
+    amount: {
+        type: BigInt,
+        required: [true, "Please provide the amount"],
+    },
+    complyFilplusRule: {
+        type: Boolean,
+    },
+    matchingId: {
+        type: Number,
+        required: [true, "Please provide the matchingId"],
+        index: { unique: true },
+    },
+}).index({ matchingId: 1, bidder: 1 }, { unique: true })
 
-/**
- * Interface representing the data structure for matching bid.
- * @interface
- */
-export interface MatchingBid {
-    bidder: string
-    amount: bigint
-    complyFilplusRule?: boolean
-    matchingId?: number
-}
-
-/**
- * Class representing the entity for matching bid.
- * @class
- */
-export class MatchingBid extends Entity<MatchingBid> {}
+export { MatchingBidSchema }
+export type { MatchingBidDocument }
