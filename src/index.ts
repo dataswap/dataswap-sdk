@@ -67,6 +67,7 @@ export { DatasetProofMetadataMongoDatastore } from "./module/dataset/proof/repo/
 export { DatasetRequirementMongoDatastore } from "./module/dataset/requirement/repo/datastore"
 export { MatchingMetadataMongoDatastore } from "./module/matching/metadata/repo/datastore"
 export { MatchingTargetMongoDatastore } from "./module/matching/target/repo/datastore"
+export { BasicParamsInfo } from "./shared/types/BasicParamsType"
 export {
     convertToCarReplicasArray,
     convertToCarArray,
