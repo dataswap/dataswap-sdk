@@ -18,6 +18,7 @@
  *  limitations under the respective licenses.
  ********************************************************************************/
 
+import { base32 } from "rfc4648"
 import { CarstoreEvm } from "../../core/carstore/repo/evm"
 import { DatasetRequirementEvm } from "../../module/dataset/requirement/repo/evm"
 import { CarReplica, Car } from "../../core/carstore/types"
@@ -88,9 +89,14 @@ export async function convertToCarArray(options: {
         if (!replicaCount.ok || !replicaCount.data) {
             throw replicaCount.error
         }
+
         ret.push(
             new Car({
                 hash: options.proofs.leafHashes[index],
+                cid: await dataCommitmentV1ToCID(
+                    options.proofs.leafHashes[index]
+                ),
+                dataType: options.proofs.dataType,
                 datasetId: options.proofs.datasetId,
                 size: options.proofs.leafSizes[index],
                 carId: carId.data,
@@ -186,4 +192,112 @@ export async function mergeMatchingTarget(options: {
         throw new Error("get matchingTarget failed")
     }
     return target.data as MatchingTarget
+}
+
+/**
+ * Converts a bytes32 hash to a Content ID (CID).
+ * @param hash A bytes32 hash to be converted to a CID.
+ * @returns The CID represented as bytes.
+ */
+export async function dataCommitmentV1ToCID(hash: string): Promise<string> {
+    const hs = hexStringToUint8Array(hash)
+    // Hardcoded values
+    const filCommitmentUnsealed: number = 0xf101
+    const sha256Trunc254Padded: number = 0x1012
+
+    // Create the fBuf part
+    const fBuf: Uint8Array = concatUint8Arrays(
+        putUvarint(1),
+        putUvarint(filCommitmentUnsealed)
+    )
+
+    // Create the result part
+    let result: Uint8Array = concatUint8Arrays(
+        putUvarint(sha256Trunc254Padded),
+        putUvarint(hs.length),
+        hs
+    )
+
+    // Concatenate fBuf and result
+    return (
+        "b" +
+        base32
+            .stringify(concatUint8Arrays(fBuf, result), { pad: false })
+            .toLowerCase()
+    )
+}
+
+/**
+ * Encodes an unsigned integer as a variable-length byte slice (uvarint).
+ * @param _x The unsigned integer to encode.
+ * @returns Uint8Array representing the uvarint encoding of the input.
+ */
+function putUvarint(_x: number): Uint8Array {
+    let i: number = 0
+    const buffer: number[] = new Array(10) // Requires up to 10 bytes
+
+    while (_x >= 0x80) {
+        buffer[i] = (_x & 0x7f) | 0x80
+        _x >>= 7
+        i++
+    }
+    buffer[i] = _x
+
+    const result: Uint8Array = new Uint8Array(i + 1)
+    for (let j = 0; j <= i; j++) {
+        result[j] = buffer[j]
+    }
+
+    return result
+}
+
+/**
+ * Concatenates multiple Uint8Array arrays into a single Uint8Array.
+ * @param arrays The Uint8Array arrays to be concatenated.
+ * @returns A new Uint8Array containing the concatenated data.
+ */
+function concatUint8Arrays(...arrays: Uint8Array[]): Uint8Array {
+    // Calculate the total length of the concatenated array
+    const totalLength = arrays.reduce((acc, arr) => acc + arr.length, 0)
+
+    // Create a new Uint8Array with the calculated total length
+    const result = new Uint8Array(totalLength)
+
+    // Copy each array into the result array
+    let offset = 0
+    arrays.forEach((arr) => {
+        result.set(arr, offset)
+        offset += arr.length
+    })
+
+    return result
+}
+
+/**
+ * Converts a Uint8Array to a hex string.
+ * @param uint8Array The Uint8Array to be converted to a hex string.
+ * @returns The hex string.
+ */
+function uint8ArrayToHexString(uint8Array: Uint8Array): string {
+    return Array.from(uint8Array)
+        .map((byte) => byte.toString(16).padStart(2, "0"))
+        .join("")
+}
+
+/**
+ * Converts a hex string to a Uint8Array.
+ * @param hexString The hex string to be converted to a Uint8Array.
+ * @returns The Uint8Array.
+ */
+function hexStringToUint8Array(hexString: string): Uint8Array {
+    // Remove '0x' prefix if present
+    hexString = hexString.startsWith("0x") ? hexString.slice(2) : hexString
+
+    const bytes = new Uint8Array(hexString.length / 2)
+
+    for (let i = 0; i < hexString.length; i += 2) {
+        bytes[i / 2] = parseInt(hexString.substr(i, 2), 16)
+    }
+
+    return bytes
 }

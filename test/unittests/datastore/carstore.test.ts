@@ -23,17 +23,20 @@ import {
     CarReplicaMongoDatastore,
 } from "../../../src/core/carstore/repo/datastore"
 import { CarReplica, Car } from "../../../src/core/carstore/types"
+import { DatasetProofs } from "../../../src/module/dataset/proof/types"
+import { getContractsManager, getGenerator } from "../../fixtures"
+import { DataType } from "../../../src/shared/types/dataType"
 import { ValueFields } from "@unipackage/utils"
 import { describe, it } from "mocha"
 import { DatabaseConnection } from "@unipackage/datastore"
 import { CarReplicaState } from "../../../src/shared/types/carstoreType"
-import { getContractsManager } from "../../fixtures"
 
 const { expect } = chai
 
 const connection = DatabaseConnection.getInstance(
     "mongodb://127.0.0.1:27017/datastore"
 )
+
 const sampleCar: ValueFields<Car> = new Car({
     hash: "0x189ddc51f6d7f675f307fbb9b692356d7c1b31acb024f6ca0154820be651922d",
     carId: BigInt(1),
@@ -50,6 +53,7 @@ const sampleCar: ValueFields<Car> = new Car({
                 state: CarReplicaState.None,
             })
     ),
+    cid: "baga6ea4seaqbrho4kh3np5tv6md7xonwsi2w27a3ggwlajhwziavjaql4zizeli",
 })
 /**
  * Test suite for the Carstore contract CarMongoDatastore functionality.
@@ -103,6 +107,31 @@ describe("CarMongoDatastore", () => {
             expect(updateRes.data![0].replicaInfos![0].state).to.be.equal(
                 CarReplicaState.Matched
             )
+        })
+
+        it.skip("storeCars", async () => {
+            const cm = getContractsManager()
+            const [, leafHashes, leafSizes] =
+                getGenerator().generateDatasetProof(6, DataType.Source, false)
+
+            const data = await datastore.storeCars({
+                carstoreEvm: cm.CarstoreEvm(),
+                requirementEvm: cm.DatasetRequirementEvm(),
+                proofs: new DatasetProofs({
+                    datasetId: 7,
+                    dataType: DataType.Source,
+                    leafHashes: leafHashes,
+                    leafIndex: BigInt(0),
+                    leafSizes: leafSizes.map((value) => BigInt(value)),
+                    completed: true,
+                }),
+            })
+            expect(data.ok).to.be.true
+            const res = await datastore.find({
+                conditions: [{ datasetId: 7 }],
+            })
+            expect(res.ok).to.be.true
+            expect(res.data).to.be.not.undefined
         })
     })
 })
