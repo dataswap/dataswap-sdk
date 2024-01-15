@@ -22,6 +22,9 @@ import { DataStore } from "@unipackage/datastore"
 import { DataswapMessage } from "../../types"
 import { DataswapMessageDocument, DataswapMessageSchema } from "./model"
 import { MongooseDataStore, DatabaseConnection } from "@unipackage/datastore"
+import { Result } from "@unipackage/utils"
+import { MatchingMetadataEvm } from "../../../module/matching/metadata/repo/evm"
+import { MatchingTargetEvm } from "../../../module/matching/target/repo/evm"
 
 /**
  * Class representing a MongoDB datastore for DataswapMessage entities.
@@ -45,5 +48,38 @@ export class DataswapMessageMongoDatastore extends DataStore<
                 connection
             )
         )
+    }
+
+    /**
+     * Asynchronously creates or updates data by unique indexes plus with the specified parameters.
+     *
+     * @param options - The options object containing the necessary parameters.
+     *   - `matchingTarget`: The Ethereum Virtual Machine instance for matching target.
+     *   - `data`: The data to be created or updated.
+     * @returns A promise that resolves to the result of the operation, including an array of DataswapMessage.
+     */
+    async CreateOrupdateByUniqueIndexesPlus(options: {
+        matchingTarget: MatchingTargetEvm
+        data: DataswapMessage
+    }): Promise<Result<DataswapMessage[]>> {
+        switch (options.data.method) {
+            case "pauseMatching":
+            case "resumeMatching":
+            case "bidding":
+            case "cancelMatching":
+            case "closeMatching":
+                const target = await options.matchingTarget.getMatchingTarget(
+                    options.data.params.matchingId
+                )
+
+                if (!target.ok) {
+                    console.log(target.error)
+                    break
+                }
+                options.data.datasetId = target.data!.datasetID
+                break
+            default:
+        }
+        return await super.CreateOrupdateByUniqueIndexes(options.data)
     }
 }

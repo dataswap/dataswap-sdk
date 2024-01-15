@@ -22,6 +22,7 @@ import { DataswapMessageMongoDatastore } from "../../../src/message/repo/datasto
 import { DataswapMessage } from "../../../src/message/types"
 import { describe, it } from "mocha"
 import { DatabaseConnection } from "@unipackage/datastore"
+import { getContractsManager } from "../../fixtures"
 const { expect } = chai
 
 const sampleDataswapMessage: DataswapMessage = {
@@ -38,6 +39,25 @@ const sampleDataswapMessage: DataswapMessage = {
     matchingId: 1,
 }
 
+const sample1DataswapMessage: DataswapMessage = {
+    cid: {
+        "/": "bafy2bzaceccvotqkwxzxdfqj2tx7plxekc2gsq3ehmgawljthb2rmrs5z7o6m",
+    },
+    height: 1249032,
+    timestamp: "timestamp",
+    from: "f410fzkkc6d6tsgc5s4or2whbkfsf4wlpy7x7l6g2p6i",
+    to: "f410fkj3ynjerzlufen7abogqusb5xsgujhrllxyg4ga",
+    method: "bidding",
+    params: {
+        matchingId: 3,
+        amount: BigInt(1000000010),
+        bidder: "f410fzkkc6d6tsgc5s4or2whbkfsf4wlpy7x7l6g2p6i",
+    },
+    status: 0,
+    return: "0x",
+    matchingId: 3,
+}
+
 describe("DataswapMessageMongoDatastore", () => {
     const connection = DatabaseConnection.getInstance(
         "mongodb://127.0.0.1:27017/datastore"
@@ -52,9 +72,8 @@ describe("DataswapMessageMongoDatastore", () => {
 
     //@TODO
     //@note: Testing individually is normal, but there are issues when integrated into the CI testing environment."
-    /* 
     describe("save", () => {
-        it("should save a DataswapMessage to the datastore", async () => {
+        it.skip("should save a DataswapMessage to the datastore", async () => {
             await datastore.connect()
             const createRes = await datastore.CreateOrupdateByUniqueIndexes(
                 sampleDataswapMessage
@@ -68,6 +87,45 @@ describe("DataswapMessageMongoDatastore", () => {
             expect(res.data![0].datasetId).to.deep.equal(9999)
             await datastore.disconnect()
         })
+
+        it.skip("should save a DataswapMessage to the datastore with CreateOrupdateByUniqueIndexesPlus", async () => {
+            await datastore.connect()
+            const createRes = await datastore.CreateOrupdateByUniqueIndexes(
+                sample1DataswapMessage
+            )
+            expect(createRes.ok).to.be.true
+
+            const res = await datastore.find({
+                conditions: [
+                    {
+                        cid: {
+                            "/": "bafy2bzaceccvotqkwxzxdfqj2tx7plxekc2gsq3ehmgawljthb2rmrs5z7o6m",
+                        },
+                    },
+                ],
+            })
+            expect(res.ok).to.be.true
+            expect(res.data).to.be.not.undefined
+            expect(res.data?.length).to.deep.equal(1)
+            expect(res.data![0].datasetId).to.be.undefined
+
+            const completeRes =
+                await datastore.CreateOrupdateByUniqueIndexesPlus({
+                    matchingTarget: getContractsManager().MatchingTargetEvm(),
+                    data: sample1DataswapMessage,
+                })
+            expect(completeRes.ok).to.be.true
+            const newRes = await datastore.find({
+                conditions: [
+                    {
+                        cid: {
+                            "/": "bafy2bzaceccvotqkwxzxdfqj2tx7plxekc2gsq3ehmgawljthb2rmrs5z7o6m",
+                        },
+                    },
+                ],
+            })
+            expect(newRes.data![0].datasetId).to.deep.equal(7)
+            await datastore.disconnect()
+        })
     })
-    */
 })

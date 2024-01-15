@@ -193,6 +193,7 @@ export class MatchingMetadataEvm extends MatchingMetadataOriginEvm {
                     result.params.biddingThreshold
                 )
                 result.params.subsidy = BigInt(0)
+                result.datasetId = result.params.datasetId
                 break
             case "pauseMatching":
             case "resumeMatching":
