@@ -1,5 +1,12 @@
 
 
+## [0.16.1](https://github.com/dataswap/dataswapjs/compare/0.16.0...0.16.1) (2024-01-16)
+
+
+### Bug Fixes
+
+* 🐛 bug of extend method of datastore ([b591b39](https://github.com/dataswap/dataswapjs/commit/b591b391985b098078f3b53b441ac5fcdf3c9177)), closes [#198](https://github.com/dataswap/dataswapjs/issues/198)
+
 # [0.16.0](https://github.com/dataswap/dataswapjs/compare/0.15.0...0.16.0) (2024-01-15)
 
 
