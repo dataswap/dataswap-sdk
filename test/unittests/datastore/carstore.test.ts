@@ -91,11 +91,11 @@ describe("CarMongoDatastore", () => {
             expect(res.ok).to.be.true
             expect(res.data).to.be.not.undefined
             expect(res.data?.length).to.deep.equal(1)
-            await datastore.updateReplica({
-                carstoreEvm: getContractsManager().CarstoreEvm(),
+            await datastore.updateReplicaState({
+                carstore: getContractsManager().CarstoreEvm(),
                 carId: sampleCar.carId,
                 matchingId: 3,
-                replicaIndex: 0,
+                replicaIndex: BigInt(0),
             })
             const updateRes = await datastore.find({
                 conditions: [{ datasetId: 7 }],

@@ -35,6 +35,7 @@ import {
 import { CarstoreEvm } from "../evm"
 import { DatasetRequirementEvm } from "../../../../module/dataset/requirement/repo/evm"
 import { DatasetProofs } from "../../../../module/dataset/proof/types"
+import { MatchingTargetEvm } from "../../../../module/matching/target/repo/evm"
 
 /**
  * Class representing a MongoDB datastore for Car entities.
@@ -100,38 +101,106 @@ export class CarMongoDatastore extends DataStore<
      *   - `replicaIndex`: The replica index value for the update.
      * @returns A promise representing the completion of the update operation.
      */
-    async updateReplica(options: {
-        carstoreEvm: CarstoreEvm
+    async updateReplicaState(options: {
+        carstore: CarstoreEvm
         carId: bigint
         matchingId: number
-        replicaIndex: number
+        replicaIndex: bigint
     }): Promise<Result<any>> {
-        let car = await this.find({
-            conditions: [{ carId: options.carId }],
-        })
-        if (!car.ok) {
-            return { ok: false, error: car.error }
+        try {
+            let car = await this.find({
+                conditions: [{ carId: options.carId }],
+            })
+            if (!car.ok) {
+                return { ok: false, error: car.error }
+            }
+            if (options.replicaIndex >= car.data![0].replicaInfos!.length) {
+                return {
+                    ok: false,
+                    error: new Error("invalid index of replicas"),
+                }
+            }
+
+            const carReplica = await options.carstore.getCarReplica(
+                options.carId,
+                options.matchingId
+            )
+
+            if (!carReplica.ok) {
+                return { ok: false, error: carReplica.error }
+            }
+
+            car.data![0].replicaInfos![Number(options.replicaIndex)] =
+                carReplica.data! as CarReplica
+
+            return await this.update(
+                { conditions: [{ carId: options.carId }] },
+                { replicaInfos: car.data![0].replicaInfos }
+            )
+        } catch (error) {
+            throw error
         }
-        if (options.replicaIndex >= car.data![0].replicaInfos!.length) {
-            return { ok: false, error: new Error("invalid index of replicas") }
+    }
+
+    /**
+     * Asynchronously updates the state of all replicas of a matching using the specified parameters.
+     *
+     * @param options - The options object containing the necessary parameters.
+     *   - `matchingTarget`: The Ethereum Virtual Machine instance for matching target.
+     *   - `carstoreEvm`: The Ethereum Virtual Machine instance for carstore.
+     *   - `matchingId`: The identifier of the matching.
+     * @returns A promise that resolves to the result of the operation.
+     */
+    async updateAllReplicasStateOfMatching(options: {
+        matchingTarget: MatchingTargetEvm
+        carstore: CarstoreEvm
+        matchingId: number
+    }): Promise<Result<any>> {
+        try {
+            const target = await options.matchingTarget.getMatchingTarget(
+                options.matchingId
+            )
+            if (!target.ok) {
+                return { ok: false, error: target.error }
+            }
+            if (!target.data) {
+                return {
+                    ok: false,
+                    error: new Error("get matching target failed"),
+                }
+            }
+            const replicaIndex = target.data.replicaIndex
+
+            let doStores: Promise<Result<any>>[] = []
+
+            target.data.cars.map(async (car) => {
+                doStores.push(
+                    this.updateReplicaState({
+                        carstore: options.carstore,
+                        carId: BigInt(car),
+                        matchingId: options.matchingId,
+                        replicaIndex: replicaIndex,
+                    })
+                )
+            })
+
+            const results = await Promise.all(doStores)
+
+            let ret: boolean = true
+
+            const retError = results.forEach((res) => {
+                if (!res.ok) {
+                    ret = false
+                    return new Error(
+                        `updateAllReplicasStateOfMatching error:${res.error}`
+                    )
+                }
+            })
+
+            return { ok: ret, data: retError }
+        } catch (error) {
+            throw error
         }
-
-        const carReplica = await options.carstoreEvm.getCarReplica(
-            options.carId,
-            options.matchingId
-        )
-
-        if (!carReplica.ok) {
-            return { ok: false, error: carReplica.error }
-        }
-
-        car.data![0].replicaInfos![options.replicaIndex] =
-            carReplica.data! as CarReplica
-
-        return await this.update(
-            { conditions: [{ carId: options.carId }] },
-            { replicaInfos: car.data![0].replicaInfos }
-        )
     }
 }
 
@@ -168,17 +237,25 @@ export class CarReplicaMongoDatastore extends DataStore<
     async storeCarReplicas(options: {
         target: MatchingTarget
     }): Promise<Result<any>> {
-        const carReplicas = convertToCarReplicasArray(options.target)
-        for (let i = 0; i < carReplicas.length; i++) {
-            const ret = await this.CreateOrupdateByUniqueIndexes(carReplicas[i])
-            if (!ret.ok) {
-                return {
-                    ok: false,
-                    error: new Error(`storeCarReplicass error:${ret.error}`),
+        try {
+            const carReplicas = convertToCarReplicasArray(options.target)
+            for (let i = 0; i < carReplicas.length; i++) {
+                const ret = await this.CreateOrupdateByUniqueIndexes(
+                    carReplicas[i]
+                )
+                if (!ret.ok) {
+                    return {
+                        ok: false,
+                        error: new Error(
+                            `storeCarReplicass error:${ret.error}`
+                        ),
+                    }
                 }
             }
+            return { ok: true, data: carReplicas }
+        } catch (error) {
+            throw error
         }
-        return { ok: true, data: carReplicas }
     }
 
     /**
@@ -213,6 +290,64 @@ export class CarReplicaMongoDatastore extends DataStore<
                 },
                 { state: Number(state.data) }
             )
+        } catch (error) {
+            throw error
+        }
+    }
+
+    /**
+     * Asynchronously updates the states of all elements in the matching using the specified parameters.
+     *
+     * @param options - The options object containing the necessary parameters.
+     *   - `matchingTarget`: The Ethereum Virtual Machine instance for matching target.
+     *   - `carstore`: The Ethereum Virtual Machine instance for carstore.
+     *   - `matchingId`: The identifier of the matching.
+     * @returns A promise that resolves to the result of the operation.
+     */
+    async updateAllStatesOfMatching(options: {
+        matchingTarget: MatchingTargetEvm
+        carstore: CarstoreEvm
+        matchingId: number
+    }): Promise<Result<any>> {
+        try {
+            const target = await options.matchingTarget.getMatchingTarget(
+                options.matchingId
+            )
+            if (!target.ok) {
+                return { ok: false, error: target.error }
+            }
+            if (!target.data) {
+                return {
+                    ok: false,
+                    error: new Error("get matching target failed"),
+                }
+            }
+            let doStores: Promise<Result<any>>[] = []
+
+            target.data.cars.map(async (car) => {
+                doStores.push(
+                    this.updateState({
+                        carstore: options.carstore,
+                        carId: BigInt(car),
+                        matchingId: options.matchingId,
+                    })
+                )
+            })
+
+            const results = await Promise.all(doStores)
+
+            let ret: boolean = true
+
+            const retError = results.forEach((res) => {
+                if (!res.ok) {
+                    ret = false
+                    return new Error(
+                        `updateAllStatesOfMatching error:${res.error}`
+                    )
+                }
+            })
+
+            return { ok: ret, data: retError }
         } catch (error) {
             throw error
         }
