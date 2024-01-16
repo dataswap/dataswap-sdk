@@ -19,7 +19,7 @@
  ********************************************************************************/
 
 import { DataStore, DatabaseConnection } from "@unipackage/datastore"
-import { ValueFields } from "@unipackage/utils"
+import { ValueFields, Result } from "@unipackage/utils"
 import { MatchingBid } from "../../types"
 import { MatchingBidDocument, MatchingBidSchema } from "./model"
 import { MongooseDataStore } from "@unipackage/datastore"
@@ -58,20 +58,20 @@ export class MatchingBidMongoDatastore extends DataStore<
     async storeMatchingBid(options: {
         matchingBids: MatchingBidsEvm
         origionMatchingBid: MatchingBid
-    }) {
+    }): Promise<Result<any>> {
         try {
             const bids = await options.matchingBids.getMatchingBids(
                 options.origionMatchingBid.matchingId!
             )
             if (!bids.ok) {
-                throw bids.error
+                return { ok: false, error: bids.error }
             }
             for (let i = 0; i < bids.data!.bidders.length; i++) {
                 if (
                     options.origionMatchingBid.bidder ===
                     newDelegatedEthAddress(bids.data!.bidders[i]).toString()
                 ) {
-                    await this.CreateOrupdateByUniqueIndexes(
+                    return await this.CreateOrupdateByUniqueIndexes(
                         new MatchingBid({
                             bidder: options.origionMatchingBid.bidder,
                             amount: options.origionMatchingBid.amount,
@@ -79,8 +79,11 @@ export class MatchingBidMongoDatastore extends DataStore<
                             matchingId: options.origionMatchingBid.matchingId!,
                         })
                     )
-                    return
                 }
+            }
+            return {
+                ok: false,
+                error: new Error("cant find the bidder on chain"),
             }
         } catch (error) {
             throw error

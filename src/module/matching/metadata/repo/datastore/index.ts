@@ -19,7 +19,7 @@
  ********************************************************************************/
 
 import { DataStore, DatabaseConnection } from "@unipackage/datastore"
-import { ValueFields } from "@unipackage/utils"
+import { ValueFields, Result } from "@unipackage/utils"
 import { BidSelectionRule, MatchingMetadata } from "../../types"
 import { MatchingMetadataDocument, MatchingMetadataSchema } from "./model"
 import { MongooseDataStore } from "@unipackage/datastore"
@@ -67,13 +67,13 @@ export class MatchingMetadataMongoDatastore extends DataStore<
         datasetRequirement: DatasetRequirementEvm
         origionMetadata: MatchingMetadata
         matchingId: number
-    }) {
+    }): Promise<Result<any>> {
         try {
             const state = await options.matchingMetadata.getMatchingState(
                 options.matchingId
             )
             if (!state.ok) {
-                throw state.error
+                return { ok: false, error: state.error }
             }
 
             options.origionMetadata.status = Number(state.data)
@@ -85,11 +85,13 @@ export class MatchingMetadataMongoDatastore extends DataStore<
                 )
 
             if (!requirement.ok) {
-                throw requirement.error
+                return { ok: false, error: requirement.error }
             }
 
             options.origionMetadata.requirement = requirement.data
-            await this.CreateOrupdateByUniqueIndexes(options.origionMetadata)
+            return await this.CreateOrupdateByUniqueIndexes(
+                options.origionMetadata
+            )
         } catch (error) {
             throw error
         }
@@ -105,15 +107,15 @@ export class MatchingMetadataMongoDatastore extends DataStore<
     async updateMatchingState(options: {
         matchingMetadata: MatchingMetadataEvm
         matchingId: number
-    }) {
+    }): Promise<Result<any>> {
         try {
             const state = await options.matchingMetadata.getMatchingState(
                 options.matchingId
             )
             if (!state.ok) {
-                throw state.error
+                return { ok: false, error: state.error }
             }
-            await this.update(
+            return await this.update(
                 { conditions: [{ matchingId: options.matchingId }] },
                 {
                     status: Number(state.data),
@@ -134,16 +136,16 @@ export class MatchingMetadataMongoDatastore extends DataStore<
     async updateMatchingTargetInfo(options: {
         matchingTarget: MatchingTargetEvm
         matchingId: number
-    }) {
+    }): Promise<Result<any>> {
         try {
             const target = await options.matchingTarget.getMatchingTarget(
                 options.matchingId
             )
             if (!target.ok) {
-                throw target.error
+                return { ok: false, error: target.error }
             }
 
-            await this.update(
+            return await this.update(
                 { conditions: [{ matchingId: options.matchingId }] },
                 {
                     size: target.data!.size,
@@ -215,13 +217,13 @@ export class MatchingMetadataMongoDatastore extends DataStore<
         matchingMetadata: MatchingMetadataEvm
         matchingBids: MatchingBidsEvm
         matchingId: number
-    }) {
+    }): Promise<Result<any>> {
         try {
             const metadata = await options.matchingMetadata.getMatchingMetadata(
                 options.matchingId
             )
             if (!metadata.ok) {
-                throw metadata.error
+                return { ok: false, error: metadata.error }
             }
             const bidSelectionRule = metadata.data!.bidSelectionRule
 
@@ -229,12 +231,12 @@ export class MatchingMetadataMongoDatastore extends DataStore<
                 options.matchingId
             )
             if (!bids.ok) {
-                throw bids.error
+                return { ok: false, error: bids.error }
             }
 
             const best = this._getBestBid(bidSelectionRule, bids.data!)
 
-            await this.update(
+            return await this.update(
                 { conditions: [{ matchingId: options.matchingId }] },
                 {
                     currentPrice: best.amount,

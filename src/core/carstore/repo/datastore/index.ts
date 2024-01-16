@@ -105,15 +105,15 @@ export class CarMongoDatastore extends DataStore<
         carId: bigint
         matchingId: number
         replicaIndex: number
-    }): Promise<void> {
+    }): Promise<Result<any>> {
         let car = await this.find({
             conditions: [{ carId: options.carId }],
         })
         if (!car.ok) {
-            throw car.error
+            return { ok: false, error: car.error }
         }
         if (options.replicaIndex >= car.data![0].replicaInfos!.length) {
-            throw new Error("invalid index of replicas")
+            return { ok: false, error: new Error("invalid index of replicas") }
         }
 
         const carReplica = await options.carstoreEvm.getCarReplica(
@@ -122,13 +122,13 @@ export class CarMongoDatastore extends DataStore<
         )
 
         if (!carReplica.ok) {
-            throw carReplica.error
+            return { ok: false, error: carReplica.error }
         }
 
         car.data![0].replicaInfos![options.replicaIndex] =
             carReplica.data! as CarReplica
 
-        await this.update(
+        return await this.update(
             { conditions: [{ carId: options.carId }] },
             { replicaInfos: car.data![0].replicaInfos }
         )
@@ -193,16 +193,16 @@ export class CarReplicaMongoDatastore extends DataStore<
         carstore: CarstoreEvm
         carId: bigint
         matchingId: number
-    }) {
+    }): Promise<Result<any>> {
         try {
             const state = await options.carstore.getCarReplicaState(
                 options.carId,
                 options.matchingId
             )
             if (!state.ok) {
-                throw state.error
+                return { ok: false, error: state.error }
             }
-            await this.update(
+            return await this.update(
                 {
                     conditions: [
                         {

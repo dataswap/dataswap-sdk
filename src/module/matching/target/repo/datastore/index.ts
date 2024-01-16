@@ -87,19 +87,8 @@ export class MatchingTargetMongoDatastore extends DataStore<
             }
         }
 
-        const ret = await this.CreateOrupdateByUniqueIndexes(
+        return await this.CreateOrupdateByUniqueIndexes(
             target.data as MatchingTarget
         )
-
-        if (!ret.ok) {
-            return {
-                ok: false,
-                error: new Error(
-                    `storeMatchingtarget store failed:${ret.error}`
-                ),
-            }
-        }
-
-        return { ok: true, data: ret.data }
     }
 }

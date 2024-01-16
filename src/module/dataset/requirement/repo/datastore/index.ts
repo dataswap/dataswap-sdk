@@ -19,12 +19,8 @@
  ********************************************************************************/
 
 import { DataStore, DatabaseConnection } from "@unipackage/datastore"
-import { ValueFields } from "@unipackage/utils"
-import {
-    DatasetRequirement,
-    DatasetRequirements,
-    MatchingInfo,
-} from "../../types"
+import { ValueFields, Result } from "@unipackage/utils"
+import { DatasetRequirement, MatchingInfo } from "../../types"
 import { DatasetRequirementDocument, DatasetRequirementSchema } from "./model"
 import { MongooseDataStore } from "@unipackage/datastore"
 import { MatchingTargetEvm } from "../../../../matching/target/repo/evm"
@@ -133,7 +129,7 @@ export class DatasetRequirementMongoDatastore extends DataStore<
         datasetId: number
         index: number
         matchingId: number
-    }) {
+    }): Promise<Result<any>> {
         try {
             const contain = await this.isContainMatching({
                 datasetId: options.datasetId,
@@ -142,7 +138,7 @@ export class DatasetRequirementMongoDatastore extends DataStore<
             })
 
             if (contain) {
-                throw new Error("matching already exist")
+                return { ok: false, error: new Error("matching already exist") }
             }
 
             let matchings = await this.getMatchings({
@@ -154,14 +150,14 @@ export class DatasetRequirementMongoDatastore extends DataStore<
                 options.matchingId
             )
             if (!target.ok) {
-                throw target.error
+                return { ok: false, error: target.error }
             }
 
             const state = await options.matchingMetadata.getMatchingState(
                 options.matchingId
             )
             if (!state.ok) {
-                throw target.error
+                return { ok: false, error: target.error }
             }
 
             matchings.push(
@@ -174,7 +170,7 @@ export class DatasetRequirementMongoDatastore extends DataStore<
                     totalSize: target.data!.size,
                 })
             )
-            await this.update(
+            return await this.update(
                 {
                     conditions: [
                         { datasetId: options.datasetId, index: options.index },
@@ -199,7 +195,7 @@ export class DatasetRequirementMongoDatastore extends DataStore<
         datasetId: number
         index: number
         matchingId: number
-    }) {
+    }): Promise<Result<any>> {
         try {
             const contain = await this.isContainMatching({
                 datasetId: options.datasetId,
@@ -207,7 +203,7 @@ export class DatasetRequirementMongoDatastore extends DataStore<
                 matchingId: options.matchingId,
             })
             if (!contain) {
-                return
+                return { ok: true }
             }
             const matchings = await this.getMatchings({
                 datasetId: options.datasetId,
@@ -219,7 +215,7 @@ export class DatasetRequirementMongoDatastore extends DataStore<
                     newMatchings.push(matchings[i])
                 }
             }
-            await this.update(
+            return await this.update(
                 {
                     conditions: [
                         { datasetId: options.datasetId, index: options.index },
@@ -246,19 +242,19 @@ export class DatasetRequirementMongoDatastore extends DataStore<
         datasetId: number
         index: number
         matchingId: number
-    }) {
+    }): Promise<Result<any>> {
         try {
             const count = await options.storages.getStoredCarCount(
                 options.matchingId
             )
             if (!count.ok) {
-                throw count.error
+                return { ok: false, error: count.error }
             }
             const size = await options.storages.getTotalStoredSize(
                 options.matchingId
             )
             if (!size.ok) {
-                throw size.error
+                return { ok: false, error: size.error }
             }
             let matchings = await this.getMatchings({
                 datasetId: options.datasetId,
@@ -270,7 +266,7 @@ export class DatasetRequirementMongoDatastore extends DataStore<
                     matchings[i].finishedSize = BigInt(size.data!)
                 }
             }
-            await this.update(
+            return await this.update(
                 {
                     conditions: [
                         { datasetId: options.datasetId, index: options.index },
@@ -297,13 +293,13 @@ export class DatasetRequirementMongoDatastore extends DataStore<
         datasetId: number
         index: number
         matchingId: number
-    }) {
+    }): Promise<Result<any>> {
         try {
             const state = await options.matchingMetadata.getMatchingState(
                 options.matchingId
             )
             if (!state.ok) {
-                throw state.error
+                return { ok: false, error: state.error }
             }
             let matchings = await this.getMatchings({
                 datasetId: options.datasetId,
@@ -314,7 +310,7 @@ export class DatasetRequirementMongoDatastore extends DataStore<
                     matchings[i].matchingState = Number(state.data)
                 }
             }
-            await this.update(
+            return await this.update(
                 {
                     conditions: [
                         { datasetId: options.datasetId, index: options.index },

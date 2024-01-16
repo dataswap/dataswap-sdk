@@ -23,7 +23,6 @@ import { DataswapMessage } from "../../types"
 import { DataswapMessageDocument, DataswapMessageSchema } from "./model"
 import { MongooseDataStore, DatabaseConnection } from "@unipackage/datastore"
 import { Result } from "@unipackage/utils"
-import { MatchingMetadataEvm } from "../../../module/matching/metadata/repo/evm"
 import { MatchingTargetEvm } from "../../../module/matching/target/repo/evm"
 
 /**
