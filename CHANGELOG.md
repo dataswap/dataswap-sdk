@@ -1,5 +1,13 @@
 
 
+## [0.17.1](https://github.com/dataswap/dataswapjs/compare/0.17.0...0.17.1) (2024-01-16)
+
+
+### Bug Fixes
+
+* 🐛 Export MatchingBidMongoDatastore class ([5f0bbb3](https://github.com/dataswap/dataswapjs/commit/5f0bbb3e49352304f414825bbe1ebe17f000df69)), closes [#203](https://github.com/dataswap/dataswapjs/issues/203)
+* 🐛 rename updateReplicaState to updateReplica ([75d6204](https://github.com/dataswap/dataswapjs/commit/75d6204d85994334fc4b3a0816b7845c35d925e0)), closes [#204](https://github.com/dataswap/dataswapjs/issues/204)
+
 # [0.17.0](https://github.com/dataswap/dataswapjs/compare/0.16.1...0.17.0) (2024-01-16)
 
 
