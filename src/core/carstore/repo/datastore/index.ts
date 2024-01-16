@@ -101,7 +101,7 @@ export class CarMongoDatastore extends DataStore<
      *   - `replicaIndex`: The replica index value for the update.
      * @returns A promise representing the completion of the update operation.
      */
-    async updateReplicaState(options: {
+    async updateReplica(options: {
         carstore: CarstoreEvm
         carId: bigint
         matchingId: number
@@ -175,7 +175,7 @@ export class CarMongoDatastore extends DataStore<
 
             target.data.cars.map(async (car) => {
                 doStores.push(
-                    this.updateReplicaState({
+                    this.updateReplica({
                         carstore: options.carstore,
                         carId: BigInt(car),
                         matchingId: options.matchingId,
