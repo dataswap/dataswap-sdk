@@ -1,5 +1,17 @@
 
 
+# [0.17.0](https://github.com/dataswap/dataswapjs/compare/0.16.1...0.17.0) (2024-01-16)
+
+
+### Bug Fixes
+
+* 🐛 Debug for methods of datastore update ([caec256](https://github.com/dataswap/dataswapjs/commit/caec2561a73cf7871f120bf891a6fb53a953a883)), closes [#201](https://github.com/dataswap/dataswapjs/issues/201)
+
+
+### Features
+
+* 🎸 Add a "dataType","cid" field to Car model ([90a196e](https://github.com/dataswap/dataswapjs/commit/90a196ecaed51085dc636b6b740048c8cb5264f6)), closes [#169](https://github.com/dataswap/dataswapjs/issues/169)
+
 ## [0.16.1](https://github.com/dataswap/dataswapjs/compare/0.16.0...0.16.1) (2024-01-16)
 
 
