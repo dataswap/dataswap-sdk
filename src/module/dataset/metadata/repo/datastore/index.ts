@@ -19,7 +19,7 @@
  ********************************************************************************/
 
 import { DataStore } from "@unipackage/datastore"
-import { ValueFields } from "@unipackage/utils"
+import { ValueFields, Result } from "@unipackage/utils"
 import { DatasetMetadata } from "../../types"
 import { DatasetMetadataDocument, DatasetMetadataSchema } from "./model"
 import { MongooseDataStore, DatabaseConnection } from "@unipackage/datastore"
@@ -59,16 +59,20 @@ export class DatasetMetadataMongoDatastore extends DataStore<
     async updateDatasetMetadataState(options: {
         datasetMetadataEvm: DatasetMetadataEvm
         datasetId: number
-    }) {
-        const state = await options.datasetMetadataEvm.getDatasetState(
-            options.datasetId
-        )
-        if (!state.ok) {
-            throw state.error
+    }): Promise<Result<any>> {
+        try {
+            const state = await options.datasetMetadataEvm.getDatasetState(
+                options.datasetId
+            )
+            if (!state.ok) {
+                return { ok: false, error: state.error }
+            }
+            return await this.update(
+                { conditions: [{ datasetId: options.datasetId }] },
+                { status: Number(state.data) }
+            )
+        } catch (error) {
+            throw error
         }
-        await this.update(
-            { conditions: [{ datasetId: options.datasetId }] },
-            { status: Number(state.data) }
-        )
     }
 }
