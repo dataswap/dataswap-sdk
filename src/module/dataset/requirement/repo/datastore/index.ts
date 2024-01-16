@@ -61,7 +61,7 @@ export class DatasetRequirementMongoDatastore extends DataStore<
      */
     private async isContainMatching(options: {
         datasetId: number
-        index: number
+        index: bigint
         matchingId: number
     }): Promise<boolean> {
         const res = await this.find({
@@ -95,7 +95,7 @@ export class DatasetRequirementMongoDatastore extends DataStore<
      */
     private async getMatchings(options: {
         datasetId: number
-        index: number
+        index: bigint
     }): Promise<MatchingInfo[]> {
         const res = await this.find({
             conditions: [
@@ -126,14 +126,24 @@ export class DatasetRequirementMongoDatastore extends DataStore<
     async addMatching(options: {
         matchingTarget: MatchingTargetEvm
         matchingMetadata: MatchingMetadataEvm
-        datasetId: number
-        index: number
         matchingId: number
     }): Promise<Result<any>> {
         try {
+            const target = await options.matchingTarget.getMatchingTarget(
+                options.matchingId
+            )
+            if (!target.ok) {
+                return { ok: false, error: target.error }
+            }
+            if (!target.data) {
+                return {
+                    ok: false,
+                    error: new Error("get matching target failed"),
+                }
+            }
             const contain = await this.isContainMatching({
-                datasetId: options.datasetId,
-                index: options.index,
+                datasetId: target.data.datasetID,
+                index: target.data.replicaIndex,
                 matchingId: options.matchingId,
             })
 
@@ -142,16 +152,9 @@ export class DatasetRequirementMongoDatastore extends DataStore<
             }
 
             let matchings = await this.getMatchings({
-                datasetId: options.datasetId,
-                index: options.index,
+                datasetId: target.data.datasetID,
+                index: target.data.replicaIndex,
             })
-
-            const target = await options.matchingTarget.getMatchingTarget(
-                options.matchingId
-            )
-            if (!target.ok) {
-                return { ok: false, error: target.error }
-            }
 
             const state = await options.matchingMetadata.getMatchingState(
                 options.matchingId
@@ -173,7 +176,10 @@ export class DatasetRequirementMongoDatastore extends DataStore<
             return await this.update(
                 {
                     conditions: [
-                        { datasetId: options.datasetId, index: options.index },
+                        {
+                            datasetId: target.data.datasetID,
+                            index: target.data.replicaIndex,
+                        },
                     ],
                 },
                 { matchings: matchings }
@@ -192,22 +198,33 @@ export class DatasetRequirementMongoDatastore extends DataStore<
      *   - `matchingId`: The identifier of the matching to be removed.
      */
     async removeMaching(options: {
-        datasetId: number
-        index: number
+        matchingTarget: MatchingTargetEvm
         matchingId: number
     }): Promise<Result<any>> {
         try {
+            const target = await options.matchingTarget.getMatchingTarget(
+                options.matchingId
+            )
+            if (!target.ok) {
+                return { ok: false, error: target.error }
+            }
+            if (!target.data) {
+                return {
+                    ok: false,
+                    error: new Error("get matching target failed"),
+                }
+            }
             const contain = await this.isContainMatching({
-                datasetId: options.datasetId,
-                index: options.index,
+                datasetId: target.data.datasetID,
+                index: target.data.replicaIndex,
                 matchingId: options.matchingId,
             })
             if (!contain) {
                 return { ok: true }
             }
             const matchings = await this.getMatchings({
-                datasetId: options.datasetId,
-                index: options.index,
+                datasetId: target.data.datasetID,
+                index: target.data.replicaIndex,
             })
             let newMatchings = []
             for (let i = 0; i < matchings.length; i++) {
@@ -218,7 +235,10 @@ export class DatasetRequirementMongoDatastore extends DataStore<
             return await this.update(
                 {
                     conditions: [
-                        { datasetId: options.datasetId, index: options.index },
+                        {
+                            datasetId: target.data.datasetID,
+                            index: target.data.replicaIndex,
+                        },
                     ],
                 },
                 { matchings: newMatchings }
@@ -237,13 +257,24 @@ export class DatasetRequirementMongoDatastore extends DataStore<
      *   - `index`: The index value.
      *   - `matchingId`: The identifier of the matching to be updated.
      */
-    async updateMatchingData(options: {
+    async updateMatching(options: {
         storages: StoragesEvm
-        datasetId: number
-        index: number
+        matchingTarget: MatchingTargetEvm
         matchingId: number
     }): Promise<Result<any>> {
         try {
+            const target = await options.matchingTarget.getMatchingTarget(
+                options.matchingId
+            )
+            if (!target.ok) {
+                return { ok: false, error: target.error }
+            }
+            if (!target.data) {
+                return {
+                    ok: false,
+                    error: new Error("get matching target failed"),
+                }
+            }
             const count = await options.storages.getStoredCarCount(
                 options.matchingId
             )
@@ -257,8 +288,8 @@ export class DatasetRequirementMongoDatastore extends DataStore<
                 return { ok: false, error: size.error }
             }
             let matchings = await this.getMatchings({
-                datasetId: options.datasetId,
-                index: options.index,
+                datasetId: target.data.datasetID,
+                index: target.data.replicaIndex,
             })
             for (let i = 0; i < matchings.length; i++) {
                 if (options.matchingId === matchings[i].matchingId) {
@@ -269,7 +300,10 @@ export class DatasetRequirementMongoDatastore extends DataStore<
             return await this.update(
                 {
                     conditions: [
-                        { datasetId: options.datasetId, index: options.index },
+                        {
+                            datasetId: target.data.datasetID,
+                            index: target.data.replicaIndex,
+                        },
                     ],
                 },
                 { matchings: matchings }
@@ -290,20 +324,37 @@ export class DatasetRequirementMongoDatastore extends DataStore<
      */
     async updateMatchingState(options: {
         matchingMetadata: MatchingMetadataEvm
-        datasetId: number
-        index: number
+        matchingTarget: MatchingTargetEvm
         matchingId: number
     }): Promise<Result<any>> {
         try {
+            const target = await options.matchingTarget.getMatchingTarget(
+                options.matchingId
+            )
+            if (!target.ok) {
+                return { ok: false, error: target.error }
+            }
+            if (!target.data) {
+                return {
+                    ok: false,
+                    error: new Error("get matching target failed"),
+                }
+            }
             const state = await options.matchingMetadata.getMatchingState(
                 options.matchingId
             )
             if (!state.ok) {
                 return { ok: false, error: state.error }
             }
+            if (!state.data) {
+                return {
+                    ok: false,
+                    error: new Error("get matching state failed"),
+                }
+            }
             let matchings = await this.getMatchings({
-                datasetId: options.datasetId,
-                index: options.index,
+                datasetId: target.data.datasetID,
+                index: target.data.replicaIndex,
             })
             for (let i = 0; i < matchings.length; i++) {
                 if (options.matchingId === matchings[i].matchingId) {
@@ -313,7 +364,10 @@ export class DatasetRequirementMongoDatastore extends DataStore<
             return await this.update(
                 {
                     conditions: [
-                        { datasetId: options.datasetId, index: options.index },
+                        {
+                            datasetId: target.data.datasetID,
+                            index: target.data.replicaIndex,
+                        },
                     ],
                 },
                 { matchings: matchings }

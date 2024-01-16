@@ -88,8 +88,6 @@ describe("DatasetRequirementsMongoDatastore", () => {
             await datastore.addMatching({
                 matchingTarget: getContractsManager().MatchingTargetEvm(),
                 matchingMetadata: getContractsManager().MatchingMetadataEvm(),
-                datasetId: 7,
-                index: 0,
                 matchingId: 3,
             })
             const addRes = await datastore.find({
@@ -100,16 +98,14 @@ describe("DatasetRequirementsMongoDatastore", () => {
             expect(addRes.data).to.be.not.undefined
             expect(addRes.data?.length).to.deep.equal(1)
             expect(addRes.data![0].matchings![0].matchingId).to.be.equal(3)
-            await datastore.updateMatchingData({
+            await datastore.updateMatching({
+                matchingTarget: getContractsManager().MatchingTargetEvm(),
                 storages: getContractsManager().StoragesEvm(),
-                datasetId: 7,
-                index: 0,
                 matchingId: 3,
             })
             await datastore.updateMatchingState({
                 matchingMetadata: getContractsManager().MatchingMetadataEvm(),
-                datasetId: 7,
-                index: 0,
+                matchingTarget: getContractsManager().MatchingTargetEvm(),
                 matchingId: 3,
             })
             const updateDataRes = await datastore.find({
@@ -117,8 +113,7 @@ describe("DatasetRequirementsMongoDatastore", () => {
             })
             console.log(updateDataRes)
             await datastore.removeMaching({
-                datasetId: 7,
-                index: 0,
+                matchingTarget: getContractsManager().MatchingTargetEvm(),
                 matchingId: 3,
             })
             const deleteRes = await datastore.find({
