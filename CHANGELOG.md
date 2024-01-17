@@ -1,5 +1,16 @@
 
 
+## [0.17.2](https://github.com/dataswap/dataswapjs/compare/0.17.1...0.17.2) (2024-01-17)
+
+
+### Bug Fixes
+
+* 🐛 Debug issue of writing empty array ([c8978e1](https://github.com/dataswap/dataswapjs/commit/c8978e134f7a50e9a38fb21803a67498d248b461)), closes [#209](https://github.com/dataswap/dataswapjs/issues/209)
+* 🐛 initialize status of metadata ([9a88d5b](https://github.com/dataswap/dataswapjs/commit/9a88d5be1c7d711350162cabe271cc6407e623cc)), closes [#208](https://github.com/dataswap/dataswapjs/issues/208)
+* 🐛 invalid car replica info ([de1d4c1](https://github.com/dataswap/dataswapjs/commit/de1d4c115473d5c9186ffd41d08e2ff0583c6db8)), closes [#217](https://github.com/dataswap/dataswapjs/issues/217)
+* 🐛 Modify the requirement in the MatchingMetadata model ([5cce1c9](https://github.com/dataswap/dataswapjs/commit/5cce1c97c5a64142ae10a7e69bed138091c78a0a)), closes [#214](https://github.com/dataswap/dataswapjs/issues/214)
+* 🐛 update filecoin version to 2.1.3 ([04e95a7](https://github.com/dataswap/dataswapjs/commit/04e95a76a230c3b57e35993cd8e1bc837f5b4029)), closes [#210](https://github.com/dataswap/dataswapjs/issues/210)
+
 ## [0.17.1](https://github.com/dataswap/dataswapjs/compare/0.17.0...0.17.1) (2024-01-16)
 
 
