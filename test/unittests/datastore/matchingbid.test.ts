@@ -30,6 +30,7 @@ const sampleMatchingBid: ValueFields<MatchingBid> = {
     bidder: "f410fzkkc6d6tsgc5s4or2whbkfsf4wlpy7x7l6g2p6i",
     amount: BigInt(1000000010),
     matchingId: 3,
+    createdBlockNumber: BigInt(1213438),
 }
 
 describe("MatchingBidMongoDatastore", () => {

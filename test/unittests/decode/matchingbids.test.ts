@@ -47,6 +47,7 @@ describe("MatchingsBidsMessageDecoder", () => {
                     amount: BigInt(1000000010),
                     matchingId: 2,
                     bidder: "f410fcwzis33wz3sofrlh466gog5xahlthgzqezasapy",
+                    createdBlockNumber: BigInt(1213438),
                 },
                 returns: "0x",
                 matchingId: 2,

@@ -49,6 +49,10 @@ const MatchingBidSchema = new Schema<MatchingBidDocument>({
         required: [true, "Please provide the matchingId"],
         index: { unique: true },
     },
+    createdBlockNumber: {
+        type: BigInt,
+        required: [true, "Please provide the createdBlockNumber"],
+    },
 }).index({ matchingId: 1, bidder: 1 }, { unique: true })
 
 export { MatchingBidSchema }
