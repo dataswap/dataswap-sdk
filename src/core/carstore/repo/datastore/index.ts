@@ -237,27 +237,48 @@ export class CarReplicaMongoDatastore extends DataStore<
      * Stores car replicas in the CarReplicaDatastore and updates the matching target.
      * @param options - Object containing necessary parameters.
      * @param options.target - MatchingTarget to be updated with the stored car replicas.
+     * @param options.matchingTarget - The Ethereum Virtual Machine instance for matching target.
      * @returns A Promise resolving to a Result indicating the success or failure of the operation.
      */
     async storeCarReplicas(options: {
+        matchingTarget: MatchingTargetEvm
         target: MatchingTarget
     }): Promise<Result<any>> {
         try {
-            const carReplicas = convertToCarReplicasArray(options.target)
-            for (let i = 0; i < carReplicas.length; i++) {
-                const ret = await this.CreateOrupdateByUniqueIndexes(
-                    carReplicas[i]
-                )
-                if (!ret.ok) {
-                    return {
-                        ok: false,
-                        error: new Error(
-                            `storeCarReplicass error:${ret.error}`
-                        ),
-                    }
+            const target = await options.matchingTarget.getMatchingTarget(
+                options.target.matchingId!
+            )
+            if (!target.ok) {
+                return { ok: false, error: target.error }
+            }
+            if (!target.data) {
+                return {
+                    ok: false,
+                    error: new Error("get matching target failed"),
                 }
             }
-            return { ok: true, data: carReplicas }
+            options.target.replicaIndex = target.data.replicaIndex
+
+            const carReplicas = convertToCarReplicasArray(options.target)
+
+            let doStores: Promise<Result<any>>[] = []
+
+            carReplicas.map(async (carReplica) => {
+                doStores.push(this.CreateOrupdateByUniqueIndexes(carReplica))
+            })
+
+            const results = await Promise.all(doStores)
+
+            let ret: boolean = true
+            const retError = results.forEach((res) => {
+                if (!res.ok) {
+                    ret = false
+                    return new Error(
+                        `updateAllReplicasStateOfMatching error:${res.error}`
+                    )
+                }
+            })
+            return { ok: ret, data: retError }
         } catch (error) {
             throw error
         }

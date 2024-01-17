@@ -139,6 +139,7 @@ const sampleCarReplica: ValueFields<CarReplica> = new CarReplica({
     filecoinClaimId: BigInt(0),
     state: CarReplicaState.None,
     carId: BigInt(1),
+    replicaIndex: BigInt(1),
 })
 /**
  * Test suite for the Carstore contract CarReplicaMongoDatastore functionality.
@@ -177,6 +178,7 @@ describe("CarReplicaMongoDatastore", () => {
             expect(res.data).to.be.not.undefined
             expect(res.data?.length).to.deep.equal(1)
             expect(res.data![0].state).to.be.equal(CarReplicaState.None)
+            expect(res.data![0].replicaIndex).to.be.equal(BigInt(1))
             await datastore.updateState({
                 carstore: getContractsManager().CarstoreEvm(),
                 carId: BigInt(1),

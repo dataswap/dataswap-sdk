@@ -47,6 +47,7 @@ export interface CarReplica {
     state: CarReplicaState // Current state of the replica
     filecoinClaimId: bigint // ID of the Filecoin claim associated with the replica's storage
     carId?: bigint // The id associated with the car.
+    replicaIndex?: bigint // The index of the replica with the car.
 }
 
 /**
@@ -80,6 +81,7 @@ export class CarReplica extends Entity<CarReplica> {
             filecoinClaimId: data?.filecoinClaimId || BigInt(0),
             state: data?.state || CarReplicaState.None,
             carId: data?.carId || BigInt(0),
+            replicaIndex: data?.replicaIndex || BigInt(0),
         })
     }
 }

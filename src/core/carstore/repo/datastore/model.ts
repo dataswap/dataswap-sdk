@@ -49,6 +49,9 @@ const CarReplicaSchema = new Schema<CarReplicaDocument>({
     filecoinClaimId: {
         type: BigInt,
     },
+    replicaIndex: {
+        type: BigInt,
+    },
 }).index({ carId: 1, matchingId: 1 }, { unique: true })
 
 export { CarReplicaSchema }

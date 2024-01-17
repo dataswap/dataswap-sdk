@@ -52,6 +52,7 @@ export function convertToCarReplicasArray(
                 carId: BigInt(target.cars[index]),
                 state: CarReplicaState.None,
                 filecoinClaimId: BigInt(0),
+                replicaIndex: target.replicaIndex,
             } as ValueFields<CarReplica>)
         )
     }
