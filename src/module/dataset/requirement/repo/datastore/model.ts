@@ -23,41 +23,6 @@ import { ValueFields } from "@unipackage/utils"
 import { DatasetRequirement, MatchingInfo } from "../../types"
 
 /**
- * Interface representing a MatchingInfoDocument, extending MatchingInfo and Document.
- * @interface
- */
-interface MatchingInfoDocument extends ValueFields<MatchingInfo>, Document {}
-
-/**
- * Schema definition for the MatchingInfo collection.
- * @constant
- */
-const MatchingInfoSchema = new Schema<MatchingInfoDocument>({
-    matchingId: {
-        type: Number,
-        required: [true, "Please provide the matchingId"],
-    },
-    matchingState: {
-        type: Number,
-        required: [true, "Please provide the matchingState"],
-    },
-    finishedCount: {
-        type: Number,
-    },
-    totalCount: {
-        type: Number,
-        required: [true, "Please provide the total"],
-    },
-    finishedSize: {
-        type: BigInt,
-    },
-    totalSize: {
-        type: BigInt,
-        required: [true, "Please provide the totalSize"],
-    },
-})
-
-/**
  * Interface representing a DatasetRequirementDocument, extending DatasetRequirement and Document.
  * @interface
  */
@@ -99,7 +64,7 @@ const DatasetRequirementSchema = new Schema<DatasetRequirementDocument>({
         required: [true, "Please provide the datasetId"],
     },
     matchings: {
-        type: [MatchingInfoSchema],
+        type: [Object],
     },
 })
 

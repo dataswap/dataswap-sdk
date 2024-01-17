@@ -30,8 +30,8 @@ export interface MatchingInfo {
     matchingState: MatchingState
     finishedCount?: number
     totalCount: number
-    finishedSize?: bigint
-    totalSize: bigint
+    finishedSize?: String
+    totalSize: String
 }
 
 /**

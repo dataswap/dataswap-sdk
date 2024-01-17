@@ -169,8 +169,8 @@ export class DatasetRequirementMongoDatastore extends DataStore<
                     matchingState: Number(state.data!),
                     finishedCount: 0,
                     totalCount: target.data!.cars.length,
-                    finishedSize: BigInt(0),
-                    totalSize: target.data!.size,
+                    finishedSize: "0",
+                    totalSize: target.data!.size.toString(),
                 })
             )
             return await this.update(
@@ -294,7 +294,7 @@ export class DatasetRequirementMongoDatastore extends DataStore<
             for (let i = 0; i < matchings.length; i++) {
                 if (options.matchingId === matchings[i].matchingId) {
                     matchings[i].finishedCount = Number(count.data)
-                    matchings[i].finishedSize = BigInt(size.data!)
+                    matchings[i].finishedSize = BigInt(size.data!).toString()
                 }
             }
             return await this.update(
