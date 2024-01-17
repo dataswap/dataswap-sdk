@@ -1,5 +1,18 @@
 
 
+# [0.18.0](https://github.com/dataswap/dataswapjs/compare/0.17.4...0.18.0) (2024-01-17)
+
+
+### Bug Fixes
+
+* 🐛 Add the index field to CarReplica ([b387580](https://github.com/dataswap/dataswapjs/commit/b3875803d56038ac769a66e0bda43adc571bf1a0)), closes [#221](https://github.com/dataswap/dataswapjs/issues/221)
+
+
+### Features
+
+* 🎸 Dataset proof add valid params ([71c16e7](https://github.com/dataswap/dataswapjs/commit/71c16e79bed4c8202964a3075960f32d99089b6e)), closes [#224](https://github.com/dataswap/dataswapjs/issues/224)
+* 🎸 Write the dataset's size into the dataset proof ([123a2e1](https://github.com/dataswap/dataswapjs/commit/123a2e18208b3fff640181ee5b0560cc5d572b5b)), closes [#222](https://github.com/dataswap/dataswapjs/issues/222)
+
 ## [0.17.4](https://github.com/dataswap/dataswapjs/compare/0.17.3...0.17.4) (2024-01-17)
 
 
