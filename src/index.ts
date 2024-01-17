@@ -25,6 +25,7 @@ export { DatasetMetadata } from "./module/dataset/metadata/types"
 export {
     DatasetRequirement,
     DatasetRequirements,
+    MatchingInfo,
 } from "./module/dataset/requirement/types"
 export {
     DatasetProofs,
