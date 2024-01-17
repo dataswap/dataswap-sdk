@@ -21,7 +21,7 @@
 import { base32 } from "rfc4648"
 import { CarstoreEvm } from "../../core/carstore/repo/evm"
 import { DatasetRequirementEvm } from "../../module/dataset/requirement/repo/evm"
-import { CarReplica, Car } from "../../core/carstore/types"
+import { CarReplica, Car, ReplicaInfo } from "../../core/carstore/types"
 import { MatchingTarget } from "../../module/matching/target/types"
 import { ValueFields } from "@unipackage/utils"
 import { CarReplicaState } from "../types/carstoreType"
@@ -108,10 +108,8 @@ export async function convertToCarArray(options: {
                 replicaInfos: Array.from(
                     { length: Number(replicaCount.data) },
                     () =>
-                        new CarReplica({
-                            carId: carId.data,
+                        new ReplicaInfo({
                             matchingId: 0,
-                            filecoinClaimId: BigInt(0),
                             state: CarReplicaState.None,
                         })
                 ),

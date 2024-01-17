@@ -33,7 +33,7 @@ export interface Car {
     replicasCount: bigint // Replica count
     carId: bigint // The id associated with the car.
     matchingIds?: number[] // Matching Ids.
-    replicaInfos?: CarReplica[] // replica infos.
+    replicaInfos?: ReplicaInfo[] // replica infos.
     cid: string // The id associated with the car from filecoin.
     dataType?: number // The car datatype.
 }
@@ -83,3 +83,19 @@ export class CarReplica extends Entity<CarReplica> {
         })
     }
 }
+
+/**
+ * Interface representing replica info.
+ * @interface
+ */
+export interface ReplicaInfo {
+    matchingId: number // The matchingId associated with the replica
+    state: CarReplicaState // Current state of the replica
+}
+
+/**
+ * Class representing a replica info entity.
+ * @class
+ * @extends {Entity<ReplicaInfo>}
+ */
+export class ReplicaInfo extends Entity<ReplicaInfo> {}
