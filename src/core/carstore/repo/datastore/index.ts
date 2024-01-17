@@ -19,7 +19,7 @@
  ********************************************************************************/
 import { DataStore } from "@unipackage/datastore"
 import { ValueFields, Result } from "@unipackage/utils"
-import { Car, CarReplica } from "../../types"
+import { Car, CarReplica, ReplicaInfo } from "../../types"
 import {
     CarDocument,
     CarSchema,
@@ -127,18 +127,17 @@ export class CarMongoDatastore extends DataStore<
                 options.matchingId
             )
 
-            if (!carReplica.ok) {
-                car.data![0].replicaInfos![Number(options.replicaIndex)] =
-                    new CarReplica({
-                        matchingId: 0,
-                        state: CarReplicaState.None,
-                        filecoinClaimId: BigInt(0),
-                        carId: options.carId,
-                    })
-            } else {
-                car.data![0].replicaInfos![Number(options.replicaIndex)] =
-                    carReplica.data! as CarReplica
+            let carReplicaState = CarReplicaState.None
+
+            if (carReplica.ok) {
+                carReplicaState = (carReplica.data! as CarReplica).state
             }
+
+            car.data![0].replicaInfos![Number(options.replicaIndex)] =
+                new ReplicaInfo({
+                    matchingId: 0,
+                    state: carReplicaState,
+                })
 
             return await this.update(
                 { conditions: [{ carId: options.carId }] },

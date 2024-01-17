@@ -22,7 +22,7 @@ import {
     CarMongoDatastore,
     CarReplicaMongoDatastore,
 } from "../../../src/core/carstore/repo/datastore"
-import { CarReplica, Car } from "../../../src/core/carstore/types"
+import { CarReplica, Car, ReplicaInfo } from "../../../src/core/carstore/types"
 import { DatasetProofs } from "../../../src/module/dataset/proof/types"
 import { getContractsManager, getGenerator } from "../../fixtures"
 import { DataType } from "../../../src/shared/types/dataType"
@@ -46,10 +46,8 @@ const sampleCar: ValueFields<Car> = new Car({
     replicaInfos: Array.from(
         { length: 5 },
         () =>
-            new CarReplica({
-                carId: BigInt(2),
+            new ReplicaInfo({
                 matchingId: 0,
-                filecoinClaimId: BigInt(0),
                 state: CarReplicaState.None,
             })
     ),

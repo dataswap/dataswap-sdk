@@ -82,7 +82,7 @@ const CarSchema = new Schema<CarDocument>({
         required: [true, "Please provide the replicasCount"],
     },
     replicaInfos: {
-        type: [CarReplicaSchema],
+        type: [Object],
         required: [true, "Please provide the replicaInfos"],
     },
     carId: {
