@@ -36,7 +36,6 @@ const MatchingInfoSchema = new Schema<MatchingInfoDocument>({
     matchingId: {
         type: Number,
         required: [true, "Please provide the matchingId"],
-        index: { unique: true },
     },
     matchingState: {
         type: Number,
@@ -102,7 +101,9 @@ const DatasetRequirementSchema = new Schema<DatasetRequirementDocument>({
     matchings: {
         type: [MatchingInfoSchema],
     },
-}).index({ index: 1, datasetId: 1 }, { unique: true })
+})
+
+DatasetRequirementSchema.index({ datasetId: 1, index: 1 }, { unique: true })
 
 export { DatasetRequirementSchema }
 export type { DatasetRequirementDocument }
