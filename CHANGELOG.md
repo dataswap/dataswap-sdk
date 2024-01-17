@@ -1,5 +1,13 @@
 
 
+## [0.17.4](https://github.com/dataswap/dataswapjs/compare/0.17.3...0.17.4) (2024-01-17)
+
+
+### Bug Fixes
+
+* 🐛 remove bigint form matchings of requirement ([659c4b9](https://github.com/dataswap/dataswapjs/commit/659c4b996fcae1e3d407e5ce59e1c8e44f948d56)), closes [#220](https://github.com/dataswap/dataswapjs/issues/220)
+* 🐛 remove bigint member of replicaInfos of car ([663db0c](https://github.com/dataswap/dataswapjs/commit/663db0c72e3e8397bfa1734b8e5797d751ee404b)), closes [#219](https://github.com/dataswap/dataswapjs/issues/219)
+
 ## [0.17.3](https://github.com/dataswap/dataswapjs/compare/0.17.2...0.17.3) (2024-01-17)
 
 
