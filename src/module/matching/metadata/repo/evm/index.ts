@@ -195,6 +195,7 @@ export class MatchingMetadataEvm extends MatchingMetadataOriginEvm {
                 )
                 result.params.subsidy = BigInt(0)
                 result.datasetId = result.params.datasetId
+                result.params.status = MatchingState.None
                 break
             case "pauseMatching":
             case "resumeMatching":

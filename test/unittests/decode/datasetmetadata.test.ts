@@ -27,6 +27,7 @@ import { DatasetMetadata } from "../../../src/module/dataset/metadata/types"
 import { ValueFields } from "@unipackage/utils"
 import { createExpectMessage, createTargetMessage } from "../../shared/utils"
 import { getContractsManager } from "../../fixtures"
+import { DatasetState } from "../../../src/shared/types/datasetType"
 dotenv.config()
 /**
  * Test suite for the Datasests contract message decoder functionality.
@@ -57,6 +58,7 @@ describe("DatasetsContractMessageDecoder", () => {
                     submitter: "f410fcwzis33wz3sofrlh466gog5xahlthgzqezasapy",
                     createdBlockNumber: 1213438,
                     datasetId: 1,
+                    status: DatasetState.None,
                 },
                 returns:
                     "0x0000000000000000000000000000000000000000000000000000000000000001",

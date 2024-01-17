@@ -36,6 +36,7 @@ import * as dotenv from "dotenv"
 import assert from "assert"
 import { DatasetMetadata } from "../../../src/module/dataset/metadata/types"
 import { ValueFields } from "@unipackage/utils"
+import { DatasetState } from "../../../src/shared/types/datasetType"
 dotenv.config()
 
 describe("ContractMessageDecoder", () => {
@@ -64,6 +65,7 @@ describe("ContractMessageDecoder", () => {
                 submitter: "f410fcwzis33wz3sofrlh466gog5xahlthgzqezasapy",
                 createdBlockNumber: 1213438,
                 datasetId: 1,
+                status: DatasetState.None,
             },
             status: 0,
             return: "0x0000000000000000000000000000000000000000000000000000000000000001",
