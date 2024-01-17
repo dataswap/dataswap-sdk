@@ -40,6 +40,10 @@ const DatasetProofMetadataSchema = new Schema<DatasetProofMetadataDocument>({
         required: [true, "Please provide the datasetId"],
         index: true,
     },
+    datasetSize: {
+        type: BigInt,
+        required: [true, "Please provide the datasetSize"],
+    },
     dataType: {
         type: Number,
         required: [true, "Please provide the datatype"],

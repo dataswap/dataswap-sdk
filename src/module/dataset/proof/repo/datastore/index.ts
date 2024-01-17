@@ -18,8 +18,10 @@
  *  limitations under the respective licenses.
  ********************************************************************************/
 import { DataStore } from "@unipackage/datastore"
-import { ValueFields } from "@unipackage/utils"
+import { ValueFields, Result } from "@unipackage/utils"
 import { DatasetProofMetadata } from "../../types"
+import { DatasetProofEvm } from "../evm"
+import { DataType } from "../../../../../shared/types/dataType"
 import {
     DatasetProofMetadataDocument,
     DatasetProofMetadataSchema,
@@ -47,5 +49,47 @@ export class DatasetProofMetadataMongoDatastore extends DataStore<
                 DatasetProofMetadataDocument
             >("DatasetProofMetadata", DatasetProofMetadataSchema, connection)
         )
+    }
+
+    /**
+     * Asynchronously updates the dataset size.
+     * @param options Contains options for the update:
+     *   - `datasetProofEvm`: The Ethereum Virtual Machine instance for dataset proof.
+     *   - `datasetId`: The unique identifier of the dataset to be updated.
+     * @returns A Promise that resolves to the result of the operation:
+     *   - If the operation is successful, it returns `{ ok: true }`.
+     *   - If the operation fails, it returns `{ ok: false, error: ErrorDetails }`.
+     */
+    async updateDatasetSize(options: {
+        datasetProofEvm: DatasetProofEvm
+        datasetId: number
+    }): Promise<Result<any>> {
+        try {
+            const dataType = [DataType.Source, DataType.MappingFiles]
+            for (const value of dataType) {
+                const state = await options.datasetProofEvm.getDatasetSize(
+                    options.datasetId,
+                    value
+                )
+                if (!state.ok) {
+                    return { ok: false, error: state.error }
+                }
+                await this.update(
+                    {
+                        conditions: [
+                            {
+                                datasetId: options.datasetId,
+                                dataType: value,
+                            },
+                        ],
+                    },
+                    { datasetSize: state.data }
+                )
+            }
+        } catch (error) {
+            throw error
+        }
+
+        return { ok: true }
     }
 }

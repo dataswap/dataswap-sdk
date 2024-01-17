@@ -53,6 +53,7 @@ describe("DatasetsProofMessageDecoder", () => {
                     rootHash:
                         "0x000000000000000000000000000000000000000000000000000000000000012c",
                     valid: true,
+                    datasetSize: BigInt(0),
                 },
                 returns: "0x",
                 datasetId: 5,
