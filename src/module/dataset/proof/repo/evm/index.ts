@@ -85,7 +85,7 @@ interface DatasetProofCallEvm {
     getDatasetSize(
         datasetId: number,
         dataType: DataType
-    ): Promise<EvmOutput<number>>
+    ): Promise<EvmOutput<bigint>>
 
     /**
      * Retrieves the collateral requirement for a dataset identified by its ID.
@@ -275,6 +275,7 @@ export class DatasetProofEvm extends DatasetProofOriginEvm {
         switch (decodeRes.data!.method) {
             case "submitDatasetProofRoot":
                 result.params.valid = true
+                result.params.datasetSize = BigInt(0)
             case "submitDatasetProof":
                 result.params.dataType = Number(
                     result.params.dataType

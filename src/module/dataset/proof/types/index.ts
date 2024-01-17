@@ -47,6 +47,7 @@ export class DatasetProofs extends Entity<DatasetProofs> {}
  */
 export interface DatasetProofMetadata {
     datasetId: number
+    datasetSize: bigint
     dataType: DataType
     mappingFilesAccessMethod: string
     rootHash: string

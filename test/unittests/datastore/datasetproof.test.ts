@@ -30,6 +30,7 @@ const connection = DatabaseConnection.getInstance(
 )
 const sampleDatasetProofMetadata: ValueFields<DatasetProofMetadata> = {
     datasetId: 5,
+    datasetSize: BigInt(10),
     dataType: 1,
     mappingFilesAccessMethod: "0174kxc",
     rootHash:
