@@ -77,6 +77,8 @@ export class MatchingBidMongoDatastore extends DataStore<
                             amount: options.origionMatchingBid.amount,
                             complyFilplusRule: bids.data!.complyFilplusRules[i],
                             matchingId: options.origionMatchingBid.matchingId!,
+                            createdBlockNumber:
+                                options.origionMatchingBid.createdBlockNumber,
                         })
                     )
                 }

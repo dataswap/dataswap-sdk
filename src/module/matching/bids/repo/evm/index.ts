@@ -199,6 +199,7 @@ export class MatchingBidsEvm extends MatchingBidsOriginEvm {
                 result.matchingId = Number(result.params.matchingId)
                 result.params.matchingId = result.matchingId
                 result.params.bidder = msg.Msg.From
+                result.params.createdBlockNumber = BigInt(result.height)
                 break
             case "cancelMatching":
             case "closeMatching":

@@ -47,6 +47,7 @@ export interface MatchingBid {
     amount: bigint
     complyFilplusRule?: boolean
     matchingId?: number
+    createdBlockNumber?: bigint
 }
 
 /**
