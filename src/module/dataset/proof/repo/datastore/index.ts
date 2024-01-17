@@ -79,6 +79,8 @@ export class DatasetProofMetadataMongoDatastore extends DataStore<
                         conditions: [
                             {
                                 datasetId: options.datasetId,
+                            },
+                            {
                                 dataType: value,
                             },
                         ],

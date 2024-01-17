@@ -66,7 +66,8 @@ export class DatasetRequirementMongoDatastore extends DataStore<
     }): Promise<boolean> {
         const res = await this.find({
             conditions: [
-                { datasetId: options.datasetId, index: options.index },
+                { datasetId: options.datasetId },
+                { index: options.index },
             ],
         })
         if (!res.ok) {
@@ -99,7 +100,8 @@ export class DatasetRequirementMongoDatastore extends DataStore<
     }): Promise<MatchingInfo[]> {
         const res = await this.find({
             conditions: [
-                { datasetId: options.datasetId, index: options.index },
+                { datasetId: options.datasetId },
+                { index: options.index },
             ],
         })
         if (!res.ok) {
@@ -178,6 +180,8 @@ export class DatasetRequirementMongoDatastore extends DataStore<
                     conditions: [
                         {
                             datasetId: target.data.datasetID,
+                        },
+                        {
                             index: target.data.replicaIndex,
                         },
                     ],
@@ -237,6 +241,8 @@ export class DatasetRequirementMongoDatastore extends DataStore<
                     conditions: [
                         {
                             datasetId: target.data.datasetID,
+                        },
+                        {
                             index: target.data.replicaIndex,
                         },
                     ],
@@ -302,6 +308,8 @@ export class DatasetRequirementMongoDatastore extends DataStore<
                     conditions: [
                         {
                             datasetId: target.data.datasetID,
+                        },
+                        {
                             index: target.data.replicaIndex,
                         },
                     ],
@@ -366,6 +374,8 @@ export class DatasetRequirementMongoDatastore extends DataStore<
                     conditions: [
                         {
                             datasetId: target.data.datasetID,
+                        },
+                        {
                             index: target.data.replicaIndex,
                         },
                     ],
