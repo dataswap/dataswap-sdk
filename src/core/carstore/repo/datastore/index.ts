@@ -36,6 +36,7 @@ import { CarstoreEvm } from "../evm"
 import { DatasetRequirementEvm } from "../../../../module/dataset/requirement/repo/evm"
 import { DatasetProofs } from "../../../../module/dataset/proof/types"
 import { MatchingTargetEvm } from "../../../../module/matching/target/repo/evm"
+import { CarReplicaState } from "../../../../shared/types/carstoreType"
 
 /**
  * Class representing a MongoDB datastore for Car entities.
@@ -127,11 +128,17 @@ export class CarMongoDatastore extends DataStore<
             )
 
             if (!carReplica.ok) {
-                return { ok: false, error: carReplica.error }
+                car.data![0].replicaInfos![Number(options.replicaIndex)] =
+                    new CarReplica({
+                        matchingId: 0,
+                        state: CarReplicaState.None,
+                        filecoinClaimId: BigInt(0),
+                        carId: options.carId,
+                    })
+            } else {
+                car.data![0].replicaInfos![Number(options.replicaIndex)] =
+                    carReplica.data! as CarReplica
             }
-
-            car.data![0].replicaInfos![Number(options.replicaIndex)] =
-                carReplica.data! as CarReplica
 
             return await this.update(
                 { conditions: [{ carId: options.carId }] },
@@ -196,7 +203,6 @@ export class CarMongoDatastore extends DataStore<
                     )
                 }
             })
-
             return { ok: ret, data: retError }
         } catch (error) {
             throw error
@@ -272,12 +278,13 @@ export class CarReplicaMongoDatastore extends DataStore<
         matchingId: number
     }): Promise<Result<any>> {
         try {
+            let carReplicaState = CarReplicaState.StorageFailed
             const state = await options.carstore.getCarReplicaState(
                 options.carId,
                 options.matchingId
             )
-            if (!state.ok) {
-                return { ok: false, error: state.error }
+            if (state.ok) {
+                carReplicaState = Number(state.data) as CarReplicaState
             }
             return await this.update(
                 {
@@ -288,7 +295,7 @@ export class CarReplicaMongoDatastore extends DataStore<
                         },
                     ],
                 },
-                { state: Number(state.data) }
+                { state: Number(carReplicaState) }
             )
         } catch (error) {
             throw error
