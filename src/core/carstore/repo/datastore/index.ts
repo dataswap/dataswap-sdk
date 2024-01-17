@@ -135,7 +135,9 @@ export class CarMongoDatastore extends DataStore<
 
             car.data![0].replicaInfos![Number(options.replicaIndex)] =
                 new ReplicaInfo({
-                    matchingId: 0,
+                    matchingId:
+                        car.data![0].replicaInfos![Number(options.replicaIndex)]
+                            .matchingId,
                     state: carReplicaState,
                 })
 
