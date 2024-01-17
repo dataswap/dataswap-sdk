@@ -1,5 +1,12 @@
 
 
+## [0.17.3](https://github.com/dataswap/dataswapjs/compare/0.17.2...0.17.3) (2024-01-17)
+
+
+### Bug Fixes
+
+* 🐛 export MatchingInfo ([38b8ae6](https://github.com/dataswap/dataswapjs/commit/38b8ae6545aa47601d0a9b08630caeac205dee06))
+
 ## [0.17.2](https://github.com/dataswap/dataswapjs/compare/0.17.1...0.17.2) (2024-01-17)
 
 
