@@ -50,6 +50,7 @@ export interface DatasetProofMetadata {
     dataType: DataType
     mappingFilesAccessMethod: string
     rootHash: string
+    valid: boolean
 }
 
 /**

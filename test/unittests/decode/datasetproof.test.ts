@@ -52,6 +52,7 @@ describe("DatasetsProofMessageDecoder", () => {
                     mappingFilesAccessMethod: "0174kxc",
                     rootHash:
                         "0x000000000000000000000000000000000000000000000000000000000000012c",
+                    valid: true,
                 },
                 returns: "0x",
                 datasetId: 5,
