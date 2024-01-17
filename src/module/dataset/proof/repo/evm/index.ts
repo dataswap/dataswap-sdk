@@ -274,12 +274,14 @@ export class DatasetProofEvm extends DatasetProofOriginEvm {
         result.value = msg.Msg.Value
         switch (decodeRes.data!.method) {
             case "submitDatasetProofRoot":
+                result.params.valid = true
             case "submitDatasetProof":
                 result.params.dataType = Number(
                     result.params.dataType
                 ) as DataType
                 result.datasetId = Number(result.params.datasetId)
                 result.params.datasetId = result.datasetId
+
                 break
             case "submitDatasetProofCompleted":
             case "appendDatasetFunds":

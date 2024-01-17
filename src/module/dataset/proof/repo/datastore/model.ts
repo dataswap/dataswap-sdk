@@ -52,6 +52,10 @@ const DatasetProofMetadataSchema = new Schema<DatasetProofMetadataDocument>({
         type: String,
         required: [true, "Please provide the root hash of dataset proof"],
     },
+    valid: {
+        type: Boolean,
+        required: [true, "Please provide the valid status"],
+    },
 }).index({ datasetId: 1, dataType: 1 }, { unique: true })
 
 export { DatasetProofMetadataSchema }

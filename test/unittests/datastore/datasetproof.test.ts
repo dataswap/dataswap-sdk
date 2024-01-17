@@ -34,6 +34,7 @@ const sampleDatasetProofMetadata: ValueFields<DatasetProofMetadata> = {
     mappingFilesAccessMethod: "0174kxc",
     rootHash:
         "0x000000000000000000000000000000000000000000000000000000000000012c",
+    valid: true,
 }
 /**
  * Test suite for the DatasetsProof contract DatasetProofMetadataMongoDatastore functionality.
