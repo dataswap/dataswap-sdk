@@ -21,7 +21,6 @@
 import mongoose, { Schema, Document } from "mongoose"
 import { ValueFields } from "@unipackage/utils"
 import { MatchingMetadata } from "../../types"
-import { DatasetRequirementSchema } from "../../../../dataset/requirement/repo/datastore/model"
 
 /**
  * Interface representing a MatchingMetadataDocument, extending MatchingMetadata and Document.
@@ -93,7 +92,7 @@ const MatchingMetadataSchema = new Schema<MatchingMetadataDocument>({
         type: BigInt,
     },
     requirement: {
-        type: DatasetRequirementSchema,
+        type: Object,
     },
     biddingStartBlock: {
         type: BigInt,

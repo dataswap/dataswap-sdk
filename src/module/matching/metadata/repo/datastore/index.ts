@@ -29,6 +29,7 @@ import { DatasetRequirementEvm } from "../../../../dataset/requirement/repo/evm"
 import { MatchingBidsEvm } from "../../../bids/repo/evm"
 import { MatchingBid, MatchingBids } from "../../../bids/types"
 import { stat } from "fs"
+import { DatasetRequirement } from "../../../../dataset/requirement/types"
 
 /**
  * Class representing a MongoDB datastore for MatchingMetadata entities.
@@ -88,7 +89,15 @@ export class MatchingMetadataMongoDatastore extends DataStore<
                 return { ok: false, error: requirement.error }
             }
 
-            options.origionMetadata.requirement = requirement.data
+            options.origionMetadata.requirement = new DatasetRequirement({
+                dataPreparers: requirement.data!.dataPreparers,
+                storageProviders: requirement.data!.storageProviders,
+                regionCode: requirement.data!.regionCode,
+                countryCode: requirement.data!.countryCode,
+                cityCodes: requirement.data!.cityCodes,
+                index: requirement.data!.index,
+                datasetId: requirement.data!.datasetId,
+            })
             return await this.CreateOrupdateByUniqueIndexes(
                 options.origionMetadata
             )
