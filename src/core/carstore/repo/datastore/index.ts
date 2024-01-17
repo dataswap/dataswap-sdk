@@ -311,6 +311,8 @@ export class CarReplicaMongoDatastore extends DataStore<
                     conditions: [
                         {
                             carId: options.carId,
+                        },
+                        {
                             matchingId: options.matchingId,
                         },
                     ],
