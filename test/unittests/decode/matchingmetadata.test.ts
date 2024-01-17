@@ -29,6 +29,7 @@ import { getContractsManager } from "../../fixtures"
 dotenv.config()
 import { createExpectMessage, createTargetMessage } from "../../shared/utils"
 import { BidSelectionRule } from "../../../src/module/matching/metadata/types"
+import { MatchingState } from "../../../src/shared/types/matchingType"
 
 /**
  * Test suite for the Matchings contract message decoder functionality.
@@ -61,6 +62,7 @@ describe("MatchingMetadataMessageDecoder", () => {
                     currentPrice: BigInt(1000000000),
                     size: BigInt(0),
                     subsidy: BigInt(0),
+                    status: MatchingState.None,
                 },
                 returns:
                     "0x0000000000000000000000000000000000000000000000000000000000000001",

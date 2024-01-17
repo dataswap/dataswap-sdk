@@ -244,6 +244,7 @@ export class DatasetMetadataEvm extends DatasetMetadataOriginEvm {
                 result.params.submitter = result.from
                 result.params.createdBlockNumber = result.height
                 result.params.datasetId = result.datasetId
+                result.params.status = DatasetState.None
                 break
             case "approveDataset":
             case "approveDatasetMetadata":
