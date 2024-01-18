@@ -1,5 +1,18 @@
 
 
+# [0.20.0](https://github.com/dataswap/dataswapjs/compare/0.19.0...0.20.0) (2024-01-18)
+
+
+### Bug Fixes
+
+* 🐛 add winner to matchingmetadata ([281b326](https://github.com/dataswap/dataswapjs/commit/281b326fb232c191c5449304e62f2792f63eff85)), closes [#237](https://github.com/dataswap/dataswapjs/issues/237)
+* 🐛 fix _getBestBid ([04c094d](https://github.com/dataswap/dataswapjs/commit/04c094d2e3184dd12207779b93430303454aa8c3)), closes [#244](https://github.com/dataswap/dataswapjs/issues/244)
+
+
+### Features
+
+* 🎸 add model of datasetchallenge ([4e47354](https://github.com/dataswap/dataswapjs/commit/4e473544789639f632de0f0436e6531763619512)), closes [#242](https://github.com/dataswap/dataswapjs/issues/242)
+
 # [0.19.0](https://github.com/dataswap/dataswapjs/compare/0.18.2...0.19.0) (2024-01-18)
 
 
