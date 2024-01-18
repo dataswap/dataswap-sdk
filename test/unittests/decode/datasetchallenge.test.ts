@@ -49,7 +49,7 @@ describe("DatasetChallengeMessageDecoder", () => {
                     leaves: [
                         "0xadacd58b8058f1c749ad8763f5b8e46d69ff5ae98fd6e32277c5de50f5fdff2b",
                     ],
-                    paths: [BigInt(190349)],
+                    paths: ["190349"],
                     randomSeed: BigInt(1232131),
                     siblings: [
                         [

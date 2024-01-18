@@ -27,7 +27,7 @@ import { Entity } from "@unipackage/ddd"
 export interface DatasetChallenge {
     leaves: string[]
     siblings: string[][]
-    paths: bigint[]
+    paths: string[]
     randomSeed?: bigint
     datasetId?: number
     auditor?: string

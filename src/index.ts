@@ -66,6 +66,7 @@ export {
 } from "./core/carstore/repo/datastore"
 export { DatasetProofMetadataMongoDatastore } from "./module/dataset/proof/repo/datastore"
 export { DatasetRequirementMongoDatastore } from "./module/dataset/requirement/repo/datastore"
+export { DatasetChallengeMongoDatastore } from "./module/dataset/challenge/repo/datastore"
 export { MatchingMetadataMongoDatastore } from "./module/matching/metadata/repo/datastore"
 export { MatchingTargetMongoDatastore } from "./module/matching/target/repo/datastore"
 export { MatchingBidMongoDatastore } from "./module/matching/bids/repo/datastore"
