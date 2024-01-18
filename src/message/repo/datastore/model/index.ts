@@ -52,6 +52,10 @@ const DataswapMessageSchema = new Schema<DataswapMessageDocument>({
         type: String,
         required: [true, "Please provide the to address"],
     },
+    value: {
+        type: String,
+        required: [true, "Please provide the value"],
+    },
     method: {
         type: String,
         required: [true, "Please provide the method"],

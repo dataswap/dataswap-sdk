@@ -50,6 +50,7 @@ describe("ContractMessageDecoder", () => {
             timestamp: "",
             from: "f410fcwzis33wz3sofrlh466gog5xahlthgzqezasapy",
             to: "f410fai7exftlsq6igc35jsxij7twcza3feadlmtrjla",
+            value: "0",
             method: "submitDatasetMetadata",
             params: {
                 client: BigInt(1420),
@@ -70,7 +71,6 @@ describe("ContractMessageDecoder", () => {
             status: 0,
             return: "0x0000000000000000000000000000000000000000000000000000000000000001",
             datasetId: 1,
-            value: "0",
         },
     }
 

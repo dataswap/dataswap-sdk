@@ -192,8 +192,8 @@ export class MatchingBidsEvm extends MatchingBidsOriginEvm {
             return { ok: false, error: decodeRes.error }
         }
 
-        let result: DataswapMessage = decodeRes.data!.value() as DataswapMessage
-        result.value = msg.Msg.Value
+        let result: DataswapMessage =
+            decodeRes.data!.values() as DataswapMessage
         switch (decodeRes.data!.method) {
             case "bidding":
                 result.matchingId = Number(result.params.matchingId)

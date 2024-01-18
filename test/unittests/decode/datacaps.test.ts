@@ -54,13 +54,11 @@ describe("DatacapsContractMessageDecoder", () => {
                 returns: "0x",
                 datasetId: undefined,
                 matchingId: 1,
-                value: "100",
             })
             const addDatacapChunkCollateralMessage = createTargetMessage({
                 params: "WCTgiCkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE=",
                 returns: "QA==",
             })
-            addDatacapChunkCollateralMessage.Msg.Value = "100"
             const contractMessage = datacaps.decodeMessage(
                 addDatacapChunkCollateralMessage
             )

@@ -31,6 +31,7 @@ const sampleDataswapMessage: DataswapMessage = {
     timestamp: "timestamp",
     from: "from",
     to: "to",
+    value: "100",
     method: "method",
     params: ["params"],
     status: 0,
@@ -47,6 +48,7 @@ const sample1DataswapMessage: DataswapMessage = {
     timestamp: "timestamp",
     from: "f410fzkkc6d6tsgc5s4or2whbkfsf4wlpy7x7l6g2p6i",
     to: "f410fkj3ynjerzlufen7abogqusb5xsgujhrllxyg4ga",
+    value: "100",
     method: "bidding",
     params: {
         matchingId: 3,

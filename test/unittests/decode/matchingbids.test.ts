@@ -51,13 +51,11 @@ describe("MatchingsBidsMessageDecoder", () => {
                 },
                 returns: "0x",
                 matchingId: 2,
-                value: "100",
             })
             const message = createTargetMessage({
                 params: "WESW/XewAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAO5rKCg==",
                 returns: "QA==",
             })
-            message.Msg.Value = "100"
             const decodedMessage = getContractsManager()
                 .MatchingBidsEvm()
                 .decodeMessage(message)
