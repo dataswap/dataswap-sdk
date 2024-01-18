@@ -30,7 +30,10 @@ import {
     DatasetRequirements,
 } from "../../../src/module/dataset/requirement/types"
 import * as utils from "../../shared/utils"
-import { convertToNumberArray } from "../../../src/shared/arrayUtils"
+import {
+    convertToNumberArray,
+    convertToStringArray,
+} from "../../../src/shared/arrayUtils"
 import { DataType } from "../../../src/shared/types/dataType"
 import { DatasetChallenge } from "../../../src/module/dataset/challenge/types"
 
@@ -1127,7 +1130,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
             new DatasetChallenge({
                 leaves: leaves,
                 siblings: siblings,
-                paths: paths,
+                paths: convertToStringArray(paths),
             })
         )
 

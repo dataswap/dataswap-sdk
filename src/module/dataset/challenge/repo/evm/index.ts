@@ -29,6 +29,7 @@ import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
 import { DataswapMessage } from "../../../../../message/types"
 import { DatasetChallenge } from "../../types"
 import { EvmEx } from "../../../../../shared/types/evmEngineType"
+import { convertToStringArray } from "../../../../../shared/arrayUtils"
 
 /**
  * Interface for EVM calls related to DatasetChallenge.
@@ -44,7 +45,7 @@ interface DatasetChallengeCallEvm {
     getDatasetChallengeProofs(
         datasetId: number,
         auditor: string
-    ): Promise<EvmOutput<DatasetChallenge>>
+    ): Promise<EvmOutput<any>>
 
     /**
      * Get the count of proofs for a dataset challenge.
@@ -141,14 +142,18 @@ export class DatasetChallengeEvm extends DatasetChallengeOriginEvm {
             datasetId,
             auditor
         )
+        let data = new DatasetChallenge({
+            ...metaRes.data,
+            datasetId: datasetId,
+            auditor: auditor,
+        })
+
+        data.paths = convertToStringArray(metaRes.data.paths)
+
         if (metaRes.ok && metaRes.data) {
             return {
                 ok: true,
-                data: new DatasetChallenge({
-                    ...metaRes.data,
-                    datasetId: datasetId,
-                    auditor: auditor,
-                }),
+                data: data,
             }
         }
         return metaRes
@@ -174,6 +179,7 @@ export class DatasetChallengeEvm extends DatasetChallengeOriginEvm {
                 result.datasetId = Number(result.params.datasetId)
                 result.params.datasetId = result.datasetId
                 result.params.auditor = result.from
+                result.params.paths = convertToStringArray(result.params.paths)
                 break
             default:
                 return {
