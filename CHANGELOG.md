@@ -1,5 +1,12 @@
 
 
+## [0.18.2](https://github.com/dataswap/dataswapjs/compare/0.18.1...0.18.2) (2024-01-18)
+
+
+### Bug Fixes
+
+* 🐛 update matchingid in replicainfos ([32cfa6f](https://github.com/dataswap/dataswapjs/commit/32cfa6fd6555ebf8d4d9e62c3640c78248f13d29)), closes [#230](https://github.com/dataswap/dataswapjs/issues/230)
+
 ## [0.18.1](https://github.com/dataswap/dataswapjs/compare/0.18.0...0.18.1) (2024-01-18)
 
 
