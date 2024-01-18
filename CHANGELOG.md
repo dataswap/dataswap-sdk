@@ -1,5 +1,12 @@
 
 
+## [0.20.1](https://github.com/dataswap/dataswapjs/compare/0.20.0...0.20.1) (2024-01-18)
+
+
+### Bug Fixes
+
+* 🐛 export BidSelectionRule ([f72c5bf](https://github.com/dataswap/dataswapjs/commit/f72c5bf8ded8731f8f3f5896a9f1729dd2b8a73a)), closes [#245](https://github.com/dataswap/dataswapjs/issues/245)
+
 # [0.20.0](https://github.com/dataswap/dataswapjs/compare/0.19.0...0.20.0) (2024-01-18)
 
 
