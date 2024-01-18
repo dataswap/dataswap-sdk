@@ -28,9 +28,8 @@ import { MatchingMetadataEvm } from "../evm"
 import { DatasetRequirementEvm } from "../../../../dataset/requirement/repo/evm"
 import { MatchingBidsEvm } from "../../../bids/repo/evm"
 import { MatchingBid, MatchingBids } from "../../../bids/types"
-import { stat } from "fs"
 import { DatasetRequirement } from "../../../../dataset/requirement/types"
-
+import { delegatedFromEthAddress, CoinType } from "@glif/filecoin-address"
 /**
  * Class representing a MongoDB datastore for MatchingMetadata entities.
  * Extends the DataStore class with MatchingMetadata and MatchingMetadataDocument.
@@ -161,6 +160,39 @@ export class MatchingMetadataMongoDatastore extends DataStore<
                     subsidy: target.data!.subsidy,
                 }
             )
+        } catch (error) {
+            throw error
+        }
+    }
+
+    /**
+     * Asynchronously updates the winner of a matching based on the provided options.
+     *
+     * @param options - The options object containing the necessary parameters.
+     *   - `matchingBids`: The MatchingBidsEvm instance for the matching.
+     *   - `matchingId`: The identifier of the matching for which the winner is to be updated.
+     * @returns A promise representing the result of the update operation.
+     */
+    async updateMatchingWinner(options: {
+        matchingBids: MatchingBidsEvm
+        matchingId: number
+    }): Promise<Result<any>> {
+        try {
+            const winner = await options.matchingBids.getMatchingWinner(
+                options.matchingId
+            )
+            if (winner.ok) {
+                return await this.update(
+                    { conditions: [{ matchingId: options.matchingId }] },
+                    {
+                        winner: delegatedFromEthAddress(
+                            winner.data!,
+                            CoinType.MAIN
+                        ),
+                    }
+                )
+            }
+            return { ok: true }
         } catch (error) {
             throw error
         }
