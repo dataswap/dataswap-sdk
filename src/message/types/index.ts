@@ -28,5 +28,4 @@ import { ValueFields } from "@unipackage/utils"
 export interface DataswapMessage extends ValueFields<ContractMessage> {
     datasetId?: number
     matchingId?: number
-    value?: string
 }

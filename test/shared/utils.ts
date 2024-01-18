@@ -163,6 +163,7 @@ export function createExpectMessage(options: {
             timestamp: "",
             from: "f410fcwzis33wz3sofrlh466gog5xahlthgzqezasapy",
             to: "f410fai7exftlsq6igc35jsxij7twcza3feadlmtrjla",
+            value: options.value !== undefined ? options.value : "0",
             method: options.method,
             params: options.params,
             status: 0,
@@ -172,12 +173,6 @@ export function createExpectMessage(options: {
             }),
             ...(options.matchingId !== undefined && {
                 matchingId: options.matchingId,
-            }),
-            ...(options.value !== undefined && {
-                value: options.value,
-            }),
-            ...(options.value === undefined && {
-                value: "0",
             }),
         },
     }

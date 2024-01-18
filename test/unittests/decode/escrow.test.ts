@@ -55,13 +55,11 @@ describe("EscrowContractMessageDecoder", () => {
                 },
                 returns: "0x",
                 datasetId: 1,
-                value: "100",
             })
             const collateralMessage = createTargetMessage({
                 params: "WITON73nAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJxt7p21598rGCg8DPz3FP7baS1wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGQ",
                 returns: "QA==",
             })
-            collateralMessage.Msg.Value = "100"
 
             const contractMessage = escrow.decodeMessage(collateralMessage)
             assert.deepStrictEqual(
@@ -88,13 +86,11 @@ describe("EscrowContractMessageDecoder", () => {
                 },
                 returns: "0x",
                 datasetId: 1,
-                value: "100",
             })
             const paymentMessage = createTargetMessage({
                 params: "WITqEsdCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAJxt7p21598rGCg8DPz3FP7baS1wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGQ",
                 returns: "QA==",
             })
-            paymentMessage.Msg.Value = "100"
             const contractMessage = escrow.decodeMessage(paymentMessage)
             assert.deepStrictEqual(
                 contractMessage.data,
@@ -120,13 +116,11 @@ describe("EscrowContractMessageDecoder", () => {
                 },
                 returns: "0x",
                 datasetId: 1,
-                value: "100",
             })
             const paymentMessage = createTargetMessage({
                 params: "WKRy588YAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAADKlC8P05GF2XHR1Y4VFkXllvx+/wAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAACcbe6dteffKxgoPAz89xT+22ktcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAZA==",
                 returns: "QA==",
             })
-            paymentMessage.Msg.Value = "100"
             const contractMessage = escrow.decodeMessage(paymentMessage)
             assert.deepStrictEqual(
                 contractMessage.data,
