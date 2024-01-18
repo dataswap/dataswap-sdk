@@ -1,5 +1,14 @@
 
 
+## [0.18.1](https://github.com/dataswap/dataswapjs/compare/0.18.0...0.18.1) (2024-01-18)
+
+
+### Bug Fixes
+
+* 🐛 add height to matchingBid ([ca3c047](https://github.com/dataswap/dataswapjs/commit/ca3c0470fbce9cd13aa9641ae47d2e869c46a1a7)), closes [#229](https://github.com/dataswap/dataswapjs/issues/229)
+* 🐛 invalid query for update and find ([ccacdb9](https://github.com/dataswap/dataswapjs/commit/ccacdb9cd510ddd2beb925dcad09ec4084085381)), closes [#231](https://github.com/dataswap/dataswapjs/issues/231)
+* 🐛 matchingId in replicaInfos of the car has not update ([8406fef](https://github.com/dataswap/dataswapjs/commit/8406fef790d299082191f05224323f8abb1c2cfe)), closes [#230](https://github.com/dataswap/dataswapjs/issues/230)
+
 # [0.18.0](https://github.com/dataswap/dataswapjs/compare/0.17.4...0.18.0) (2024-01-17)
 
 
