@@ -1,5 +1,13 @@
 
 
+# [0.19.0](https://github.com/dataswap/dataswapjs/compare/0.18.2...0.19.0) (2024-01-18)
+
+
+### Features
+
+* 🎸 add evm instances ([b188a00](https://github.com/dataswap/dataswapjs/commit/b188a00727cead9760c06422ce1b38bf6adea850)), closes [#235](https://github.com/dataswap/dataswapjs/issues/235)
+* 🎸 Add value parameter to dataswap message ([575b5bc](https://github.com/dataswap/dataswapjs/commit/575b5bc401568a87342adae8dca83b518227986a)), closes [#238](https://github.com/dataswap/dataswapjs/issues/238)
+
 ## [0.18.2](https://github.com/dataswap/dataswapjs/compare/0.18.1...0.18.2) (2024-01-18)
 
 
