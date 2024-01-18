@@ -193,18 +193,18 @@ export class MatchingMetadataMongoDatastore extends DataStore<
             ) {
                 if (bids.amounts[i] > best.amount) {
                     best = new MatchingBid({
-                        bidder: bids.bidders[0],
-                        amount: bids.amounts[0],
-                        complyFilplusRule: bids.complyFilplusRules[0],
+                        bidder: bids.bidders[i],
+                        amount: bids.amounts[i],
+                        complyFilplusRule: bids.complyFilplusRules[i],
                         matchingId: bids.matchingId,
                     })
                 }
             } else {
                 if (bids.amounts[i] < best.amount) {
                     best = new MatchingBid({
-                        bidder: bids.bidders[0],
-                        amount: bids.amounts[0],
-                        complyFilplusRule: bids.complyFilplusRules[0],
+                        bidder: bids.bidders[i],
+                        amount: bids.amounts[i],
+                        complyFilplusRule: bids.complyFilplusRules[i],
                         matchingId: bids.matchingId,
                     })
                 }
