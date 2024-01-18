@@ -104,9 +104,7 @@ describe("MatchingMetadataMongoDatastore", () => {
             expect(storedRes.data![0].status).to.be.equal(
                 MatchingState.Completed
             )
-            expect(storedRes.data![0].requirement?.countryCode).to.be.equal(
-                BigInt(438)
-            )
+            expect(storedRes.data![0].requirement?.countryCode).to.be.equal(438)
             console.log(storedRes)
             await datastore.updateMatchingBiddingInfo({
                 matchingMetadata: getContractsManager().MatchingMetadataEvm(),
@@ -145,6 +143,17 @@ describe("MatchingMetadataMongoDatastore", () => {
             })
             expect(updateTargetRes.data![0].size).to.be.equal(BigInt(20317))
             expect(updateTargetRes.data![0].subsidy).to.be.equal(BigInt(0))
+
+            await datastore.updateMatchingWinner({
+                matchingBids: getContractsManager().MatchingBidsEvm(),
+                matchingId: 3,
+            })
+            const updateBidsRes = await datastore.find({
+                conditions: [{ matchingId: 3 }],
+            })
+            expect(updateBidsRes.data![0].winner).to.be.equal(
+                "f410fzkkc6d6tsgc5s4or2whbkfsf4wlpy7x7l6g2p6i"
+            )
         })
     })
 })

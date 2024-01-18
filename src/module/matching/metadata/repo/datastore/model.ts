@@ -103,6 +103,9 @@ const MatchingMetadataSchema = new Schema<MatchingMetadataDocument>({
     subsidy: {
         type: BigInt,
     },
+    winner: {
+        type: String,
+    },
 })
 
 export { MatchingMetadataSchema }

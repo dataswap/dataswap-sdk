@@ -53,6 +53,7 @@ export interface MatchingMetadata {
     biddingStartBlock?: bigint
     biddingEndBlock?: bigint
     subsidy?: bigint
+    winner?: string
 }
 
 /**
