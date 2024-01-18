@@ -71,6 +71,7 @@ export { MatchingMetadataMongoDatastore } from "./module/matching/metadata/repo/
 export { MatchingTargetMongoDatastore } from "./module/matching/target/repo/datastore"
 export { MatchingBidMongoDatastore } from "./module/matching/bids/repo/datastore"
 export { BasicParamsInfo } from "./shared/types/BasicParamsType"
+export { BidSelectionRule } from "./module/matching/metadata/types"
 export {
     convertToCarReplicasArray,
     convertToCarArray,
