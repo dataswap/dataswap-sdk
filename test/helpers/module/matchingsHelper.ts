@@ -135,7 +135,7 @@ export class MatchingsHelper extends BasicHelper implements IMatchingsHelper {
             let datasetId = 0
             if (!targetDatasetId || targetDatasetId === 0) {
                 datasetId = this.datasetHelper.getWorkflowTargetId(
-                    DatasetState.DatasetApproved
+                    DatasetState.Approved
                 )
                 if (datasetId === 0) {
                     datasetId =

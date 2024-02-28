@@ -101,72 +101,11 @@ export interface IDatasetsAssertion {
     ): Promise<number>
 
     /**
-     * Asserts the datasets proof against the expected datasets proof address.
-     * @param expectDatasetsProofAddress - The expected datasets proof address.
-     * @returns A Promise resolving if the assertion is successful.
-     */
-    metadataDatasetsProofAssertion(
-        expectDatasetsProofAddress: string
-    ): Promise<void>
-
-    /**
      * Asserts the count of datasets against the expected datasets count.
      * @param expectDatasetsCount - The expected count of datasets.
      * @returns A Promise resolving if the assertion is successful.
      */
     datasetsCountAssertion(expectDatasetsCount: number): Promise<void>
-
-    /**
-     * Approves a dataset and asserts its state against the expected state.
-     * @param caller - The caller that to send msg
-     * @param datasetId - The ID of the dataset to be approved.
-     * @param expectState - The expected dataset state after approval.
-     * @returns A Promise resolving if the assertion is successful.
-     */
-    approveDatasetAssertion(
-        caller: string,
-        datasetId: number,
-        expectState: DatasetState
-    ): Promise<void>
-
-    /**
-     * Approves dataset metadata and asserts the dataset state against the expected state.
-     * @param caller - The caller that to send msg
-     * @param datasetId - The ID of the dataset metadata to be approved.
-     * @param expectState - The expected dataset state after approval.
-     * @returns A Promise resolving if the assertion is successful.
-     */
-    approveDatasetMetadataAssertion(
-        caller: string,
-        datasetId: number,
-        expectState: DatasetState
-    ): Promise<void>
-
-    /**
-     * Rejects a dataset and asserts its state against the expected state.
-     * @param caller - The caller that to send msg
-     * @param datasetId - The ID of the dataset to be rejected.
-     * @param expectState - The expected dataset state after rejection.
-     * @returns A Promise resolving if the assertion is successful.
-     */
-    rejectDatasetAssertion(
-        caller: string,
-        datasetId: number,
-        expectState: DatasetState
-    ): Promise<void>
-
-    /**
-     * Rejects dataset metadata and asserts the dataset state against the expected state.
-     * @param caller - The caller that to send msg
-     * @param datasetId - The ID of the dataset metadata to be rejected.
-     * @param expectState - The expected dataset state after rejection.
-     * @returns A Promise resolving if the assertion is successful.
-     */
-    rejectDatasetMetadataAssertion(
-        caller: string,
-        datasetId: number,
-        expectState: DatasetState
-    ): Promise<void>
 
     //DatasetsRequirement
     /**
@@ -194,17 +133,6 @@ export interface IDatasetsAssertion {
     ): Promise<void>
 
     /**
-     * Asserts the pre-collateral requirements for a dataset against the expected pre-collateral amount.
-     * @param datasetId - The ID of the dataset.
-     * @param expectPreCollateral - The expected pre-collateral amount.
-     * @returns A Promise resolving if the assertion is successful.
-     */
-    getDatasetPreCollateralRequirementsAssertion(
-        datasetId: number,
-        expectPreCollateral: bigint
-    ): Promise<void>
-
-    /**
      * Submits replica requirements for a dataset and asserts the requirements and amount against the expected values.
      * @param caller - The caller that to send msg
      * @param datasetId - The ID of the dataset.
@@ -220,26 +148,6 @@ export interface IDatasetsAssertion {
     ): Promise<void>
 
     //DatasetsProof
-    /**
-     * Asserts the datasets challenge against the expected dataset challenge address.
-     * @param expectDatasetChallengeAddress - The expected dataset challenge address.
-     * @returns A Promise resolving if the assertion is successful.
-     */
-    proofDatasetsChallengeAssertion(
-        expectDatasetChallengeAddress: string
-    ): Promise<void>
-
-    /**
-     * Asserts the append collateral for a dataset against the expected append collateral amount.
-     * @param datasetId - The ID of the dataset.
-     * @param expectAppendCollateral - The expected append collateral amount.
-     * @returns A Promise resolving if the assertion is successful.
-     */
-    getDatasetAppendCollateralAssertion(
-        datasetId: number,
-        expectAppendCollateral: bigint
-    ): Promise<void>
-
     /**
      * Asserts the proof for a specific data type within a dataset against the expected proof.
      * @param datasetId - The ID of the dataset.
@@ -292,39 +200,6 @@ export interface IDatasetsAssertion {
         datasetId: number,
         dataType: DataType,
         expectSize: number
-    ): Promise<void>
-
-    /**
-     * Asserts the collateral requirement for a dataset against the expected collateral amount.
-     * @param datasetId - The ID of the dataset.
-     * @param expectCollateral - The expected collateral amount required for the dataset.
-     * @returns A Promise resolving if the assertion is successful.
-     */
-    getDatasetCollateralRequirementAssertion(
-        datasetId: number,
-        expectCollateral: bigint
-    ): Promise<void>
-
-    /**
-     * Asserts the data auditor fees requirement for a dataset against the expected fees requirement.
-     * @param datasetId - The ID of the dataset.
-     * @param expectAuditorFeesRequirement - The expected data auditor fees requirement.
-     * @returns A Promise resolving if the assertion is successful.
-     */
-    getDatasetDataAuditorFeesRequirementAssertion(
-        datasetId: number,
-        expectAuditorFeesRequirement: bigint
-    ): Promise<void>
-
-    /**
-     * Asserts the data auditor fees for a dataset against the expected fees.
-     * @param datasetId - The ID of the dataset.
-     * @param expectAuditorFees - The expected data auditor fees.
-     * @returns A Promise resolving if the assertion is successful.
-     */
-    getDatasetDataAuditorFeesAssertion(
-        datasetId: number,
-        expectAuditorFees: bigint
     ): Promise<void>
 
     /**
@@ -418,6 +293,19 @@ export interface IDatasetsAssertion {
     ): Promise<void>
 
     /**
+     * Completes the escrow process for the dataset with the specified ID and expected state.
+     * @param caller - The caller that to send msg
+     * @param datasetId The ID of the dataset.
+     * @param expectState The expected state of the dataset.
+     * @returns A promise that resolves when the escrow process is completed.
+     */
+    completeEscrowAssersion(
+        caller: string,
+        datasetId: number,
+        expectState: DatasetState
+    ): Promise<void>
+
+    /**
      * Asserts the completion status of a dataset's proof submission against the expected state.
      * @param caller - The caller that to send msg
      * @param datasetId - The ID of the dataset.
@@ -428,21 +316,6 @@ export interface IDatasetsAssertion {
         caller: string,
         datasetId: number,
         expectState: DatasetState
-    ): Promise<void>
-
-    /**
-     * Asserts the appending of funds to a dataset against the expected collateral and auditor fees.
-     * @param caller - The caller that to send msg
-     * @param datasetId - The ID of the dataset.
-     * @param expectDatacapCollateral - The expected datacap collateral.
-     * @param expectDataAuditorFees - The expected data auditor fees.
-     * @returns A Promise resolving if the assertion is successful.
-     */
-    appendDatasetFundsAssertion(
-        caller: string,
-        datasetId: number,
-        expectDatacapCollateral: bigint,
-        expectDataAuditorFees: bigint
     ): Promise<void>
 
     //DatasetsChallenge

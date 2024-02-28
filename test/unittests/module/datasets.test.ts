@@ -18,25 +18,24 @@
  *  limitations under the respective licenses.
  ********************************************************************************/
 
+import { SubmitMetadataTestKit } from "../../testkits/module/datasets/DatasetsMetadataTestKit"
+import { SubmitRequirementTestKit } from "../../testkits/module/datasets/DatasetsRequirementTestKit"
 import {
-    SubmitMetadataTestKit,
-    ApproveDatasetMetadataTestKit,
-    RejectDatasetMetadataTestKit,
-    RejectDatasetTestKit,
-    ApproveDatasetTestKit,
-} from "../../testkits/module/datasets/DatasetsMetadataTestKit"
+    SubmitDatasetProofRootTestKit,
+    SubmitDatasetProofTestKit,
+    SubmitDatasetProofCompletedTestKit,
+} from "../../testkits/module/datasets/DatasetsProofTestKit"
+import { SubmitDatasetChallengeTestKit } from "../../testkits/module/datasets/DatasetsChallengeTestKit"
 import {
     getContractsManager,
     getGenerator,
     getDatasetsHelper,
 } from "../../fixtures"
 import { DatasetsAssertion } from "../../assertions/module/datasetsAssertion"
-import { DatasetState } from "../../../src/shared/types/datasetType"
 /**
  * Test suite for the Datasets functionality.
- * //TODO:reopen when abi 0.4.0 merged
  */
-describe.skip("datasetsmetadata", async () => {
+describe("datasets", async () => {
     /**
      * Setup before running the test suite.
      */
@@ -53,67 +52,82 @@ describe.skip("datasetsmetadata", async () => {
     /**
      * Tests successful submission of dataset metadata.
      */
-    it("submitMetadata", async function () {
+    it("submitDatasetMetadata", async function () {
         const testKit = new SubmitMetadataTestKit(
             this.sharedData.datasetsAssertion!,
             this.sharedData.generator!,
             this.sharedData.contractsManager!,
             this.sharedData.datasetsHelper!
         )
-        await testKit.run()
+        this.sharedData.datasetId = await testKit.run()
     })
 
     /**
-     * Tests approve metadata of Datasets.
-     * //TODO:remove test case when abi 0.4.0 merged
+     * Tests submission of dataset requirements.
      */
-    it.skip("approveMetadata", async function () {
-        const testKit = new ApproveDatasetMetadataTestKit(
+    it("submitDatasetRequirement", async function () {
+        try {
+            const testKit = new SubmitRequirementTestKit(
+                this.sharedData.datasetsAssertion!,
+                this.sharedData.generator!,
+                this.sharedData.contractsManager!
+            )
+            this.sharedData.datasetId = await testKit.run(
+                this.sharedData.datasetId
+            )
+        } catch (error) {
+            throw error
+        }
+    })
+
+    it("submitDatasetProofRoot", async function () {
+        const testKit = new SubmitDatasetProofRootTestKit(
+            this.sharedData.datasetsAssertion!,
+            this.sharedData.generator!,
+            this.sharedData.contractsManager!,
+            this.sharedData.datasetHelper
+        )
+        this.sharedData.datasetId = await testKit.run(this.sharedData.datasetId)
+    })
+
+    /**
+     * Tests successful submission of dataset proof.
+     */
+    it("submitDatasetProof", async function () {
+        const testKit = new SubmitDatasetProofTestKit(
+            this.sharedData.datasetsAssertion!,
+            this.sharedData.generator!,
+            this.sharedData.contractsManager!,
+            this.sharedData.datasetHelper
+        )
+
+        this.sharedData.datasetId = await testKit.run(this.sharedData.datasetId)
+    })
+
+    /**
+     * Tests submission of dataset proof completed.
+     */
+    it("submitDatasetProofCompleted", async function () {
+        const testKit = new SubmitDatasetProofCompletedTestKit(
+            this.sharedData.datasetsAssertion!,
+            this.sharedData.generator!,
+            this.sharedData.contractsManager!,
+            this.sharedData.datasetHelper
+        )
+
+        this.sharedData.datasetId = await testKit.run(this.sharedData.datasetId)
+    })
+
+    /**
+     * Tests submission of dataset challenge.
+     */
+    it("submitDatasetChallengeProof", async function () {
+        const testKit = new SubmitDatasetChallengeTestKit(
             this.sharedData.datasetsAssertion!,
             this.sharedData.generator!,
             this.sharedData.contractsManager!,
             getDatasetsHelper()
         )
-        await testKit.run()
-    })
-
-    /**
-     * Tests reject metadata of Datasets.
-     * //TODO:remove test case when abi 0.4.0 merged
-     */
-    it.skip("rejectDatasetMetadata", async function () {
-        const testKit = new RejectDatasetMetadataTestKit(
-            this.sharedData.datasetsAssertion!,
-            this.sharedData.generator!,
-            this.sharedData.contractsManager!
-        )
-        await testKit.run()
-    })
-
-    /**
-     * Tests reject dataset.
-     * //TODO:remove test case when abi 0.4.0 merged
-     */
-    it.skip("rejectDataset", async function () {
-        const testKit = new RejectDatasetTestKit(
-            this.sharedData.datasetsAssertion!,
-            this.sharedData.generator!,
-            this.sharedData.contractsManager!
-        )
-        await testKit.run()
-    })
-
-    /**
-     * Tests approve dataset.
-     * //TODO:remove test case when abi 0.4.0 merged
-     */
-    it.skip("approveDataset", async function () {
-        const testKit = new ApproveDatasetTestKit(
-            this.sharedData.datasetsAssertion!,
-            this.sharedData.generator!,
-            this.sharedData.contractsManager!,
-            getDatasetsHelper()
-        )
-        await testKit.run()
+        this.sharedData.datasetId = await testKit.run(this.sharedData.datasetId)
     })
 })

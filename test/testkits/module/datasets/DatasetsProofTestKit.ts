@@ -55,7 +55,10 @@ export class SubmitDatasetProofRootTestKit extends DatasetsTestBase {
      */
     async optionalBefore(): Promise<number> {
         try {
-            return await this.datasetsHelper.metadataApprovedDatasetWorkflow()
+            return await this.datasetsHelper.requirementsSubmittedDatasetWorkflow(
+                5,
+                3
+            )
         } catch (error) {
             throw error
         }
@@ -72,7 +75,7 @@ export class SubmitDatasetProofRootTestKit extends DatasetsTestBase {
 
             // Generate proof for mapping files
             let [rootHash, , , mappingFilesAccessMethod] =
-                this.generator.generateDatasetProof(0, dataType, true)
+                this.generator.generateDatasetProof(0, dataType)
             await this.assertion.submitDatasetProofRootAssertion(
                 datasetId,
                 dataType,
@@ -87,8 +90,7 @@ export class SubmitDatasetProofRootTestKit extends DatasetsTestBase {
             // Generate proof for source
             let [sourceRootHash, , ,] = this.generator.generateDatasetProof(
                 0,
-                dataType,
-                true
+                dataType
             )
             await this.assertion.submitDatasetProofRootAssertion(
                 datasetId,
@@ -163,8 +165,7 @@ export class SubmitDatasetProofTestKit extends DatasetsTestBase {
             const rootHash = this.generator.getProofRoot(datasetId, dataType)
             const [leafHashes, leafSizes] = this.generator.getDatasetProof(
                 rootHash!,
-                dataType,
-                true
+                dataType
             )
 
             await this.assertion.submitDatasetProofAssertion(
@@ -183,7 +184,7 @@ export class SubmitDatasetProofTestKit extends DatasetsTestBase {
                 dataType
             )
             const [sourceLeafHashes, sourceLeafSizes] =
-                this.generator.getDatasetProof(sourceRootHash!, dataType, true)
+                this.generator.getDatasetProof(sourceRootHash!, dataType)
 
             await this.assertion.submitDatasetProofAssertion(
                 process.env.DATASWAP_PROOFSUBMITTER as string,
@@ -194,7 +195,14 @@ export class SubmitDatasetProofTestKit extends DatasetsTestBase {
                 sourceLeafSizes,
                 true
             )
-
+            await this.assertion.getDatasetStateAssertion(
+                datasetId,
+                DatasetState.WaitEscrow
+            )
+            this.datasetsHelper.updateWorkflowTargetState(
+                datasetId,
+                DatasetState.WaitEscrow
+            )
             return datasetId
         } catch (error) {
             throw error
@@ -255,29 +263,17 @@ export class SubmitDatasetProofCompletedTestKit extends DatasetsTestBase {
      */
     async action(datasetId: number): Promise<number> {
         try {
-            const datacapCollateral = await handleEvmError(
-                this.contractsManager
-                    .DatasetProofEvm()
-                    .getDatasetAppendCollateral(datasetId)
-            )
-            const auditorFees = await handleEvmError(
-                this.contractsManager
-                    .DatasetProofEvm()
-                    .getDatasetDataAuditorFeesRequirement(datasetId)
-            )
-            // Setting wallet and appending dataset funds
-            await this.assertion.appendDatasetFundsAssertion(
+            await this.assertion.completeEscrowAssersion(
                 process.env.DATASWAP_METADATASUBMITTER as string,
                 datasetId,
-                BigInt(datacapCollateral.data),
-                BigInt(auditorFees.data)
+                DatasetState.RequirementSubmitted
             )
 
             // Setting wallet and submitting dataset proof as completed
             await this.assertion.submitDatasetProofCompletedAssertion(
                 process.env.DATASWAP_PROOFSUBMITTER as string,
                 datasetId,
-                DatasetState.DatasetProofSubmitted
+                DatasetState.ProofSubmitted
             )
             return datasetId
         } catch (error) {

@@ -36,6 +36,15 @@ import { convertToStringArray } from "../../../../../shared/arrayUtils"
  */
 interface DatasetChallengeCallEvm {
     /**
+     * Retrieves the submitters of challenge proofs for the dataset with the specified ID.
+     * @param datasetId The ID of the dataset.
+     * @returns A promise resolving to the submitters of challenge proofs.
+     */
+    getDatasetChallengeProofsSubmitters(
+        datasetId: number
+    ): Promise<EvmOutput<any>>
+
+    /**
      * Get proofs for a dataset challenge.
      *
      * @param datasetId - ID of the dataset.
@@ -78,6 +87,19 @@ interface DatasetChallengeCallEvm {
         auditor: string,
         randomSeed: bigint
     ): Promise<EvmOutput<boolean>>
+
+    /**
+     * Checks if the audit timeout for the dataset with the specified ID has occurred.
+     * @param datasetId The ID of the dataset.
+     * @returns A promise resolving to a boolean indicating whether the audit timeout has occurred.
+     */
+    isDatasetAuditTimeout(datasetId: number): Promise<EvmOutput<boolean>>
+
+    /**
+     * Retrieves the roles associated with the current user.
+     * @returns A promise that resolves with the roles of the current user.
+     */
+    roles(): Promise<EvmOutput<string>>
 }
 
 /**
@@ -116,10 +138,13 @@ export interface DatasetChallengeOriginEvm
  * Implementation of DatasetChallengeOriginEvm with specific EVM methods.
  */
 @withCallMethod([
+    "getDatasetChallengeProofsSubmitters",
     "getDatasetChallengeProofs",
     "getDatasetChallengeProofsCount",
     "getChallengeSubmissionCount",
     "isDatasetChallengeProofDuplicate",
+    "isDatasetAuditTimeout",
+    "roles",
 ])
 @withSendMethod(["submitDatasetChallengeProofs"])
 export class DatasetChallengeOriginEvm extends EvmEx {}
@@ -128,6 +153,23 @@ export class DatasetChallengeOriginEvm extends EvmEx {}
  * Extended class for DatasetChallengeOriginEvm with additional message decoding.
  */
 export class DatasetChallengeEvm extends DatasetChallengeOriginEvm {
+    /**
+     * Retrieves the submitters of challenge proofs for the dataset with the specified ID.
+     * @param datasetId The ID of the dataset.
+     * @returns A promise resolving to the submitters of challenge proofs.
+     */
+    async getDatasetChallengeProofsSubmitters(
+        datasetId: number
+    ): Promise<EvmOutput<[auditors: string[], points: number[]]>> {
+        const res = await super.getDatasetChallengeProofsSubmitters(datasetId)
+        if (res.ok && res.data) {
+            return {
+                ok: true,
+                data: [res.data.auditors, res.data.points],
+            }
+        }
+        return res
+    }
     /**
      * Get proofs for a dataset challenge.
      * @param datasetId - ID of the dataset.
@@ -138,25 +180,22 @@ export class DatasetChallengeEvm extends DatasetChallengeOriginEvm {
         datasetId: number,
         auditor: string
     ): Promise<EvmOutput<DatasetChallenge>> {
-        const metaRes = await super.getDatasetChallengeProofs(
-            datasetId,
-            auditor
-        )
-        let data = new DatasetChallenge({
-            ...metaRes.data,
-            datasetId: datasetId,
-            auditor: auditor,
-        })
+        const res = await super.getDatasetChallengeProofs(datasetId, auditor)
+        if (res.ok && res.data) {
+            let data = new DatasetChallenge({
+                ...res.data,
+                datasetId: datasetId,
+                auditor: auditor,
+            })
 
-        data.paths = convertToStringArray(metaRes.data.paths)
+            data.paths = convertToStringArray(res.data.paths)
 
-        if (metaRes.ok && metaRes.data) {
             return {
                 ok: true,
                 data: data,
             }
         }
-        return metaRes
+        return res
     }
 
     /**

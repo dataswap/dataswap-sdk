@@ -19,7 +19,6 @@
  ********************************************************************************/
 
 import {
-    Evm,
     withCallMethod,
     withSendMethod,
     EvmOutput,
@@ -27,7 +26,7 @@ import {
 } from "@unipackage/net"
 import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
 import { DataswapMessage } from "../../../../../message/types"
-import { DatasetRequirement, DatasetRequirements } from "../../types"
+import { DatasetRequirement } from "../../types"
 import { EvmEx } from "../../../../../shared/types/evmEngineType"
 import { convertToNumberArray } from "../../../../../shared/arrayUtils"
 
@@ -52,14 +51,28 @@ interface DatasetRequirementCallEvm {
         datasetId: number,
         index: bigint
     ): Promise<EvmOutput<DatasetRequirement>>
+
     /**
-     *  Get dataset pre conditional
-     * @param datasetId The ID of the dataset to get the pre collateral of datasets.
-     * @returns The pre collateral's amount of dataset.
+     * Retrieves the block height at which the dataset requirement was completed.
+     * @param datasetId The ID of the dataset.
+     * @returns The block height at which the dataset requirement was completed.
      */
-    getDatasetPreCollateralRequirements(
+    getDatasetRequirementCompleteHeight(
         datasetId: number
-    ): Promise<EvmOutput<bigint>>
+    ): Promise<EvmOutput<number>>
+
+    /**
+     * Checks whether the dataset requirement has timed out.
+     * @param datasetId The ID of the dataset.
+     * @returns A promise resolving to true if the dataset requirement has timed out, and false otherwise.
+     */
+    isDatasetRequirementTimeout(datasetId: number): Promise<EvmOutput<boolean>>
+
+    /**
+     * Retrieves the roles associated with the current user.
+     * @returns A promise that resolves with the roles of the current user.
+     */
+    roles(): Promise<EvmOutput<string>>
 }
 
 /**
@@ -102,7 +115,9 @@ export interface DatasetRequirementOriginEvm
 @withCallMethod([
     "getDatasetReplicasCount",
     "getDatasetReplicaRequirement",
-    "getDatasetPreCollateralRequirements",
+    "getDatasetRequirementCompleteHeight",
+    "isDatasetRequirementTimeout",
+    "roles",
 ])
 @withSendMethod(["submitDatasetReplicaRequirements"])
 export class DatasetRequirementOriginEvm extends EvmEx {}

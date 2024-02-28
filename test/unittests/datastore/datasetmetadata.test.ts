@@ -40,7 +40,7 @@ const sampleDatasetMetadata: ValueFields<DatasetMetadata> = {
     isPublic: true,
     version: BigInt(0),
     datasetId: 7,
-    status: DatasetState.MetadataRejected,
+    status: DatasetState.Rejected,
 }
 
 describe("DatasetMetadataMongoDatastore", () => {
@@ -94,9 +94,7 @@ describe("DatasetMetadataMongoDatastore", () => {
             expect(updateRes.data).to.be.not.undefined
             expect(updateRes.data!.length).to.be.equal(1)
             expect(updateRes.data![0].title).to.be.equal("a")
-            expect(updateRes.data![0].status).to.be.equal(
-                DatasetState.DatasetApproved
-            )
+            expect(updateRes.data![0].status).to.be.equal(DatasetState.Approved)
         })
     })
 })

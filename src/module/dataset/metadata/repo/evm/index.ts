@@ -19,7 +19,6 @@
  ********************************************************************************/
 
 import {
-    Evm,
     withCallMethod,
     withSendMethod,
     EvmOutput,
@@ -30,102 +29,99 @@ import { DataswapMessage } from "../../../../../message/types"
 import { DatasetMetadata } from "../../types"
 import { EvmEx } from "../../../../../shared/types/evmEngineType"
 import { DatasetState } from "../../../../../shared/types/datasetType"
+import { BasicStatisticsInfo } from "../../../../../shared/types/statisticsType"
 
 interface DatasetMetadataCallEvm {
-    datasetsProof(): Promise<EvmOutput<string>>
     /**
-     * Get dataset usedSizeInBytes.
-     * @param datasetId The ID of the dataset to get used size.
-     * @returns The used size of dataset
+     * Retrieves an overview of count statistics.
+     * @returns A promise that resolves with the count overview.
      */
-    getDatasetUsedSize(datasetId: number): Promise<EvmOutput<number>>
+    getCountOverview(): Promise<EvmOutput<BasicStatisticsInfo>>
+
+    /**
+     * Retrieves an overview of size statistics.
+     * @returns A promise that resolves with the size overview.
+     */
+    getSizeOverview(): Promise<EvmOutput<BasicStatisticsInfo>>
+
     /**
      * Get dataset metadata
      * @param datasetId The ID of the dataset to get metadata.
      * @returns The metadata of dataset.
      */
     getDatasetMetadata(datasetId: number): Promise<EvmOutput<DatasetMetadata>>
+
     /**
      * Get submitter of dataset's metadata
      * @param datasetId The ID of the dataset to get submitter of dataset'metadata.
      * @returns The address of submitter.
      */
     getDatasetMetadataSubmitter(datasetId: number): Promise<EvmOutput<string>>
+
     /**
      * Get client of dataset.
      * @param datasetId The ID of the dataset to get client of dataset'metadata.
      * @returns The actor id of client in filecoin network.
      */
     getDatasetMetadataClient(datasetId: number): Promise<EvmOutput<number>>
+
+    /**
+     * Retrieves the timeout parameters for a dataset.
+     * @param datasetId The ID of the dataset for which to retrieve the timeout parameters.
+     * @returns A promise that resolves with the proof and audit block count timeout parameters.
+     */
+    getDatasetTimeoutParameters(datasetId: number): Promise<EvmOutput<any>>
+
     /**
      *  Get dataset state
      * @param datasetId The ID of the dataset to get state of dataset.
      * @returns The state of dataset.
      */
     getDatasetState(datasetId: number): Promise<EvmOutput<DatasetState>>
+
     /**
-     *  Get governance address
-     * @return The address of governance
+     * Retrieves the associated dataset ID for a given dataset ID.
+     * @param datasetId The dataset ID for which to retrieve the associated dataset ID.
+     * @returns A promise that resolves with the associated dataset ID.
      */
-    governanceAddress(): Promise<EvmOutput<string>>
+    getAssociatedDatasetId(datasetId: number): Promise<EvmOutput<number>>
+
+    /**
+     * Retrieves the dataset ID associated with the specified access method.
+     * @param accessMethod The method of accessing the dataset.
+     * @returns A promise that resolves with the dataset ID corresponding to the access method.
+     */
+    getDatasetIdForAccessMethod(
+        accessMethod: string
+    ): Promise<EvmOutput<number>>
+
     /**
      * Check if a dataset has metadata
      * @param accessMethod Method of accessing the dataset to check.
      * @returns When the access method exists in a dataset, return true; otherwise, return false.
      */
     hasDatasetMetadata(accessMethod: string): Promise<EvmOutput<boolean>>
+
     /**
      * Default getter functions for public variables
      * @returns The total number of datasets in the current datasets contract.
      */
     datasetsCount(): Promise<EvmOutput<number>>
+
+    /**
+     * Retrieves the roles associated with the current user.
+     * @returns A promise that resolves with the roles of the current user.
+     */
+    roles(): Promise<EvmOutput<string>>
+
+    /**
+     *  Get governance address
+     * @return The address of governance
+     */
+    governanceAddress(): Promise<EvmOutput<string>>
 }
 
 interface DatasetMetadataSendEvm {
-    initDependencies(
-        datasetsProof: string,
-        options?: EvmTransactionOptions
-    ): Promise<EvmOutput<void>>
-    /**
-    /* This function changes the state of the dataset to DatasetApproved and emits the DatasetApproved event.
-    /* @param datasetId The ID of the dataset to approve.
-     * @param options The options of transaction.
-    */
-    approveDataset(
-        datasetId: number,
-        options?: EvmTransactionOptions
-    ): Promise<EvmOutput<void>>
-
-    /**
-     * This function changes the state of the dataset to MetadataApproved and emits the MetadataApproved event.
-     * @param datasetId The ID of the dataset for which to approve metadata.
-     * @param options The options of transaction.
-     */
-    approveDatasetMetadata(
-        datasetId: number,
-        options?: EvmTransactionOptions
-    ): Promise<EvmOutput<void>>
-
-    /**
-     * This function changes the state of the dataset to DatasetRejected and emits the DatasetRejected event.
-     * @param datasetId The ID of the dataset to reject.
-     * @param options The options of transaction.
-     */
-    rejectDataset(
-        datasetId: number,
-        options?: EvmTransactionOptions
-    ): Promise<EvmOutput<void>>
-
-    /**
-     * This function changes the state of the dataset to MetadataRejected and emits the MetadataRejected event.
-     * @param datasetId The ID of the dataset for which to reject metadata.
-     * @param options The options of transaction.
-     */
-    rejectDatasetMetadata(
-        datasetId: number,
-        options?: EvmTransactionOptions
-    ): Promise<EvmOutput<void>>
-
     /**
      * Submit metadata for a dataset
      * @param client The client id of the dataset.
@@ -155,14 +151,24 @@ interface DatasetMetadataSendEvm {
     ): Promise<EvmOutput<any>>
 
     /**
-     * Update dataset usedSizeInBytes. only called by matching contract. TODO: Need to add permission control
-     * @param datasetId The ID of the dataset to add used size.
-     * @param size The size to add.
+     * Reports a dataset workflow timeout.
+     * @param datasetId The ID of the dataset for which to report the timeout.
+     * @returns A promise that resolves with the result of reporting the dataset workflow timeout.
      */
-    addDatasetUsedSize(
+    reportDatasetWorkflowTimeout(datasetId: number): Promise<EvmOutput<any>>
+
+    /**
+     * Updates the timeout parameters for a dataset.
+     * @param datasetId The ID of the dataset for which to update the timeout parameters.
+     * @param proofBlockCount The new proof block count timeout parameter.
+     * @param auditBlockCount The new audit block count timeout parameter.
+     * @returns A promise that resolves with the result of updating the dataset timeout parameters.
+     */
+    updateDatasetTimeoutParameters(
         datasetId: number,
-        size: number
-    ): Promise<EvmOutput<void>>
+        proofBlockCount: number,
+        auditBlockCount: number
+    ): Promise<EvmOutput<any>>
 }
 
 /**
@@ -176,24 +182,24 @@ export interface DatasetMetadataOriginEvm
  * Implementation of DatasetMetadataOriginEvm with specific EVM methods.
  */
 @withCallMethod([
-    "datasetsProof",
-    "getDatasetUsedSize",
+    "getCountOverview",
+    "getSizeOverview",
     "getDatasetMetadata",
     "getDatasetMetadataSubmitter",
     "getDatasetMetadataClient",
+    "getDatasetTimeoutParameters",
     "getDatasetState",
-    "governanceAddress",
+    "getAssociatedDatasetId",
+    "getDatasetIdForAccessMethod",
     "hasDatasetMetadata",
     "datasetsCount",
+    "roles",
+    "governanceAddress",
 ])
 @withSendMethod([
-    "initDependencies",
-    "approveDataset",
-    "approveDatasetMetadata",
-    "rejectDataset",
-    "rejectDatasetMetadata",
     "submitDatasetMetadata",
-    "addDatasetUsedSize",
+    "reportDatasetWorkflowTimeout",
+    "updateDatasetTimeoutParameters",
 ])
 export class DatasetMetadataOriginEvm extends EvmEx {}
 
@@ -201,6 +207,32 @@ export class DatasetMetadataOriginEvm extends EvmEx {}
  * Extended class for DatasetMetadataOriginEvm with additional message decoding.
  */
 export class DatasetMetadataEvm extends DatasetMetadataOriginEvm {
+    async getCountOverview(): Promise<EvmOutput<BasicStatisticsInfo>> {
+        const res = await super.getCountOverview()
+        if (res.ok && res.data) {
+            return {
+                ok: true,
+                data: new BasicStatisticsInfo({
+                    ...res.data,
+                }),
+            }
+        }
+        return res
+    }
+
+    async getSizeOverview(): Promise<EvmOutput<BasicStatisticsInfo>> {
+        const res = await super.getSizeOverview()
+        if (res.ok && res.data) {
+            return {
+                ok: true,
+                data: new BasicStatisticsInfo({
+                    ...res.data,
+                }),
+            }
+        }
+        return res
+    }
+
     async getDatasetMetadata(
         datasetId: number
     ): Promise<EvmOutput<DatasetMetadata>> {
@@ -215,6 +247,19 @@ export class DatasetMetadataEvm extends DatasetMetadataOriginEvm {
             }
         }
         return metaRes
+    }
+
+    async getDatasetTimeoutParameters(
+        datasetId: number
+    ): Promise<EvmOutput<[proofBlockCount: number, auditBlockCount: number]>> {
+        const res = await super.getDatasetTimeoutParameters(datasetId)
+        if (res.ok && res.data) {
+            return {
+                ok: true,
+                data: [res.data.proofBlockCount, res.data.auditBlockCount],
+            }
+        }
+        return res
     }
 
     async getDatasetState(datasetId: number): Promise<EvmOutput<DatasetState>> {
@@ -245,14 +290,6 @@ export class DatasetMetadataEvm extends DatasetMetadataOriginEvm {
                 result.params.createdBlockNumber = result.height
                 result.params.datasetId = result.datasetId
                 result.params.status = DatasetState.None
-                break
-            case "approveDataset":
-            case "approveDatasetMetadata":
-            case "rejectDataset":
-            case "rejectDatasetMetadata":
-            case "addDatasetUsedSize":
-                result.datasetId = Number(result.params.datasetId)
-                result.params.datasetId = result.datasetId
                 break
             default:
                 return {
