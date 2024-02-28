@@ -23,6 +23,7 @@ import { DatasetMetadataEvm } from "../../../src/module/dataset/metadata/repo/ev
 import { DatasetChallengeEvm } from "../../../src/module/dataset/challenge/repo/evm"
 import { DatasetProofEvm } from "../../../src/module/dataset/proof/repo/evm"
 import { DatasetRequirementEvm } from "../../../src/module/dataset/requirement/repo/evm"
+import { FinanceEvm } from "../../../src/core/finance/repo/evm"
 import { FilecoinEvm } from "../../../src/core/filecoin/repo/evm"
 import { FilplusEvm } from "../../../src/core/filplus/repo/evm"
 import { MatchingMetadataEvm } from "../../../src/module/matching/metadata/repo/evm"
@@ -72,6 +73,7 @@ const contracts: [string, ContractInfo][] = [
             ContractType.DatasetsRequirement
         ),
     ],
+    ["Finance", new ContractInfo(FinanceEvm, ContractType.Finance)],
     ["Filecoin", new ContractInfo(FilecoinEvm, ContractType.Filecoin)],
     ["Filplus", new ContractInfo(FilplusEvm, ContractType.Filplus)],
     [
@@ -247,6 +249,13 @@ export class ContractsManager implements IContractsManager {
         return this.getEvmInstance(
             "DatasetsRequirement"
         ) as DatasetRequirementEvm
+    }
+    /**
+     * Get an instance of the Finance contract Evm.
+     * @returns An instance of the Finance contract Evm.
+     */
+    public FinanceEvm(): FinanceEvm {
+        return this.getEvmInstance("Finance") as FinanceEvm
     }
     /**
      * Get an instance of the Filecoin contract Evm.
