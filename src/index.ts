@@ -19,7 +19,6 @@
  ********************************************************************************/
 
 export { Car, CarReplica } from "./core/carstore/types"
-export { Fund } from "./core/escrow/types"
 export { DataswapMessage } from "./message/types"
 export { DatasetMetadata } from "./module/dataset/metadata/types"
 export {
@@ -44,7 +43,6 @@ export { DealState } from "./shared/types/filecoinType"
 export { MatchingState } from "./shared/types/matchingType"
 
 export { CarstoreEvm } from "./core/carstore/repo/evm"
-export { EscrowEvm } from "./core/escrow/repo/evm"
 export { FilecoinEvm } from "./core/filecoin/repo/evm"
 export { FilplusEvm } from "./core/filplus/repo/evm"
 export { RolesEvm } from "./core/roles/repo/evm"
@@ -56,7 +54,6 @@ export { MatchingMetadataEvm } from "./module/matching/metadata/repo/evm"
 export { MatchingTargetEvm } from "./module/matching/target/repo/evm"
 export { MatchingBidsEvm } from "./module/matching/bids/repo/evm"
 export { StoragesEvm } from "./module/storages/repo/evm"
-export { DatacapsEvm } from "./module/datacaps/repo/evm"
 
 export { DataswapMessageMongoDatastore } from "./message/repo/datastore"
 export { DatasetMetadataMongoDatastore } from "./module/dataset/metadata/repo/datastore"
@@ -82,8 +79,6 @@ export {
 export {
     carstoreEvm_Calibration,
     carstoreEvm_Main,
-    datacapsEvm_Calibration,
-    datacapsEvm_Main,
     datasetChallengeEvm_Calibration,
     datasetChallengeEvm_Main,
     datasetMetadataEvm_Calibration,
@@ -92,8 +87,6 @@ export {
     datasetProofEvm_Main,
     datasetRequirementEvm_Calibration,
     datasetRequirementEvm_Main,
-    escrowEvm_Calibration,
-    escrowEvm_Main,
     filplusEvm_Calibraion,
     filplusEvm_Main,
     matchingBidsEvm_Calibration,

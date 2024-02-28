@@ -37,6 +37,7 @@ import assert from "assert"
 import { DatasetMetadata } from "../../../src/module/dataset/metadata/types"
 import { ValueFields } from "@unipackage/utils"
 import { DatasetState } from "../../../src/shared/types/datasetType"
+import { createTargetMessage } from "../../shared/utils"
 dotenv.config()
 
 describe("ContractMessageDecoder", () => {
@@ -83,31 +84,10 @@ describe("ContractMessageDecoder", () => {
     let message: Message
 
     beforeEach("Get origin Message", async () => {
-        const rpc = new ChainFilecoinRPC({
-            apiAddress: "https://api.calibration.node.glif.io/rpc/v1",
-            token: "",
+        message = createTargetMessage({
+            params: "WQLEkl3YoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABOIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA10aXRsZS0waTR6ZWV0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQaW5kdXN0cnktMGk0emVldAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD2RhdGFzZXQtMGk0emVldAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABNkZXNjcmlwdGlvbi0waTR6ZWV0AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAWYXdzOi8vc2RmYS5jb20tMGk0emVldAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAGWRhdGFzd2FwLmNvbS90ZXN0LTBpNHplZXQAAAAAAAAA",
+            returns: "WCAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ==",
         })
-        const chainService = new ChainService({
-            rpc,
-            //because xxxDs is no use,so use {}
-            messageDs: {} as MessageMongoDatastore,
-            blockMessagesDs: {} as BlockMongoDatastore,
-            tipsetDs: {} as TipsetMongoDatastore,
-        })
-        const chainInfo = await chainService.GetChainInfoByHeight(1213438, {
-            replay: true,
-            replayStrategy: new AddressesFilterReplayStrategy([
-                expectDecodeResult.data.to,
-            ]),
-        })
-        if (!chainInfo.ok) throw new Error(chainInfo.error)
-        console.log(chainInfo.data?.messages)
-
-        const findMessage = chainInfo.data!.messages.find((msg) => {
-            return msg.MsgCid["/"].includes(expectDecodeResult.data.cid["/"])
-        })
-        if (!findMessage) throw new Error("Can't find the messge in chain")
-        message = findMessage
     })
 
     describe("#decoder-sample-code", () => {

@@ -27,8 +27,9 @@ import { ApproveDatasetTestKit } from "../../testkits/module/datasets/DatasetsMe
 
 /**
  * Test suite for the datasets challenge functionality.
+ * //TODO:reopen when abi 0.4.0 merged
  */
-describe("datasetsChallenge", async () => {
+describe.skip("datasetsChallenge", async () => {
     /**
      * Setup before running the test suite.
      */
@@ -45,6 +46,7 @@ describe("datasetsChallenge", async () => {
     /**
      * Tests submit chanllenge proof of dataset.
      * This test case has already been covered in the 'approveDataset' test. Skipping it here.
+     * //TODO:reopen when abi 0.4.0 merged
      */
     it.skip("submitChallengeProof", async function () {
         const testKit = new ApproveDatasetTestKit(

@@ -19,12 +19,10 @@
  ********************************************************************************/
 
 import { CarstoreEvm } from "../../../src/core/carstore/repo/evm"
-import { DatacapsEvm } from "../../../src/module/datacaps/repo/evm"
 import { DatasetMetadataEvm } from "../../../src/module/dataset/metadata/repo/evm"
 import { DatasetChallengeEvm } from "../../../src/module/dataset/challenge/repo/evm"
 import { DatasetProofEvm } from "../../../src/module/dataset/proof/repo/evm"
 import { DatasetRequirementEvm } from "../../../src/module/dataset/requirement/repo/evm"
-import { EscrowEvm } from "../../../src/core/escrow/repo/evm"
 import { FilecoinEvm } from "../../../src/core/filecoin/repo/evm"
 import { FilplusEvm } from "../../../src/core/filplus/repo/evm"
 import { MatchingMetadataEvm } from "../../../src/module/matching/metadata/repo/evm"
@@ -44,7 +42,6 @@ export interface IContractsManager {
      * Returns the DatacapsEvm instance.
      * @returns An instance of DatacapsEvm.
      */
-    DatacapsEvm(): DatacapsEvm
 
     /**
      * Returns the DatasetMetadataEvm instance.
@@ -69,12 +66,6 @@ export interface IContractsManager {
      * @returns An instance of DatasetRequirementEvm.
      */
     DatasetRequirementEvm(): DatasetRequirementEvm
-
-    /**
-     * Returns the EscrowEvm instance.
-     * @returns An instance of EscrowEvm.
-     */
-    EscrowEvm(): EscrowEvm
 
     /**
      * Returns the FilecoinEvm instance.
@@ -125,14 +116,8 @@ export interface IContractsManager {
     setupContractsRoles(): Promise<void>
 
     /**
-     * Sets up accounts roles.
-     * @returns A Promise that resolves when accounts roles are set up.
+     * Registers contracts.
+     * @returns Promise resolved when the contracts are registered successfully.
      */
-    setupAccountsRoles(): Promise<void>
-
-    /**
-     * Sets up contracts dependencies.
-     * @returns A Promise that resolves when contracts dependencies are set up.
-     */
-    setupContractsDependencies(): Promise<void>
+    registContracts(): Promise<void>
 }

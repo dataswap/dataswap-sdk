@@ -117,17 +117,6 @@ export interface IDatasetsAssertion {
     datasetsCountAssertion(expectDatasetsCount: number): Promise<void>
 
     /**
-     * Asserts the initialization dependencies for datasets against the expected datasets proof address.
-     * @param caller - The caller that to send msg
-     * @param expectDatasetsProof - The expected datasets proof address.
-     * @returns A Promise resolving if the assertion is successful.
-     */
-    metadataInitDependenciesAssertion(
-        caller: string,
-        expectDatasetsProof: string
-    ): Promise<void>
-
-    /**
      * Approves a dataset and asserts its state against the expected state.
      * @param caller - The caller that to send msg
      * @param datasetId - The ID of the dataset to be approved.
@@ -388,17 +377,6 @@ export interface IDatasetsAssertion {
         datasetId: number,
         submitter: string,
         expectRet: boolean
-    ): Promise<void>
-
-    /**
-     * Initializes dependencies for dataset proofs and asserts against the expected datasets challenge address.
-     * @param caller - The caller that to send msg
-     * @param expectDatasetsChallenge - The expected datasets challenge address.
-     * @returns A Promise resolving if the assertion is successful.
-     */
-    proofInitDependenciesAssertion(
-        caller: string,
-        expectDatasetsChallenge: string
     ): Promise<void>
 
     /**

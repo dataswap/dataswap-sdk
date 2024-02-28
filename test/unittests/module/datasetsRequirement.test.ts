@@ -28,8 +28,9 @@ import { DatasetsAssertion } from "../../assertions/module/datasetsAssertion"
 
 /**
  * Test suite for the datasets requirement functionality.
+ * //TODO:reopen when abi 0.4.0 merged
  */
-describe("datasetsRequirement", async () => {
+describe.skip("datasetsRequirement", async () => {
     /**
      * Setup before running the test suite.
      */

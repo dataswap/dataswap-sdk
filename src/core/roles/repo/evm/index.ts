@@ -27,6 +27,7 @@ import {
 import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
 import { DataswapMessage } from "../../../../message/types"
 import { EvmEx } from "../../../../shared/types/evmEngineType"
+import { ContractType } from "../../../../shared/types/rolesType"
 
 /**
  * Interface for EVM calls related to  Roles.
@@ -105,6 +106,17 @@ interface RolesSendEvm {
         account: string,
         options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
+
+    /**
+     * Registers a contract of a specific type.
+     * @param type The type of contract to register.
+     * @param contract The address of the contract to register.
+     * @returns Promise resolved when the contract is registered successfully.
+     */
+    registerContract(
+        type: ContractType,
+        contract: string
+    ): Promise<EvmOutput<void>>
 }
 
 /**
@@ -122,6 +134,7 @@ export interface RolesOriginEvm extends RolesCallEvm, RolesSendEvm {}
     "pendingOwner",
     "renounceOwnership",
     "transferOwnership",
+    "registerContract",
 ])
 export class RolesOriginEvm extends EvmEx {}
 
@@ -150,6 +163,7 @@ export class RolesEvm extends RolesOriginEvm {
             case "pendingOwner":
             case "renounceOwnership":
             case "transferOwnership":
+            case "registerContract":
                 break
             default:
                 return {

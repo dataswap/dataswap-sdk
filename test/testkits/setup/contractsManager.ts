@@ -19,12 +19,10 @@
  ********************************************************************************/
 
 import { CarstoreEvm } from "../../../src/core/carstore/repo/evm"
-import { DatacapsEvm } from "../../../src/module/datacaps/repo/evm"
 import { DatasetMetadataEvm } from "../../../src/module/dataset/metadata/repo/evm"
 import { DatasetChallengeEvm } from "../../../src/module/dataset/challenge/repo/evm"
 import { DatasetProofEvm } from "../../../src/module/dataset/proof/repo/evm"
 import { DatasetRequirementEvm } from "../../../src/module/dataset/requirement/repo/evm"
-import { EscrowEvm } from "../../../src/core/escrow/repo/evm"
 import { FilecoinEvm } from "../../../src/core/filecoin/repo/evm"
 import { FilplusEvm } from "../../../src/core/filplus/repo/evm"
 import { MatchingMetadataEvm } from "../../../src/module/matching/metadata/repo/evm"
@@ -38,24 +36,58 @@ import { IContractsManager } from "../../interfaces/setup/IContractsManater"
 import * as utils from "../../shared/utils"
 import { Wallet } from "../../../src/shared/types/evmEngineType"
 import { IWallet } from "@unipackage/net"
+import { ContractType } from "../../../src/shared/types/rolesType"
+
+interface ContractInfo {
+    evmConstructor: new (...args: any[]) => any
+    contractType: ContractType
+}
+
+class ContractInfo {
+    constructor(
+        _evmConstructor: new (...args: any[]) => any,
+        _contractType: ContractType
+    ) {
+        this.evmConstructor = _evmConstructor
+        this.contractType = _contractType
+    }
+}
 
 // Define contracts
-const contracts: [string, new (...args: any[]) => any][] = [
-    ["Carstore", CarstoreEvm],
-    ["Datacaps", DatacapsEvm],
-    ["Datasets", DatasetMetadataEvm],
-    ["DatasetsChallenge", DatasetChallengeEvm],
-    ["DatasetsProof", DatasetProofEvm],
-    ["DatasetsRequirement", DatasetRequirementEvm],
-    ["Escrow", EscrowEvm],
-    ["Filecoin", FilecoinEvm],
-    ["Filplus", FilplusEvm],
-    ["Matchings", MatchingMetadataEvm],
-    ["MatchingsBids", MatchingBidsEvm],
-    ["MatchingsTarget", MatchingTargetEvm],
-    ["Roles", RolesEvm],
-    ["Storages", StoragesEvm],
-    //["MerkleUtils",]
+const contracts: [string, ContractInfo][] = [
+    ["Carstore", new ContractInfo(CarstoreEvm, ContractType.Carstore)],
+    ["Datasets", new ContractInfo(DatasetMetadataEvm, ContractType.Datasets)],
+    [
+        "DatasetsChallenge",
+        new ContractInfo(DatasetChallengeEvm, ContractType.DatasetsChallenge),
+    ],
+    [
+        "DatasetsProof",
+        new ContractInfo(DatasetProofEvm, ContractType.DatasetsProof),
+    ],
+    [
+        "DatasetsRequirement",
+        new ContractInfo(
+            DatasetRequirementEvm,
+            ContractType.DatasetsRequirement
+        ),
+    ],
+    ["Filecoin", new ContractInfo(FilecoinEvm, ContractType.Filecoin)],
+    ["Filplus", new ContractInfo(FilplusEvm, ContractType.Filplus)],
+    [
+        "Matchings",
+        new ContractInfo(MatchingMetadataEvm, ContractType.Matchings),
+    ],
+    [
+        "MatchingsBids",
+        new ContractInfo(MatchingBidsEvm, ContractType.MatchingsBids),
+    ],
+    [
+        "MatchingsTarget",
+        new ContractInfo(MatchingTargetEvm, ContractType.MatchingsTarget),
+    ],
+    ["Roles", new ContractInfo(RolesEvm, ContractType.Roles)],
+    ["Storages", new ContractInfo(StoragesEvm, ContractType.Storages)],
 ]
 
 function initWallet(url: string): IWallet {
@@ -77,7 +109,7 @@ export class ContractsManager implements IContractsManager {
         const url = utils.getNetworkRpcURL()
 
         // Instantiate contract instances for each contract name
-        contracts.forEach(([contractName, evmConstructor]) => {
+        contracts.forEach(([contractName, contractInfo]) => {
             const contractAddress = utils.getContractAddress(contractName)
 
             const wallet = initWallet(url)
@@ -89,7 +121,12 @@ export class ContractsManager implements IContractsManager {
             // Store contract instances and addresses in maps
             this.contractsEvms.set(
                 contractName,
-                new evmConstructor(contractAbi, contractAddress, url, wallet)
+                new contractInfo.evmConstructor(
+                    contractAbi,
+                    contractAddress,
+                    url,
+                    wallet
+                )
             )
             this.contractsAddresses.set(contractName, contractAddress)
         })
@@ -145,233 +182,22 @@ export class ContractsManager implements IContractsManager {
     }
 
     /**
-     * Set up roles for all accounts.
+     * Registers contracts.
+     * @returns Promise resolved when the contracts are registered successfully.
      */
-    public async setupAccountsRoles(): Promise<void> {
+    public async registContracts(): Promise<void> {
         try {
-            await this._grantRole(
-                process.env.DATASWAP_METADATASUBMITTER as string,
-                "CC"
-            )
-
-            await this._grantRole(process.env.DATASWAP_BIDDER as string, "SP")
-
-            await this._grantRole(
-                process.env.DATASWAP_DATASETAUDITOR as string,
-                "DA"
-            )
-
-            await this._grantRole(
-                process.env.DATASWAP_PROOFSUBMITTER as string,
-                "DP"
-            )
-        } catch (error) {
-            throw error
-        }
-    }
-    /**
-     * Set up dependencies for the Datasets contract.
-     * @returns A promise that resolves when the dependencies are set up.
-     */
-    private async setupDatasetsDependencies(): Promise<void> {
-        try {
-            const datasetProofAddress =
-                this.contractsAddresses.get("DatasetsProof")
-            if (!datasetProofAddress) {
-                throw new Error("cant get datasetsProof address in env")
-            }
-            const ret = await handleEvmError(
-                this.DatasetMetadataEvm().datasetsProof()
-            )
-            if ((ret.data as string) === datasetProofAddress) {
-                // Role already set up
-                return
-            }
-
-            this.RolesEvm()
-                .getWallet()
-                .setDefault(process.env.DATASWAP_GOVERNANCE as string)
-            await handleEvmError(
-                this.DatasetMetadataEvm().initDependencies(datasetProofAddress)
-            )
-        } catch (error) {
-            throw error
-        }
-    }
-    /**
-     * Set up dependencies for the DatasetsProof contract.
-     * @returns A promise that resolves when the dependencies are set up.
-     */
-    private async setupDatasetsProofDependencies(): Promise<void> {
-        try {
-            const datasetChallengeAddress =
-                this.contractsAddresses.get("DatasetsChallenge")
-            if (!datasetChallengeAddress) {
-                throw new Error("cant get datasetsChallenge address in env")
-            }
-
-            const ret = await handleEvmError(
-                this.DatasetProofEvm().datasetsChallenge()
-            )
-            if ((ret.data as string) === datasetChallengeAddress) {
-                // Role already set up
-                return
-            }
-
-            this.RolesEvm()
-                .getWallet()
-                .setDefault(process.env.DATASWAP_GOVERNANCE as string)
-            await handleEvmError(
-                this.DatasetProofEvm().initDependencies(datasetChallengeAddress)
-            )
-        } catch (error) {
-            throw error
-        }
-    }
-    /**
-     * Set up dependencies for the MatchingsBids contract.
-     * @returns A promise that resolves when the dependencies are set up.
-     */
-    private async setupMatchingsBidsDependencies(): Promise<void> {
-        try {
-            const matchingsAddress = this.contractsAddresses.get("Matchings")
-            if (!matchingsAddress) {
-                throw new Error("cant get matchings ddress in env")
-            }
-            const matchingsTargetAddress =
-                this.contractsAddresses.get("MatchingsTarget")
-            if (!matchingsTargetAddress) {
-                throw new Error("cant get matchingsTarget ddress in env")
-            }
-
-            let ret = await handleEvmError(this.MatchingBidsEvm().matchings())
-            const retMatchingsAddress = ret.data as string
-            ret = await handleEvmError(this.MatchingBidsEvm().matchingsTarget())
-            const retMatchingsTargetAddress = ret.data as string
-
-            if (
-                retMatchingsAddress === matchingsAddress &&
-                retMatchingsTargetAddress === matchingsTargetAddress
-            ) {
-                // Role already set up
-                return
-            } else {
-                this.RolesEvm()
-                    .getWallet()
-                    .setDefault(process.env.DATASWAP_GOVERNANCE as string)
-                await handleEvmError(
-                    this.MatchingBidsEvm().initDependencies(
-                        matchingsAddress,
-                        matchingsTargetAddress
+            for (const [contractName, contractInfo] of contracts) {
+                if (contractName != "Roles") {
+                    const _address = this.contractsAddresses.get(
+                        contractName
+                    ) as string
+                    await this.RolesEvm().registerContract(
+                        contractInfo.contractType,
+                        _address
                     )
-                )
+                }
             }
-        } catch (error) {
-            throw error
-        }
-    }
-    /**
-     * Set up dependencies for the MatchingsTarget contract.
-     * @returns A promise that resolves when the dependencies are set up.
-     */
-    private async setupMatchingsTargetDependencies(): Promise<void> {
-        try {
-            const matchingsAddress = this.contractsAddresses.get("Matchings")
-            if (!matchingsAddress) {
-                throw new Error("cant get matchings ddress in env")
-            }
-            const matchingsBidsAddress =
-                this.contractsAddresses.get("MatchingsBids")
-            if (!matchingsBidsAddress) {
-                throw new Error("cant get matchingsBids ddress in env")
-            }
-
-            let ret = await handleEvmError(this.MatchingTargetEvm().matchings())
-            const retMatchingsAddress = ret.data as string
-            ret = await handleEvmError(this.MatchingTargetEvm().matchingsBids())
-            const retMatchingsBidsAddress = ret.data as string
-
-            if (
-                retMatchingsAddress === matchingsAddress &&
-                retMatchingsBidsAddress === matchingsBidsAddress
-            ) {
-                // Role already set up
-                return
-            } else {
-                this.RolesEvm()
-                    .getWallet()
-                    .setDefault(process.env.DATASWAP_GOVERNANCE as string)
-                await handleEvmError(
-                    this.MatchingTargetEvm().initDependencies(
-                        matchingsAddress,
-                        matchingsBidsAddress
-                    )
-                )
-            }
-        } catch (error) {
-            throw error
-        }
-    }
-    /**
-     * Set up dependencies for the Escrow contract.
-     * @returns A promise that resolves when the dependencies are set up.
-     */
-    private async setupEscrowDependencies(): Promise<void> {
-        try {
-            const datasetProofAddress =
-                this.contractsAddresses.get("DatasetsProof")
-            if (!datasetProofAddress) {
-                throw new Error("cant get datasetsProof address in env")
-            }
-            const storagesAddress = this.contractsAddresses.get("Storages")
-            if (!storagesAddress) {
-                throw new Error("cant get storages address in env")
-            }
-            const datacapsAddress = this.contractsAddresses.get("Datacaps")
-            if (!datacapsAddress) {
-                throw new Error("cant get datacaps address in env")
-            }
-
-            let ret = await handleEvmError(this.EscrowEvm().datasetsProof())
-            const retDatasetProofAddress = ret.data as string
-            ret = await handleEvmError(this.EscrowEvm().storages())
-            const retStoragesAddress = ret.data as string
-            ret = await handleEvmError(this.EscrowEvm().datacaps())
-            const retDatacapsAddress = ret.data as string
-
-            if (
-                retDatasetProofAddress === datasetProofAddress &&
-                retStoragesAddress === storagesAddress &&
-                retDatacapsAddress === datacapsAddress
-            ) {
-                // Role already set up
-                return
-            } else {
-                this.RolesEvm()
-                    .getWallet()
-                    .setDefault(process.env.DATASWAP_GOVERNANCE as string)
-                await handleEvmError(
-                    this.EscrowEvm().initDependencies(
-                        datasetProofAddress,
-                        storagesAddress,
-                        datacapsAddress
-                    )
-                )
-            }
-        } catch (error) {
-            throw error
-        }
-    }
-    /**
-     * Set up dependencies for all contracts.
-     */
-    public async setupContractsDependencies(): Promise<void> {
-        try {
-            await this.setupDatasetsDependencies()
-            await this.setupDatasetsProofDependencies()
-            await this.setupMatchingsBidsDependencies()
-            await this.setupMatchingsTargetDependencies()
-            await this.setupEscrowDependencies()
         } catch (error) {
             throw error
         }
@@ -391,13 +217,6 @@ export class ContractsManager implements IContractsManager {
      */
     public CarstoreEvm(): CarstoreEvm {
         return this.getEvmInstance("Carstore") as CarstoreEvm
-    }
-    /**
-     * Get an instance of the Datacaps contract Evm.
-     * @returns An instance of the Datacaps contract Evm.
-     */
-    public DatacapsEvm(): DatacapsEvm {
-        return this.getEvmInstance("Datacaps") as DatacapsEvm
     }
     /**
      * Get an instance of the Datasets contract Evm.
@@ -428,13 +247,6 @@ export class ContractsManager implements IContractsManager {
         return this.getEvmInstance(
             "DatasetsRequirement"
         ) as DatasetRequirementEvm
-    }
-    /**
-     * Get an instance of the Escrow contract Evm.
-     * @returns An instance of the Escrow contract Evm.
-     */
-    public EscrowEvm(): EscrowEvm {
-        return this.getEvmInstance("Escrow") as EscrowEvm
     }
     /**
      * Get an instance of the Filecoin contract Evm.

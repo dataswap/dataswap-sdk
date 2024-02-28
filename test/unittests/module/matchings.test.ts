@@ -41,8 +41,9 @@ import { DatasetState } from "../../../src/shared/types/datasetType"
 
 /**
  * Test suite for the Matchings functionality.
+ * //TODO:reopen when abi 0.4.0 merged
  */
-describe("matchings", async () => {
+describe.skip("matchings", async () => {
     /**
      * Setup before running the test suite.
      */
@@ -55,27 +56,6 @@ describe("matchings", async () => {
 
         this.sharedData.matchingsAssertion = new MatchingsAssertion(
             this.sharedData.contractsManager
-        )
-    })
-    /**
-     * Tests assert dependencies addressed of matchingsTarget.
-     */
-    it("assertTargetDependenciesAdresses", async function () {
-        await this.sharedData.matchingsAssertion.targetInitDependenciesAssertion(
-            process.env.DATASWAP_GOVERNANCE as string,
-            process.env.MatchingsAddress as string,
-            process.env.MatchingsBidsAddress as string
-        )
-    })
-
-    /**
-     * Tests assert dependencies addressed of matchingsBids.
-     */
-    it("assertBidsDependenciesAdresses", async function () {
-        await this.sharedData.matchingsAssertion.bidsInitDependenciesAssertion(
-            process.env.DATASWAP_GOVERNANCE as string,
-            process.env.MatchingsAddress as string,
-            process.env.MatchingsTargetAddress as string
         )
     })
 

@@ -390,31 +390,6 @@ export class MatchingsAssertion implements IMatchingsAssertion {
     }
 
     /**
-     * Asserts the dependencies of the target.
-     * @param caller - The caller of contract
-     * @param expectMatchingsAddress - The expected matchings address.
-     * @param expectMatchingsBidsAddress - The expected matchings bids address.
-     * @returns A Promise resolving if the assertion is successful.
-     */
-    async targetInitDependenciesAssertion(
-        caller: string,
-        expectMatchingsAddress: string,
-        expectMatchingsBidsAddress: string
-    ): Promise<void> {
-        this.contractsManager.MatchingTargetEvm().getWallet().setDefault(caller)
-        await handleEvmError(
-            this.contractsManager
-                .MatchingTargetEvm()
-                .initDependencies(
-                    expectMatchingsAddress,
-                    expectMatchingsBidsAddress
-                )
-        )
-        this.targetMatchingsAssertion(expectMatchingsAddress)
-        this.targetMatchingsBidsAssertion(expectMatchingsBidsAddress)
-    }
-
-    /**
      * Creates a target and asserts the expectations.
      * @param caller - The caller of contract
      * @param matchingId - The ID of the matching.
@@ -681,31 +656,6 @@ export class MatchingsAssertion implements IMatchingsAssertion {
                 .hasMatchingBid(matchingId, bidder)
         )
         expect(expectRet).to.be.equal(ret.data)
-    }
-
-    /**
-     * Asserts the initialization dependencies for bids against the expected addresses.
-     * @param caller - The caller of contract
-     * @param expectMatchingsAddresss - The expected matchings address.
-     * @param expectMatchingsTargetAddresss - The expected matchings target address.
-     * @returns A Promise resolving if the assertion is successful.
-     */
-    async bidsInitDependenciesAssertion(
-        caller: string,
-        expectMatchingsAddresss: string,
-        expectMatchingsTargetAddresss: string
-    ): Promise<void> {
-        this.contractsManager.MatchingBidsEvm().getWallet().setDefault(caller)
-        await handleEvmError(
-            this.contractsManager
-                .MatchingBidsEvm()
-                .initDependencies(
-                    expectMatchingsAddresss,
-                    expectMatchingsTargetAddresss
-                )
-        )
-        await this.bidsMatchingsAssertion(expectMatchingsAddresss)
-        await this.bidsMatchingsTargetAssertion(expectMatchingsTargetAddresss)
     }
 
     /**

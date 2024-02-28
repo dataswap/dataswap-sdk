@@ -38,9 +38,8 @@ export class DataswapTestSetup {
      */
     async run(): Promise<void> {
         try {
-            await this.contractsManager.setupAccountsRoles()
             await this.contractsManager.setupContractsRoles()
-            await this.contractsManager.setupContractsDependencies()
+            //await this.contractsManager.registContracts()
         } catch (error) {
             throw error
         }
