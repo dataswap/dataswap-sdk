@@ -25,6 +25,11 @@ export interface ContractAddresses {
     MerkleUtilsAddress: string // Address of the MerkleUtils contract
     CarstoreAddress: string // Address of the Carstore contract
     EscrowAddress: string // Address of the Escrow contract
+    EscrowDatacapCollateralAddress: string // Address of the EscrowDatacapCollateral contract
+    EscrowDataTradingFeeAddress: string // Address of the EscrowDataTradingFee contract
+    EscrowDatacapChunkLandCollateralAddress: string // Address of the EscrowDatacapChunkLandCollateral contract
+    EscrowChallengeCommissionAddress: string // Address of the EscrowChallengeCommission contract
+    FinanceAddress: string // Address of the Finance contract
     DatasetsAddress: string // Address of the Datasets contract
     DatasetsRequirementAddress: string // Address of the DatasetsRequirement contract
     DatasetsProofAddress: string // Address of the DatasetsProof contract
@@ -40,24 +45,33 @@ export interface ContractAddresses {
 export const CALIBRATION_CONTRACT_ADDRESSES: Record<string, ContractAddresses> =
     {
         Hylocereus: {
-            RolesAddress: "0x40769d4797a4fc1A60529a5096bcFfd2b7c66317",
+            RolesAddress: "0x824B32cfc8a6C3a276D8766D96c97997C0D615f2",
             FilecoinAddress: "0x1eD93e30f1213e0db59790EE52710720bE5AcBAF",
-            FilplusAddress: "0xf547A6284A3964580DD8F60C7Fe1cA2ACacE48e6",
-            MerkleUtilsAddress: "0xc7f0154Dc2ad6e3F28304358D68Ad045D186A78D",
-            CarstoreAddress: "0xC7FBF8Df0A6E584A17361e7E4287EE3a1F72b7b5",
+            FilplusAddress: "0x080843F9a787d99419D38f752694B80F3cAabaC0",
+            MerkleUtilsAddress: "0x9B36806Bb747Ee5e6eaD84334DF299Db953290a7",
+            CarstoreAddress: "0x5c63AE7870524A2E5ed547Ff70eB6d16DF89ba6C",
             EscrowAddress: "0x0862a413920eFa1958dB61BD3fEC70c60B8Ed018",
-            DatasetsAddress: "0x27400663b98367C5D4b04480030D4DDe193C2fEa",
+            EscrowDatacapCollateralAddress:
+                "0x4F33a246141D88d4e52097Ffa6dbfa76c5015337",
+            EscrowDataTradingFeeAddress:
+                "0xBBdcd9d37b38f36e3B703C7bba3dcb18AB3a2770",
+            EscrowDatacapChunkLandCollateralAddress:
+                "0x7A5c761f3c0Dd2a3F92a31B4E2E0d32B23e3Dc5F",
+            EscrowChallengeCommissionAddress:
+                "0x539DeD3f7baF807325a75aDBCD0AeF8230f7bD85",
+            FinanceAddress: "0x7Ba2c032Aed2dF3A99227183eE2D9D7552B69d7f",
+            DatasetsAddress: "0xEde65362f0f2E02D4E388c98636BE13253656892",
             DatasetsRequirementAddress:
-                "0xAdE3e240736e550837e5b65b0163bbD56178aDdD",
-            DatasetsProofAddress: "0x15764e7bE0638696B88ECF39fc7f6167aB53552f",
+                "0x0e0C16F1A83F25e81dc68D03B091b7265219766E",
+            DatasetsProofAddress: "0xE5055Cc9E90f7204ce91555E61Eec19A6bE80317",
             DatasetsChallengeAddress:
-                "0x60AcEb9dafE38D428f4DC7eBF01fa604EfDc4e0f",
-            MatchingsAddress: "0xdc9Df3dC24202451535E4eB0A3ecBBF4B64ae5C8",
+                "0x9daeA585078FEa937Eed2640f3e7232028eE8270",
+            MatchingsAddress: "0x7ca67608c647175E2dDFD59F4970eF5dd5D22392",
             MatchingsTargetAddress:
-                "0xcA2852b58a67650cA6F220BA68267140caC7D915",
-            MatchingsBidsAddress: "0x527786A491cAe85237e00b8d0A483DBc8D449e2b",
-            StoragesAddress: "0x4AEF9E8A0acc86404FF704398eBB023E014C5335",
-            DatacapsAddress: "0x2b06517fd3971E5829399f27f6C0F3f497F85ECc",
+                "0xed5b040471285Fe7c3C2149A166f923af65107AA",
+            MatchingsBidsAddress: "0x34E56d0Cc615324B7433af9deebfd5b8eE420F2D",
+            StoragesAddress: "0x706557b4b22bBc4109A71398D4343063618B8502",
+            DatacapsAddress: "0x7777777777777777777777777777777777777777",
         },
     }
 
@@ -70,6 +84,15 @@ export const MAIN_CONTRACT_ADDRESSES: Record<string, any> = {
         MerkleUtilsAddress: "0x7777777777777777777777777777777777777777",
         CarstoreAddress: "0x7777777777777777777777777777777777777777",
         EscrowAddress: "0x7777777777777777777777777777777777777777",
+        EscrowDatacapCollateralAddress:
+            "0x7777777777777777777777777777777777777777",
+        EscrowDataTradingFeeAddress:
+            "0x7777777777777777777777777777777777777777",
+        EscrowDatacapChunkLandCollateralAddress:
+            "0x7777777777777777777777777777777777777777",
+        EscrowChallengeCommissionAddress:
+            "0x7777777777777777777777777777777777777777",
+        FinanceAddress: "0x7777777777777777777777777777777777777777",
         DatasetsAddress: "0x7777777777777777777777777777777777777777",
         DatasetsRequirementAddress:
             "0x7777777777777777777777777777777777777777",
