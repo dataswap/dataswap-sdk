@@ -26,14 +26,20 @@ import { IHelper } from "./IHelpler"
  */
 export interface IDatasetsHelper extends IHelper {
     /**
-     * Executes the workflow for a submitted metadata dataset.
-     * @param replicasCount - The count of replicas.
-     * @param elementCountInReplica - The element count in each replica.
-     * @param duplicateIndex - (Optional) The index for duplication.
-     * @param duplicateCount - (Optional) The count for duplication.
-     * @returns A promise resolving to the dataset ID.
+     * Workflow for submitting dataset metadata.
+     * @returns A Promise that resolves with the dataset ID.
      */
-    metadataSubmittedDatasetWorkflow(
+    metadataSubmittedDatasetWorkflow(): Promise<number>
+
+    /**
+     * Workflow for submitting dataset requirements.
+     * @param replicasCount The number of replicas for the dataset.
+     * @param elementCountInReplica The element count in each replica.
+     * @param duplicateIndex The duplicate index (optional).
+     * @param duplicateCount The duplicate count (optional).
+     * @returns A Promise that resolves with the dataset ID.
+     */
+    requirementsSubmittedDatasetWorkflow(
         replicasCount: number,
         elementCountInReplica: number,
         duplicateIndex?: number,
@@ -41,23 +47,11 @@ export interface IDatasetsHelper extends IHelper {
     ): Promise<number>
 
     /**
-     * Executes the workflow for an approved metadata dataset.
-     * @returns A promise resolving to the dataset ID.
-     */
-    metadataApprovedDatasetWorkflow(): Promise<number>
-
-    /**
-     * Executes the workflow for a rejected metadata dataset.
-     * @returns A promise resolving to the dataset ID.
-     */
-    metadataRejectedDatasetWorkflow(): Promise<number>
-
-    /**
-     * Executes the workflow for a dataset with insufficient funds.
+     * Executes the workflow when there are insufficient funds for a dataset.
      * @param fakedata Whether the specified workflow is submitted using fake data.
-     * @returns A promise resolving to the dataset ID.
+     * @returns The dataset ID after completing the workflow.
      */
-    fundsNotEnoughDatasetWorkflow(fakedata?: boolean): Promise<number>
+    waitEscrowDatasetWorkflow(fakedata?: boolean): Promise<number>
 
     /**
      * Executes the workflow for a submitted proof dataset.

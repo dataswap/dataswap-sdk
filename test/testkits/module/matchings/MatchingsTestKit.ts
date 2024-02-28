@@ -56,7 +56,7 @@ export class CreateMatchingsMetadataTestKit extends MatchingsTestBase {
         try {
             const datasetId = this.matchingsHelper
                 .getDatasetsHelper()
-                .getWorkflowTargetId(DatasetState.DatasetApproved)
+                .getWorkflowTargetId(DatasetState.Approved)
             if (datasetId != 0) {
                 return 0
             }
@@ -77,22 +77,16 @@ export class CreateMatchingsMetadataTestKit extends MatchingsTestBase {
         try {
             const datasetId = this.matchingsHelper
                 .getDatasetsHelper()
-                .getWorkflowTargetId(DatasetState.DatasetApproved)
+                .getWorkflowTargetId(DatasetState.Approved)
             const datasetState = await handleEvmError(
                 this.contractsManager
                     .DatasetMetadataEvm()
                     .getDatasetState(datasetId)
             )
-            if (
-                Number(datasetState.data) ==
-                Number(DatasetState.DatasetApproved)
-            ) {
+            if (Number(datasetState.data) == Number(DatasetState.Approved)) {
                 this.matchingsHelper
                     .getDatasetsHelper()
-                    .updateWorkflowTargetState(
-                        datasetId,
-                        DatasetState.DatasetApproved
-                    )
+                    .updateWorkflowTargetState(datasetId, DatasetState.Approved)
             }
 
             const replicaIndex = BigInt(0)
@@ -153,7 +147,7 @@ export class PauseMatchingTestKit extends MatchingsTestBase {
 
             const datasetId = this.matchingsHelper
                 .getDatasetsHelper()
-                .getWorkflowTargetId(DatasetState.DatasetApproved)
+                .getWorkflowTargetId(DatasetState.Approved)
             return await this.matchingsHelper.inProgressMatchingWorkflow(
                 DataType.MappingFiles,
                 datasetId

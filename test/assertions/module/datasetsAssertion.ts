@@ -206,20 +206,6 @@ export class DatasetsAssertion implements IDatasetsAssertion {
     }
 
     /**
-     * Asserts the datasets proof against the expected datasets proof address.
-     * @param expectDatasetsProofAddress - The expected datasets proof address.
-     * @returns A Promise resolving if the assertion is successful.
-     */
-    async metadataDatasetsProofAssertion(
-        expectDatasetsProofAddress: string
-    ): Promise<void> {
-        const datasetsProof = await handleEvmError(
-            this.contractsManager.DatasetMetadataEvm().datasetsProof()
-        )
-        expect(expectDatasetsProofAddress).to.equal(datasetsProof.data)
-    }
-
-    /**
      * Asserts the count of datasets against the expected datasets count.
      * @param expectDatasetsCount - The expected count of datasets.
      * @returns A Promise resolving if the assertion is successful.
@@ -229,104 +215,6 @@ export class DatasetsAssertion implements IDatasetsAssertion {
             this.contractsManager.DatasetMetadataEvm().datasetsCount()
         )
         expect(expectDatasetsCount).to.equal(Number(datasetCount.data))
-    }
-
-    /**
-     * Approves a dataset and asserts its state against the expected state.
-     * @param caller - The caller that to send msg
-     * @param datasetId - The ID of the dataset to be approved.
-     * @param expectState - The expected dataset state after approval.
-     * @returns A Promise resolving if the assertion is successful.
-     */
-    async approveDatasetAssertion(
-        caller: string,
-        datasetId: number,
-        expectState: DatasetState
-    ): Promise<void> {
-        await this.governanceAddressAssertion(caller)
-        this.contractsManager
-            .DatasetMetadataEvm()
-            .getWallet()
-            .setDefault(caller)
-        await handleEvmError(
-            this.contractsManager.DatasetMetadataEvm().approveDataset(datasetId)
-        )
-
-        await this.getDatasetStateAssertion(datasetId, expectState)
-    }
-
-    /**
-     * Approves dataset metadata and asserts the dataset state against the expected state.
-     * @param caller - The caller that to send msg
-     * @param datasetId - The ID of the dataset metadata to be approved.
-     * @param expectState - The expected dataset state after approval.
-     * @returns A Promise resolving if the assertion is successful.
-     */
-    async approveDatasetMetadataAssertion(
-        caller: string,
-        datasetId: number,
-        expectState: DatasetState
-    ): Promise<void> {
-        await this.governanceAddressAssertion(caller)
-        this.contractsManager
-            .DatasetMetadataEvm()
-            .getWallet()
-            .setDefault(caller)
-        await handleEvmError(
-            this.contractsManager
-                .DatasetMetadataEvm()
-                .approveDatasetMetadata(datasetId)
-        )
-
-        await this.getDatasetStateAssertion(datasetId, expectState)
-    }
-
-    /**
-     * Rejects a dataset and asserts its state against the expected state.
-     * @param caller - The caller that to send msg
-     * @param datasetId - The ID of the dataset to be rejected.
-     * @param expectState - The expected dataset state after rejection.
-     * @returns A Promise resolving if the assertion is successful.
-     */
-    async rejectDatasetAssertion(
-        caller: string,
-        datasetId: number,
-        expectState: DatasetState
-    ): Promise<void> {
-        await this.governanceAddressAssertion(caller)
-        this.contractsManager
-            .DatasetMetadataEvm()
-            .getWallet()
-            .setDefault(caller)
-        await handleEvmError(
-            this.contractsManager.DatasetMetadataEvm().rejectDataset(datasetId)
-        )
-        await this.getDatasetStateAssertion(datasetId, expectState)
-    }
-
-    /**
-     * Rejects dataset metadata and asserts the dataset state against the expected state.
-     * @param caller - The caller that to send msg
-     * @param datasetId - The ID of the dataset metadata to be rejected.
-     * @param expectState - The expected dataset state after rejection.
-     * @returns A Promise resolving if the assertion is successful.
-     */
-    async rejectDatasetMetadataAssertion(
-        caller: string,
-        datasetId: number,
-        expectState: DatasetState
-    ): Promise<void> {
-        await this.governanceAddressAssertion(caller)
-        this.contractsManager
-            .DatasetMetadataEvm()
-            .getWallet()
-            .setDefault(caller)
-        await handleEvmError(
-            this.contractsManager
-                .DatasetMetadataEvm()
-                .rejectDatasetMetadata(datasetId)
-        )
-        await this.getDatasetStateAssertion(datasetId, expectState)
     }
 
     //DatasetsRequirement
@@ -391,24 +279,6 @@ export class DatasetsAssertion implements IDatasetsAssertion {
     }
 
     /**
-     * Asserts the pre-collateral requirements for a dataset against the expected pre-collateral amount.
-     * @param datasetId - The ID of the dataset.
-     * @param expectPreCollateral - The expected pre-collateral amount.
-     * @returns A Promise resolving if the assertion is successful.
-     */
-    async getDatasetPreCollateralRequirementsAssertion(
-        datasetId: number,
-        expectPreCollateral: bigint
-    ): Promise<void> {
-        const preCollateral = await handleEvmError(
-            this.contractsManager
-                .DatasetRequirementEvm()
-                .getDatasetPreCollateralRequirements(datasetId)
-        )
-        expect(BigInt(preCollateral.data)).to.be.equal(expectPreCollateral)
-    }
-
-    /**
      * Submits replica requirements for a dataset and asserts the requirements and amount against the expected values.
      * @param caller - The caller that to send msg
      * @param datasetId - The ID of the dataset.
@@ -438,7 +308,10 @@ export class DatasetsAssertion implements IDatasetsAssertion {
                         expectRequirements.regions,
                         expectRequirements.countrys,
                         expectRequirements.citys,
-                        expectAmount
+                        expectAmount,
+                        {
+                            value: "5000000000000000000",
+                        }
                     )
             )
             await this.getDatasetReplicasCountAssertion(
@@ -462,61 +335,12 @@ export class DatasetsAssertion implements IDatasetsAssertion {
                 BigInt(index),
                 expectRequirement
             )
-
-            const metadata = await handleEvmError(
-                this.contractsManager
-                    .DatasetMetadataEvm()
-                    .getDatasetMetadata(datasetId)
-            )
-
-            const metadataSize = BigInt(metadata.data.sizeInBytes)
-            const PER_TIB_BYTE = BigInt(1024 * 1024 * 1024 * 1024)
-            const PRICE_PER_BYTE = BigInt("1000000000000000000") / PER_TIB_BYTE
-            const expectPreCollateral =
-                metadataSize * BigInt(expectReplicasCount) * PRICE_PER_BYTE
-            await this.getDatasetPreCollateralRequirementsAssertion(
-                datasetId,
-                expectPreCollateral
-            )
         } catch (error) {
             throw error
         }
     }
 
     //DatasetsProof
-    /**
-     * Asserts the datasets challenge against the expected dataset challenge address.
-     * @param expectDatasetChallengeAddress - The expected dataset challenge address.
-     * @returns A Promise resolving if the assertion is successful.
-     */
-    async proofDatasetsChallengeAssertion(
-        expectDatasetChallengeAddress: string
-    ): Promise<void> {
-        const datasetsChallenge = await handleEvmError(
-            this.contractsManager.DatasetProofEvm().datasetsChallenge()
-        )
-        expect(expectDatasetChallengeAddress).to.be.equal(
-            datasetsChallenge.data
-        )
-    }
-
-    /**
-     * Asserts the append collateral for a dataset against the expected append collateral amount.
-     * @param datasetId - The ID of the dataset.
-     * @param expectAppendCollateral - The expected append collateral amount.
-     * @returns A Promise resolving if the assertion is successful.
-     */
-    async getDatasetAppendCollateralAssertion(
-        datasetId: number,
-        expectAppendCollateral: bigint
-    ): Promise<void> {
-        const appendCollateral = await handleEvmError(
-            this.contractsManager
-                .DatasetProofEvm()
-                .getDatasetAppendCollateral(datasetId)
-        )
-        expect(expectAppendCollateral).to.be.equal(appendCollateral.data)
-    }
 
     /**
      * Asserts the proof for a specific data type within a dataset against the expected proof.
@@ -598,60 +422,6 @@ export class DatasetsAssertion implements IDatasetsAssertion {
                 .getDatasetSize(datasetId, dataType)
         )
         expect(expectSize).to.be.equal(Number(size.data))
-    }
-
-    /**
-     * Asserts the collateral requirement for a dataset against the expected collateral amount.
-     * @param datasetId - The ID of the dataset.
-     * @param expectCollateral - The expected collateral amount required for the dataset.
-     * @returns A Promise resolving if the assertion is successful.
-     */
-    async getDatasetCollateralRequirementAssertion(
-        datasetId: number,
-        expectCollateral: bigint
-    ): Promise<void> {
-        const collateral = await handleEvmError(
-            this.contractsManager
-                .DatasetProofEvm()
-                .getDatasetCollateralRequirement(datasetId)
-        )
-        expect(expectCollateral).to.be.equal(BigInt(collateral.data))
-    }
-
-    /**
-     * Asserts the data auditor fees requirement for a dataset against the expected fees requirement.
-     * @param datasetId - The ID of the dataset.
-     * @param expectAuditorFeesRequirement - The expected data auditor fees requirement.
-     * @returns A Promise resolving if the assertion is successful.
-     */
-    async getDatasetDataAuditorFeesRequirementAssertion(
-        datasetId: number,
-        expectAuditorFeesRequirement: bigint
-    ): Promise<void> {
-        const fees = await handleEvmError(
-            this.contractsManager
-                .DatasetProofEvm()
-                .getDatasetDataAuditorFeesRequirement(datasetId)
-        )
-        expect(expectAuditorFeesRequirement).to.be.equal(fees.data)
-    }
-
-    /**
-     * Asserts the data auditor fees for a dataset against the expected fees.
-     * @param datasetId - The ID of the dataset.
-     * @param expectAuditorFees - The expected data auditor fees.
-     * @returns A Promise resolving if the assertion is successful.
-     */
-    async getDatasetDataAuditorFeesAssertion(
-        datasetId: number,
-        expectAuditorFees: bigint
-    ): Promise<void> {
-        const fees = await handleEvmError(
-            this.contractsManager
-                .DatasetProofEvm()
-                .getDatasetDataAuditorFees(datasetId)
-        )
-        expect(expectAuditorFees).to.be.equal(BigInt(fees.data))
     }
 
     /**
@@ -853,36 +623,25 @@ export class DatasetsAssertion implements IDatasetsAssertion {
             dataType,
             Number(datasetSize.data) + sum
         )
-        if (dataType == DataType.Source) {
-            let PER_TIB_BYTE = BigInt(1024 * 1024 * 1024 * 1024)
-            let PRICE_PER_BYTE = BigInt("1000000000000000000") / PER_TIB_BYTE
-            let replicasCount = await handleEvmError(
-                this.contractsManager
-                    .DatasetRequirementEvm()
-                    .getDatasetReplicasCount(datasetId)
-            )
-            let expectCollateralRequirement =
-                BigInt(Number(datasetSize.data) + sum) *
-                BigInt(replicasCount.data) *
-                PRICE_PER_BYTE
-            await this.getDatasetCollateralRequirementAssertion(
-                datasetId,
-                expectCollateralRequirement
-            )
-        }
-        let PRICE_PER_POINT = BigInt("1000000000000000000") / BigInt(1000)
-        let submissionCount = await handleEvmError(
-            this.contractsManager
-                .DatasetChallengeEvm()
-                .getChallengeSubmissionCount(datasetId)
-        )
-        let expectAuditorFees = BigInt(submissionCount.data) * PRICE_PER_POINT
-        await this.getDatasetDataAuditorFeesAssertion(
-            datasetId,
-            expectAuditorFees
-        )
     }
-
+    /**
+     * Completes the escrow process for the dataset with the specified ID and expected state.
+     * @param caller - The caller that to send msg
+     * @param datasetId The ID of the dataset.
+     * @param expectState The expected state of the dataset.
+     * @returns A promise that resolves when the escrow process is completed.
+     */
+    async completeEscrowAssersion(
+        caller: string,
+        datasetId: number,
+        expectState: DatasetState
+    ): Promise<void> {
+        this.contractsManager.DatasetProofEvm().getWallet().setDefault(caller)
+        await handleEvmError(
+            this.contractsManager.DatasetProofEvm().completeEscrow(datasetId)
+        )
+        await this.getDatasetStateAssertion(datasetId, expectState)
+    }
     /**
      * Asserts the completion status of a dataset's proof submission against the expected state.
      * @param caller - The caller that to send msg
@@ -914,44 +673,6 @@ export class DatasetsAssertion implements IDatasetsAssertion {
         await this.getDatasetStateAssertion(datasetId, expectState)
     }
 
-    /**
-     * Asserts the appending of funds to a dataset against the expected collateral and auditor fees.
-     * @param caller - The caller that to send msg
-     * @param datasetId - The ID of the dataset.
-     * @param expectDatacapCollateral - The expected datacap collateral.
-     * @param expectDataAuditorFees - The expected data auditor fees.
-     * @returns A Promise resolving if the assertion is successful.
-     */
-    async appendDatasetFundsAssertion(
-        caller: string,
-        datasetId: number,
-        expectDatacapCollateral: bigint,
-        expectDataAuditorFees: bigint
-    ): Promise<void> {
-        this.contractsManager.DatasetProofEvm().getWallet().setDefault(caller)
-        await this.getDatasetAppendCollateralAssertion(
-            datasetId,
-            expectDatacapCollateral
-        )
-        await this.getDatasetDataAuditorFeesRequirementAssertion(
-            datasetId,
-            expectDataAuditorFees
-        )
-        await handleEvmError(
-            this.contractsManager
-                .DatasetProofEvm()
-                .appendDatasetFunds(
-                    datasetId,
-                    expectDatacapCollateral,
-                    expectDataAuditorFees,
-                    {
-                        value: expectDatacapCollateral + expectDataAuditorFees,
-                    }
-                )
-        )
-        await this.getDatasetAppendCollateralAssertion(datasetId, BigInt(0))
-    }
-
     //DatasetsChallenge
 
     /**
@@ -974,6 +695,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
         expect(equal(expects.leaves, challengeProof.data.leaves)).to.be.true
         expect(equal(expects.paths, challengeProof.data.paths)).to.be.true
         expect(equal(expects.siblings, challengeProof.data.siblings)).to.be.true
+        expect(expects.randomSeed).to.be.equal(challengeProof.data.randomSeed)
     }
 
     /**
@@ -1065,7 +787,8 @@ export class DatasetsAssertion implements IDatasetsAssertion {
             .DatasetChallengeEvm()
             .getWallet()
             .setDefault(caller)
-        await handleEvmError(
+
+        const tx = await handleEvmError(
             this.contractsManager
                 .DatasetChallengeEvm()
                 .submitDatasetChallengeProofs(
@@ -1089,13 +812,16 @@ export class DatasetsAssertion implements IDatasetsAssertion {
                 leaves: leaves,
                 siblings: siblings,
                 paths: convertToStringArray(paths),
+                randomSeed: randomSeed,
             })
         )
 
+        await this.getDatasetStateAssertion(datasetId, DatasetState.Approved)
         await this.getDatasetChallengeProofsCountAssertion(
             datasetId,
             Number(count.data) + 1
         )
+
         await this.isDatasetChallengeProofDuplicateAssertion(
             datasetId,
             caller,

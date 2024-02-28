@@ -81,7 +81,7 @@ export class CreateMatchingTargetTestKit extends MatchingsTestBase {
             if (datasetId === 0) {
                 datasetId = this.matchingsHelper
                     .getDatasetsHelper()
-                    .getWorkflowTargetId(DatasetState.DatasetApproved)
+                    .getWorkflowTargetId(DatasetState.Approved)
             }
 
             // Creating target for the matching

@@ -19,7 +19,6 @@
  ********************************************************************************/
 
 import {
-    Evm,
     withCallMethod,
     withSendMethod,
     EvmOutput,
@@ -30,19 +29,13 @@ import { DataswapMessage } from "../../../../../message/types"
 import { DataType } from "../../../../../shared/types/dataType"
 import { EvmEx } from "../../../../../shared/types/evmEngineType"
 import { DatasetProofMetadata, DatasetProofs } from "../../types"
+import { DatasetState } from "../../../../../shared/types/datasetType"
+
 /**
  * Interface representing the Ethereum Virtual Machine (EVM) call structure for a dataset proof.
  * @interface
  */
 interface DatasetProofCallEvm {
-    datasetsChallenge(): Promise<EvmOutput<string>>
-    /**
-     * Get dataset need append collateral funds
-     * @param datasetId The ID of the dataset for which to get the append collateral.
-     * @returns The collateral that need to append to dataset.
-     */
-    getDatasetAppendCollateral(datasetId: number): Promise<EvmOutput<bigint>>
-
     /**
      *  Get dataset source Hashs
      * @param datasetId The ID of the dataset for which to get the proof.
@@ -88,29 +81,11 @@ interface DatasetProofCallEvm {
     ): Promise<EvmOutput<bigint>>
 
     /**
-     * Retrieves the collateral requirement for a dataset identified by its ID.
-     * @param datasetId - The ID of the dataset.
-     * @returns The collateral requirement for the dataset.
+     * Retrieves the complete height of the dataset proof.
+     * @param datasetId The ID of the dataset.
+     * @returns A promise resolving to the complete height of the dataset proof.
      */
-    getDatasetCollateralRequirement(
-        datasetId: number
-    ): Promise<EvmOutput<bigint>>
-
-    /**
-     * Retrieves the fees requirement for data auditors associated with a dataset identified by its ID.
-     * @param datasetId - The ID of the dataset.
-     * @returns The fees requirement for data auditors.
-     */
-    getDatasetDataAuditorFeesRequirement(
-        datasetId: number
-    ): Promise<EvmOutput<bigint>>
-
-    /**
-     * Retrieves the fees paid to data auditors for a dataset identified by its ID.
-     * @param datasetId - The ID of the dataset.
-     * @returns The fees paid to data auditors for the dataset.
-     */
-    getDatasetDataAuditorFees(datasetId: number): Promise<EvmOutput<bigint>>
+    getDatasetProofCompleteHeight(datasetId: number): Promise<EvmOutput<number>>
 
     /**
      * Checks if a specific car is present in a dataset identified by its ID.
@@ -155,6 +130,30 @@ interface DatasetProofCallEvm {
         datasetId: number,
         submitter: string
     ): Promise<EvmOutput<boolean>>
+
+    /**
+     * Checks if the associated dataset with the specified ID contains the given car ID.
+     * @param datasetId The ID of the associated dataset.
+     * @param carId The ID of the car to check.
+     * @returns A promise resolving to true if the associated dataset contains the car, otherwise false.
+     */
+    isAssociatedDatasetContainsCar(
+        datasetId: number,
+        carId: number
+    ): Promise<EvmOutput<boolean>>
+
+    /**
+     * Checks if the proof submission for the dataset with the specified ID has timed out.
+     * @param datasetId The ID of the dataset to check.
+     * @returns A promise resolving to true if the proof submission has timed out, otherwise false.
+     */
+    isDatasetProofTimeout(datasetId: number): Promise<EvmOutput<boolean>>
+
+    /**
+     * Retrieves the roles associated with the current user.
+     * @returns A promise that resolves with the roles of the current user.
+     */
+    roles(): Promise<EvmOutput<string>>
 }
 
 /**
@@ -162,10 +161,6 @@ interface DatasetProofCallEvm {
  * @interface
  */
 interface DatasetProofSendEvm {
-    initDependencies(
-        datasetsChallenge: string,
-        options?: EvmTransactionOptions
-    ): Promise<EvmOutput<void>>
     /**
      * Submit proof root for a dataset
      * @param datasetId The ID of the dataset for which to submit proof.
@@ -203,6 +198,25 @@ interface DatasetProofSendEvm {
     ): Promise<EvmOutput<void>>
 
     /**
+     * Submits dataset proof with associated car IDs.
+     * @param datasetId The ID of the dataset.
+     * @param dataType The type of data being submitted.
+     * @param leavesStarts The start indices of the leaves.
+     * @param leavesEnds The end indices of the leaves.
+     * @param leafIndex The index of the leaf.
+     * @param completed Indicates whether the submission is completed.
+     * @returns A promise resolving to void.
+     */
+    submitDatasetProofWithCarIds(
+        datasetId: number,
+        dataType: DataType,
+        leavesStarts: number[],
+        leavesEnds: number[],
+        leafIndex: number,
+        completed: boolean
+    ): Promise<EvmOutput<void>>
+
+    /**
      *  Submit proof completed for a dataset.
      * @param datasetId The ID of the dataset for which to submit proof completed.
      * @param options The options of transaction.
@@ -210,21 +224,14 @@ interface DatasetProofSendEvm {
     submitDatasetProofCompleted(
         datasetId: number,
         options?: EvmTransactionOptions
-    ): Promise<EvmOutput<void>>
+    ): Promise<EvmOutput<DatasetState>>
 
     /**
-     * Append dataset escrow funds. include datacap collateral and dataset auditor calculate fees
-     * @param datasetId The ID of the dataset for which to append funds.
-     * @param datacapCollateral The collateral for datacap.
-     * @param dataAuditorFees The fees for dataset'auditor.
-     * @param options The options of transaction.
+     * Completes escrow for a dataset.
+     * @param datasetId The ID of the dataset.
+     * @returns A promise resolving to void.
      */
-    appendDatasetFunds(
-        datasetId: number,
-        datacapCollateral: bigint,
-        dataAuditorFees: bigint,
-        options?: EvmTransactionOptions
-    ): Promise<EvmOutput<void>>
+    completeEscrow(datasetId: number): Promise<EvmOutput<void>>
 }
 /**
  * Combined interface for EVM calls and transactions related to DatasetProof contract.
@@ -236,26 +243,25 @@ export interface DatasetProofOriginEvm
  * Implementation of DatasetProofOriginEvm with specific EVM methods.
  */
 @withCallMethod([
-    "datasetsChallenge",
-    "getDatasetAppendCollateral",
     "getDatasetProof",
     "getDatasetProofCount",
     "getDatasetProofSubmitter",
     "getDatasetSize",
-    "getDatasetCollateralRequirement",
-    "getDatasetDataAuditorFeesRequirement",
-    "getDatasetDataAuditorFees",
+    "getDatasetProofCompleteHeight",
     "isDatasetProofallCompleted",
     "isDatasetContainsCar",
     "isDatasetContainsCars",
     "isDatasetProofSubmitter",
+    "isAssociatedDatasetContainsCar",
+    "isDatasetProofTimeout",
+    "roles",
 ])
 @withSendMethod([
-    "initDependencies",
     "submitDatasetProofRoot",
     "submitDatasetProof",
+    "submitDatasetProofWithCarIds",
     "submitDatasetProofCompleted",
-    "appendDatasetFunds",
+    "completeEscrow",
 ])
 export class DatasetProofOriginEvm extends EvmEx {}
 
@@ -277,6 +283,7 @@ export class DatasetProofEvm extends DatasetProofOriginEvm {
                 result.params.valid = true
                 result.params.datasetSize = BigInt(0)
             case "submitDatasetProof":
+            case "submitDatasetProofWithCarIds":
                 result.params.dataType = Number(
                     result.params.dataType
                 ) as DataType
@@ -284,12 +291,10 @@ export class DatasetProofEvm extends DatasetProofOriginEvm {
                 result.params.datasetId = result.datasetId
 
                 break
+            case "completeEscrow":
             case "submitDatasetProofCompleted":
-            case "appendDatasetFunds":
                 result.datasetId = Number(result.params.datasetId)
                 result.params.datasetId = result.datasetId
-                break
-            case "initDependencies":
                 break
             default:
                 console.log("method:", decodeRes.data!.method)

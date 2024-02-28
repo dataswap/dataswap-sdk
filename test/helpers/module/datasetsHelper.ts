@@ -50,26 +50,57 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
     }
     /**
      * Workflow for submitting dataset metadata.
+     * @returns A Promise that resolves with the dataset ID.
+     */
+    async metadataSubmittedDatasetWorkflow(): Promise<number> {
+        try {
+            const datasetMetadata = this.generator.generateDatasetMetadata()
+            const clientId = 101
+
+            const datasetId =
+                await this.assertion.submitDatasetMetadataAssertion(
+                    process.env.DATASWAP_METADATASUBMITTER as string,
+                    clientId,
+                    datasetMetadata
+                )
+
+            await this.assertion.getDatasetStateAssertion(
+                datasetId,
+                DatasetState.MetadataSubmitted
+            )
+
+            // Update workflow target state and return dataset ID
+            this.updateWorkflowTargetState(
+                datasetId,
+                Number(DatasetState.MetadataSubmitted)
+            )
+            return datasetId
+        } catch (error) {
+            throw error
+        }
+    }
+
+    /**
+     * Workflow for submitting dataset requirements.
      * @param replicasCount The number of replicas for the dataset.
      * @param elementCountInReplica The element count in each replica.
      * @param duplicateIndex The duplicate index (optional).
      * @param duplicateCount The duplicate count (optional).
      * @returns A Promise that resolves with the dataset ID.
      */
-    async metadataSubmittedDatasetWorkflow(
+    async requirementsSubmittedDatasetWorkflow(
         replicasCount: number,
         elementCountInReplica: number,
         duplicateIndex?: number,
         duplicateCount?: number
     ): Promise<number> {
         try {
-            let datasetMetadata = this.generator.generateDatasetMetadata()
-            let clientId = 101
-
-            let datasetId = await this.assertion.submitDatasetMetadataAssertion(
-                process.env.DATASWAP_METADATASUBMITTER as string,
-                clientId,
-                datasetMetadata
+            // Completes the workflow for MetadataApproved state
+            let datasetId = await this.completeDependentWorkflow(
+                DatasetState.RequirementSubmitted,
+                async (): Promise<number> => {
+                    return await this.metadataSubmittedDatasetWorkflow()
+                }
             )
 
             // Generate dataset requirements
@@ -90,80 +121,15 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
 
             await this.assertion.getDatasetStateAssertion(
                 datasetId,
-                DatasetState.MetadataSubmitted
+                DatasetState.RequirementSubmitted
             )
 
             // Update workflow target state and return dataset ID
             this.updateWorkflowTargetState(
                 datasetId,
-                Number(DatasetState.MetadataSubmitted)
+                Number(DatasetState.RequirementSubmitted)
             )
             return datasetId
-        } catch (error) {
-            throw error
-        }
-    }
-
-    /**
-     * Executes the workflow for an approved dataset metadata.
-     * @returns The dataset ID after completing the workflow.
-     */
-    async metadataApprovedDatasetWorkflow(): Promise<number> {
-        try {
-            // Completes the workflow for MetadataSubmitted state
-            let datasetId = await this.completeDependentWorkflow(
-                Number(DatasetState.MetadataSubmitted),
-                async (): Promise<number> => {
-                    return await this.metadataSubmittedDatasetWorkflow(5, 3)
-                }
-            )
-
-            // Approves dataset metadata using assertion
-            await this.assertion.approveDatasetMetadataAssertion(
-                process.env.DATASWAP_GOVERNANCE as string,
-                datasetId,
-                DatasetState.MetadataApproved
-            )
-            // Updates the dataset state to MetadataApproved
-            this.updateWorkflowTargetState(
-                datasetId,
-                DatasetState.MetadataApproved
-            )
-
-            return datasetId // Returns the dataset ID
-        } catch (error) {
-            throw error
-        }
-    }
-
-    /**
-     * Executes the workflow for rejected dataset metadata.
-     * @returns The dataset ID after completing the workflow.
-     */
-    async metadataRejectedDatasetWorkflow(): Promise<number> {
-        try {
-            // Completes the workflow for MetadataSubmitted state
-            let datasetId = await this.completeDependentWorkflow(
-                DatasetState.MetadataSubmitted,
-                async (): Promise<number> => {
-                    return await this.metadataSubmittedDatasetWorkflow(5, 3)
-                }
-            )
-
-            // Rejects dataset metadata using assertion
-            await this.assertion.rejectDatasetMetadataAssertion(
-                process.env.DATASWAP_GOVERNANCE as string,
-                datasetId,
-                DatasetState.MetadataRejected
-            )
-
-            // Updates the dataset state to MetadataRejected
-            this.updateWorkflowTargetState(
-                datasetId,
-                Number(DatasetState.MetadataRejected)
-            )
-
-            return datasetId // Returns the dataset ID
         } catch (error) {
             throw error
         }
@@ -174,13 +140,13 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
      * @param fakedata Whether the specified workflow is submitted using fake data.
      * @returns The dataset ID after completing the workflow.
      */
-    async fundsNotEnoughDatasetWorkflow(fakedata?: boolean): Promise<number> {
+    async waitEscrowDatasetWorkflow(fakedata?: boolean): Promise<number> {
         try {
             // Completes the workflow for MetadataApproved state
             let datasetId = await this.completeDependentWorkflow(
-                DatasetState.MetadataApproved,
+                DatasetState.RequirementSubmitted,
                 async (): Promise<number> => {
-                    return await this.metadataApprovedDatasetWorkflow()
+                    return await this.requirementsSubmittedDatasetWorkflow(5, 3)
                 }
             )
 
@@ -249,7 +215,7 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
             await this.assertion.submitDatasetProofCompletedAssertion(
                 process.env.DATASWAP_PROOFSUBMITTER as string,
                 datasetId,
-                DatasetState.FundsNotEnough
+                DatasetState.WaitEscrow
             )
 
             this.generator.setProofRoot(
@@ -260,7 +226,7 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
             // Updates the dataset state to FundsNotEnough
             this.updateWorkflowTargetState(
                 datasetId,
-                Number(DatasetState.FundsNotEnough)
+                Number(DatasetState.WaitEscrow)
             )
             return datasetId // Returns the dataset ID
         } catch (error) {
@@ -277,39 +243,21 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
         try {
             // Completes the workflow for FundsNotEnough state
             let datasetId = await this.completeDependentWorkflow(
-                DatasetState.FundsNotEnough,
+                DatasetState.WaitEscrow,
                 async (): Promise<number> => {
-                    return await this.fundsNotEnoughDatasetWorkflow(fakedata)
+                    return await this.waitEscrowDatasetWorkflow(fakedata)
                 }
-            )
-            let datacapCollateral = await handleEvmError(
-                this.contractsManager
-                    .DatasetProofEvm()
-                    .getDatasetAppendCollateral(datasetId)
-            )
-            let auditorFees = await handleEvmError(
-                this.contractsManager
-                    .DatasetProofEvm()
-                    .getDatasetDataAuditorFeesRequirement(datasetId)
-            )
-
-            // Setting wallet and appending dataset funds
-            await this.assertion.appendDatasetFundsAssertion(
-                process.env.DATASWAP_METADATASUBMITTER as string,
-                datasetId,
-                BigInt(datacapCollateral.data),
-                BigInt(auditorFees.data)
             )
 
             // Setting wallet and submitting dataset proof as completed
             await this.assertion.submitDatasetProofCompletedAssertion(
                 process.env.DATASWAP_PROOFSUBMITTER as string,
                 datasetId,
-                DatasetState.DatasetProofSubmitted
+                DatasetState.ProofSubmitted
             )
             this.updateWorkflowTargetState(
                 datasetId,
-                Number(DatasetState.DatasetProofSubmitted)
+                Number(DatasetState.ProofSubmitted)
             )
             return datasetId // Returns the dataset ID
         } catch (error) {
@@ -325,7 +273,7 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
         try {
             // Completes the workflow for DatasetProofSubmitted state
             let datasetId = await this.completeDependentWorkflow(
-                DatasetState.DatasetProofSubmitted,
+                DatasetState.ProofSubmitted,
                 async (): Promise<number> => {
                     return await this.proofSubmittedDatasetWorkflow()
                 }
@@ -349,16 +297,9 @@ export class DatasetsHelper extends BasicHelper implements IDatasetsHelper {
                 paths
             )
 
-            // Approving the dataset
-            await this.assertion.approveDatasetAssertion(
-                process.env.DATASWAP_GOVERNANCE as string,
-                datasetId,
-                DatasetState.DatasetApproved
-            )
-
             this.updateWorkflowTargetState(
                 datasetId,
-                Number(DatasetState.DatasetApproved)
+                Number(DatasetState.Approved)
             )
 
             return datasetId // Returns the dataset ID

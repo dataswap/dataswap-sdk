@@ -23,19 +23,16 @@ import { DatasetState } from "../../../../src/shared/types/datasetType"
 import { IContractsManager } from "../../../interfaces/setup/IContractsManater"
 import { IDatasetsHelper } from "../../../interfaces/helper/module/IDatasetshelper"
 import { IGenerator } from "../../../interfaces/setup/IGenerator"
-import { SubmitMetadataTestKit } from "./DatasetsMetadataTestKit"
 import { IDatasetsAssertion } from "../../../interfaces/assertions/module/IDatasetsAssertion"
-import { DatasetsHelper } from "../../../helpers/module/datasetsHelper"
+import { DataType } from "../../../../src/shared/types/dataType"
 
 /**
- * Represents a test kit for submitting requirement successfully.
+ * Represents a test kit for submitting dataset challenge.
  * Extends from DatasetsTestBase.
  */
-export class SubmitRequirementTestKit extends DatasetsTestBase {
-    private dependentTestKit: SubmitMetadataTestKit
-
+export class SubmitDatasetChallengeTestKit extends DatasetsTestBase {
     /**
-     * Constructor for SubmitRequirementSuccessTestKit.
+     * Constructor for SubmitDatasetChallengeTestKit.
      * @param _assertion - The assertion instance.
      * @param _generator - The generator instance.
      * @param _contractsManager - The contracts manager instance.
@@ -48,55 +45,54 @@ export class SubmitRequirementTestKit extends DatasetsTestBase {
         _datasetHelper?: IDatasetsHelper
     ) {
         super(_assertion, _generator, _contractsManager, _datasetHelper)
-        if (!_datasetHelper) {
-            _datasetHelper = new DatasetsHelper(_generator, _contractsManager)
-        }
-
-        this.dependentTestKit = new SubmitMetadataTestKit(
-            _assertion,
-            _generator,
-            _contractsManager,
-            _datasetHelper
-        )
     }
 
     /**
-     * Optional setup before the action execution.
+     * Optional function executed before the action.
      * @returns Promise resolving to a number.
      */
     async optionalBefore(): Promise<number> {
         try {
-            return await this.dependentTestKit.run()
+            const datasetId = this.datasetsHelper.getWorkflowTargetId(
+                DatasetState.ProofSubmitted
+            )
+            if (datasetId != 0) {
+                return datasetId
+            }
+            return await this.datasetsHelper.proofSubmittedDatasetWorkflow()
         } catch (error) {
             throw error
         }
     }
 
     /**
-     * Action function to submit dataset requirements.
+     * Action function to execute the approval of dataset.
      * @param datasetId - The ID of the dataset.
      * @returns Promise resolving to a number.
      */
     async action(datasetId: number): Promise<number> {
         try {
-            // Generate dataset requirements
-            const requirements = this.generator.generateDatasetRequirements(
-                5,
-                3
-            )
-            await this.assertion.submitDatasetReplicaRequirementsAssertion(
-                process.env.DATASWAP_METADATASUBMITTER as string,
+            // Getting the root hash and generating challenge proof
+            const rootHash = this.generator.getProofRoot(
                 datasetId,
-                requirements,
-                BigInt(0)
+                DataType.Source
             )
-            await this.assertion.getDatasetStateAssertion(
+            const [randomSeed, leaves, siblings, paths] =
+                this.generator.generateDatasetChallengeProof(rootHash!)
+
+            // Submitting challenge proofs
+            await this.assertion.submitDatasetChallengeProofsAssertion(
+                process.env.DATASWAP_DATASETAUDITOR as string,
                 datasetId,
-                DatasetState.RequirementSubmitted
+                randomSeed,
+                leaves,
+                siblings,
+                paths
             )
+
             this.datasetsHelper.updateWorkflowTargetState(
                 datasetId,
-                DatasetState.RequirementSubmitted
+                Number(DatasetState.Approved)
             )
             return datasetId
         } catch (error) {

@@ -17,16 +17,13 @@
  *  See the MIT License or the Apache License for the specific language governing permissions and
  *  limitations under the respective licenses.
  ********************************************************************************/
+import { Entity } from "@unipackage/ddd"
 
-/**
- * Enum representing the state of a dataset.
- */
-export enum DatasetState {
-    None, // No specific state.
-    MetadataSubmitted, // Metadata submitted.
-    RequirementSubmitted, // Requirements submitted.
-    WaitEscrow, // Waiting for SC to complete escrow.
-    ProofSubmitted, // Proof of dataset submitted.
-    Approved, // Dataset has been approved.
-    Rejected, // Dataset has been rejected.
+export interface BasicStatisticsInfo {
+    total: number
+    success: number
+    ongoing: number
+    failed: number
 }
+
+export class BasicStatisticsInfo extends Entity<BasicStatisticsInfo> {}
