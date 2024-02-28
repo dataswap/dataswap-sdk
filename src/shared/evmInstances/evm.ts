@@ -26,10 +26,8 @@ import { MatchingMetadataEvm } from "../../module/matching/metadata/repo/evm"
 import { MatchingTargetEvm } from "../../module/matching/target/repo/evm"
 import { MatchingBidsEvm } from "../../module/matching/bids/repo/evm"
 import { StoragesEvm } from "../../module/storages/repo/evm"
-import { DatacapsEvm } from "../../module/datacaps/repo/evm"
 import { FilplusEvm } from "../../core/filplus/repo/evm"
 import { FilecoinEvm } from "../../core/filecoin/repo/evm"
-import { EscrowEvm } from "../../core/escrow/repo/evm"
 import { RolesEvm } from "../../core/roles/repo/evm"
 
 import carstoreAbi from "@dataswapcore/contracts/abi/v0.8/Carstore.json"
@@ -41,8 +39,6 @@ import matchingsAbi from "@dataswapcore/contracts/abi/v0.8/Matchings.json"
 import matchingsTargetAbi from "@dataswapcore/contracts/abi/v0.8/MatchingsTarget.json"
 import matchingsBidsAbi from "@dataswapcore/contracts/abi/v0.8/MatchingsBids.json"
 import storagesAbi from "@dataswapcore/contracts/abi/v0.8/Storages.json"
-import datacapsAbi from "@dataswapcore/contracts/abi/v0.8/Datacaps.json"
-import escrowAbi from "@dataswapcore/contracts/abi/v0.8/Escrow.json"
 import filplusAbi from "@dataswapcore/contracts/abi/v0.8/Filplus.json"
 import filecoinAbi from "@dataswapcore/contracts/abi/v0.8/Filecoin.json"
 import rolesAbi from "@dataswapcore/contracts/abi/v0.8/Roles.json"
@@ -303,62 +299,6 @@ export const storagesEvm_Main = new StoragesEvm(
         network: MAIN_NETWORK,
         dataswapName: DATASWAPNAME,
     }).StoragesAddress,
-    providerUrl(MAIN_NETWORK)
-)
-
-/**
- * Creates a new instance of DatacapsEvm for the Calibration network.
- *
- * @constant datacapsEvm_Calibration - The DatacapsEvm instance for the Calibration network.
- */
-export const datacapsEvm_Calibration = new DatacapsEvm(
-    datacapsAbi,
-    contractAddresses({
-        network: CALIBRATION_NETWORK,
-        dataswapName: DATASWAPNAME,
-    }).DatacapsAddress,
-    providerUrl(CALIBRATION_NETWORK)
-)
-
-/**
- * Creates a new instance of DatacapsEvm for the Main network.
- *
- * @constant datacapsEvm_Main - The DatacapsEvm instance for the Main network.
- */
-export const datacapsEvm_Main = new DatacapsEvm(
-    datacapsAbi,
-    contractAddresses({
-        network: MAIN_NETWORK,
-        dataswapName: DATASWAPNAME,
-    }).DatacapsAddress,
-    providerUrl(MAIN_NETWORK)
-)
-
-/**
- * Creates a new instance of EscrowEvm for the Calibration network.
- *
- * @constant escrowEvm_Calibration - The EscrowEvm instance for the Calibration network.
- */
-export const escrowEvm_Calibration = new EscrowEvm(
-    escrowAbi,
-    contractAddresses({
-        network: CALIBRATION_NETWORK,
-        dataswapName: DATASWAPNAME,
-    }).EscrowAddress,
-    providerUrl(CALIBRATION_NETWORK)
-)
-
-/**
- * Creates a new instance of EscrowEvm for the Main network.
- *
- * @constant escrowEvm_Main - The EscrowEvm instance for the Main network.
- */
-export const escrowEvm_Main = new EscrowEvm(
-    escrowAbi,
-    contractAddresses({
-        network: MAIN_NETWORK,
-        dataswapName: DATASWAPNAME,
-    }).EscrowAddress,
     providerUrl(MAIN_NETWORK)
 )
 

@@ -18,33 +18,26 @@
  *  limitations under the respective licenses.
  ********************************************************************************/
 
-import { Entity } from "@unipackage/ddd"
-import { ValueFields } from "@unipackage/utils"
-
 /**
- * Represents a Fund entity.
- * @interface
+ * Enum representing different types of contracts.
  */
-export interface Fund {
-    total: bigint // Total amount in fund account
-    locked: bigint // Lock amount in fund account for payment beneficiaries
-    collateraled: bigint // Collateral amount in fund account for withdraw and punishment
-    burned: bigint // burned amount in fund account
-    createdBlockNumber: number // Fund account created block number
-}
-
-/**
- * Represents a Fund entity with default values.
- * @class
- */
-export class Fund extends Entity<Fund> {
-    constructor(data?: ValueFields<Fund>) {
-        super({
-            total: data?.total || BigInt(0),
-            locked: data?.locked || BigInt(0),
-            collateraled: data?.collateraled || BigInt(0),
-            burned: data?.burned || BigInt(0),
-            createdBlockNumber: data?.createdBlockNumber || 0,
-        })
-    }
+export enum ContractType {
+    Filplus, // Filplus contract
+    Finance, // Finance contract
+    Filecoin, // Filecoin contract
+    Carstore, // Carstore contract
+    Storages, // Storages contract
+    MerkleUtils, // MerkleUtils contract
+    Datasets, // Datasets contract
+    DatasetsProof, // DatasetsProof contract
+    DatasetsChallenge, // DatasetsChallenge contract
+    DatasetsRequirement, // DatasetsRequirement contract
+    Matchings, // Matchings contract
+    MatchingsBids, // MatchingsBids contract
+    MatchingsTarget, // MatchingsTarget contract
+    EscrowDataTradingFee, // EscrowDataTradingFee contract
+    EscrowDatacapChunkLandCollateral, // EscrowDatacapChunkLandCollateral contract
+    EscrowDatacapCollateral, // EscrowDatacapCollateral contract
+    EscrowChallengeCommission, // EscrowChallengeCommission contract
+    Roles,
 }

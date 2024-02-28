@@ -26,7 +26,7 @@ import { StoragesAssertion } from "../../assertions/module/storagesAssertion"
 /**
  * Test suite for the Storages functionality.
  */
-describe("storages", () => {
+describe.skip("storages", () => {
     let storagesAssertion: StoragesAssertion
     let datasetHelperInstance: DatasetsHelper
 

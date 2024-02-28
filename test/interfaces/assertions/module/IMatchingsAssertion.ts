@@ -193,19 +193,6 @@ export interface IMatchingsAssertion {
     ): Promise<void>
 
     /**
-     * Asserts the dependencies of the target.
-     * @param caller - The caller of contract
-     * @param expectMatchingsAddress - The expected matchings address.
-     * @param expectMatchingsBidsAddress - The expected matchings bids address.
-     * @returns A Promise resolving if the assertion is successful.
-     */
-    targetInitDependenciesAssertion(
-        caller: string,
-        expectMatchingsAddress: string,
-        expectMatchingsBidsAddress: string
-    ): Promise<void>
-
-    /**
      * Creates a target and asserts the expectations.
      * @param caller - The caller of contract
      * @param matchingId - The ID of the matching.
@@ -328,19 +315,6 @@ export interface IMatchingsAssertion {
         matchingId: number,
         bidder: string,
         expectRet: boolean
-    ): Promise<void>
-
-    /**
-     * Asserts the initialization dependencies for bids against the expected addresses.
-     * @param caller - The caller of contract
-     * @param expectMatchingsAddresss - The expected matchings address.
-     * @param expectMatchingsTargetAddresss - The expected matchings target address.
-     * @returns A Promise resolving if the assertion is successful.
-     */
-    bidsInitDependenciesAssertion(
-        caller: string,
-        expectMatchingsAddresss: string,
-        expectMatchingsTargetAddresss: string
     ): Promise<void>
 
     /**

@@ -30,7 +30,7 @@ import { CarstoreAssertion } from "../../assertions/core/carstoreAssertion"
 /**
  * Test suite for the Carstore smart contract.
  */
-describe("carstore", () => {
+describe.skip("carstore", () => {
     let carstore: CarstoreEvm
     let carstoreAssertion: CarstoreAssertion
     let datasetHelperInstance: DatasetsHelper

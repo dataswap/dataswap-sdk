@@ -28,8 +28,9 @@ import { DatasetsHelper } from "../../helpers/module/datasetsHelper"
 
 /**
  * Test suite for the DatasetsProof functionality.
+ * //TODO:reopen when abi 0.4.0 merged
  */
-describe("datasetsProof", async () => {
+describe.skip("datasetsProof", async () => {
     /**
      * Setup before running the test suite.
      */
@@ -43,16 +44,6 @@ describe("datasetsProof", async () => {
         )
         this.sharedData.datasetsAssertion = new DatasetsAssertion(
             this.sharedData.contractsManager
-        )
-    })
-
-    /**
-     * Tests assert dependencies addressed of DatasetsProof.
-     */
-    it("assertDependenciesAdresses", async function () {
-        await this.sharedData.datasetsAssertion.proofInitDependenciesAssertion(
-            process.env.DATASWAP_GOVERNANCE as string,
-            process.env.DatasetsChallengeAddress as string
         )
     })
 

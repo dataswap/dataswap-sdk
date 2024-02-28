@@ -232,29 +232,6 @@ export class DatasetsAssertion implements IDatasetsAssertion {
     }
 
     /**
-     * Asserts the initialization dependencies for datasets against the expected datasets proof address.
-     * @param caller - The caller that to send msg
-     * @param expectDatasetsProof - The expected datasets proof address.
-     * @returns A Promise resolving if the assertion is successful.
-     */
-    async metadataInitDependenciesAssertion(
-        caller: string,
-        expectDatasetsProof: string
-    ): Promise<void> {
-        await this.governanceAddressAssertion(caller)
-        this.contractsManager
-            .DatasetMetadataEvm()
-            .getWallet()
-            .setDefault(caller)
-        await handleEvmError(
-            this.contractsManager
-                .DatasetMetadataEvm()
-                .initDependencies(expectDatasetsProof)
-        )
-        await this.metadataDatasetsProofAssertion(expectDatasetsProof)
-    }
-
-    /**
      * Approves a dataset and asserts its state against the expected state.
      * @param caller - The caller that to send msg
      * @param datasetId - The ID of the dataset to be approved.
@@ -755,25 +732,6 @@ export class DatasetsAssertion implements IDatasetsAssertion {
                 .isDatasetProofSubmitter(datasetId, submitter)
         )
         expect(expectRet).to.be.equal(ret.data)
-    }
-
-    /**
-     * Initializes dependencies for dataset proofs and asserts against the expected datasets challenge address.
-     * @param caller - The caller that to send msg
-     * @param expectDatasetsChallenge - The expected datasets challenge address.
-     * @returns A Promise resolving if the assertion is successful.
-     */
-    async proofInitDependenciesAssertion(
-        caller: string,
-        expectDatasetsChallenge: string
-    ): Promise<void> {
-        this.contractsManager.DatasetProofEvm().getWallet().setDefault(caller)
-        await handleEvmError(
-            this.contractsManager
-                .DatasetProofEvm()
-                .initDependencies(expectDatasetsChallenge)
-        )
-        await this.proofDatasetsChallengeAssertion(expectDatasetsChallenge)
     }
 
     /**
