@@ -23,6 +23,7 @@ import { DatasetMetadataEvm } from "../../../src/module/dataset/metadata/repo/ev
 import { DatasetChallengeEvm } from "../../../src/module/dataset/challenge/repo/evm"
 import { DatasetProofEvm } from "../../../src/module/dataset/proof/repo/evm"
 import { DatasetRequirementEvm } from "../../../src/module/dataset/requirement/repo/evm"
+import { FinanceEvm } from "../../../src/core/finance/repo/evm"
 import { FilecoinEvm } from "../../../src/core/filecoin/repo/evm"
 import { FilplusEvm } from "../../../src/core/filplus/repo/evm"
 import { MatchingMetadataEvm } from "../../../src/module/matching/metadata/repo/evm"
@@ -39,9 +40,10 @@ export interface IContractsManager {
     CarstoreEvm(): CarstoreEvm
 
     /**
-     * Returns the DatacapsEvm instance.
-     * @returns An instance of DatacapsEvm.
+     * Returns the FinanceEvm instance.
+     * @returns An instance of FinanceEvm.
      */
+    FinanceEvm(): FinanceEvm
 
     /**
      * Returns the DatasetMetadataEvm instance.
