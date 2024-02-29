@@ -36,6 +36,13 @@ export enum EscrowType {
 }
 
 /**
+ * Enum representing the ReleaseType details.
+ */
+export enum ReleaseType {
+    Linear,
+}
+
+/**
  * Enum representing the types of escrow operations.
  */
 export enum FinanceOperateType {

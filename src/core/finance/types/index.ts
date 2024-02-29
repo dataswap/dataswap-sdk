@@ -21,6 +21,8 @@
 import { Entity } from "@unipackage/ddd"
 import { ValueFields } from "@unipackage/utils"
 
+import { ReleaseType } from "../../../shared/types/financeType"
+
 /**
  * Represents a AccountOverview entity.
  * @interface
@@ -53,6 +55,16 @@ export interface AccountEscrow {
     expenditure: bigint // Expenditure amount.
     current: bigint // Current available amount.
     total: bigint // Total amount.
+}
+
+/**
+ * Represents a ReleaseRule entity.
+ * @interface
+ */
+export interface ReleaseRule {
+    releaseType: ReleaseType
+    delayBlocks: bigint
+    durationBlocks: bigint
 }
 
 /**
@@ -97,6 +109,20 @@ export class AccountEscrow extends Entity<AccountEscrow> {
             expenditure: data?.expenditure || BigInt(0),
             current: data?.current || BigInt(0),
             total: data?.total || BigInt(0),
+        })
+    }
+}
+
+/**
+ * Represents a ReleaseRule entity with default values.
+ * @class
+ */
+export class ReleaseRule extends Entity<ReleaseRule> {
+    constructor(data?: ValueFields<ReleaseRule>) {
+        super({
+            releaseType: data?.releaseType || ReleaseType.Linear,
+            delayBlocks: data?.delayBlocks || BigInt(0),
+            durationBlocks: data?.durationBlocks || BigInt(0),
         })
     }
 }

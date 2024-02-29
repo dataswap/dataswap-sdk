@@ -22,6 +22,9 @@ import { describe } from "mocha"
 import { FilplusAssertion } from "../../assertions/core/filplusAssertion"
 import { getContractsManager, getGenerator } from "../../fixtures"
 
+import { ReleaseRule } from "../../../src/core/finance/types"
+import { EscrowType, ReleaseType } from "../../../src/shared/types/financeType"
+
 /**
  * Test suite for the Filplus functionality.
  */
@@ -37,6 +40,173 @@ describe("filplus", () => {
         this.sharedData.contractsManager = getContractsManager()
         let filplus = this.sharedData.contractsManager.FilplusEvm()
         filplusAssertion = new FilplusAssertion(filplus)
+    })
+
+    /**
+     * Test case for get the burn address.
+     */
+    it("getBurnAddressAssertion", async function () {
+        await filplusAssertion.getBurnAddressAssertion(
+            "0xff00000000000000000000000000000000000063"
+        )
+    })
+
+    /**
+     * Test case for setting the income release rule.
+     */
+    it("setIncomeReleaseRule", async function () {
+        await filplusAssertion.setIncomeReleaseRuleAssertion(
+            EscrowType.EscrowChallengeAuditCollateral,
+            ReleaseType.Linear,
+            BigInt(1),
+            BigInt(1)
+        )
+    })
+
+    /**
+     * Test case for setting the dataset rule min proof timeout.
+     */
+    it("setDatasetRuleMinProofTimeout", async function () {
+        await filplusAssertion.setDatasetRuleMinProofTimeoutAssertion(BigInt(1))
+        await filplusAssertion.setDatasetRuleMinProofTimeoutAssertion(
+            BigInt(2880 * 60)
+        )
+    })
+
+    /**
+     * Test case for setting the dataset rule min audit timeout.
+     */
+    it("setDatasetRuleMinAuditTimeout", async function () {
+        await filplusAssertion.setDatasetRuleMinAuditTimeoutAssertion(BigInt(1))
+        await filplusAssertion.setDatasetRuleMinAuditTimeoutAssertion(
+            BigInt(2880 * 10)
+        )
+    })
+
+    /**
+     * Test case for setting the dataset rule requirement timeout.
+     */
+    it("setDatasetRuleRequirementTimeout", async function () {
+        await filplusAssertion.setDatasetRuleRequirementTimeoutAssertion(
+            BigInt(1)
+        )
+        await filplusAssertion.setDatasetRuleRequirementTimeoutAssertion(
+            BigInt(2880 * 2)
+        )
+    })
+
+    /**
+     * Test case for setting the escrow release rule.
+     */
+    it("setEscrowReleaseRule", async function () {
+        await filplusAssertion.setEscrowReleaseRuleAssertion(
+            EscrowType.EscrowChallengeAuditCollateral,
+            ReleaseType.Linear,
+            BigInt(1),
+            BigInt(1)
+        )
+    })
+
+    /**
+     * Test case for setting the datacap price pre byte.
+     */
+    it("setDatacapPricePreByte", async function () {
+        await filplusAssertion.setDatacapPricePreByteAssertion(BigInt(1))
+        await filplusAssertion.setDatacapPricePreByteAssertion(
+            BigInt(
+                BigInt("1000000000000000000") /
+                    BigInt(1024 * 1024 * 1024 * 1024)
+            )
+        )
+    })
+
+    /**
+     * Test case for setting the datacap chunkland price pre byte.
+     */
+    it("setDatacapChunkLandPricePreByte", async function () {
+        await filplusAssertion.setDatacapChunkLandPricePreByteAssertion(
+            BigInt(1)
+        )
+        await filplusAssertion.setDatacapChunkLandPricePreByteAssertion(
+            BigInt(
+                BigInt("1000000000000000000") /
+                    BigInt(1024 * 1024 * 1024 * 1024)
+            )
+        )
+    })
+
+    /**
+     * Test case for setting the challenge proofs submiter count.
+     */
+    it("setChallengeProofsSubmiterCount", async function () {
+        await filplusAssertion.setChallengeProofsSubmiterCountAssertion(1)
+        await filplusAssertion.setChallengeProofsSubmiterCountAssertion(10)
+    })
+
+    /**
+     * Test case for setting the datacap dataset approved lock days.
+     */
+    it("setDatacapdatasetApprovedLockDays", async function () {
+        await filplusAssertion.setDatacapdatasetApprovedLockDaysAssertion(
+            BigInt(1)
+        )
+        await filplusAssertion.setDatacapdatasetApprovedLockDaysAssertion(
+            BigInt(180 * 2880)
+        )
+    })
+
+    /**
+     * Test case for setting the datacap collateral max lock days.
+     */
+    it("setDatacapCollateralMaxLockDays", async function () {
+        await filplusAssertion.setDatacapCollateralMaxLockDaysAssertion(
+            BigInt(1)
+        )
+        await filplusAssertion.setDatacapCollateralMaxLockDaysAssertion(
+            BigInt(365 * 2880)
+        )
+    })
+
+    /**
+     * Test case for setting the challenge audit fee.
+     */
+    it("setChallengeAuditFee", async function () {
+        await filplusAssertion.setChallengeAuditFeeAssertion(BigInt(1))
+        await filplusAssertion.setChallengeAuditFeeAssertion(
+            BigInt("1000000000000000000")
+        )
+    })
+
+    /**
+     * Test case for setting the proof audit fee.
+     */
+    it("setProofAuditFee", async function () {
+        await filplusAssertion.setProofAuditFeeAssertion(BigInt(1))
+        await filplusAssertion.setProofAuditFeeAssertion(
+            BigInt("1000000000000000000")
+        )
+    })
+
+    /**
+     * Test case for setting the dispute audit fee.
+     */
+    it("setDisputeAuditFee", async function () {
+        await filplusAssertion.setDisputeAuditFeeAssertion(BigInt(1))
+        await filplusAssertion.setDisputeAuditFeeAssertion(
+            BigInt("1000000000000000000")
+        )
+    })
+
+    /**
+     * Test case for setting the challenge proofs price pre point.
+     */
+    it("setChallengeProofsPricePrePoint", async function () {
+        await filplusAssertion.setChallengeProofsPricePrePointAssertion(
+            BigInt(1)
+        )
+        await filplusAssertion.setChallengeProofsPricePrePointAssertion(
+            BigInt("1000000000000000000") / BigInt(1000)
+        )
     })
 
     /**

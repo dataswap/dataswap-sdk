@@ -19,7 +19,6 @@
  ********************************************************************************/
 
 import {
-    Evm,
     withCallMethod,
     withSendMethod,
     EvmOutput,
@@ -28,6 +27,9 @@ import {
 import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
 import { DataswapMessage } from "../../../../message/types"
 import { EvmEx } from "../../../../shared/types/evmEngineType"
+
+import { ReleaseRule } from "../../../finance/types"
+import { EscrowType, ReleaseType } from "../../../../shared/types/financeType"
 
 /**
  * Interface for EVM calls related to  Filplus.
@@ -40,6 +42,120 @@ interface FilplusCallEvm {
     getDatasetRuleMaxReplicasInCountry(
         countryCode: number
     ): Promise<EvmOutput<number>>
+
+    /**
+     * Retrieves the income release rule for a specific escrow type.
+     *
+     * @param type - The escrow type for which to retrieve the income release rule.
+     * @returns A promise with the EVM output containing the income release rule information.
+     */
+    getIncomeReleaseRule(type: EscrowType): Promise<EvmOutput<ReleaseRule>>
+
+    /**
+     * Retrieves the escrow release rule for a specific escrow type.
+     *
+     * @param type - The escrow type for which to retrieve the escrow release rule.
+     * @returns A promise with the EVM output containing the escrow release rule information.
+     */
+    getEscrowReleaseRule(type: EscrowType): Promise<EvmOutput<ReleaseRule>>
+
+    /**
+     * Retrieves the burn address used in the system.
+     *
+     * @returns A promise with the EVM output containing the burn address.
+     */
+    getBurnAddress(): Promise<EvmOutput<string>>
+
+    /**
+     * Retrieves the current block number per day.
+     *
+     * @returns A promise with the EVM output containing the block number per day.
+     */
+    getPerDayBlocknumber(): Promise<EvmOutput<bigint>>
+
+    /**
+     * Retrieves the lock days for datacap dataset approval.
+     *
+     * @returns A promise with the EVM output containing the datacap dataset approved lock days.
+     */
+    getDatacapdatasetApprovedLockDays(): Promise<EvmOutput<bigint>>
+
+    /**
+     * Retrieves the maximum lock days for datacap collateral.
+     *
+     * @returns A promise with the EVM output containing the datacap collateral maximum lock days.
+     */
+    getDatacapCollateralMaxLockDays(): Promise<EvmOutput<bigint>>
+
+    /**
+     * Retrieves the audit fee for challenging a proof.
+     *
+     * @returns A promise with the EVM output containing the challenge audit fee.
+     */
+    getChallengeAuditFee(): Promise<EvmOutput<bigint>>
+
+    /**
+     * Retrieves the audit fee for proof submission.
+     *
+     * @returns A promise with the EVM output containing the proof audit fee.
+     */
+    getProofAuditFee(): Promise<EvmOutput<bigint>>
+
+    /**
+     * Retrieves the audit fee for dispute resolution.
+     *
+     * @returns A promise with the EVM output containing the dispute audit fee.
+     */
+    getDisputeAuditFee(): Promise<EvmOutput<bigint>>
+
+    /**
+     * Retrieves the price per point for challenging proofs.
+     *
+     * @returns A promise with the EVM output containing the challenge proofs price per point.
+     */
+    getChallengeProofsPricePrePoint(): Promise<EvmOutput<bigint>>
+
+    /**
+     * Retrieves the count of challenge proofs submitter.
+     *
+     * @returns A promise with the EVM output containing the count of challenge proofs submitter.
+     */
+    getChallengeProofsSubmiterCount(): Promise<EvmOutput<number>>
+
+    /**
+     * Retrieves the price per byte for datacap chunks of land.
+     *
+     * @returns A promise with the EVM output containing the datacap chunk land price per byte.
+     */
+    getDatacapChunkLandPricePreByte(): Promise<EvmOutput<bigint>>
+
+    /**
+     * Retrieves the price per byte for datacap.
+     *
+     * @returns A promise with the EVM output containing the datacap price per byte.
+     */
+    getDatacapPricePreByte(): Promise<EvmOutput<bigint>>
+
+    /**
+     * Retrieves the minimum proof timeout for dataset rules.
+     *
+     * @returns A promise with the EVM output containing the minimum proof timeout for dataset rules.
+     */
+    datasetRuleMinProofTimeout(): Promise<EvmOutput<bigint>>
+
+    /**
+     * Retrieves the minimum audit timeout for dataset rules.
+     *
+     * @returns A promise with the EVM output containing the minimum audit timeout for dataset rules.
+     */
+    datasetRuleMinAuditTimeout(): Promise<EvmOutput<bigint>>
+
+    /**
+     * Retrieves the requirement timeout for dataset rules.
+     *
+     * @returns A promise with the EVM output containing the requirement timeout for dataset rules.
+     */
+    datasetRuleRequirementTimeout(): Promise<EvmOutput<bigint>>
 
     /**
      * @notice Get dataset rule min regions per dataset
@@ -154,6 +270,133 @@ interface FilplusCallEvm {
  * Interface for EVM transactions related to  Filplus.
  */
 interface FilplusSendEvm {
+    /**
+     * Sets the minimum proof timeout for a dataset rule.
+     * @param blocks - The minimum proof timeout value in blocks (bigint).
+     * @returns A promise that resolves to an EvmOutput<void>.
+     */
+    setDatasetRuleMinProofTimeout(blocks: bigint): Promise<EvmOutput<void>>
+
+    /**
+     * Sets the minimum audit timeout for a dataset rule.
+     * @param blocks - The minimum audit timeout value in blocks (bigint).
+     * @returns A promise that resolves to an EvmOutput<void>.
+     */
+    setDatasetRuleMinAuditTimeout(blocks: bigint): Promise<EvmOutput<void>>
+
+    /**
+     * Sets the requirement timeout for a dataset rule.
+     * @param blocks - The requirement timeout value in blocks (bigint).
+     * @returns A promise that resolves to an EvmOutput<void>.
+     */
+    setDatasetRuleRequirementTimeout(blocks: bigint): Promise<EvmOutput<void>>
+
+    /**
+     * Sets the income release rule for a specific escrow type.
+     *
+     * @param type - The escrow type.
+     * @param releaseType - The release type.
+     * @param delayBlocks - The number of blocks to delay before releasing income.
+     * @param durationBlocks - The duration in blocks for which the income release rule is active.
+     * @returns A promise with the EVM output indicating the success of the operation.
+     */
+    setIncomeReleaseRule(
+        type: EscrowType,
+        releaseType: ReleaseType,
+        delayBlocks: bigint,
+        durationBlocks: bigint
+    ): Promise<EvmOutput<void>>
+
+    /**
+     * Sets the escrow release rule for a specific escrow type.
+     *
+     * @param type - The escrow type.
+     * @param releaseType - The release type.
+     * @param delayBlocks - The number of blocks to delay before releasing escrow.
+     * @param durationBlocks - The duration in blocks for which the escrow release rule is active.
+     * @returns A promise with the EVM output indicating the success of the operation.
+     */
+    setEscrowReleaseRule(
+        type: EscrowType,
+        releaseType: ReleaseType,
+        delayBlocks: bigint,
+        durationBlocks: bigint
+    ): Promise<EvmOutput<void>>
+
+    /**
+     * Sets the price per byte for datacap.
+     *
+     * @param newValue - The new value for datacap price per byte.
+     * @returns A promise with the EVM output indicating the success of the operation.
+     */
+    setDatacapPricePreByte(newValue: bigint): Promise<EvmOutput<void>>
+
+    /**
+     * Sets the price per byte for datacap chunks of land.
+     *
+     * @param newValue - The new value for datacap chunk land price per byte.
+     * @returns A promise with the EVM output indicating the success of the operation.
+     */
+    setDatacapChunkLandPricePreByte(newValue: bigint): Promise<EvmOutput<void>>
+
+    /**
+     * Sets the count of challenge proofs submitter.
+     *
+     * @param newValue - The new value for the count of challenge proofs submitter.
+     * @returns A promise with the EVM output indicating the success of the operation.
+     */
+    setChallengeProofsSubmiterCount(newValue: number): Promise<EvmOutput<void>>
+
+    /**
+     * Sets the lock days for datacap dataset approval.
+     *
+     * @param newValue - The new value for datacap dataset approved lock days.
+     * @returns A promise with the EVM output indicating the success of the operation.
+     */
+    setDatacapdatasetApprovedLockDays(
+        newValue: bigint
+    ): Promise<EvmOutput<void>>
+
+    /**
+     * Sets the maximum lock days for datacap collateral.
+     *
+     * @param newValue - The new value for datacap collateral maximum lock days.
+     * @returns A promise with the EVM output indicating the success of the operation.
+     */
+    setDatacapCollateralMaxLockDays(newValue: bigint): Promise<EvmOutput<void>>
+
+    /**
+     * Sets the audit fee for challenging a proof.
+     *
+     * @param newValue - The new value for the challenge audit fee.
+     * @returns A promise with the EVM output indicating the success of the operation.
+     */
+    setChallengeAuditFee(newValue: bigint): Promise<EvmOutput<void>>
+
+    /**
+     * Sets the audit fee for proof submission.
+     *
+     * @param newValue - The new value for the proof audit fee.
+     * @returns A promise with the EVM output indicating the success of the operation.
+     */
+    setProofAuditFee(newValue: bigint): Promise<EvmOutput<void>>
+
+    /**
+     * Sets the audit fee for dispute resolution.
+     *
+     * @param newValue - The new value for the dispute audit fee.
+     * @returns A promise with the EVM output indicating the success of the operation.
+     */
+    setDisputeAuditFee(newValue: bigint): Promise<EvmOutput<void>>
+
+    /**
+     * Sets the price per point for challenging proofs.
+     *
+     * @param newValue - The new value for the challenge proofs price per point.
+     * @returns A promise with the EVM output indicating the success of the operation.
+     */
+    setChallengeProofsPricePrePoint(newValue: bigint): Promise<EvmOutput<void>>
+
     /**
      * @notice Set dataset rule min regions per dataset
      * @param newValue The set value
@@ -276,6 +519,22 @@ export interface FilplusOriginEvm extends FilplusCallEvm, FilplusSendEvm {}
  * Implementation of  FilplusOriginEvm with specific EVM methods.
  */
 @withCallMethod([
+    "getIncomeReleaseRule",
+    "getEscrowReleaseRule",
+    "getBurnAddress",
+    "getPerDayBlocknumber",
+    "getDatacapdatasetApprovedLockDays",
+    "getDatacapCollateralMaxLockDays",
+    "getChallengeAuditFee",
+    "getProofAuditFee",
+    "getDisputeAuditFee",
+    "getChallengeProofsPricePrePoint",
+    "getChallengeProofsSubmiterCount",
+    "getDatacapChunkLandPricePreByte",
+    "getDatacapPricePreByte",
+    "datasetRuleMinProofTimeout",
+    "datasetRuleMinAuditTimeout",
+    "datasetRuleRequirementTimeout",
     "getDatasetRuleMaxReplicasInCountry",
     "datasetRuleMinRegionsPerDataset",
     "datasetRuleDefaultMaxReplicasPerCountry",
@@ -294,7 +553,21 @@ export interface FilplusOriginEvm extends FilplusCallEvm, FilplusSendEvm {}
     "isCompliantRuleMaxReplicasPerSP",
 ])
 @withSendMethod([
+    "setIncomeReleaseRule",
+    "setEscrowReleaseRule",
+    "setDatacapPricePreByte",
+    "setDatacapChunkLandPricePreByte",
+    "setChallengeProofsSubmiterCount",
+    "setDatacapdatasetApprovedLockDays",
+    "setDatacapCollateralMaxLockDays",
+    "setChallengeAuditFee",
+    "setProofAuditFee",
+    "setDisputeAuditFee",
+    "setChallengeProofsPricePrePoint",
     "setDatasetRuleMinRegionsPerDataset",
+    "setDatasetRuleMinProofTimeout",
+    "setDatasetRuleMinAuditTimeout",
+    "setDatasetRuleRequirementTimeout",
     "setDatasetRuleDefaultMaxReplicasPerCountry",
     "setDatasetRuleMaxReplicasInCountry",
     "setDatasetRuleMaxReplicasPerCity",
@@ -328,6 +601,20 @@ export class FilplusEvm extends FilplusOriginEvm {
         let result: DataswapMessage =
             decodeRes.data!.values() as DataswapMessage
         switch (decodeRes.data!.method) {
+            case "setIncomeReleaseRule":
+            case "setEscrowReleaseRule":
+            case "setDatacapPricePreByte":
+            case "setDatacapChunkLandPricePreByte":
+            case "setChallengeProofsSubmiterCount":
+            case "setDatacapdatasetApprovedLockDays":
+            case "setDatacapCollateralMaxLockDays":
+            case "setChallengeAuditFee":
+            case "setProofAuditFee":
+            case "setDisputeAuditFee":
+            case "setChallengeProofsPricePrePoint":
+            case "setDatasetRuleMinProofTimeout":
+            case "setDatasetRuleMinAuditTimeout":
+            case "setDatasetRuleRequirementTimeout":
             case "setDatasetRuleMinRegionsPerDataset":
             case "setDatasetRuleDefaultMaxReplicasPerCountry":
             case "setDatasetRuleMaxReplicasInCountry":
