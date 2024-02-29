@@ -18,11 +18,154 @@
  *  limitations under the respective licenses.
  ********************************************************************************/
 
+import { ReleaseRule } from "../../../../src/core/finance/types"
+import {
+    EscrowType,
+    ReleaseType,
+} from "../../../../src/shared/types/financeType"
+
 /**
  * Interface representing assertions related to Filplus operations.
  * @interface
  */
 export interface IFilplusAssertion {
+    /**
+     * Asserts that the income release rule matches the expected release rule.
+     *
+     * @param type - The escrow type for which to check the income release rule.
+     * @param expectReleaseRule - The expected release rule.
+     * @returns A promise indicating whether the assertion passed or not.
+     */
+    getIncomeReleaseRuleAssertion(
+        type: EscrowType,
+        expectReleaseRule: ReleaseRule
+    ): Promise<void>
+
+    /**
+     * Asserts that the escrow release rule matches the expected release rule.
+     *
+     * @param type - The escrow type for which to check the escrow release rule.
+     * @param expectReleaseRule - The expected release rule.
+     * @returns A promise indicating whether the assertion passed or not.
+     */
+    getEscrowReleaseRuleAssertion(
+        type: EscrowType,
+        expectReleaseRule: ReleaseRule
+    ): Promise<void>
+
+    /**
+     * Asserts that the burn address matches the expected address.
+     *
+     * @param expectAddress - The expected burn address.
+     * @returns A promise indicating whether the assertion passed or not.
+     */
+    getBurnAddressAssertion(expectAddress: string): Promise<void>
+
+    /**
+     * Asserts that the block number per day matches the expected number.
+     *
+     * @param exceptNumber - The expected block number per day.
+     * @returns A promise indicating whether the assertion passed or not.
+     */
+    getPerDayBlocknumberAssertion(exceptNumber: bigint): Promise<void>
+
+    /**
+     * Asserts that the datacap dataset approved lock days match the expected days.
+     *
+     * @param exceptDays - The expected datacap dataset approved lock days.
+     * @returns A promise indicating whether the assertion passed or not.
+     */
+    getDatacapdatasetApprovedLockDaysAssertion(
+        exceptDays: bigint
+    ): Promise<void>
+
+    /**
+     * Asserts that the datacap collateral max lock days match the expected days.
+     *
+     * @param exceptDays - The expected datacap collateral max lock days.
+     * @returns A promise indicating whether the assertion passed or not.
+     */
+    getDatacapCollateralMaxLockDaysAssertion(exceptDays: bigint): Promise<void>
+
+    /**
+     * Asserts that the challenge audit fee matches the expected fee.
+     *
+     * @param exceptFee - The expected challenge audit fee.
+     * @returns A promise indicating whether the assertion passed or not.
+     */
+    getChallengeAuditFeeAssertion(exceptFee: bigint): Promise<void>
+
+    /**
+     * Asserts that the proof audit fee matches the expected fee.
+     *
+     * @param exceptFee - The expected proof audit fee.
+     * @returns A promise indicating whether the assertion passed or not.
+     */
+    getProofAuditFeeAssertion(exceptFee: bigint): Promise<void>
+
+    /**
+     * Asserts that the dispute audit fee matches the expected fee.
+     *
+     * @param exceptFee - The expected dispute audit fee.
+     * @returns A promise indicating whether the assertion passed or not.
+     */
+    getDisputeAuditFeeAssertion(exceptFee: bigint): Promise<void>
+
+    /**
+     * Asserts that the challenge proofs price per point matches the expected price.
+     *
+     * @param exceptPrice - The expected challenge proofs price per point.
+     * @returns A promise indicating whether the assertion passed or not.
+     */
+    getChallengeProofsPricePrePointAssertion(exceptPrice: bigint): Promise<void>
+
+    /**
+     * Asserts that the challenge proofs submitter count matches the expected count.
+     *
+     * @param exceptCount - The expected challenge proofs submitter count.
+     * @returns A promise indicating whether the assertion passed or not.
+     */
+    getChallengeProofsSubmiterCountAssertion(exceptCount: number): Promise<void>
+
+    /**
+     * Asserts that the datacap chunk land price per byte matches the expected price.
+     *
+     * @param exceptPrice - The expected datacap chunk land price per byte.
+     * @returns A promise indicating whether the assertion passed or not.
+     */
+    getDatacapChunkLandPricePreByteAssertion(exceptPrice: bigint): Promise<void>
+
+    /**
+     * Asserts that the datacap price per byte matches the expected price.
+     *
+     * @param exceptPrice - The expected datacap price per byte.
+     * @returns A promise indicating whether the assertion passed or not.
+     */
+    getDatacapPricePreByteAssertion(exceptPrice: bigint): Promise<void>
+
+    /**
+     * Asserts that the dataset rule's minimum proof timeout matches the expected timeout.
+     *
+     * @param exceptTimeout - The expected minimum proof timeout.
+     * @returns A promise indicating whether the assertion passed or not.
+     */
+    datasetRuleMinProofTimeoutAssertion(exceptTimeout: bigint): Promise<void>
+
+    /**
+     * Asserts that the dataset rule's minimum audit timeout matches the expected timeout.
+     *
+     * @param exceptTimeout - The expected minimum audit timeout.
+     * @returns A promise indicating whether the assertion passed or not.
+     */
+    datasetRuleMinAuditTimeoutAssertion(exceptTimeout: bigint): Promise<void>
+
+    /**
+     * Asserts that the dataset rule's requirement timeout matches the expected timeout.
+     *
+     * @param exceptTimeout - The expected requirement timeout.
+     * @returns A promise indicating whether the assertion passed or not.
+     */
+    datasetRuleRequirementTimeoutAssertion(exceptTimeout: bigint): Promise<void>
     /**
      * Asserts the maximum replicas allowed in a country for a dataset rule.
      * @param {number} countryCode - The country code for the dataset rule.
@@ -188,6 +331,110 @@ export interface IFilplusAssertion {
         value: number,
         expectHas: boolean
     ): Promise<void>
+
+    /**
+     * Sets the income release rule for a specific escrow type.
+     *
+     * @param type - The type of escrow for which the income release rule is set.
+     * @param releaseType - The type of release for the income.
+     * @param delayBlocks - The number of blocks to delay before the income release.
+     * @param durationBlocks - The duration for which the income release is active.
+     * @returns A promise indicating the success of the operation.
+     */
+    setIncomeReleaseRuleAssertion(
+        type: EscrowType,
+        releaseType: ReleaseType,
+        delayBlocks: bigint,
+        durationBlocks: bigint
+    ): Promise<void>
+
+    /**
+     * Sets the escrow release rule for a specific escrow type.
+     *
+     * @param type - The type of escrow for which the escrow release rule is set.
+     * @param releaseType - The type of release for the escrow.
+     * @param delayBlocks - The number of blocks to delay before the escrow release.
+     * @param durationBlocks - The duration for which the escrow release is active.
+     * @returns A promise indicating the success of the operation.
+     */
+    setEscrowReleaseRuleAssertion(
+        type: EscrowType,
+        releaseType: ReleaseType,
+        delayBlocks: bigint,
+        durationBlocks: bigint
+    ): Promise<void>
+
+    /**
+     * Sets the datacap price per byte.
+     *
+     * @param newValue - The new value for the datacap price per byte.
+     * @returns A promise indicating the success of the operation.
+     */
+    setDatacapPricePreByteAssertion(newValue: bigint): Promise<void>
+
+    /**
+     * Sets the datacap chunk land price per byte.
+     *
+     * @param newValue - The new value for the datacap chunk land price per byte.
+     * @returns A promise indicating the success of the operation.
+     */
+    setDatacapChunkLandPricePreByteAssertion(newValue: bigint): Promise<void>
+
+    /**
+     * Sets the count of challenge proofs submitter.
+     *
+     * @param newValue - The new value for the challenge proofs submitter count.
+     * @returns A promise indicating the success of the operation.
+     */
+    setChallengeProofsSubmiterCountAssertion(newValue: number): Promise<void>
+
+    /**
+     * Sets the lock duration in days for approved datasets in datacap.
+     *
+     * @param newValue - The new value for the lock duration in days for approved datasets.
+     * @returns A promise indicating the success of the operation.
+     */
+    setDatacapdatasetApprovedLockDaysAssertion(newValue: bigint): Promise<void>
+
+    /**
+     * Sets the maximum lock duration in days for collateral in datacap.
+     *
+     * @param newValue - The new value for the maximum lock duration in days for collateral.
+     * @returns A promise indicating the success of the operation.
+     */
+    setDatacapCollateralMaxLockDaysAssertion(newValue: bigint): Promise<void>
+
+    /**
+     * Sets the audit fee for challenges.
+     *
+     * @param newValue - The new value for the challenge audit fee.
+     * @returns A promise indicating the success of the operation.
+     */
+    setChallengeAuditFeeAssertion(newValue: bigint): Promise<void>
+
+    /**
+     * Sets the audit fee for proofs.
+     *
+     * @param newValue - The new value for the proof audit fee.
+     * @returns A promise indicating the success of the operation.
+     */
+    setProofAuditFeeAssertion(newValue: bigint): Promise<void>
+
+    /**
+     * Sets the audit fee for disputes.
+     *
+     * @param newValue - The new value for the dispute audit fee.
+     * @returns A promise indicating the success of the operation.
+     */
+    setDisputeAuditFeeAssertion(newValue: bigint): Promise<void>
+
+    /**
+     * Sets the price per point for challenge proofs.
+     *
+     * @param newValue - The new value for the challenge proofs price per point.
+     * @returns A promise indicating the success of the operation.
+     */
+    setChallengeProofsPricePrePointAssertion(newValue: bigint): Promise<void>
 
     /**
      * Sets the minimum regions required per dataset for a dataset rule.
