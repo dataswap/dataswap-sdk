@@ -157,7 +157,8 @@ export class MatchingMetadataMongoDatastore extends DataStore<
                 { conditions: [{ matchingId: options.matchingId }] },
                 {
                     size: target.data!.size,
-                    subsidy: target.data!.subsidy,
+                    //subsidy: target.data!.subsidy,
+                    //TODO: get subsidy from finance
                 }
             )
         } catch (error) {

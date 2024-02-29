@@ -34,8 +34,6 @@ import { EvmEx } from "../../../../../shared/types/evmEngineType"
  * @interface
  */
 interface MatchingBidsCallEvm {
-    matchings(): Promise<EvmOutput<string>>
-    matchingsTarget(): Promise<EvmOutput<string>>
     /**
      * Retrieves the bids associated with a matching identified by its ID.
      * @param matchingId - The ID of the matching.
@@ -82,6 +80,12 @@ interface MatchingBidsCallEvm {
         matchingId: number,
         bidder: string
     ): Promise<EvmOutput<boolean>>
+
+    /**
+     * Retrieves the roles associated with the current user.
+     * @returns A promise that resolves with the roles of the current user.
+     */
+    roles(): Promise<EvmOutput<string>>
 }
 
 /**
@@ -89,19 +93,6 @@ interface MatchingBidsCallEvm {
  * @interface
  */
 interface MatchingBidsSendEvm {
-    /**
-     * Initializes dependencies for the contract.
-     * @param matchings - The address of the matchings contract.
-     * @param matchingsTarget - The address of the matchingsTarget contract.
-     * @param options - EVM transaction options.
-     * @returns A Promise resolving to the output of the EVM transaction (void).
-     */
-    initDependencies(
-        matchings: string,
-        matchingsTarget: string,
-        options?: EvmTransactionOptions
-    ): Promise<EvmOutput<void>>
-
     /**
      * Places a bid in a matching with the specified parameters.
      * @param matchingId - The ID of the matching to place a bid.
@@ -149,21 +140,15 @@ export interface MatchingBidsOriginEvm
  * Implementation of MatchingBidsOriginEvm with specific EVM methods.
  */
 @withCallMethod([
-    "matchings",
-    "matchingsTarget",
     "getMatchingBids",
     "getMatchingBidAmount",
     "getMatchingBidsCount",
     "getMatchingWinner",
     "getMatchingWinners",
     "hasMatchingBid",
+    "roles",
 ])
-@withSendMethod([
-    "initDependencies",
-    "bidding",
-    "cancelMatching",
-    "closeMatching",
-])
+@withSendMethod(["bidding", "cancelMatching", "closeMatching"])
 export class MatchingBidsOriginEvm extends EvmEx {}
 /**
  * Extended class for MatchingBidsEvm with additional message decoding.

@@ -275,6 +275,14 @@ export class SubmitDatasetProofCompletedTestKit extends DatasetsTestBase {
                 datasetId,
                 DatasetState.ProofSubmitted
             )
+            await this.assertion.getDatasetStateAssertion(
+                datasetId,
+                DatasetState.ProofSubmitted
+            )
+            this.datasetsHelper.updateWorkflowTargetState(
+                datasetId,
+                DatasetState.ProofSubmitted
+            )
             return datasetId
         } catch (error) {
             throw error

@@ -33,7 +33,6 @@ const sampleMatchingTarget: ValueFields<MatchingTarget> = {
     dataType: DataType.MappingFiles,
     associatedMappingFilesMatchingID: 0,
     replicaIndex: BigInt(0),
-    subsidy: BigInt(0),
     complete: true,
     matchingId: 2,
 }

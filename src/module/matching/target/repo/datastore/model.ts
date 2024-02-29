@@ -56,9 +56,6 @@ const MatchingTargetSchema = new Schema<MatchingTargetDocument>({
         type: BigInt,
         required: [true, "Please provide the index of replica of dataset"],
     },
-    subsidy: {
-        type: BigInt,
-    },
     complete: {
         type: Boolean,
     },
