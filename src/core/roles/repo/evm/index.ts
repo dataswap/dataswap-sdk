@@ -55,6 +55,108 @@ interface RolesCallEvm {
      * @returns A Promise resolving to the EvmOutput<boolean> indicating whether the account has the specified role.
      */
     hasRole(role: string, account: string): Promise<EvmOutput<boolean>>
+
+    /**
+     * Retrieves data from the filplus contract.
+     * @returns A promise that resolves to an EvmOutput<string>.
+     */
+    filplus(): Promise<EvmOutput<string>>
+
+    /**
+     * Retrieves finance contract.
+     * @returns A promise that resolves to an EvmOutput<string>.
+     */
+    finance(): Promise<EvmOutput<string>>
+
+    /**
+     * Retrieves data related to the Filecoin contract.
+     * @returns A promise that resolves to an EvmOutput<string>.
+     */
+    filecoin(): Promise<EvmOutput<string>>
+
+    /**
+     * Retrieves data related to the carstore contract.
+     * @returns A promise that resolves to an EvmOutput<string>.
+     */
+    carstore(): Promise<EvmOutput<string>>
+
+    /**
+     * Retrieves data related to the storages contract.
+     * @returns A promise that resolves to an EvmOutput<string>.
+     */
+    storages(): Promise<EvmOutput<string>>
+
+    /**
+     * Retrieves data related to the merkleUtils contract.
+     * @returns A promise that resolves to an EvmOutput<string>.
+     */
+    merkleUtils(): Promise<EvmOutput<string>>
+
+    /**
+     * Retrieves data related to the datasets contract.
+     * @returns A promise that resolves to an EvmOutput<string>.
+     */
+    datasets(): Promise<EvmOutput<string>>
+
+    /**
+     * Retrieves data related to the datasetsProof contract.
+     * @returns A promise that resolves to an EvmOutput<string>.
+     */
+    datasetsProof(): Promise<EvmOutput<string>>
+
+    /**
+     * Retrieves data related to the datasetsChallenge contract.
+     * @returns A promise that resolves to an EvmOutput<string>.
+     */
+    datasetsChallenge(): Promise<EvmOutput<string>>
+
+    /**
+     * Retrieves data related to the datasetsRequirement contract.
+     * @returns A promise that resolves to an EvmOutput<string>.
+     */
+    datasetsRequirement(): Promise<EvmOutput<string>>
+
+    /**
+     * Retrieves data related to the matchings contract.
+     * @returns A promise that resolves to an EvmOutput<string>.
+     */
+    matchings(): Promise<EvmOutput<string>>
+
+    /**
+     * Retrieves data related to the matchingsBids contract.
+     * @returns A promise that resolves to an EvmOutput<string>.
+     */
+    matchingsBids(): Promise<EvmOutput<string>>
+
+    /**
+     * Retrieves data related to the matchingsTarget contract.
+     * @returns A promise that resolves to an EvmOutput<string>.
+     */
+    matchingsTarget(): Promise<EvmOutput<string>>
+
+    /**
+     * Retrieves data related to the escrowDataTradingFee contract.
+     * @returns A promise that resolves to an EvmOutput<string>.
+     */
+    escrowDataTradingFee(): Promise<EvmOutput<string>>
+
+    /**
+     * Retrieves data related to the escrowDatacapChunkLandCollateral contract.
+     * @returns A promise that resolves to an EvmOutput<string>.
+     */
+    escrowDatacapChunkLandCollateral(): Promise<EvmOutput<string>>
+
+    /**
+     * Retrieves data related to the escrowChallengeCommission contract.
+     * @returns A promise that resolves to an EvmOutput<string>.
+     */
+    escrowChallengeCommission(): Promise<EvmOutput<string>>
+
+    /**
+     * Retrieves data related to the escrowDatacapCollateral contract.
+     * @returns A promise that resolves to an EvmOutput<string>.
+     */
+    escrowDatacapCollateral(): Promise<EvmOutput<string>>
 }
 
 /**
@@ -127,7 +229,28 @@ export interface RolesOriginEvm extends RolesCallEvm, RolesSendEvm {}
 /**
  * Implementation of  RolesOriginEvm with specific EVM methods.
  */
-@withCallMethod(["hasRole", "checkRole", "owner"])
+@withCallMethod([
+    "hasRole",
+    "checkRole",
+    "owner",
+    "escrowDatacapCollateral",
+    "escrowDatacapChunkLandCollateral",
+    "escrowChallengeCommission",
+    "escrowDataTradingFee",
+    "matchingsTarget",
+    "matchingsBids",
+    "matchings",
+    "datasetsRequirement",
+    "datasetsChallenge",
+    "datasetsProof",
+    "datasets",
+    "merkleUtils",
+    "storages",
+    "carstore",
+    "filecoin",
+    "finance",
+    "filplus",
+])
 @withSendMethod([
     "grantRole",
     "acceptOwnership",

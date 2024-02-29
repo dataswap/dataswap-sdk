@@ -58,4 +58,30 @@ describe("roles", () => {
             process.env.DATASWAP_METADATASUBMITTER!
         )
     })
+
+    /**
+     * Test case for get contract address functions.
+     */
+    it("getContractAddressFunctions", async function () {
+        const methods = [
+            "escrowDatacapCollateral",
+            "escrowDatacapChunkLandCollateral",
+            "escrowChallengeCommission",
+            "escrowDataTradingFee",
+            "matchingsTarget",
+            "matchingsBids",
+            "matchings",
+            "datasetsRequirement",
+            "datasetsChallenge",
+            "datasetsProof",
+            "datasets",
+            "merkleUtils",
+            "storages",
+            "carstore",
+            "filecoin",
+            "finance",
+            "filplus",
+        ]
+        await rolesAssertion.contractAddressAssertion(methods)
+    })
 })
