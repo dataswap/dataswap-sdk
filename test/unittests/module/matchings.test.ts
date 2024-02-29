@@ -41,9 +41,8 @@ import { DatasetState } from "../../../src/shared/types/datasetType"
 
 /**
  * Test suite for the Matchings functionality.
- * //TODO:reopen when abi 0.4.0 merged
  */
-describe.skip("matchings", async () => {
+describe("matchings", async () => {
     /**
      * Setup before running the test suite.
      */
@@ -76,42 +75,45 @@ describe.skip("matchings", async () => {
      * Tests create matching target.
      */
     it("createMatchingsTarget", async function () {
-        const matchingId = this.sharedData.matchingId
         const testKit = new CreateMatchingTargetTestKit(
             this.sharedData.matchingsAssertion!,
             this.sharedData.generator!,
             this.sharedData.contractsManager!,
             getMatchingsHelper()
         )
-        this.sharedData.matchingId = await testKit.run(matchingId)
+        this.sharedData.matchingId = await testKit.run(
+            this.sharedData.matchingId
+        )
     })
 
     /**
      * Tests publish matching.
      */
     it("publishMatching", async function () {
-        const matchingId = this.sharedData.matchingId
         const testKit = new PublishMatchingTestKit(
             this.sharedData.matchingsAssertion!,
             this.sharedData.generator!,
             this.sharedData.contractsManager!,
             getMatchingsHelper()
         )
-        this.sharedData.matchingId = await testKit.run(matchingId)
+        this.sharedData.matchingId = await testKit.run(
+            this.sharedData.matchingId
+        )
     })
 
     /**
      * Tests cancel matching.
      */
     it("cancelMatching", async function () {
-        const matchingId = this.sharedData.matchingId
         const testKit = new CancelMatchingTestKit(
             this.sharedData.matchingsAssertion!,
             this.sharedData.generator!,
             this.sharedData.contractsManager!,
             getMatchingsHelper()
         )
-        this.sharedData.matchingId = await testKit.run(matchingId)
+        this.sharedData.matchingId = await testKit.run(
+            this.sharedData.matchingId
+        )
     })
 
     /**
@@ -131,41 +133,44 @@ describe.skip("matchings", async () => {
      * Tests resume matching.
      */
     it("resumeMatching", async function () {
-        const matchingId = this.sharedData.matchingId
         const testKit = new ResumeMatchingTestKit(
             this.sharedData.matchingsAssertion!,
             this.sharedData.generator!,
             this.sharedData.contractsManager!,
             getMatchingsHelper()
         )
-        this.sharedData.matchingId = await testKit.run(matchingId)
+        this.sharedData.matchingId = await testKit.run(
+            this.sharedData.matchingId
+        )
     })
 
     /**
      * Tests bidding matching.
      */
     it("biddingMatching", async function () {
-        const matchingId = this.sharedData.matchingId
         const testKit = new BiddingMatchingTestKit(
             this.sharedData.matchingsAssertion!,
             this.sharedData.generator!,
             this.sharedData.contractsManager!,
             getMatchingsHelper()
         )
-        this.sharedData.matchingId = await testKit.run(matchingId)
+        this.sharedData.matchingId = await testKit.run(
+            this.sharedData.matchingId
+        )
     })
 
     /**
      * Tests close matching.
      */
     it("closeMatching", async function () {
-        const matchingId = this.sharedData.matchingId
         const testKit = new CloseMatchingTestKit(
             this.sharedData.matchingsAssertion!,
             this.sharedData.generator!,
             this.sharedData.contractsManager!,
             getMatchingsHelper()
         )
-        this.sharedData.matchingId = await testKit.run(matchingId)
+        this.sharedData.matchingId = await testKit.run(
+            this.sharedData.matchingId
+        )
     })
 })

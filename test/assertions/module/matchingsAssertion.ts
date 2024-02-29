@@ -226,37 +226,6 @@ export class MatchingsAssertion implements IMatchingsAssertion {
     }
 
     // MatchingsTarget
-
-    /**
-     * Asserts the target matchings against the expected target address.
-     * @param expectMatchingsTargetAddress - The expected matchings target address.
-     * @returns A Promise resolving if the assertion is successful.
-     */
-    async targetMatchingsAssertion(
-        expectMatchingsTargetAddress: string
-    ): Promise<void> {
-        let matchingsAddress = await handleEvmError(
-            this.contractsManager.MatchingTargetEvm().matchings()
-        )
-        expect(expectMatchingsTargetAddress).to.be.equal(matchingsAddress.data)
-    }
-
-    /**
-     * Asserts the target matchings bids against the expected bids address.
-     * @param expectMatchingsBidsAddress - The expected matchings bids address.
-     * @returns A Promise resolving if the assertion is successful.
-     */
-    async targetMatchingsBidsAssertion(
-        expectMatchingsBidsAddress: string
-    ): Promise<void> {
-        let matchingsBidsAddress = await handleEvmError(
-            this.contractsManager.MatchingTargetEvm().matchingsBids()
-        )
-        expect(expectMatchingsBidsAddress).to.be.equal(
-            matchingsBidsAddress.data
-        )
-    }
-
     /**
      * Retrieves the matching target and asserts it against the expected target.
      * @param matchingId - The ID of the matching.
@@ -282,9 +251,6 @@ export class MatchingsAssertion implements IMatchingsAssertion {
         expect(
             expectMatchingTarget.associatedMappingFilesMatchingID
         ).to.be.equal(matchingTarget.data.associatedMappingFilesMatchingID)
-        expect(expectMatchingTarget.subsidy).to.be.equal(
-            matchingTarget.data.subsidy
-        )
         expect(expectMatchingTarget.replicaIndex).to.be.equal(
             matchingTarget.data.replicaIndex
         )
@@ -428,7 +394,6 @@ export class MatchingsAssertion implements IMatchingsAssertion {
             associatedMappingFilesMatchingID:
                 expectAssociatedMappingFilesMatchingId,
             replicaIndex: expectReplicaIndex,
-            subsidy: BigInt(0),
             matchingId: matchingId,
         })
 
@@ -507,36 +472,6 @@ export class MatchingsAssertion implements IMatchingsAssertion {
     }
 
     // MatchingsBids
-    /**
-     * Asserts the bids for matchings against the expected matchings address.
-     * @param expectMatchingsAddress - The expected matchings address.
-     * @returns A Promise resolving if the assertion is successful.
-     */
-    async bidsMatchingsAssertion(
-        expectMatchingsAddress: string
-    ): Promise<void> {
-        let matchingsAddress = await handleEvmError(
-            this.contractsManager.MatchingBidsEvm().matchings()
-        )
-        expect(expectMatchingsAddress).to.be.equal(matchingsAddress.data)
-    }
-
-    /**
-     * Asserts the bids for matchings target against the expected matchings target address.
-     * @param expectMatchingsTargetAddress - The expected matchings target address.
-     * @returns A Promise resolving if the assertion is successful.
-     */
-    async bidsMatchingsTargetAssertion(
-        expectMatchingsTargetAddress: string
-    ): Promise<void> {
-        let matchingsTargetAddress = await handleEvmError(
-            this.contractsManager.MatchingBidsEvm().matchingsTarget()
-        )
-        expect(expectMatchingsTargetAddress).to.be.equal(
-            matchingsTargetAddress.data
-        )
-    }
-
     /**
      * Retrieves the matching bids and asserts them against the expected matching bids.
      * @param matchingId - The ID of the matching.

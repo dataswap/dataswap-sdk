@@ -101,7 +101,6 @@ export class CreateMatchingsMetadataTestKit extends MatchingsTestBase {
                 replicaIndex,
                 matchingMetadata
             )
-
             this.matchingsHelper.setTargetDatasetId(matchingId, datasetId)
 
             return matchingId

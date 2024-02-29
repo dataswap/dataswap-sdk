@@ -32,7 +32,6 @@ export interface MatchingTarget {
     dataType: DataType
     associatedMappingFilesMatchingID: number
     replicaIndex: bigint
-    subsidy: bigint
     complete?: boolean
     matchingId?: number
 }

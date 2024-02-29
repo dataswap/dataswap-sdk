@@ -19,23 +19,33 @@
  ********************************************************************************/
 
 import {
-    Evm,
     withCallMethod,
     withSendMethod,
     EvmOutput,
-    isEvmTransactionOptions,
     EvmTransactionOptions,
 } from "@unipackage/net"
 import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
 import { DataswapMessage } from "../../../../../message/types"
 import { MatchingMetadata, MatchingState, BidSelectionRule } from "../../types"
 import { EvmEx } from "../../../../../shared/types/evmEngineType"
+import { BasicStatisticsInfo } from "../../../../../shared/types/statisticsType"
 
 /**
  * Interface representing the data structure for matching metadata (call EVM).
  * @interface
  */
 interface MatchingMetadataCallEvm {
+    /**
+     * Retrieves an overview of count statistics.
+     * @returns A promise that resolves with the count overview.
+     */
+    getCountOverview(): Promise<EvmOutput<BasicStatisticsInfo>>
+
+    /**
+     * Retrieves an overview of size statistics.
+     * @returns A promise that resolves with the size overview.
+     */
+    getSizeOverview(): Promise<EvmOutput<BasicStatisticsInfo>>
     /**
      * Retrieves the initiator associated with a matching identified by its ID.
      * @param matchingId - The ID of the matching.
@@ -56,6 +66,18 @@ interface MatchingMetadataCallEvm {
     getMatchingMetadata(
         matchingId: number
     ): Promise<EvmOutput<MatchingMetadata>>
+
+    /**
+     * Get the count of matchings.
+     * @returns The count of matchings as a Promise.
+     */
+    matchingsCount(): Promise<EvmOutput<number>>
+
+    /**
+     * Retrieves the roles associated with the current user.
+     * @returns A promise that resolves with the roles of the current user.
+     */
+    roles(): Promise<EvmOutput<string>>
 }
 
 /**
@@ -119,9 +141,13 @@ export interface MatchingMetadataOriginEvm
  * Implementation of MatchingMetadataOriginEvm with specific EVM methods.
  */
 @withCallMethod([
+    "getCountOverview",
+    "getSizeOverview",
     "getMatchingInitiator",
     "getMatchingState",
     "getMatchingMetadata",
+    "matchingsCount",
+    "roles",
 ])
 @withSendMethod(["createMatching", "pauseMatching", "resumeMatching"])
 export class MatchingMetadataOriginEvm extends EvmEx {}
@@ -130,6 +156,32 @@ export class MatchingMetadataOriginEvm extends EvmEx {}
  * Extended class for MatchingMetadataEvm with additional message decoding.
  */
 export class MatchingMetadataEvm extends MatchingMetadataOriginEvm {
+    async getCountOverview(): Promise<EvmOutput<BasicStatisticsInfo>> {
+        const res = await super.getCountOverview()
+        if (res.ok && res.data) {
+            return {
+                ok: true,
+                data: new BasicStatisticsInfo({
+                    ...res.data,
+                }),
+            }
+        }
+        return res
+    }
+
+    async getSizeOverview(): Promise<EvmOutput<BasicStatisticsInfo>> {
+        const res = await super.getSizeOverview()
+        if (res.ok && res.data) {
+            return {
+                ok: true,
+                data: new BasicStatisticsInfo({
+                    ...res.data,
+                }),
+            }
+        }
+        return res
+    }
+
     async getMatchingMetadata(
         matchingId: number
     ): Promise<EvmOutput<MatchingMetadata>> {

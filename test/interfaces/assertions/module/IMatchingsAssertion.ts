@@ -106,24 +106,6 @@ export interface IMatchingsAssertion {
     // MatchingsTarget
 
     /**
-     * Asserts the target matchings against the expected target address.
-     * @param expectMatchingsTargetAddress - The expected matchings target address.
-     * @returns A Promise resolving if the assertion is successful.
-     */
-    targetMatchingsAssertion(
-        expectMatchingsTargetAddress: string
-    ): Promise<void>
-
-    /**
-     * Asserts the target matchings bids against the expected bids address.
-     * @param expectMatchingsBidsAddress - The expected matchings bids address.
-     * @returns A Promise resolving if the assertion is successful.
-     */
-    targetMatchingsBidsAssertion(
-        expectMatchingsBidsAddress: string
-    ): Promise<void>
-
-    /**
      * Retrieves the matching target and asserts it against the expected target.
      * @param matchingId - The ID of the matching.
      * @param expectMatchingTarget - The expected matching target.
@@ -231,22 +213,6 @@ export interface IMatchingsAssertion {
     ): Promise<void>
 
     // MatchingsBids
-    /**
-     * Asserts the bids for matchings against the expected matchings address.
-     * @param expectMatchingsAddress - The expected matchings address.
-     * @returns A Promise resolving if the assertion is successful.
-     */
-    bidsMatchingsAssertion(expectMatchingsAddress: string): Promise<void>
-
-    /**
-     * Asserts the bids for matchings target against the expected matchings target address.
-     * @param expectMatchingsTargetAddress - The expected matchings target address.
-     * @returns A Promise resolving if the assertion is successful.
-     */
-    bidsMatchingsTargetAssertion(
-        expectMatchingsTargetAddress: string
-    ): Promise<void>
-
     /**
      * Retrieves the matching bids and asserts them against the expected matching bids.
      * @param matchingId - The ID of the matching.

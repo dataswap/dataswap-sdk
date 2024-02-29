@@ -40,18 +40,6 @@ import {
  */
 interface MatchingTargetCallEvm {
     /**
-     * Retrieves information about matchings.
-     * @returns {Promise<EvmOutput<string>>} A promise resolving to the EVM output for matchings.
-     */
-    matchings(): Promise<EvmOutput<string>>
-
-    /**
-     * Retrieves information about matching bids.
-     * @returns {Promise<EvmOutput<string>>} A promise resolving to the EVM output for matching bids.
-     */
-    matchingsBids(): Promise<EvmOutput<string>>
-
-    /**
      * Retrieves the target associated with a matching identified by its ID.
      * @param matchingId - The ID of the matching.
      * @returns A Promise resolving to the MatchingTarget object.
@@ -103,6 +91,12 @@ interface MatchingTargetCallEvm {
         matchingId: number,
         candidate: string
     ): Promise<EvmOutput<boolean>>
+
+    /**
+     * Retrieves the roles associated with the current user.
+     * @returns A promise that resolves with the roles of the current user.
+     */
+    roles(): Promise<EvmOutput<string>>
 }
 
 /**
@@ -110,18 +104,6 @@ interface MatchingTargetCallEvm {
  * @interface
  */
 interface MatchingTargetSendEvm {
-    /**
-     * Initializes dependencies for the contract.
-     * @param matchings - The address of the matchings contract.
-     * @param matchingsBids - The address of the matchingsBids contract.
-     * @param options - EVM transaction options.
-     * @returns A Promise resolving to the output of the EVM transaction (void).
-     */
-    initDependencies(
-        matchings: string,
-        matchingsBids: string,
-        options?: EvmTransactionOptions
-    ): Promise<EvmOutput<void>>
     /**
      * Creates a new target for a matching with the specified parameters.
      * @param matchingId - The ID of the matching for the target.
@@ -170,15 +152,14 @@ export interface MatchingTargetOriginEvm
  * Implementation of MatchingTargetOriginEvm with specific EVM methods.
  */
 @withCallMethod([
-    "matchings",
-    "matchingsBids",
     "getMatchingTarget",
     "isMatchingContainsCar",
     "isMatchingContainsCars",
     "isMatchingTargetValid",
     "isMatchingTargetMeetsFilPlusRequirements",
+    "roles",
 ])
-@withSendMethod(["initDependencies", "createTarget", "publishMatching"])
+@withSendMethod(["createTarget", "publishMatching"])
 export class MatchingTargetOriginEvm extends EvmEx {}
 
 /**
@@ -251,8 +232,6 @@ export class MatchingTargetEvm extends MatchingTargetOriginEvm {
                     result.datasetId = Number(result.params.datasetID)
                     result.matchingId = Number(result.params.matchingId)
                 }
-                break
-            case "initDependencies":
                 break
             default:
                 return {

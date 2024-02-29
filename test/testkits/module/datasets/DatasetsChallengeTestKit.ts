@@ -89,7 +89,10 @@ export class SubmitDatasetChallengeTestKit extends DatasetsTestBase {
                 siblings,
                 paths
             )
-
+            await this.assertion.getDatasetStateAssertion(
+                datasetId,
+                DatasetState.Approved
+            )
             this.datasetsHelper.updateWorkflowTargetState(
                 datasetId,
                 Number(DatasetState.Approved)
