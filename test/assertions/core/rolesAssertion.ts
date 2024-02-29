@@ -20,6 +20,7 @@
 
 import { assert } from "chai"
 import { equal } from "@unipackage/utils"
+import * as utils from "../../shared/utils"
 import { RolesEvm } from "../../../src/core/roles/repo/evm"
 import { handleEvmError } from "../../shared/error"
 import { IRolesAssertion } from "../../interfaces/assertions/core/IRolesAssertion"
@@ -124,5 +125,27 @@ export class RolesAssertion implements IRolesAssertion {
 
         await handleEvmError(this.roles.grantRole(role, account))
         await this.hasRoleAssertion(role, account, true)
+    }
+
+    /**
+     * Asserts the get contract address functions.
+     * @param {string[]} methods - The methods.
+     * @returns {Promise<void>}
+     */
+    async contractAddressAssertion(methods: string[]): Promise<void> {
+        for (let i = 0; i < methods.length; i++) {
+            const address = await handleEvmError(
+                (this.roles as any)[methods[i] as keyof RolesEvm]()
+            )
+            const expectAddress = utils.getContractAddress(
+                methods[i].charAt(0).toUpperCase() +
+                    methods[i].slice(1).toString()
+            )
+
+            assert.isTrue(
+                equal(expectAddress, address.data),
+                `${methods[i]} address should be expect address(${expectAddress}, ${address.data})`
+            )
+        }
     }
 }
