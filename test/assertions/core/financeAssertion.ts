@@ -23,6 +23,9 @@ import { equal } from "@unipackage/utils"
 import { EscrowType } from "../../../src/shared/types/financeType"
 import { FinanceEvm } from "../../../src/core/finance/repo/evm"
 import {
+    DatasetOverview,
+    MatchingOverview,
+    StorageOverview,
     AccountOverview,
     AccountIncome,
     AccountEscrow,
@@ -43,6 +46,63 @@ export class FinanceAssertion implements IFinanceAssertion {
      */
     constructor(finance: FinanceEvm) {
         this.finance = finance
+    }
+
+    /**
+     * Asserts that the fetched dataset overview matches the expected dataset overview.
+     * @param token - The token associated with the dataset.
+     * @param expectDatasetOverview - The expected dataset overview.
+     * @returns A promise that resolves if the assertion passes, otherwise it rejects with an error.
+     */
+    async datasetOverviewAssertion(
+        token: string,
+        expectDatasetOverview: DatasetOverview
+    ) {
+        let datasetOverview = await handleEvmError(
+            this.finance.datasetOverview(token)
+        )
+        assert.isTrue(
+            equal(expectDatasetOverview, datasetOverview.data),
+            "datasetOverview should be expect expectDatasetOverview"
+        )
+    }
+
+    /**
+     * Asserts that the fetched matching overview matches the expected matching overview.
+     * @param token - The token associated with the matching.
+     * @param expectMatchingOverview - The expected matching overview.
+     * @returns A promise that resolves if the assertion passes, otherwise it rejects with an error.
+     */
+    async matchingOverviewAssertion(
+        token: string,
+        expectMatchingOverview: MatchingOverview
+    ) {
+        let matchingOverview = await handleEvmError(
+            this.finance.matchingOverview(token)
+        )
+        assert.isTrue(
+            equal(expectMatchingOverview, matchingOverview.data),
+            "matchingOverview should be expect expectMatchingOverview"
+        )
+    }
+
+    /**
+     * Asserts that the fetched storage overview matches the expected storage overview.
+     * @param token - The token associated with the storage.
+     * @param expectStorageOverview - The expected storage overview.
+     * @returns A promise that resolves if the assertion passes, otherwise it rejects with an error.
+     */
+    async storageOverviewAssertion(
+        token: string,
+        expectStorageOverview: StorageOverview
+    ) {
+        let storageOverview = await handleEvmError(
+            this.finance.storageOverview(token)
+        )
+        assert.isTrue(
+            equal(expectStorageOverview, storageOverview.data),
+            "storageOverview should be expect expectStorageOverview"
+        )
     }
 
     /**
