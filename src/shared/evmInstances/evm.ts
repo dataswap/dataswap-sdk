@@ -28,6 +28,7 @@ import { MatchingBidsEvm } from "../../module/matching/bids/repo/evm"
 import { StoragesEvm } from "../../module/storages/repo/evm"
 import { FilplusEvm } from "../../core/filplus/repo/evm"
 import { FilecoinEvm } from "../../core/filecoin/repo/evm"
+import { FinanceEvm } from "../../core/finance/repo/evm"
 import { RolesEvm } from "../../core/roles/repo/evm"
 
 import carstoreAbi from "@dataswapcore/contracts/abi/v0.8/Carstore.json"
@@ -41,6 +42,7 @@ import matchingsBidsAbi from "@dataswapcore/contracts/abi/v0.8/MatchingsBids.jso
 import storagesAbi from "@dataswapcore/contracts/abi/v0.8/Storages.json"
 import filplusAbi from "@dataswapcore/contracts/abi/v0.8/Filplus.json"
 import filecoinAbi from "@dataswapcore/contracts/abi/v0.8/Filecoin.json"
+import financeAbi from "@dataswapcore/contracts/abi/v0.8/Finance.json"
 import rolesAbi from "@dataswapcore/contracts/abi/v0.8/Roles.json"
 import {
     CALIBRATION_NETWORK,
@@ -355,6 +357,34 @@ export const filecoinEvm_Main = new FilecoinEvm(
         network: MAIN_NETWORK,
         dataswapName: DATASWAPNAME,
     }).FilecoinAddress,
+    providerUrl(MAIN_NETWORK)
+)
+
+/**
+ * Creates a new instance of FinanceEvm for the Calibration network.
+ *
+ * @constant financeEvm_Calibraion - The FinanceEvm instance for the Calibration network.
+ */
+export const financeEvm_Calibraion = new FinanceEvm(
+    financeAbi,
+    contractAddresses({
+        network: CALIBRATION_NETWORK,
+        dataswapName: DATASWAPNAME,
+    }).FinanceAddress,
+    providerUrl(CALIBRATION_NETWORK)
+)
+
+/**
+ * Creates a new instance of FinanceEvm for the Main network.
+ *
+ * @constant financeEvm_Main - The FinanceEvm instance for the Main network.
+ */
+export const financeEvm_Main = new FinanceEvm(
+    financeAbi,
+    contractAddresses({
+        network: MAIN_NETWORK,
+        dataswapName: DATASWAPNAME,
+    }).FinanceAddress,
     providerUrl(MAIN_NETWORK)
 )
 

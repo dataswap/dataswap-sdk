@@ -24,6 +24,43 @@ import { ValueFields } from "@unipackage/utils"
 import { ReleaseType } from "../../../shared/types/financeType"
 
 /**
+ * Represents a DatasetOverview entity.
+ * @interface
+ */
+export interface DatasetOverview {
+    storageClientEscrowDatacapCollateral: bigint // The total escrowed amount for storage client datacap collateral.
+    storageClientEscrowDataTradingFee: bigint // The total escrowed amount for storage client data trading fee.
+    storageClientEscrowChallengeCommission: bigint // The total escrowed amount for storage client challenge commission.
+    datasetPreparerEscrowProofAuditCollateral: bigint // The total escrowed amount for dataset preparer proof audit collateral.
+    datasetAuditorEscrowChallengeAuditCollateral: bigint // The total escrowed amount for dataset auditor challenge audit collateral.
+    datasetAuditorEscrowDisputeAuditCollateral: bigint // The total escrowed amount for dataset auditor dispute audit collateral.
+    datasetPrepareProofDisputePenalty: bigint // The total escrowed amount for dataset prepare proof dispute penalty.
+    datasetAuditorChallengeDisputePenalty: bigint // The total escrowed amount for dataset auditor challenge dispute penalty.
+    datasetAuditorFailureDisputePenalty: bigint // The total escrowed amount for dataset auditor failure dispute penalty.
+    storageClientPaidChallengeCommission: bigint // The total paid commission for storage client challenge.
+}
+
+/**
+ * Represents a MatchingOverview entity.
+ * @interface
+ */
+export interface MatchingOverview {
+    storageProviderEscrowDataTradingFee: bigint // The total escrowed amount for storage provider data trading fee.
+    matchedAmount: bigint // The total matched amount.
+}
+
+/**
+ * Represents a StorageOverview entity.
+ * @interface
+ */
+export interface StorageOverview {
+    storageProviderEscrowDatacapChunkLand: bigint // The total escrowed amount for storage provider datacap chunk land.
+    storageProviderPaidDataTradingFee: bigint // The total escrowed amount for storage provider data trading fee.
+    storageClientPaidDataTradingFee: bigint // The total escrowed amount for storage client data trading fee.
+    storageProviderDatacapChunkLandPenalty: bigint // The total penalty amount for storage provider datacap chunk land.
+}
+
+/**
  * Represents a AccountOverview entity.
  * @interface
  */

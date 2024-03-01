@@ -20,6 +20,9 @@
 
 import { EscrowType } from "../../../../src/shared/types/financeType"
 import {
+    DatasetOverview,
+    MatchingOverview,
+    StorageOverview,
     AccountOverview,
     AccountIncome,
     AccountEscrow,
@@ -29,6 +32,39 @@ import {
  * Interface for asserting operations on an FinanceEvm instance.
  */
 export interface IFinanceAssertion {
+    /**
+     * Asserts that the fetched dataset overview matches the expected dataset overview.
+     * @param token - The token associated with the dataset.
+     * @param expectDatasetOverview - The expected dataset overview.
+     * @returns A promise that resolves if the assertion passes, otherwise it rejects with an error.
+     */
+    datasetOverviewAssertion(
+        token: string,
+        expectDatasetOverview: DatasetOverview
+    ): Promise<void>
+
+    /**
+     * Asserts that the fetched matching overview matches the expected matching overview.
+     * @param token - The token associated with the matching.
+     * @param expectMatchingOverview - The expected matching overview.
+     * @returns A promise that resolves if the assertion passes, otherwise it rejects with an error.
+     */
+    matchingOverviewAssertion(
+        token: string,
+        expectMatchingOverview: MatchingOverview
+    ): Promise<void>
+
+    /**
+     * Asserts that the fetched storage overview matches the expected storage overview.
+     * @param token - The token associated with the storage.
+     * @param expectStorageOverview - The expected storage overview.
+     * @returns A promise that resolves if the assertion passes, otherwise it rejects with an error.
+     */
+    storageOverviewAssertion(
+        token: string,
+        expectStorageOverview: StorageOverview
+    ): Promise<void>
+
     /**
      * Asserts the account overview matches the expected values.
      * @param datasetId The ID of the dataset.

@@ -44,6 +44,7 @@ export { MatchingState } from "./shared/types/matchingType"
 
 export { CarstoreEvm } from "./core/carstore/repo/evm"
 export { FilecoinEvm } from "./core/filecoin/repo/evm"
+export { FinanceEvm } from "./core/finance/repo/evm"
 export { FilplusEvm } from "./core/filplus/repo/evm"
 export { RolesEvm } from "./core/roles/repo/evm"
 export { DatasetMetadataEvm } from "./module/dataset/metadata/repo/evm"
@@ -101,4 +102,6 @@ export {
     storagesEvm_Main,
     filecoinEvm_Calibraion,
     filecoinEvm_Main,
+    financeEvm_Calibraion,
+    financeEvm_Main,
 } from "./shared/evmInstances/evm"

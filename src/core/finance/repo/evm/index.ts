@@ -26,7 +26,14 @@ import {
 } from "@unipackage/net"
 import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
 import { DataswapMessage } from "../../../../message/types"
-import { AccountOverview, AccountIncome, AccountEscrow } from "../../types"
+import {
+    DatasetOverview,
+    MatchingOverview,
+    StorageOverview,
+    AccountOverview,
+    AccountIncome,
+    AccountEscrow,
+} from "../../types"
 import { EvmEx } from "../../../../shared/types/evmEngineType"
 import { EscrowType } from "../../../../shared/types/financeType"
 
@@ -34,6 +41,27 @@ import { EscrowType } from "../../../../shared/types/financeType"
  * Interface for EVM calls related to Finance.
  */
 interface FinanceCallEvm {
+    /**
+     * Fetches an overview of a dataset.
+     * @param token - The token associated with the dataset.
+     * @returns A promise that resolves to an EvmOutput containing the dataset overview.
+     */
+    datasetOverview(token: string): Promise<EvmOutput<DatasetOverview>>
+
+    /**
+     * Fetches an overview of a matching.
+     * @param token - The token associated with the matching.
+     * @returns A promise that resolves to an EvmOutput containing the matching overview.
+     */
+    matchingOverview(token: string): Promise<EvmOutput<MatchingOverview>>
+
+    /**
+     * Fetches an overview of a storage.
+     * @param token - The token associated with the storage.
+     * @returns A promise that resolves to an EvmOutput containing the storage overview.
+     */
+    storageOverview(token: string): Promise<EvmOutput<StorageOverview>>
+
     /**
      * Retrieves the account overview for a specific dataset, matching process, owner, and token.
      * @param datasetId The ID of the dataset.
@@ -202,6 +230,9 @@ export interface FinanceOriginEvm extends FinanceCallEvm, FinanceSendEvm {}
  * Implementation of FinanceOriginEvm with specific EVM methods.
  */
 @withCallMethod([
+    "datasetOverview",
+    "matchingOverview",
+    "storageOverview",
     "getAccountOverview",
     "getAccountIncome",
     "getAccountEscrow",
