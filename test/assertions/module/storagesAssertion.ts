@@ -64,74 +64,6 @@ export class StoragesAssertion implements IStoragesAssertion {
     }
 
     /**
-     * Retrieves the total stored size for a specific matching identified by its ID.
-     * @param matchingId - The ID of the matching.
-     * @param expectSize - Expected total stored size.
-     * @returns A Promise indicating the assertion result.
-     */
-    async getTotalStoredSizeAssertion(
-        matchingId: number,
-        expectSize: number
-    ): Promise<void> {
-        let storedSize = await handleEvmError(
-            this.contractsManager.StoragesEvm().getTotalStoredSize(matchingId)
-        )
-        expect(expectSize).to.be.equal(Number(storedSize.data))
-    }
-
-    /**
-     * Retrieves the stored size of a specific car for a matching identified by its ID.
-     * @param matchingId - The ID of the matching.
-     * @param id - Car ID.
-     * @param expectSize - Expected size of the car.
-     * @returns A Promise indicating the assertion result.
-     */
-    async getStoredCarSizeAssertion(
-        matchingId: number,
-        id: number,
-        expectSize: number
-    ): Promise<void> {
-        let storedCarSize = await handleEvmError(
-            this.contractsManager.StoragesEvm().getStoredCarSize(matchingId, id)
-        )
-        expect(expectSize).to.be.equal(Number(storedCarSize.data))
-    }
-
-    /**
-     * Retrieves the lock payment for the provider in a matching identified by its ID.
-     * @param matchingId - The ID of the matching.
-     * @param expectLockPayment - Expected lock payment for the provider.
-     * @returns A Promise indicating the assertion result.
-     */
-    async getProviderLockPaymentAssertion(
-        matchingId: number,
-        expectLockPayment: bigint
-    ): Promise<void> {
-        let lockPayment = await handleEvmError(
-            this.contractsManager
-                .StoragesEvm()
-                .getProviderLockPayment(matchingId)
-        )
-        expect(expectLockPayment).to.be.equal(BigInt(lockPayment.data))
-    }
-
-    /**
-     * Retrieves the lock payment for the client in a matching identified by its ID.
-     * @param matchingId - The ID of the matching.
-     * @param expectLockPayment - Expected lock payment for the client.
-     * @returns A Promise indicating the assertion result.
-     */
-    async getClientLockPaymentAssertion(
-        matchingId: number,
-        expectLockPayment: bigint
-    ): Promise<void> {
-        let lockPayment = await handleEvmError(
-            this.contractsManager.StoragesEvm().getClientLockPayment(matchingId)
-        )
-        expect(expectLockPayment).to.be.equal(BigInt(lockPayment.data))
-    }
-
-    /**
      * Checks if all stored operations are completed for a specific matching identified by its ID.
      * @param matchingId - The ID of the matching.
      * @param expectRet - Expected boolean indicating if all storage operations are done.
@@ -164,6 +96,24 @@ export class StoragesAssertion implements IStoragesAssertion {
     }
 
     /**
+     * Checks if the next datacap allocation is valid for a specific matching identified by its ID.
+     * @param matchingId - The ID of the matching.
+     * @param expectRet - Expected boolean indicating if the next allocation is valid.
+     * @returns A Promise indicating the assertion result.
+     */
+    async isNextDatacapAllocationValidAssertion(
+        matchingId: number,
+        expectRet: boolean
+    ): Promise<void> {
+        let ret = await handleEvmError(
+            this.contractsManager
+                .StoragesEvm()
+                .isNextDatacapAllocationValid(matchingId)
+        )
+        expect(expectRet).to.be.equal(ret.data)
+    }
+
+    /**
      * Submits storage claim IDs for a matching identified by its ID.
      * @param caller - The address of the caller.
      * @param matchingId - The ID of the matching.
@@ -183,8 +133,10 @@ export class StoragesAssertion implements IStoragesAssertion {
         const count = await handleEvmError(
             this.contractsManager.StoragesEvm().getStoredCarCount(matchingId)
         )
-        const totalSize = await handleEvmError(
-            this.contractsManager.StoragesEvm().getTotalStoredSize(matchingId)
+        const matchingStorageStatistics = await handleEvmError(
+            this.contractsManager
+                .StoragesEvm()
+                .getMatchingStorageOverview(matchingId)
         )
 
         await handleEvmError(
@@ -198,36 +150,39 @@ export class StoragesAssertion implements IStoragesAssertion {
             this.isAllStoredDoneAssertion(matchingId, true),
             this.isStorageExpirationAssertion(matchingId, false),
 
-            // All cars have been stored and the locked amount will be 0.
-            this.getProviderLockPaymentAssertion(matchingId, BigInt(0)),
-            this.getClientLockPaymentAssertion(matchingId, BigInt(0)),
-
             this.getStoredCarCountAssertion(
                 matchingId,
                 Number(count.data) + ids.length
             ),
         ])
+    }
 
-        const size = await handleEvmError(
+    /**
+     * Requests datacap allocation for a specific matching identified by its ID.
+     * @param caller - The address of the caller.
+     * @param matchingId - The ID of the matching.
+     * @returns A Promise indicating the assertion result.
+     */
+    async requestAllocateDatacapAssertion(
+        caller: string,
+        matchingId: number
+    ): Promise<void> {
+        //const oldMatchingStorageStatistics = await handleEvmError(
+        //    this.contractsManager
+        //        .StoragesEvm()
+        //        .getMatchingStorageOverview(matchingId)
+        //)
+
+        await this.isNextDatacapAllocationValidAssertion(matchingId, true)
+
+        this.contractsManager.StoragesEvm().getWallet().setDefault(caller)
+
+        //TODO:add DatacapChunkCollateral
+
+        const tx = await handleEvmError(
             this.contractsManager
                 .StoragesEvm()
-                .getStoredCarSize(matchingId, ids[1])
-        )
-        await this.getStoredCarSizeAssertion(matchingId, 1, size.data)
-
-        let inputCarsTotalSize = 0
-        for (let i = 0; i < ids.length; i++) {
-            const carSize = await handleEvmError(
-                this.contractsManager
-                    .StoragesEvm()
-                    .getStoredCarSize(matchingId, ids[i])
-            )
-            inputCarsTotalSize += carSize.data
-        }
-
-        await this.getTotalStoredSizeAssertion(
-            matchingId,
-            Number(totalSize.data) + inputCarsTotalSize
+                .requestAllocateDatacap(matchingId)
         )
     }
 }

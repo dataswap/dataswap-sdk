@@ -19,11 +19,33 @@
  ********************************************************************************/
 import { Entity } from "@unipackage/ddd"
 
+/**
+ * Represents basic statistics information.
+ */
 export interface BasicStatisticsInfo {
-    total: number
-    success: number
-    ongoing: number
-    failed: number
+    total: number // Total count
+    success: number // Count of successful operations
+    ongoing: number // Count of ongoing operations
+    failed: number // Count of failed operations
 }
 
 export class BasicStatisticsInfo extends Entity<BasicStatisticsInfo> {}
+
+/**
+ * Interface representing storage statistics information.
+ */
+export interface StorageStatisticsInfo {
+    total: bigint // Total storage capacity.
+    completed: bigint // Completed storage capacity.
+    usedDatacap: bigint // Used data capacity.
+    availableDatacap: bigint // Available data capacity.
+    canceled: bigint // Canceled storage capacity.
+    unallocatedDatacap: bigint // Unallocated data capacity.
+    dataswapTotal?: bigint // Total dataswap capacity (optional).
+    storageProviders?: number[] // List of storage providers (optional).
+    datasetId?: number // Dataset ID (optional).
+    matchingId?: number // Matching ID (optional).
+    replicaIndex?: bigint // Replica index (optional).
+}
+
+export class StorageStatisticsInfo extends Entity<StorageStatisticsInfo> {}

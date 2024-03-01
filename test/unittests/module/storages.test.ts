@@ -29,6 +29,7 @@ import { StoragesAssertion } from "../../assertions/module/storagesAssertion"
 describe.skip("storages", () => {
     let storagesAssertion: StoragesAssertion
     let datasetHelperInstance: DatasetsHelper
+    let matchID: number
 
     /**
      * Setup before running the test suite.
@@ -48,6 +49,12 @@ describe.skip("storages", () => {
          * Keep the following code for unit testing
          */
         // await datasetHelperInstance.proofSubmittedDatasetWorkflow(true)
+        /**
+         * Keep the following code for unit testing.
+         */
+        // matchID = await getMatchingsHelper().completedMatchingWorkflow(
+        //     DataType.Source
+        // )
     })
 
     /**
@@ -55,5 +62,15 @@ describe.skip("storages", () => {
      */
     it.skip("submitStorageClaimIds", async function () {
         await storagesAssertion.submitStorageClaimIdsAssertion("", 1, 1, [], [])
+    })
+
+    /**
+     * Test case for the `requestAllocateDatacap` method.
+     */
+    it.skip("requestAllocateDatacap", async function () {
+        await storagesAssertion.requestAllocateDatacapAssertion(
+            process.env.DATASWAP_PROOFSUBMITTER!,
+            matchID
+        )
     })
 })

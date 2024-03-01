@@ -287,11 +287,12 @@ export class DatasetRequirementMongoDatastore extends DataStore<
             if (!count.ok) {
                 return { ok: false, error: count.error }
             }
-            const size = await options.storages.getTotalStoredSize(
-                options.matchingId
-            )
-            if (!size.ok) {
-                return { ok: false, error: size.error }
+            const storageStatistics =
+                await options.storages.getMatchingStorageOverview(
+                    options.matchingId
+                )
+            if (!storageStatistics.ok) {
+                return { ok: false, error: storageStatistics.error }
             }
             let matchings = await this.getMatchings({
                 datasetId: target.data.datasetID,
@@ -300,7 +301,9 @@ export class DatasetRequirementMongoDatastore extends DataStore<
             for (let i = 0; i < matchings.length; i++) {
                 if (options.matchingId === matchings[i].matchingId) {
                     matchings[i].finishedCount = Number(count.data)
-                    matchings[i].finishedSize = BigInt(size.data!).toString()
+                    matchings[i].finishedSize = BigInt(
+                        storageStatistics.data?.completed!
+                    ).toString()
                 }
             }
             return await this.update(
