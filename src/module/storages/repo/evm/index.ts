@@ -28,11 +28,58 @@ import {
 import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
 import { DataswapMessage } from "../../../../message/types"
 import { EvmEx } from "../../../../shared/types/evmEngineType"
+import {
+    BasicStatisticsInfo,
+    StorageStatisticsInfo,
+} from "../../../../shared/types/statisticsType"
 
 /**
  * Interface for EVM calls related to  Storages.
  */
 interface StoragesCallEvm {
+    /**
+     * Retrieves an overview of count statistics.
+     * @returns A promise that resolves with the count overview.
+     */
+    getCountOverview(): Promise<EvmOutput<BasicStatisticsInfo>>
+
+    /**
+     * Retrieves an overview of size statistics.
+     * @returns A promise that resolves with the size overview.
+     */
+    getSizeOverview(): Promise<EvmOutput<BasicStatisticsInfo>>
+
+    /**
+     * Retrieves storage overview.
+     */
+    getStorageOverview(): Promise<EvmOutput<StorageStatisticsInfo>>
+
+    /**
+     * Retrieves storage overview for a specific dataset.
+     * @param datasetId The ID of the dataset.
+     */
+    getDatasetStorageOverview(
+        datasetId: number
+    ): Promise<EvmOutput<StorageStatisticsInfo>>
+
+    /**
+     * Retrieves storage overview for a specific replica of a dataset.
+     * @param datasetId The ID of the dataset.
+     * @param replicaIndex The index of the replica.
+     */
+    getReplicaStorageOverview(
+        datasetId: number,
+        replicaIndex: bigint
+    ): Promise<EvmOutput<StorageStatisticsInfo>>
+
+    /**
+     * Retrieves storage overview for a specific matching.
+     * @param matchingId The ID of the matching.
+     */
+    getMatchingStorageOverview(
+        matchingId: number
+    ): Promise<EvmOutput<StorageStatisticsInfo>>
+
     /**
      * @dev Gets the list of done cars in the matchedstore.
      * @param _matchingId The ID of the matching.
@@ -48,34 +95,6 @@ interface StoragesCallEvm {
     getStoredCarCount(matchingId: number): Promise<EvmOutput<number>>
 
     /**
-     * @notice get total stored size
-     * @param _matchingId The ID of the matching.
-     * @return The total size of the matching's stored cars.
-     */
-
-    getTotalStoredSize(matchingId: number): Promise<EvmOutput<number>>
-
-    /**
-     * @notice get car size
-     * @param _matchingId The ID of the matching.
-     * @param _id The content identifier of the matched data.
-     * @return The size of the matching's stored cars.
-     */
-    getStoredCarSize(matchingId: number, id: number): Promise<EvmOutput<number>>
-
-    /**
-     * @dev Get the collateral amount
-     * @param matchingId The ID of the matching.
-     *  */
-    getProviderLockPayment(matchingId: number): Promise<EvmOutput<bigint>>
-
-    /**
-     * @dev Get the client allow payment amount
-     * @param matchingId The ID of the matching.
-     *  */
-    getClientLockPayment(matchingId: number): Promise<EvmOutput<bigint>>
-
-    /**
      * @dev Checks if all cars are done in the matchedstore.
      * @param _matchingId The ID of the matching.
      * @return True if all cars are done in the matchedstore, otherwise false.
@@ -87,12 +106,34 @@ interface StoragesCallEvm {
      * @param matchingId The ID of the matching.
      */
     isStorageExpiration(matchingId: number): Promise<EvmOutput<boolean>>
+
+    /**
+     * Check if the next datacap allocation is valid for a matching.
+     * @param matchingId The ID of the matching.
+     * @returns A Promise representing the result of the validation.
+     */
+    isNextDatacapAllocationValid(
+        matchingId: number
+    ): Promise<EvmOutput<boolean>>
+
+    /**
+     * Retrieves the roles associated with the current user.
+     * @returns A promise that resolves with the roles of the current user.
+     */
+    roles(): Promise<EvmOutput<string>>
 }
 
 /**
  * Interface for EVM transactions related to  Storages.
  */
 interface StoragesSendEvm {
+    /**
+     * Register a Dataswap datacap.
+     * @param size The size of the datacap to register.
+     * @returns A Promise representing the result of the registration.
+     */
+    registDataswapDatacap(size: number): Promise<EvmOutput<void>>
+
     /**
      * @dev Submits multiple Filecoin claim Ids for a matchedstore after successful matching.
      * @param matchingId The ID of the matching.
@@ -108,6 +149,13 @@ interface StoragesSendEvm {
         claimIds: number[],
         options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
+
+    /**
+     * Request to allocate datacap for a matching.
+     * @param matchingId The ID of the matching.
+     * @returns A Promise representing the result of the allocation request.
+     */
+    requestAllocateDatacap(matchingId: number): Promise<EvmOutput<number>>
 }
 
 /**
@@ -119,16 +167,24 @@ export interface StoragesOriginEvm extends StoragesCallEvm, StoragesSendEvm {}
  * Implementation of  StoragesOriginEvm with specific EVM methods.
  */
 @withCallMethod([
+    "getCountOverview",
+    "getSizeOverview",
+    "getStorageOverview",
+    "getDatasetStorageOverview",
+    "getReplicaStorageOverview",
+    "getMatchingStorageOverview",
     "getStoredCars",
     "getStoredCarCount",
-    "getTotalStoredSize",
-    "getStoredCarSize",
-    "getProviderLockPayment",
-    "getClientLockPayment",
     "isAllStoredDone",
     "isStorageExpiration",
+    "isNextDatacapAllocationValid",
+    "roles",
 ])
-@withSendMethod(["submitStorageClaimIds"])
+@withSendMethod([
+    "registDataswapDatacap",
+    "submitStorageClaimIds",
+    "requestAllocateDatacap",
+])
 export class StoragesOriginEvm extends EvmEx {}
 
 /**
@@ -152,7 +208,9 @@ export class StoragesEvm extends StoragesOriginEvm {
             decodeRes.data!.values() as DataswapMessage
         switch (decodeRes.data!.method) {
             case "submitStorageClaimIds":
-                result.matchingId = result.params.matchingId
+            case "requestAllocateDatacap":
+                result.matchingId = Number(result.params.matchingId)
+                result.params.matchingId = result.matchingId
                 break
             default:
                 return {

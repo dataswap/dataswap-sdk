@@ -42,52 +42,6 @@ export interface IStoragesAssertion {
     ): Promise<void>
 
     /**
-     * Retrieves the total stored size for a specific matching identified by its ID.
-     * @param matchingId - The ID of the matching.
-     * @param expectSize - Expected total stored size.
-     * @returns A Promise indicating the assertion result.
-     */
-    getTotalStoredSizeAssertion(
-        matchingId: number,
-        expectSize: number
-    ): Promise<void>
-
-    /**
-     * Retrieves the stored size of a specific car for a matching identified by its ID.
-     * @param matchingId - The ID of the matching.
-     * @param id - Car ID.
-     * @param expectSize - Expected size of the car.
-     * @returns A Promise indicating the assertion result.
-     */
-    getStoredCarSizeAssertion(
-        matchingId: number,
-        id: number,
-        expectSize: number
-    ): Promise<void>
-
-    /**
-     * Retrieves the lock payment for the provider in a matching identified by its ID.
-     * @param matchingId - The ID of the matching.
-     * @param expectLockPayment - Expected lock payment for the provider.
-     * @returns A Promise indicating the assertion result.
-     */
-    getProviderLockPaymentAssertion(
-        matchingId: number,
-        expectLockPayment: bigint
-    ): Promise<void>
-
-    /**
-     * Retrieves the lock payment for the client in a matching identified by its ID.
-     * @param matchingId - The ID of the matching.
-     * @param expectLockPayment - Expected lock payment for the client.
-     * @returns A Promise indicating the assertion result.
-     */
-    getClientLockPaymentAssertion(
-        matchingId: number,
-        expectLockPayment: bigint
-    ): Promise<void>
-
-    /**
      * Checks if all stored operations are completed for a specific matching identified by its ID.
      * @param matchingId - The ID of the matching.
      * @param expectRet - Expected boolean indicating if all storage operations are done.
@@ -110,6 +64,17 @@ export interface IStoragesAssertion {
     ): Promise<void>
 
     /**
+     * Checks if the next datacap allocation is valid for a specific matching identified by its ID.
+     * @param matchingId - The ID of the matching.
+     * @param expectRet - Expected boolean indicating if the next allocation is valid.
+     * @returns A Promise indicating the assertion result.
+     */
+    isNextDatacapAllocationValidAssertion(
+        matchingId: number,
+        expectRet: boolean
+    ): Promise<void>
+
+    /**
      * Submits storage claim IDs for a matching identified by its ID.
      * @param caller - The address of the caller.
      * @param matchingId - The ID of the matching.
@@ -124,5 +89,16 @@ export interface IStoragesAssertion {
         provider: number,
         ids: number[],
         claimIds: number[]
+    ): Promise<void>
+
+    /**
+     * Requests datacap allocation for a specific matching identified by its ID.
+     * @param caller - The address of the caller.
+     * @param matchingId - The ID of the matching.
+     * @returns A Promise indicating the assertion result.
+     */
+    requestAllocateDatacapAssertion(
+        caller: string,
+        matchingId: number
     ): Promise<void>
 }
