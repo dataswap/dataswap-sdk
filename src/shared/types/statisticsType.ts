@@ -27,6 +27,7 @@ export interface BasicStatisticsInfo {
     success: number // Count of successful operations
     ongoing: number // Count of ongoing operations
     failed: number // Count of failed operations
+    height?: number // current height
 }
 
 export class BasicStatisticsInfo extends Entity<BasicStatisticsInfo> {}
