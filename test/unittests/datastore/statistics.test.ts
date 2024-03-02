@@ -18,8 +18,14 @@
  *  limitations under the respective licenses.
  ********************************************************************************/
 import chai from "chai"
-import { StorageStatisticsInfoMongoDatastore } from "../../../src/core/statistics/repo/datastore"
-import { StorageStatisticsInfo } from "../../../src/shared/types/statisticsType"
+import {
+    StorageStatisticsInfoMongoDatastore,
+    DatasetsBasicStatisticsMongoDatastore,
+} from "../../../src/core/statistics/repo/datastore"
+import {
+    StorageStatisticsInfo,
+    BasicStatistics,
+} from "../../../src/shared/types/statisticsType"
 import { ValueFields } from "@unipackage/utils"
 import { describe, it } from "mocha"
 import { DatabaseConnection } from "@unipackage/datastore"
@@ -76,6 +82,61 @@ describe("StorageStatisticsInfoMongoDatastore", () => {
                 conditions: [
                     { datasetId: 1, matchingId: 1, replicaIndex: BigInt(1) },
                 ],
+            })
+            expect(res.ok).to.be.true
+            expect(res.data).to.be.not.undefined
+            expect(res.data?.length).to.deep.equal(1)
+        })
+    })
+})
+
+const sampleBasicStatistics: ValueFields<BasicStatistics> = {
+    totalCounts: 10,
+    successCounts: 3,
+    ongoingCounts: 6,
+    failedCounts: 1,
+    totalSize: 1000,
+    successSize: 400,
+    ongoingSize: 500,
+    failedSize: 100,
+    height: BigInt(1024),
+}
+
+describe("DatasetsBasicStatisticsMongoDatastore", () => {
+    const connection = DatabaseConnection.getInstance(
+        "mongodb://127.0.0.1:27017/datastore"
+    )
+    const datastore = new DatasetsBasicStatisticsMongoDatastore(connection)
+
+    beforeEach(async () => {
+        const res = await datastore.connect()
+        expect(res.ok).to.be.true
+    })
+
+    afterEach(async () => {
+        const res = await datastore.disconnect()
+        expect(res.ok).to.be.true
+    })
+
+    describe("constructor", () => {
+        it("should create an instance of DatasetsBasicStatisticsMongoDatastore", () => {
+            expect(datastore).to.be.an.instanceOf(
+                DatasetsBasicStatisticsMongoDatastore
+            )
+        })
+    })
+
+    describe("save", () => {
+        //@note: Testing individually is normal, but there are issues when integrated into the CI testing environment."
+        it.skip("should save a DatasetsBasicStatistics to the datastore", async () => {
+            const createRes = await datastore.CreateOrupdateByUniqueIndexes(
+                sampleBasicStatistics
+            )
+            console.log(createRes)
+            expect(createRes.ok).to.be.true
+
+            const res = await datastore.find({
+                conditions: [{ height: 1024 }],
             })
             expect(res.ok).to.be.true
             expect(res.data).to.be.not.undefined

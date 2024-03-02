@@ -68,13 +68,19 @@ export { DatasetChallengeMongoDatastore } from "./module/dataset/challenge/repo/
 export { MatchingMetadataMongoDatastore } from "./module/matching/metadata/repo/datastore"
 export { MatchingTargetMongoDatastore } from "./module/matching/target/repo/datastore"
 export { MatchingBidMongoDatastore } from "./module/matching/bids/repo/datastore"
-export { StorageStatisticsInfoMongoDatastore } from "./core/statistics/repo/datastore"
+
+export {
+    StorageStatisticsInfoMongoDatastore,
+    DatasetsBasicStatisticsMongoDatastore,
+    MatchingsBasicStatisticsMongoDatastore,
+    StoragesBasicStatisticsMongoDatastore,
+} from "./core/statistics/repo/datastore"
 
 export {
     BasicStatisticsInfo,
     StorageStatisticsInfo,
+    BasicStatistics,
 } from "./shared/types/statisticsType"
-
 export { BasicParamsInfo } from "./shared/types/BasicParamsType"
 export { BidSelectionRule } from "./module/matching/metadata/types"
 export {

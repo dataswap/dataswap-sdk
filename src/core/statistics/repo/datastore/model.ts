@@ -21,6 +21,7 @@
 import { Schema, Document } from "mongoose"
 import { ValueFields } from "@unipackage/utils"
 import { StorageStatisticsInfo } from "../../../../shared/types/statisticsType"
+import { BasicStatistics } from "../../../../shared/types/statisticsType"
 /**
  * Interface representing a StorageStatisticsInfoDocument, extending StorageStatisticsInfo and Document.
  * @interface
@@ -83,3 +84,58 @@ const StorageStatisticsInfoSchema = new Schema<StorageStatisticsInfoDocument>({
 
 export { StorageStatisticsInfoSchema }
 export type { StorageStatisticsInfoDocument }
+
+/**
+ * Interface representing a BasicStatisticsDocument, extending BasicStatistics and Document.
+ * @interface
+ */
+interface BasicStatisticsDocument
+    extends ValueFields<BasicStatistics>,
+        Document {}
+
+/**
+ * Schema definition for the basic statistics collection.
+ * @constant
+ */
+const BasicStatisticsSchema = new Schema<BasicStatisticsDocument>({
+    totalCounts: {
+        type: Number,
+        required: [true, "Please provide the totalCounts"],
+    },
+    successCounts: {
+        type: Number,
+        required: [true, "Please provide the successCounts"],
+    },
+    ongoingCounts: {
+        type: Number,
+        required: [true, "Please provide the ongoingCounts"],
+    },
+    failedCounts: {
+        type: Number,
+        required: [true, "Please provide the failedCounts"],
+    },
+    totalSize: {
+        type: Number,
+        required: [true, "Please provide the totalSize"],
+    },
+    successSize: {
+        type: Number,
+        required: [true, "Please provide the successSize"],
+    },
+    ongoingSize: {
+        type: Number,
+        required: [true, "Please provide the ongoingSize"],
+    },
+    failedSize: {
+        type: Number,
+        required: [true, "Please provide the failedSize"],
+    },
+    height: {
+        type: BigInt,
+        required: [true, "Please provide the height"],
+        index: { unique: true },
+    },
+})
+
+export { BasicStatisticsSchema }
+export type { BasicStatisticsDocument }

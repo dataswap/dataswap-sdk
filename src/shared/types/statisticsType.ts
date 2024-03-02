@@ -22,12 +22,29 @@ import { Entity } from "@unipackage/ddd"
 /**
  * Represents basic statistics information.
  */
+export interface BasicStatistics {
+    totalCounts: number // Total count
+    successCounts: number // Count of successful operations
+    ongoingCounts: number // Count of ongoing operations
+    failedCounts: number // Count of failed operations
+    totalSize: number // Total size
+    successSize: number // Count of successful size
+    ongoingSize: number // Count of ongoing size
+    failedSize: number // Count of failed size
+    height: bigint // current height
+}
+
+export class BasicStatistics extends Entity<BasicStatistics> {}
+
+/**
+ * Represents basic statistics information.
+ */
 export interface BasicStatisticsInfo {
     total: number // Total count
     success: number // Count of successful operations
     ongoing: number // Count of ongoing operations
     failed: number // Count of failed operations
-    height?: number // current height
+    height?: bigint // current height
 }
 
 export class BasicStatisticsInfo extends Entity<BasicStatisticsInfo> {}
