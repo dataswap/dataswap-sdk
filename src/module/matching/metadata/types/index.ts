@@ -54,6 +54,9 @@ export interface MatchingMetadata {
     biddingEndBlock?: bigint
     subsidy?: bigint
     winner?: string
+    hasSpecifiedStorageProvider?: boolean
+    dataUnitPrice?: bigint
+    completedHeight?: bigint
 }
 
 /**

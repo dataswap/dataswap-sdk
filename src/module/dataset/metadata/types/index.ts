@@ -38,6 +38,8 @@ export interface DatasetMetadata {
     sizeInBytes: bigint
     isPublic: boolean
     version: bigint
+    challengeCommissionPrice?: bigint
+    completedHeight?: bigint
     datasetId?: number
     status?: DatasetState
 }
