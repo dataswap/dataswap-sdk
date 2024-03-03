@@ -200,6 +200,77 @@ export class MatchingMetadataMongoDatastore extends DataStore<
     }
 
     /**
+     * Asynchronously updates the matching data unit price based on the provided options.
+     * @param options An object containing the necessary parameters:
+     *                - datasetRequirementEvm: The dataset requirement Ethereum virtual machine.
+     *                - matchingTarget: The matching target Ethereum virtual machine.
+     *                - matchingBids: The matching bids Ethereum virtual machine.
+     *                - matchingId: The ID of the matching.
+     *                - height: The height of the dataset.
+     * @returns A promise that resolves to a Result object.
+     */
+    async updateMatchingDataUnitPrice(options: {
+        datasetRequirementEvm: DatasetRequirementEvm
+        matchingTarget: MatchingTargetEvm
+        matchingBids: MatchingBidsEvm
+        matchingId: number
+        height: bigint
+    }): Promise<Result<any>> {
+        try {
+            const target = await options.matchingTarget.getMatchingTarget(
+                options.matchingId
+            )
+            if (!target.ok) {
+                return { ok: false, error: target.error }
+            }
+
+            const requirement =
+                await options.datasetRequirementEvm.getDatasetReplicaRequirement(
+                    target.data!.datasetID,
+                    target.data!.replicaIndex
+                )
+            if (!requirement.ok) {
+                return { ok: false, error: requirement.error }
+            }
+
+            let hasSpecifiedStorageProvider: boolean = false
+            if (requirement.data?.storageProviders.length != 0) {
+                hasSpecifiedStorageProvider = true
+            }
+
+            const winner = await options.matchingBids.getMatchingWinner(
+                options.matchingId
+            )
+
+            if (!winner.ok) {
+                return { ok: false, error: winner.error }
+            }
+
+            const ammount = await options.matchingBids.getMatchingBidAmount(
+                options.matchingId,
+                winner.data!
+            )
+
+            if (!ammount.ok) {
+                return { ok: false, error: ammount.error }
+            }
+            const dataUnitPrice = ammount.data! / BigInt(target.data!.size)
+
+            return await this.update(
+                { conditions: [{ matchingId: options.matchingId }] },
+                {
+                    hasSpecifiedStorageProvider: hasSpecifiedStorageProvider,
+                    dataUnitPrice: dataUnitPrice,
+                    completedHeight: options.height,
+                }
+            )
+            return { ok: true }
+        } catch (error) {
+            throw error
+        }
+    }
+
+    /**
      * Private method to retrieve the best bid based on the specified rule and bids.
      *
      * @param rule - The bid selection rule.

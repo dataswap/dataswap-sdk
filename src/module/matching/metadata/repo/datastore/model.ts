@@ -106,6 +106,15 @@ const MatchingMetadataSchema = new Schema<MatchingMetadataDocument>({
     winner: {
         type: String,
     },
+    hasSpecifiedStorageProvider: {
+        type: Boolean,
+    },
+    dataUnitPrice: {
+        type: BigInt,
+    },
+    completedHeight: {
+        type: BigInt,
+    },
 })
 
 export { MatchingMetadataSchema }

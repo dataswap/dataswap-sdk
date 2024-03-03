@@ -72,6 +72,12 @@ const DatasetMetadataSchema = new Schema<DatasetMetadataDocument>({
         type: BigInt,
         required: [true, "Please provide the version"],
     },
+    challengeCommissionPrice: {
+        type: BigInt,
+    },
+    completedHeight: {
+        type: BigInt,
+    },
     datasetId: {
         type: Number,
         required: [true, "Please provide the datasetId"],

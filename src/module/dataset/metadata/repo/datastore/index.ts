@@ -24,6 +24,9 @@ import { DatasetMetadata } from "../../types"
 import { DatasetMetadataDocument, DatasetMetadataSchema } from "./model"
 import { MongooseDataStore, DatabaseConnection } from "@unipackage/datastore"
 import { DatasetMetadataEvm } from "../evm"
+import { DatasetChallengeEvm } from "../../../challenge/repo/evm"
+import { FinanceEvm } from "../../../../../core/finance/repo/evm"
+import { EscrowType } from "../../../../../shared/types/financeType"
 
 /**
  * Class representing a MongoDB datastore for DatasetMetadata entities.
@@ -70,6 +73,67 @@ export class DatasetMetadataMongoDatastore extends DataStore<
             return await this.update(
                 { conditions: [{ datasetId: options.datasetId }] },
                 { status: Number(state.data) }
+            )
+        } catch (error) {
+            throw error
+        }
+    }
+
+    /**
+     * Asynchronously updates the dataset challenge commission price based on the provided options.
+     * @param options An object containing the necessary parameters:
+     *                - financeEvm: The finance Ethereum virtual machine.
+     *                - datasetMetadataEvm: The dataset metadata Ethereum virtual machine.
+     *                - datasetChallengeEvm: The dataset challenge Ethereum virtual machine.
+     *                - datasetId: The ID of the dataset.
+     *                - token: The token associated with the dataset.
+     *                - height: The height of the dataset.
+     * @returns A promise that resolves to a Result object.
+     */
+    async updateDatasetChallengeCommissionPrice(options: {
+        financeEvm: FinanceEvm
+        datasetMetadataEvm: DatasetMetadataEvm
+        datasetChallengeEvm: DatasetChallengeEvm
+        datasetId: number
+        token: string
+        height: bigint
+    }): Promise<Result<any>> {
+        try {
+            const submitter =
+                await options.datasetMetadataEvm.getDatasetMetadataSubmitter(
+                    options.datasetId
+                )
+            if (!submitter.ok) {
+                return { ok: false, error: submitter.error }
+            }
+
+            const accountEscrow = await options.financeEvm.getAccountEscrow(
+                options.datasetId,
+                0,
+                submitter.data!,
+                options.token,
+                EscrowType.EscrowChallengeCommission
+            )
+            if (!accountEscrow.ok) {
+                return { ok: false, error: accountEscrow.error }
+            }
+
+            const challengeCount =
+                await options.datasetChallengeEvm.getChallengeSubmissionCount(
+                    options.datasetId
+                )
+            if (!challengeCount.ok) {
+                return { ok: false, error: challengeCount.error }
+            }
+
+            return await this.update(
+                { conditions: [{ datasetId: options.datasetId }] },
+                {
+                    completedHeight: options.height,
+                    challengeCommissionPrice:
+                        BigInt(accountEscrow.data!.total) /
+                        BigInt(challengeCount.data!),
+                }
             )
         } catch (error) {
             throw error
