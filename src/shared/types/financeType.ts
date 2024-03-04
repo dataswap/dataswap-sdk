@@ -51,3 +51,5 @@ export enum FinanceOperateType {
     Escrow,
     claimEscrow,
 }
+
+export const FIL = "0x0000000000000000000000000000000000000000"

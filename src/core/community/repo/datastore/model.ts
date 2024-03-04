@@ -40,43 +40,33 @@ const MemberSchema = new Schema<MemberDocument>({
     },
     totalDatasetsSubmitted: {
         type: Number,
-        required: [true, "Please provide the totalDatasetsSubmitted"],
     },
     totalProofSubmitted: {
         type: Number,
-        required: [true, "Please provide the totalProofSubmitted"],
     },
     totalChallengeSubmitted: {
         type: Number,
-        required: [true, "Please provide the totalChallengeSubmitted"],
     },
     totalMatchingSubmitted: {
         type: Number,
-        required: [true, "Please provide the totalMatchingSubmitted"],
     },
     totalDisputeSubmitted: {
         type: Number,
-        required: [true, "Please provide the totalDisputeSubmitted"],
     },
     storageClient: {
         type: Boolean,
-        required: [true, "Please provide the storageClient"],
     },
     storageProvider: {
         type: Boolean,
-        required: [true, "Please provide the storageProvider"],
     },
     datasetPreparer: {
         type: Boolean,
-        required: [true, "Please provide the datasetPreparer"],
     },
     datasetAuditer: {
         type: Boolean,
-        required: [true, "Please provide the datasetAuditer"],
     },
     financeAccounts: {
         type: [Object],
-        required: [true, "Please provide the financeAccount"],
     },
 })
 

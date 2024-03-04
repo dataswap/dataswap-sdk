@@ -34,10 +34,11 @@ export { DatasetChallenge } from "./module/dataset/challenge/types"
 export { MatchingMetadata } from "./module/matching/metadata/types"
 export { MatchingTarget } from "./module/matching/target/types"
 export { MatchingBids, MatchingBid } from "./module/matching/bids/types"
+export { Member, FinanceAccount } from "./core/community/types"
 export { CarReplicaState } from "./shared/types/carstoreType"
 export { DatasetState } from "./shared/types/datasetType"
 export { DataType } from "./shared/types/dataType"
-export { EscrowOperateType, EscrowType } from "./shared/types/escrowType"
+export { FinanceOperateType, EscrowType, FIL } from "./shared/types/financeType"
 export { EvmEngine, EvmEx, Wallet } from "./shared/types/evmEngineType"
 export { DealState } from "./shared/types/filecoinType"
 export { MatchingState } from "./shared/types/matchingType"
@@ -75,6 +76,7 @@ export {
     MatchingsBasicStatisticsMongoDatastore,
     StoragesBasicStatisticsMongoDatastore,
 } from "./core/statistics/repo/datastore"
+export { MemberMongoDatastore } from "./core/community/repo/datastore"
 
 export {
     BasicStatisticsInfo,

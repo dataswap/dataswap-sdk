@@ -19,7 +19,8 @@
  ********************************************************************************/
 import chai from "chai"
 import { MemberMongoDatastore } from "../../../src/core/community/repo/datastore"
-import { Member } from "../../../src/core/community/types"
+import { Member, FinanceAccount } from "../../../src/core/community/types"
+import { FIL } from "../../../src/shared/types/financeType"
 import { ValueFields } from "@unipackage/utils"
 import { describe, it } from "mocha"
 import { DatabaseConnection } from "@unipackage/datastore"
@@ -68,15 +69,30 @@ describe("MembersMongoDatastore", () => {
             expect(res.data).to.be.not.undefined
             expect(res.data?.length).to.deep.equal(1)
 
-            await datastore.addFinanceAccount({
-                address: "0",
-                datasetId: 1,
-                matchingId: 1,
-                token: "0",
-            })
+            await datastore.createOrUpdateMember(
+                new Member({
+                    address: "0",
+                    totalDatasetsSubmitted: 1,
+                    totalChallengeSubmitted: 0,
+                    totalDisputeSubmitted: 0,
+                    totalMatchingSubmitted: 0,
+                    totalProofSubmitted: 0,
+                    storageClient: true,
+                    storageProvider: false,
+                    datasetAuditer: false,
+                    datasetPreparer: false,
+                    financeAccounts: [
+                        new FinanceAccount({
+                            datasetId: 1,
+                            matchingId: 1,
+                            token: FIL,
+                        }),
+                    ],
+                })
+            )
             const addRes = await datastore.find({
                 conditions: [
-                    { totalDatasetsSubmitted: 0, storageClient: false },
+                    { totalDatasetsSubmitted: 1, storageClient: true },
                 ],
             })
             console.log(addRes)
@@ -85,6 +101,48 @@ describe("MembersMongoDatastore", () => {
             expect(addRes.data?.length).to.deep.equal(1)
             expect(addRes.data![0].financeAccounts![0].matchingId).to.be.equal(
                 1
+            )
+
+            await datastore.createOrUpdateMember(
+                new Member({
+                    address: "0",
+                    totalDatasetsSubmitted: 1,
+                    totalChallengeSubmitted: 1,
+                    totalDisputeSubmitted: 0,
+                    totalMatchingSubmitted: 0,
+                    totalProofSubmitted: 0,
+                    storageClient: true,
+                    storageProvider: false,
+                    datasetAuditer: true,
+                    datasetPreparer: false,
+                    financeAccounts: [
+                        new FinanceAccount({
+                            datasetId: 1,
+                            matchingId: 2,
+                            token: FIL,
+                        }),
+                        new FinanceAccount({
+                            datasetId: 1,
+                            matchingId: 1,
+                            token: FIL,
+                        }),
+                    ],
+                })
+            )
+            const addRes1 = await datastore.find({
+                conditions: [
+                    { totalDatasetsSubmitted: 2, storageClient: true },
+                ],
+            })
+            console.log(addRes1, addRes1.data![0].financeAccounts)
+            expect(addRes1.ok).to.be.true
+            expect(addRes1.data).to.be.not.undefined
+            expect(addRes1.data?.length).to.deep.equal(1)
+            expect(addRes1.data![0].financeAccounts![1].matchingId).to.be.equal(
+                1
+            )
+            expect(addRes1.data![0].financeAccounts![0].matchingId).to.be.equal(
+                2
             )
         })
     })
