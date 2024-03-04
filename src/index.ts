@@ -20,7 +20,10 @@
 
 export { Car, CarReplica } from "./core/carstore/types"
 export { DataswapMessage } from "./message/types"
-export { DatasetMetadata } from "./module/dataset/metadata/types"
+export {
+    DatasetMetadata,
+    DatasetTimeoutParameters,
+} from "./module/dataset/metadata/types"
 export {
     DatasetRequirement,
     DatasetRequirements,
@@ -28,6 +31,7 @@ export {
 } from "./module/dataset/requirement/types"
 export {
     DatasetProofs,
+    DatasetProofsWithhCarIds,
     DatasetProofMetadata,
 } from "./module/dataset/proof/types"
 export { DatasetChallenge } from "./module/dataset/challenge/types"

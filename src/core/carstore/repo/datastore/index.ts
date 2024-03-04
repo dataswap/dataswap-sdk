@@ -30,11 +30,15 @@ import { MongooseDataStore, DatabaseConnection } from "@unipackage/datastore"
 import { MatchingTarget } from "../../../../module/matching/target/types"
 import {
     convertToCarArray,
+    convertToCarArrayWithCarIds,
     convertToCarReplicasArray,
 } from "../../../../shared/converters"
 import { CarstoreEvm } from "../evm"
 import { DatasetRequirementEvm } from "../../../../module/dataset/requirement/repo/evm"
-import { DatasetProofs } from "../../../../module/dataset/proof/types"
+import {
+    DatasetProofs,
+    DatasetProofsWithhCarIds,
+} from "../../../../module/dataset/proof/types"
 import { MatchingTargetEvm } from "../../../../module/matching/target/repo/evm"
 import { CarReplicaState } from "../../../../shared/types/carstoreType"
 
@@ -76,6 +80,36 @@ export class CarMongoDatastore extends DataStore<
         proofs: DatasetProofs
     }): Promise<Result<any>> {
         const cars = await convertToCarArray({
+            carstoreEvm: options.carstoreEvm,
+            requirementEvm: options.requirementEvm,
+            proofs: options.proofs,
+        })
+        for (let i = 0; i < cars.length; i++) {
+            const ret = await this.CreateOrupdateByUniqueIndexes(cars[i])
+            if (!ret.ok) {
+                return {
+                    ok: false,
+                    error: new Error(`storeCars error:${ret.error}`),
+                }
+            }
+        }
+        return { ok: true, data: cars }
+    }
+
+    /**
+     * Stores cars in the Carstore contract and updates the dataset requirement in the DatasetRequirement contract.
+     * @param options - Object containing necessary parameters.
+     * @param options.carstoreEvm - Instance of the CarstoreEvm contract.
+     * @param options.requirementEvm - Instance of the DatasetRequirementEvm contract.
+     * @param options.proofs - DatasetProofs containing proofs for car-related data.
+     * @returns A Promise resolving to a Result indicating the success or failure of the operation.
+     */
+    async storeCarsWithCarIds(options: {
+        carstoreEvm: CarstoreEvm
+        requirementEvm: DatasetRequirementEvm
+        proofs: DatasetProofsWithhCarIds
+    }): Promise<Result<any>> {
+        const cars = await convertToCarArrayWithCarIds({
             carstoreEvm: options.carstoreEvm,
             requirementEvm: options.requirementEvm,
             proofs: options.proofs,

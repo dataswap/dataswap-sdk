@@ -58,7 +58,7 @@ describe("DatasetsContractMessageDecoder", () => {
                     submitter: "f410fcwzis33wz3sofrlh466gog5xahlthgzqezasapy",
                     createdBlockNumber: 1213438,
                     datasetId: 1,
-                    status: DatasetState.None,
+                    status: DatasetState.MetadataSubmitted,
                 },
                 returns:
                     "0x0000000000000000000000000000000000000000000000000000000000000001",

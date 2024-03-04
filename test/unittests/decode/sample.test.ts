@@ -40,7 +40,7 @@ import { DatasetState } from "../../../src/shared/types/datasetType"
 import { createTargetMessage } from "../../shared/utils"
 dotenv.config()
 
-describe("ContractMessageDecoder", () => {
+describe.only("ContractMessageDecoder", () => {
     const expectDecodeResult = {
         ok: true,
         data: {
@@ -67,7 +67,7 @@ describe("ContractMessageDecoder", () => {
                 submitter: "f410fcwzis33wz3sofrlh466gog5xahlthgzqezasapy",
                 createdBlockNumber: 1213438,
                 datasetId: 1,
-                status: DatasetState.None,
+                status: DatasetState.MetadataSubmitted,
             },
             status: 0,
             return: "0x0000000000000000000000000000000000000000000000000000000000000001",

@@ -25,7 +25,10 @@ import { CarReplica, Car, ReplicaInfo } from "../../core/carstore/types"
 import { MatchingTarget } from "../../module/matching/target/types"
 import { ValueFields } from "@unipackage/utils"
 import { CarReplicaState } from "../types/carstoreType"
-import { DatasetProofs } from "../../module/dataset/proof/types"
+import {
+    DatasetProofs,
+    DatasetProofsWithhCarIds,
+} from "../../module/dataset/proof/types"
 import {
     DatasetRequirements,
     DatasetRequirement,
@@ -119,7 +122,62 @@ export async function convertToCarArray(options: {
     }
     return ret
 }
+/**
+ * Converts the provided data to an array of Car objects using the specified options.
+ *
+ * @param options - An object containing the necessary parameters for conversion.
+ * @returns A Promise resolving to an array of Car objects.
+ */
+export async function convertToCarArrayWithCarIds(options: {
+    carstoreEvm: CarstoreEvm
+    requirementEvm: DatasetRequirementEvm
+    proofs: DatasetProofsWithhCarIds
+}): Promise<Car[]> {
+    let ret: Car[] = []
 
+    for (let index = 0; index < options.proofs.leaves.length; index++) {
+        const carId = options.proofs.leaves[index]
+        const replicaCount =
+            await options.requirementEvm.getDatasetReplicasCount(
+                options.proofs.datasetId
+            )
+        if (!replicaCount.ok || !replicaCount.data) {
+            throw replicaCount.error
+        }
+        const hash = await options.carstoreEvm.getCarHash(carId)
+        if (!hash.ok || !hash.data) {
+            throw hash.error
+        }
+        const carSize = await options.carstoreEvm.getCarSize(carId)
+        if (!carSize.ok || !carSize.data) {
+            throw carSize.error
+        }
+        ret.push(
+            new Car({
+                hash: hash.data,
+                cid: await dataCommitmentV1ToCID(hash.data),
+                dataType: options.proofs.dataType,
+                datasetId: options.proofs.datasetId,
+                size: carSize.data,
+                carId: carId,
+                replicasCount: BigInt(replicaCount.data),
+                matchingIds: Array.from(
+                    { length: Number(replicaCount.data) },
+                    () => 0
+                ),
+                replicaInfos: Array.from(
+                    { length: Number(replicaCount.data) },
+                    () =>
+                        new ReplicaInfo({
+                            matchingId: 0,
+                            state: CarReplicaState.None,
+                        })
+                ),
+            } as ValueFields<Car>)
+        )
+    }
+    return ret
+}
 /**
  * Converts a DatasetRequirements object to an array of DatasetRequirement objects.
  *
