@@ -70,7 +70,7 @@ export { MatchingTargetMongoDatastore } from "./module/matching/target/repo/data
 export { MatchingBidMongoDatastore } from "./module/matching/bids/repo/datastore"
 
 export {
-    StorageStatisticsInfoMongoDatastore,
+    MatchingStorageStatisticsInfoMongoDatastore,
     DatasetsBasicStatisticsMongoDatastore,
     MatchingsBasicStatisticsMongoDatastore,
     StoragesBasicStatisticsMongoDatastore,
@@ -79,6 +79,8 @@ export {
 export {
     BasicStatisticsInfo,
     StorageStatisticsInfo,
+    DatasetStorageStatisticsInfo,
+    MatchingStorageStatisticsInfo,
     BasicStatistics,
 } from "./shared/types/statisticsType"
 export { BasicParamsInfo } from "./shared/types/BasicParamsType"

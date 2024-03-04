@@ -20,70 +20,68 @@
 
 import { Schema, Document } from "mongoose"
 import { ValueFields } from "@unipackage/utils"
-import { StorageStatisticsInfo } from "../../../../shared/types/statisticsType"
+import { MatchingStorageStatisticsInfo } from "../../../../shared/types/statisticsType"
 import { BasicStatistics } from "../../../../shared/types/statisticsType"
 /**
- * Interface representing a StorageStatisticsInfoDocument, extending StorageStatisticsInfo and Document.
+ * Interface representing a MatchingStorageStatisticsInfoDocument, extending MatchingStorageStatisticsInfo and Document.
  * @interface
  */
-interface StorageStatisticsInfoDocument
-    extends ValueFields<StorageStatisticsInfo>,
+interface MatchingStorageStatisticsInfoDocument
+    extends ValueFields<MatchingStorageStatisticsInfo>,
         Document {}
 
 /**
  * Schema definition for the storage statistics collection.
  * @constant
  */
-const StorageStatisticsInfoSchema = new Schema<StorageStatisticsInfoDocument>({
-    total: {
-        type: BigInt,
-        required: [true, "Please provide the total"],
-    },
-    completed: {
-        type: BigInt,
-        required: [true, "Please provide the completed"],
-    },
-    usedDatacap: {
-        type: BigInt,
-        required: [true, "Please provide the usedDatacap"],
-    },
-    availableDatacap: {
-        type: BigInt,
-        required: [true, "Please provide the availableDatacap"],
-    },
-    canceled: {
-        type: BigInt,
-        required: [true, "Please provide the canceled"],
-    },
-    unallocatedDatacap: {
-        type: BigInt,
-        required: [true, "Please provide the unallocatedDatacap"],
-    },
-    dataswapTotal: {
-        type: BigInt,
-    },
-    storageProviders: {
-        type: [Number],
-        required: [true, "Please provide the storageProviders"],
-    },
-    datasetId: {
-        type: Number,
-        required: [true, "Please provide the datasetId"],
-        index: true,
-    },
-    matchingId: {
-        type: Number,
-        required: [true, "Please provide the matchingId"],
-        index: true,
-    },
-    replicaIndex: {
-        type: BigInt,
-        required: [true, "Please provide the replicaIndex"],
-    },
-}).index({ datasetId: 1, matchingId: 1, replicaIndex: 1 }, { unique: true })
+const MatchingStorageStatisticsInfoSchema =
+    new Schema<MatchingStorageStatisticsInfoDocument>({
+        total: {
+            type: BigInt,
+            required: [true, "Please provide the total"],
+        },
+        completed: {
+            type: BigInt,
+            required: [true, "Please provide the completed"],
+        },
+        usedDatacap: {
+            type: BigInt,
+            required: [true, "Please provide the usedDatacap"],
+        },
+        availableDatacap: {
+            type: BigInt,
+            required: [true, "Please provide the availableDatacap"],
+        },
+        canceled: {
+            type: BigInt,
+            required: [true, "Please provide the canceled"],
+        },
+        unallocatedDatacap: {
+            type: BigInt,
+            required: [true, "Please provide the unallocatedDatacap"],
+        },
+        storageProviders: {
+            type: [Number],
+            required: [true, "Please provide the storageProviders"],
+        },
+        datasetId: {
+            type: Number,
+            required: [true, "Please provide the datasetId"],
+            index: true,
+        },
+        replicaIndex: {
+            type: BigInt,
+            required: [true, "Please provide the replicaIndex"],
+        },
+        matchingId: {
+            type: Number,
+            required: [true, "Please provide the matchingId"],
+            index: true,
+        },
+    }).index({ datasetId: 1, matchingId: 1, replicaIndex: 1 }, { unique: true })
 
-export { StorageStatisticsInfoSchema }
-export type { StorageStatisticsInfoDocument }
+export { MatchingStorageStatisticsInfoSchema }
+export type { MatchingStorageStatisticsInfoDocument }
 
 /**
  * Interface representing a BasicStatisticsDocument, extending BasicStatistics and Document.

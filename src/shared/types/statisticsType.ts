@@ -53,17 +53,47 @@ export class BasicStatisticsInfo extends Entity<BasicStatisticsInfo> {}
  * Interface representing storage statistics information.
  */
 export interface StorageStatisticsInfo {
+    dataswapTotal: bigint // Total dataswap capacity (optional).
     total: bigint // Total storage capacity.
     completed: bigint // Completed storage capacity.
     usedDatacap: bigint // Used data capacity.
     availableDatacap: bigint // Available data capacity.
     canceled: bigint // Canceled storage capacity.
     unallocatedDatacap: bigint // Unallocated data capacity.
-    dataswapTotal?: bigint // Total dataswap capacity (optional).
-    storageProviders?: number[] // List of storage providers (optional).
-    datasetId?: number // Dataset ID (optional).
-    matchingId?: number // Matching ID (optional).
-    replicaIndex?: bigint // Replica index (optional).
 }
 
 export class StorageStatisticsInfo extends Entity<StorageStatisticsInfo> {}
+
+/**
+ * Interface representing storage related dataset statistics information.
+ */
+export interface DatasetStorageStatisticsInfo {
+    total: bigint // Total storage capacity.
+    completed: bigint // Completed storage capacity.
+    usedDatacap: bigint // Used data capacity.
+    availableDatacap: bigint // Available data capacity.
+    canceled: bigint // Canceled storage capacity.
+    unallocatedDatacap: bigint // Unallocated data capacity.
+    datasetId: number // Dataset ID (optional).
+    replicaIndex?: bigint // Replica index (optional).
+}
+
+export class DatasetStorageStatisticsInfo extends Entity<DatasetStorageStatisticsInfo> {}
+
+/**
+ * Interface representing storage related matching statistics information.
+ */
+export interface MatchingStorageStatisticsInfo {
+    total: bigint // Total storage capacity.
+    completed: bigint // Completed storage capacity.
+    usedDatacap: bigint // Used data capacity.
+    availableDatacap: bigint // Available data capacity.
+    canceled: bigint // Canceled storage capacity.
+    unallocatedDatacap: bigint // Unallocated data capacity.
+    storageProviders?: number[] // List of storage providers (optional).
+    matchingId: number // Matching ID (optional).
+    datasetId?: number // Dataset ID (optional).
+    replicaIndex?: bigint // Replica index (optional).
+}
+
+export class MatchingStorageStatisticsInfo extends Entity<MatchingStorageStatisticsInfo> {}
