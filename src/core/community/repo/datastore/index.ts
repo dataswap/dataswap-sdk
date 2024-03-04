@@ -20,7 +20,7 @@
 
 import { DataStore, DatabaseConnection } from "@unipackage/datastore"
 import { ValueFields, Result } from "@unipackage/utils"
-import { Member, FinanceAccount } from "../../types"
+import { Member } from "../../types"
 import { MemberDocument, MemberSchema } from "./model"
 import { MongooseDataStore } from "@unipackage/datastore"
 
@@ -33,6 +33,7 @@ export class MemberMongoDatastore extends DataStore<
     ValueFields<Member>,
     MemberDocument
 > {
+    private lock: Promise<void> = Promise.resolve()
     /**
      * Creates an instance of MemberMongoDatastore.
      * @param {string} uri - The MongoDB connection URI.
@@ -49,109 +50,39 @@ export class MemberMongoDatastore extends DataStore<
     }
 
     /**
-     * Asynchronously adds a FinanceAccount with the specified parameters.
+     * Creates or updates a member in the datastore.
      *
-     * @param options - The options object containing the necessary parameters.
-     *   - `address`: Member address
-     *   - `datasetId`: The ID of the dataset
-     *   - `matchingId`: The ID of the matching
-     *   - `token`: The type of token for the escrow requirement (e.g., FIL, ERC-20)
+     * @param update - The member information to be created or updated.
+     * @returns - A promise resolving to the result of the operation.
      */
-    async addFinanceAccount(options: {
-        address: string
-        datasetId: number
-        matchingId: number
-        token: string
-    }): Promise<Result<any>> {
+    async createOrUpdateMember(update: Member): Promise<Result<any>> {
         try {
-            const contain = await this.isContainFinanceAccount({
-                address: options.address,
-                datasetId: options.datasetId,
-                matchingId: options.matchingId,
-                token: options.token,
+            await this.lock
+            let data = await this.getMember({
+                address: update.address,
             })
 
-            if (contain) {
-                return {
-                    ok: false,
-                    error: new Error("FinanceAccount already exist"),
-                }
+            if (data !== undefined) {
+                update.add(update, data)
             }
-
-            let financeAccounts = await this.getFinanceAccounts({
-                address: options.address,
-            })
-
-            financeAccounts.push(
-                new FinanceAccount({
-                    datasetId: options.datasetId,
-                    matchingId: options.matchingId,
-                    token: options.token,
-                })
-            )
-            return await this.update(
-                {
-                    conditions: [
-                        {
-                            address: options.address,
-                        },
-                    ],
-                },
-                { financeAccounts: financeAccounts }
-            )
+            return await this.CreateOrupdateByUniqueIndexes(update)
         } catch (error) {
             throw error
+        } finally {
+            this.lock = Promise.resolve()
         }
     }
 
     /**
-     * Asynchronously checks if the specified member contains a FinanceAccount with the given parameters.
-     *
-     * @param options - The options object containing the necessary parameters.
-     *   - `address`: Member address
-     *   - `datasetId`: The ID of the dataset
-     *   - `matchingId`: The ID of the matching
-     *   - `token`: The type of token for the escrow requirement (e.g., FIL, ERC-20)
+     * Fetches a member's information based on the provided address.
+     * @param options - The options containing the member's address.
+     * @param options.address - The address of the member.
+     * @returns A promise that resolves to a `ValueFields` object containing the member's information, or `undefined` if not found.
+     * @throws If there is an error during the fetch, it will be thrown.
      */
-    private async isContainFinanceAccount(options: {
+    private async getMember(options: {
         address: string
-        datasetId: number
-        matchingId: number
-        token: string
-    }): Promise<boolean> {
-        const res = await this.find({
-            conditions: [{ address: options.address }],
-        })
-        if (!res.ok) {
-            throw res.error
-        }
-
-        if (res.data!.length != 0) {
-            const current = new FinanceAccount({
-                datasetId: options.datasetId,
-                matchingId: options.matchingId,
-                token: options.token,
-            })
-            for (let i = 0; i < res.data![0].financeAccounts!.length; i++) {
-                if (res.data![0].financeAccounts![i] == current) {
-                    return true
-                }
-            }
-        }
-
-        return false
-    }
-
-    /**
-     * Asynchronously retrieves FinanceAccounts based on the specified address.
-     *
-     * @param options - The options object containing the necessary parameters.
-     *   - `address`: Member address
-     * @returns A promise that resolves to an array of FinanceAccount objects.
-     */
-    private async getFinanceAccounts(options: {
-        address: string
-    }): Promise<FinanceAccount[]> {
+    }): Promise<ValueFields<Member> | undefined> {
         const res = await this.find({
             conditions: [{ address: options.address }],
         })
@@ -160,9 +91,9 @@ export class MemberMongoDatastore extends DataStore<
         }
 
         if (res.data!.length == 0) {
-            throw new Error("the FinanceAccounts is none")
+            return undefined
         }
 
-        return res.data![0].financeAccounts!
+        return res.data![0]
     }
 }

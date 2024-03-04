@@ -19,7 +19,7 @@
  ********************************************************************************/
 
 import { Entity } from "@unipackage/ddd"
-import { ValueFields } from "@unipackage/utils"
+import { ValueFields, Result } from "@unipackage/utils"
 
 /**
  * Represents a Member entity.
@@ -68,6 +68,50 @@ export class Member extends Entity<Member> {
             datasetAuditer: data?.datasetAuditer || false,
             financeAccounts: data?.financeAccounts || [],
         })
+    }
+
+    /**
+     * Adds the provided member data to the existing member.
+     *
+     * @param self - The member to which data will be added.
+     * @param data - The data to be added to the member.
+     * @returns - A promise resolving to the result of the operation.
+     */
+    async add(
+        self: ValueFields<Member>,
+        data: ValueFields<Member>
+    ): Promise<Result<any>> {
+        if (self.address !== data.address) {
+            return {
+                ok: false,
+                error: Error("the add Member address is different"),
+            }
+        }
+
+        self.totalChallengeSubmitted += data.totalChallengeSubmitted
+        self.totalDatasetsSubmitted += data.totalDatasetsSubmitted
+        self.totalDisputeSubmitted += data.totalDisputeSubmitted
+        self.totalMatchingSubmitted += data.totalMatchingSubmitted
+        self.totalProofSubmitted += data.totalProofSubmitted
+        self.storageClient = self.storageClient || data.storageClient
+        self.storageProvider = self.storageProvider || data.storageProvider
+        self.datasetAuditer = self.datasetAuditer || data.datasetAuditer
+        self.datasetPreparer = self.datasetPreparer || data.datasetPreparer
+
+        self.financeAccounts = [
+            ...self.financeAccounts,
+            ...data.financeAccounts.filter(
+                (obj) =>
+                    !self.financeAccounts.some(
+                        (el) =>
+                            el.datasetId === obj.datasetId &&
+                            el.matchingId === obj.matchingId &&
+                            el.token === obj.token
+                    )
+            ),
+        ]
+
+        return { ok: true, data: self }
     }
 }
 
