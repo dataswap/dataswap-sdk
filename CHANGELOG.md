@@ -1,5 +1,27 @@
 
 
+# [0.21.0](https://github.com/dataswap/dataswapjs/compare/0.20.1...0.21.0) (2024-03-04)
+
+
+### Features
+
+* 🎸 basic statistics test ([83698ce](https://github.com/dataswap/dataswapjs/commit/83698ce11e30f384c5c9150d66bb7214c59beb3d)), closes [#297](https://github.com/dataswap/dataswapjs/issues/297)
+* 🎸 Design of Basic Data Statistics Model ([22e754c](https://github.com/dataswap/dataswapjs/commit/22e754c4c59b1b1730628559adef130e45ee0f0b)), closes [#259](https://github.com/dataswap/dataswapjs/issues/259)
+* 🎸 Design of community members data statistics model ([58b72b3](https://github.com/dataswap/dataswapjs/commit/58b72b31a372d21229ebecc2a1a5c4bc2ef99c1f)), closes [#272](https://github.com/dataswap/dataswapjs/issues/272)
+* 🎸 Design of storage-related data statistics model ([b74318a](https://github.com/dataswap/dataswapjs/commit/b74318ae4594723f971a06c656825f2f39a4231a)), closes [#260](https://github.com/dataswap/dataswapjs/issues/260)
+* 🎸 Design of the fund unit price statistics data model ([512ee1c](https://github.com/dataswap/dataswapjs/commit/512ee1c33996d976cb64df8570399d7b10b0ce7f)), closes [#257](https://github.com/dataswap/dataswapjs/issues/257)
+* 🎸 Enhance the functionality of Datasets related to EVM ([6f7a695](https://github.com/dataswap/dataswapjs/commit/6f7a695b644e9517c6de1353fef9e5a58863db01)), closes [#258](https://github.com/dataswap/dataswapjs/issues/258)
+* 🎸 Enhance the functionality of Filplus related to EVM ([28ec874](https://github.com/dataswap/dataswapjs/commit/28ec874afe94d5d873121608f0621a40e7e3f857)), closes [#273](https://github.com/dataswap/dataswapjs/issues/273)
+* 🎸 Enhance the functionality of Finance statistics ([e2bd6bc](https://github.com/dataswap/dataswapjs/commit/e2bd6bc75e18dd9c4e59e745e0bce650d1fabb95)), closes [#289](https://github.com/dataswap/dataswapjs/issues/289)
+* 🎸 Enhance the functionality of Matchings related to EVM ([91c1ab7](https://github.com/dataswap/dataswapjs/commit/91c1ab7f30d219dacfbbe29897b90268d687e2eb)), closes [#264](https://github.com/dataswap/dataswapjs/issues/264)
+* 🎸 Enhance the functionality of Roles related to EVM ([7504653](https://github.com/dataswap/dataswapjs/commit/7504653b11966d5a31561e5bb1069efbb56fd67a)), closes [#281](https://github.com/dataswap/dataswapjs/issues/281)
+* 🎸 Enhance the functionality of Storages related to EVM ([d849ccc](https://github.com/dataswap/dataswapjs/commit/d849ccc51a615496ff1210acaa547d2d857de73f)), closes [#265](https://github.com/dataswap/dataswapjs/issues/265)
+* 🎸 export storage-related data statistics interfaces ([16c5f41](https://github.com/dataswap/dataswapjs/commit/16c5f413c5228eb916014014d5ec164d8f8ab754)), closes [#260](https://github.com/dataswap/dataswapjs/issues/260)
+* 🎸 Implement Finance Evm related functions ([c7add5d](https://github.com/dataswap/dataswapjs/commit/c7add5d838a6f819880c287d10d298fdc06003f4)), closes [#256](https://github.com/dataswap/dataswapjs/issues/256)
+* 🎸 update abi version to 0.4.0 ([76397ae](https://github.com/dataswap/dataswapjs/commit/76397ae49c3dd30fc5f4944997849563b5fda9e0)), closes [#275](https://github.com/dataswap/dataswapjs/issues/275)
+* 🎸 update abi version to 0.5.0 ([df5ff5f](https://github.com/dataswap/dataswapjs/commit/df5ff5fa15a3a485b4e07029e01fe4102779ffe8)), closes [#283](https://github.com/dataswap/dataswapjs/issues/283)
+* 🎸 update contract address to version v0.4.0 ([8c763cf](https://github.com/dataswap/dataswapjs/commit/8c763cf12c23a1b3e67cc6df4a9aa7a538c3f7df)), closes [#278](https://github.com/dataswap/dataswapjs/issues/278)
+
 ## [0.20.1](https://github.com/dataswap/dataswapjs/compare/0.20.0...0.20.1) (2024-01-18)
 
 
