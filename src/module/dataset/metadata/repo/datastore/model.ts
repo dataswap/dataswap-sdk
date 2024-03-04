@@ -72,6 +72,15 @@ const DatasetMetadataSchema = new Schema<DatasetMetadataDocument>({
         type: BigInt,
         required: [true, "Please provide the version"],
     },
+    proofBlockCount: {
+        type: BigInt,
+    },
+    auditBlockCount: {
+        type: BigInt,
+    },
+    associatedDatasetId: {
+        type: BigInt,
+    },
     challengeCommissionPrice: {
         type: BigInt,
     },

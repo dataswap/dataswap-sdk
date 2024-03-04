@@ -30,6 +30,10 @@ import { DataType } from "../../../../../shared/types/dataType"
 import { EvmEx } from "../../../../../shared/types/evmEngineType"
 import { DatasetProofMetadata, DatasetProofs } from "../../types"
 import { DatasetState } from "../../../../../shared/types/datasetType"
+import {
+    convertToBigIntArray,
+    mergeBigIntRangesToCompleteArray,
+} from "../../../../../shared/arrayUtils"
 
 /**
  * Interface representing the Ethereum Virtual Machine (EVM) call structure for a dataset proof.
@@ -282,14 +286,29 @@ export class DatasetProofEvm extends DatasetProofOriginEvm {
             case "submitDatasetProofRoot":
                 result.params.valid = true
                 result.params.datasetSize = BigInt(0)
-            case "submitDatasetProof":
-            case "submitDatasetProofWithCarIds":
                 result.params.dataType = Number(
                     result.params.dataType
                 ) as DataType
                 result.datasetId = Number(result.params.datasetId)
                 result.params.datasetId = result.datasetId
-
+                break
+            case "submitDatasetProofWithCarIds":
+                result.params.leaves = mergeBigIntRangesToCompleteArray(
+                    result.params.leavesStarts,
+                    result.params.leavesEnds
+                )
+                result.params.dataType = Number(
+                    result.params.dataType
+                ) as DataType
+                result.datasetId = Number(result.params.datasetId)
+                result.params.datasetId = result.datasetId
+                break
+            case "submitDatasetProof":
+                result.params.dataType = Number(
+                    result.params.dataType
+                ) as DataType
+                result.datasetId = Number(result.params.datasetId)
+                result.params.datasetId = result.datasetId
                 break
             case "completeEscrow":
             case "submitDatasetProofCompleted":

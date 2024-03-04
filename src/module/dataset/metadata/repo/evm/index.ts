@@ -26,7 +26,7 @@ import {
 } from "@unipackage/net"
 import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
 import { DataswapMessage } from "../../../../../message/types"
-import { DatasetMetadata } from "../../types"
+import { DatasetMetadata, DatasetTimeoutParameters } from "../../types"
 import { EvmEx } from "../../../../../shared/types/evmEngineType"
 import { DatasetState } from "../../../../../shared/types/datasetType"
 import { BasicStatisticsInfo } from "../../../../../shared/types/statisticsType"
@@ -70,7 +70,9 @@ interface DatasetMetadataCallEvm {
      * @param datasetId The ID of the dataset for which to retrieve the timeout parameters.
      * @returns A promise that resolves with the proof and audit block count timeout parameters.
      */
-    getDatasetTimeoutParameters(datasetId: number): Promise<EvmOutput<any>>
+    getDatasetTimeoutParameters(
+        datasetId: number
+    ): Promise<EvmOutput<DatasetTimeoutParameters>>
 
     /**
      *  Get dataset state
@@ -166,8 +168,8 @@ interface DatasetMetadataSendEvm {
      */
     updateDatasetTimeoutParameters(
         datasetId: number,
-        proofBlockCount: number,
-        auditBlockCount: number
+        proofBlockCount: bigint,
+        auditBlockCount: bigint
     ): Promise<EvmOutput<any>>
 }
 
@@ -258,12 +260,15 @@ export class DatasetMetadataEvm extends DatasetMetadataOriginEvm {
 
     async getDatasetTimeoutParameters(
         datasetId: number
-    ): Promise<EvmOutput<[proofBlockCount: number, auditBlockCount: number]>> {
+    ): Promise<EvmOutput<DatasetTimeoutParameters>> {
         const res = await super.getDatasetTimeoutParameters(datasetId)
         if (res.ok && res.data) {
             return {
                 ok: true,
-                data: [res.data.proofBlockCount, res.data.auditBlockCount],
+                data: new DatasetTimeoutParameters({
+                    ...res.data,
+                    datasetId: datasetId,
+                }),
             }
         }
         return res
@@ -278,6 +283,19 @@ export class DatasetMetadataEvm extends DatasetMetadataOriginEvm {
             }
         }
         return metaRes
+    }
+
+    async getAssociatedDatasetId(
+        datasetId: number
+    ): Promise<EvmOutput<number>> {
+        const res = await super.getAssociatedDatasetId(datasetId)
+        if (res.ok && res.data) {
+            return {
+                ok: true,
+                data: Number(res.data),
+            }
+        }
+        return res
     }
 
     decodeMessage(msg: Message): EvmOutput<DataswapMessage> {
@@ -296,7 +314,21 @@ export class DatasetMetadataEvm extends DatasetMetadataOriginEvm {
                 result.params.submitter = result.from
                 result.params.createdBlockNumber = result.height
                 result.params.datasetId = result.datasetId
-                result.params.status = DatasetState.None
+                result.params.status = DatasetState.MetadataSubmitted
+                break
+            case "updateDatasetTimeoutParameters":
+                result.datasetId = Number(result.params.datasetId)
+                result.params.datasetId = result.datasetId
+                result.params.proofBlockCount = BigInt(
+                    result.params.proofBlockCount
+                )
+                result.params.auditBlockCount = BigInt(
+                    result.params.auditBlockCount
+                )
+                break
+            case "reportDatasetWorkflowTimeout":
+                result.datasetId = Number(result.params.datasetId)
+                result.params.datasetId = result.datasetId
                 break
             default:
                 return {

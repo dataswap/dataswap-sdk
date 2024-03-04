@@ -42,6 +42,25 @@ export interface DatasetProofs {
 export class DatasetProofs extends Entity<DatasetProofs> {}
 
 /**
+ * Interface representing proofs information for a dataset.
+ * @interface
+ */
+export interface DatasetProofsWithhCarIds {
+    datasetId: number
+    dataType: DataType
+    leaves: bigint[]
+    leafIndex: bigint
+    completed: boolean
+}
+
+/**
+ * Class representing a DatasetProofs entity.
+ * @class
+ * @extends Entity<DatasetProofsWithhCarIds>
+ */
+export class DatasetProofsWithhCarIds extends Entity<DatasetProofsWithhCarIds> {}
+
+/**
  * Interface representing proofs metadata information for a dataset.
  * @interface
  */

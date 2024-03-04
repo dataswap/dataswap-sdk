@@ -52,6 +52,73 @@ export class DatasetMetadataMongoDatastore extends DataStore<
     }
 
     /**
+     * Asynchronously stores dataset metadata.
+     * @param options The options object containing DatasetMetadataEvm, DatasetMetadata, and datasetId.
+     * @returns A promise that resolves with the result of the operation.
+     */
+    async storeDatasetMetadata(options: {
+        datasetMetadataEvm: DatasetMetadataEvm
+        datasetMetadata: DatasetMetadata
+        datasetId: number
+    }): Promise<Result<any>> {
+        try {
+            const associatedDatasetId =
+                await options.datasetMetadataEvm.getAssociatedDatasetId(
+                    options.datasetId
+                )
+            if (!associatedDatasetId.ok) {
+                return { ok: false, error: associatedDatasetId.error }
+            }
+            const datasetTimeoutParameters =
+                await options.datasetMetadataEvm.getDatasetTimeoutParameters(
+                    options.datasetId
+                )
+            if (!datasetTimeoutParameters.ok) {
+                return { ok: false, error: datasetTimeoutParameters.error }
+            }
+
+            options.datasetMetadata.associatedDatasetId =
+                associatedDatasetId.data
+            options.datasetMetadata.proofBlockCount =
+                datasetTimeoutParameters.data?.proofBlockCount
+            options.datasetMetadata.auditBlockCount =
+                datasetTimeoutParameters.data?.auditBlockCount
+            return await super.CreateOrupdateByUniqueIndexes(
+                options.datasetMetadata
+            )
+        } catch (error) {
+            throw error
+        }
+    }
+    /**
+     * Asynchronously updates dataset timeout parameters.
+     * @param options The options object containing DatasetMetadataEvm and datasetId.
+     * @returns A promise that resolves with the result of the operation.
+     */
+    async updateDatasetTimeoutParameters(options: {
+        datasetMetadataEvm: DatasetMetadataEvm
+        datasetId: number
+    }): Promise<Result<any>> {
+        try {
+            const timeoutParameters =
+                await options.datasetMetadataEvm.getDatasetTimeoutParameters(
+                    options.datasetId
+                )
+            if (!timeoutParameters.ok) {
+                return { ok: false, error: timeoutParameters.error }
+            }
+            return await this.update(
+                { conditions: [{ datasetId: options.datasetId }] },
+                {
+                    proofBlockCount: timeoutParameters.data?.proofBlockCount,
+                    auditBlockCount: timeoutParameters.data?.auditBlockCount,
+                }
+            )
+        } catch (error) {
+            throw error
+        }
+    }
+    /**
      * Asynchronously updates dataset metadata using the provided options.
      *
      * @param options - The options object containing the necessary parameters.

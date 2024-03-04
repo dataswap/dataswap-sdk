@@ -38,6 +38,9 @@ export interface DatasetMetadata {
     sizeInBytes: bigint
     isPublic: boolean
     version: bigint
+    proofBlockCount?: bigint
+    auditBlockCount?: bigint
+    associatedDatasetId?: number
     challengeCommissionPrice?: bigint
     completedHeight?: bigint
     datasetId?: number
@@ -50,3 +53,20 @@ export interface DatasetMetadata {
  * @extends Entity<DatasetMetadata>
  */
 export class DatasetMetadata extends Entity<DatasetMetadata> {}
+
+/**
+ * Interface representing timeout parameters information for a dataset.
+ * @interface
+ */
+export interface DatasetTimeoutParameters {
+    proofBlockCount: bigint
+    auditBlockCount: bigint
+    datasetId?: number
+}
+
+/**
+ * Class representing a DatasetTimeoutParameters entity.
+ * @class
+ * @extends Entity<DatasetTimeoutParameters>
+ */
+export class DatasetTimeoutParameters extends Entity<DatasetTimeoutParameters> {}
