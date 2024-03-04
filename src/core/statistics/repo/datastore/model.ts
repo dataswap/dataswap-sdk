@@ -97,35 +97,35 @@ interface BasicStatisticsDocument
  */
 const BasicStatisticsSchema = new Schema<BasicStatisticsDocument>({
     totalCounts: {
-        type: Number,
+        type: BigInt,
         required: [true, "Please provide the totalCounts"],
     },
     successCounts: {
-        type: Number,
+        type: BigInt,
         required: [true, "Please provide the successCounts"],
     },
     ongoingCounts: {
-        type: Number,
+        type: BigInt,
         required: [true, "Please provide the ongoingCounts"],
     },
     failedCounts: {
-        type: Number,
+        type: BigInt,
         required: [true, "Please provide the failedCounts"],
     },
     totalSize: {
-        type: Number,
+        type: BigInt,
         required: [true, "Please provide the totalSize"],
     },
     successSize: {
-        type: Number,
+        type: BigInt,
         required: [true, "Please provide the successSize"],
     },
     ongoingSize: {
-        type: Number,
+        type: BigInt,
         required: [true, "Please provide the ongoingSize"],
     },
     failedSize: {
-        type: Number,
+        type: BigInt,
         required: [true, "Please provide the failedSize"],
     },
     height: {

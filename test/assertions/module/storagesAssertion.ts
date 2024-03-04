@@ -32,6 +32,52 @@ export class StoragesAssertion implements IStoragesAssertion {
     }
 
     /**
+     * Asynchronously asserts the count overview based on the expected total, success, ongoing, and failed counts.
+     * @param expectTotal The expected total count.
+     * @param expectSuccess The expected success count.
+     * @param expectOngoing The expected ongoing count.
+     * @param expectFailed The expected failed count.
+     * @returns A promise that resolves when the assertion is completed.
+     */
+    async getCountOverviewAssertion(
+        expectTotal: bigint,
+        expectSuccess: bigint,
+        expectOngoing: bigint,
+        expectFailed: bigint
+    ): Promise<void> {
+        const statistics = await handleEvmError(
+            this.contractsManager.StoragesEvm().getCountOverview()
+        )
+        expect(expectTotal).to.be.equal(statistics.data.total)
+        expect(expectSuccess).to.be.equal(statistics.data.success)
+        expect(expectOngoing).to.be.equal(statistics.data.ongoing)
+        expect(expectFailed).to.be.equal(statistics.data.failed)
+    }
+
+    /**
+     * Asynchronously asserts the size overview based on the expected total, success, ongoing, and failed counts.
+     * @param expectTotal The expected total count.
+     * @param expectSuccess The expected success count.
+     * @param expectOngoing The expected ongoing count.
+     * @param expectFailed The expected failed count.
+     * @returns A promise that resolves when the assertion is completed.
+     */
+    async getSizeOverviewAssertion(
+        expectTotal: bigint,
+        expectSuccess: bigint,
+        expectOngoing: bigint,
+        expectFailed: bigint
+    ): Promise<void> {
+        const statistics = await handleEvmError(
+            this.contractsManager.StoragesEvm().getSizeOverview()
+        )
+        expect(expectTotal).to.be.equal(statistics.data.total)
+        expect(expectSuccess).to.be.equal(statistics.data.success)
+        expect(expectOngoing).to.be.equal(statistics.data.ongoing)
+        expect(expectFailed).to.be.equal(statistics.data.failed)
+    }
+
+    /**
      * Retrieves the stored cars for a specific matching identified by its ID.
      * @param matchingId - The ID of the matching.
      * @param expectCarIds - Array of expected car IDs.

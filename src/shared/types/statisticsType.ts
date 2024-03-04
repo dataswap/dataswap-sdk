@@ -23,14 +23,14 @@ import { Entity } from "@unipackage/ddd"
  * Represents basic statistics information.
  */
 export interface BasicStatistics {
-    totalCounts: number // Total count
-    successCounts: number // Count of successful operations
-    ongoingCounts: number // Count of ongoing operations
-    failedCounts: number // Count of failed operations
-    totalSize: number // Total size
-    successSize: number // Count of successful size
-    ongoingSize: number // Count of ongoing size
-    failedSize: number // Count of failed size
+    totalCounts: bigint // Total count
+    successCounts: bigint // Count of successful operations
+    ongoingCounts: bigint // Count of ongoing operations
+    failedCounts: bigint // Count of failed operations
+    totalSize: bigint // Total size
+    successSize: bigint // Count of successful size
+    ongoingSize: bigint // Count of ongoing size
+    failedSize: bigint // Count of failed size
     height: bigint // current height
 }
 
@@ -40,10 +40,10 @@ export class BasicStatistics extends Entity<BasicStatistics> {}
  * Represents basic statistics information.
  */
 export interface BasicStatisticsInfo {
-    total: number // Total count
-    success: number // Count of successful operations
-    ongoing: number // Count of ongoing operations
-    failed: number // Count of failed operations
+    total: bigint // Total count
+    success: bigint // Count of successful operations
+    ongoing: bigint // Count of ongoing operations
+    failed: bigint // Count of failed operations
     height?: bigint // current height
 }
 
