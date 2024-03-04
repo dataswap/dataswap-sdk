@@ -31,6 +31,8 @@ import { EvmEx } from "../../../../shared/types/evmEngineType"
 import {
     BasicStatisticsInfo,
     StorageStatisticsInfo,
+    DatasetStorageStatisticsInfo,
+    MatchingStorageStatisticsInfo,
 } from "../../../../shared/types/statisticsType"
 
 /**
@@ -60,7 +62,7 @@ interface StoragesCallEvm {
      */
     getDatasetStorageOverview(
         datasetId: number
-    ): Promise<EvmOutput<StorageStatisticsInfo>>
+    ): Promise<EvmOutput<DatasetStorageStatisticsInfo>>
 
     /**
      * Retrieves storage overview for a specific replica of a dataset.
@@ -70,7 +72,7 @@ interface StoragesCallEvm {
     getReplicaStorageOverview(
         datasetId: number,
         replicaIndex: bigint
-    ): Promise<EvmOutput<StorageStatisticsInfo>>
+    ): Promise<EvmOutput<DatasetStorageStatisticsInfo>>
 
     /**
      * Retrieves storage overview for a specific matching.
@@ -78,7 +80,7 @@ interface StoragesCallEvm {
      */
     getMatchingStorageOverview(
         matchingId: number
-    ): Promise<EvmOutput<StorageStatisticsInfo>>
+    ): Promise<EvmOutput<MatchingStorageStatisticsInfo>>
 
     /**
      * @dev Gets the list of done cars in the matchedstore.
@@ -191,6 +193,123 @@ export class StoragesOriginEvm extends EvmEx {}
  * Extended class for  StoragesOriginEvm with additional message decoding.
  */
 export class StoragesEvm extends StoragesOriginEvm {
+    /**
+     * Retrieves an overview of count statistics.
+     * @returns A promise that resolves with the count overview.
+     */
+    async getCountOverview(): Promise<EvmOutput<BasicStatisticsInfo>> {
+        const res = await super.getCountOverview()
+        if (res.ok && res.data) {
+            return {
+                ok: true,
+                data: new BasicStatisticsInfo({
+                    ...res.data,
+                }),
+            }
+        }
+        return res
+    }
+    /**
+     * Retrieves an overview of size statistics.
+     * @returns A promise that resolves with the size overview.
+     */
+    async getSizeOverview(): Promise<EvmOutput<BasicStatisticsInfo>> {
+        const res = await super.getSizeOverview()
+        if (res.ok && res.data) {
+            return {
+                ok: true,
+                data: new BasicStatisticsInfo({
+                    ...res.data,
+                }),
+            }
+        }
+        return res
+    }
+    /**
+     * Retrieves storage overview.
+     */
+    async getStorageOverview(): Promise<EvmOutput<StorageStatisticsInfo>> {
+        const res = await super.getStorageOverview()
+        if (res.ok && res.data) {
+            return {
+                ok: true,
+                data: new StorageStatisticsInfo({
+                    ...res.data,
+                }),
+            }
+        }
+        return res
+    }
+
+    /**
+     * Retrieves storage overview for a specific dataset.
+     * @param datasetId The ID of the dataset.
+     */
+    async getDatasetStorageOverview(
+        datasetId: number
+    ): Promise<EvmOutput<DatasetStorageStatisticsInfo>> {
+        const res = await super.getDatasetStorageOverview(datasetId)
+        if (res.ok && res.data) {
+            let data = new DatasetStorageStatisticsInfo({
+                ...res.data,
+            })
+            data.datasetId = datasetId
+            return {
+                ok: true,
+                data: data,
+            }
+        }
+        return res
+    }
+
+    /**
+     * Retrieves storage overview for a specific replica of a dataset.
+     * @param datasetId The ID of the dataset.
+     * @param replicaIndex The index of the replica.
+     */
+    async getReplicaStorageOverview(
+        datasetId: number,
+        replicaIndex: bigint
+    ): Promise<EvmOutput<DatasetStorageStatisticsInfo>> {
+        const res = await super.getReplicaStorageOverview(
+            datasetId,
+            replicaIndex
+        )
+        if (res.ok && res.data) {
+            let data = new DatasetStorageStatisticsInfo({
+                ...res.data,
+            })
+            data.datasetId = datasetId
+            data.replicaIndex = replicaIndex
+            return {
+                ok: true,
+                data: data,
+            }
+        }
+        return res
+    }
+
+    /**
+     * Retrieves storage overview for a specific matching.
+     * @param matchingId The ID of the matching.
+     */
+    async getMatchingStorageOverview(
+        matchingId: number
+    ): Promise<EvmOutput<MatchingStorageStatisticsInfo>> {
+        const res = await super.getMatchingStorageOverview(matchingId)
+        if (res.ok && res.data) {
+            let data = new MatchingStorageStatisticsInfo({
+                ...res.data,
+            })
+            data.matchingId = matchingId
+            return {
+                ok: true,
+                data: data,
+            }
+        }
+        return res
+    }
+
     /**
      * Decode a DataswapMessage from an EVM message.
      *

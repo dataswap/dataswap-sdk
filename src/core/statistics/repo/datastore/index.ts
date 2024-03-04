@@ -20,12 +20,12 @@
 import { DataStore } from "@unipackage/datastore"
 import { ValueFields, Result } from "@unipackage/utils"
 import {
-    StorageStatisticsInfoDocument,
-    StorageStatisticsInfoSchema,
+    MatchingStorageStatisticsInfoDocument,
+    MatchingStorageStatisticsInfoSchema,
     BasicStatisticsDocument,
     BasicStatisticsSchema,
 } from "./model"
-import { StorageStatisticsInfo } from "../../../../shared/types/statisticsType"
+import { MatchingStorageStatisticsInfo } from "../../../../shared/types/statisticsType"
 import { MongooseDataStore, DatabaseConnection } from "@unipackage/datastore"
 import { StoragesEvm } from "../../../../module/storages/repo/evm"
 import { MatchingTargetEvm } from "../../../../module/matching/target/repo/evm"
@@ -34,36 +34,40 @@ import { DatasetMetadataEvm } from "../../../../module/dataset/metadata/repo/evm
 import { MatchingMetadataEvm } from "../../../../module/matching/metadata/repo/evm"
 
 /**
- * Class representing a MongoDB datastore for StorageStatisticsInfo entities.
- * Extends the DataStore class with StorageStatisticsInfo and StorageStatisticsInfoDocument.
+ * Class representing a MongoDB datastore for MatchingStorageStatisticsInfo entities.
+ * Extends the DataStore class with MatchingStorageStatisticsInfo and MatchingStorageStatisticsInfoDocument.
  * @class
  */
-export class StorageStatisticsInfoMongoDatastore extends DataStore<
-    ValueFields<StorageStatisticsInfo>,
-    StorageStatisticsInfoDocument
+export class MatchingStorageStatisticsInfoMongoDatastore extends DataStore<
+    ValueFields<MatchingStorageStatisticsInfo>,
+    MatchingStorageStatisticsInfoDocument
 > {
     /**
-     * Creates an instance of StorageStatisticsInfoMongoDatastore.
+     * Creates an instance of MatchingStorageStatisticsInfoMongoDatastore.
      * @param {string} connection - The MongoDB connection.
      * @constructor
      */
     constructor(connection: DatabaseConnection) {
         super(
             new MongooseDataStore<
-                ValueFields<StorageStatisticsInfo>,
-                StorageStatisticsInfoDocument
-            >("StorageStatisticsInfo", StorageStatisticsInfoSchema, connection)
+                ValueFields<MatchingStorageStatisticsInfo>,
+                MatchingStorageStatisticsInfoDocument
+            >(
+                "MatchingStorageStatisticsInfo",
+                MatchingStorageStatisticsInfoSchema,
+                connection
+            )
         )
     }
 
     /**
-     * Stores storages statistics in the StorageStatisticsInfoDatastore and updates the matching target.
+     * Stores storages statistics in the MatchingStorageStatisticsInfoDatastore and updates the matching target.
      * @param options - Object containing necessary parameters.
      * @param options.storages - Storages to be updated with the stored storage statistics info.
      * @param options.matchingId - .
      * @returns A Promise resolving to a Result indicating the success or failure of the operation.
      */
-    async updateStorageStatisticsInfos(options: {
+    async updateMatchingStorageStatisticsInfos(options: {
         matchingTarget: MatchingTargetEvm
         storages: StoragesEvm
         matchingId: number

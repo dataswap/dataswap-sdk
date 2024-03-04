@@ -207,6 +207,10 @@ export class DatasetMetadataOriginEvm extends EvmEx {}
  * Extended class for DatasetMetadataOriginEvm with additional message decoding.
  */
 export class DatasetMetadataEvm extends DatasetMetadataOriginEvm {
+    /**
+     * Retrieves an overview of count statistics.
+     * @returns A promise that resolves with the count overview.
+     */
     async getCountOverview(): Promise<EvmOutput<BasicStatisticsInfo>> {
         const res = await super.getCountOverview()
         if (res.ok && res.data) {
@@ -219,7 +223,10 @@ export class DatasetMetadataEvm extends DatasetMetadataOriginEvm {
         }
         return res
     }
-
+    /**
+     * Retrieves an overview of size statistics.
+     * @returns A promise that resolves with the size overview.
+     */
     async getSizeOverview(): Promise<EvmOutput<BasicStatisticsInfo>> {
         const res = await super.getSizeOverview()
         if (res.ok && res.data) {
