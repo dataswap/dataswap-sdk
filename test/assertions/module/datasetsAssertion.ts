@@ -43,6 +43,53 @@ export class DatasetsAssertion implements IDatasetsAssertion {
         this.contractsManager = _contractsManager
     }
     // Datasets
+
+    /**
+     * Asynchronously asserts the count overview based on the expected total, success, ongoing, and failed counts.
+     * @param expectTotal The expected total count.
+     * @param expectSuccess The expected success count.
+     * @param expectOngoing The expected ongoing count.
+     * @param expectFailed The expected failed count.
+     * @returns A promise that resolves when the assertion is completed.
+     */
+    async getCountOverviewAssertion(
+        expectTotal: bigint,
+        expectSuccess: bigint,
+        expectOngoing: bigint,
+        expectFailed: bigint
+    ): Promise<void> {
+        const statistics = await handleEvmError(
+            this.contractsManager.DatasetMetadataEvm().getCountOverview()
+        )
+        expect(expectTotal).to.be.equal(statistics.data.total)
+        expect(expectSuccess).to.be.equal(statistics.data.success)
+        expect(expectOngoing).to.be.equal(statistics.data.ongoing)
+        expect(expectFailed).to.be.equal(statistics.data.failed)
+    }
+
+    /**
+     * Asynchronously asserts the size overview based on the expected total, success, ongoing, and failed counts.
+     * @param expectTotal The expected total count.
+     * @param expectSuccess The expected success count.
+     * @param expectOngoing The expected ongoing count.
+     * @param expectFailed The expected failed count.
+     * @returns A promise that resolves when the assertion is completed.
+     */
+    async getSizeOverviewAssertion(
+        expectTotal: bigint,
+        expectSuccess: bigint,
+        expectOngoing: bigint,
+        expectFailed: bigint
+    ): Promise<void> {
+        const statistics = await handleEvmError(
+            this.contractsManager.DatasetMetadataEvm().getSizeOverview()
+        )
+        expect(expectTotal).to.be.equal(statistics.data.total)
+        expect(expectSuccess).to.be.equal(statistics.data.success)
+        expect(expectOngoing).to.be.equal(statistics.data.ongoing)
+        expect(expectFailed).to.be.equal(statistics.data.failed)
+    }
+
     /**
      * Retrieves the metadata for a specific dataset and asserts it against the expected data.
      * @param datasetId - The ID of the dataset.
@@ -168,6 +215,9 @@ export class DatasetsAssertion implements IDatasetsAssertion {
             .DatasetMetadataEvm()
             .getWallet()
             .setDefault(caller)
+        const countStatistic = await handleEvmError(
+            this.contractsManager.DatasetMetadataEvm().getCountOverview()
+        )
         const tx = await handleEvmError(
             this.contractsManager
                 .DatasetMetadataEvm()
@@ -202,6 +252,12 @@ export class DatasetsAssertion implements IDatasetsAssertion {
             expectDatasetClient
         )
         await this.hasDatasetMetadataAssertion(expectData.accessMethod)
+        await this.getCountOverviewAssertion(
+            countStatistic.data.total + BigInt(1),
+            countStatistic.data.success,
+            countStatistic.data.ongoing + BigInt(1),
+            countStatistic.data.failed
+        )
         return datasetId
     }
 
@@ -569,6 +625,9 @@ export class DatasetsAssertion implements IDatasetsAssertion {
         expectLeafSizes: number[],
         expectCompleted: boolean
     ): Promise<void> {
+        const sizeStatistic = await handleEvmError(
+            this.contractsManager.DatasetMetadataEvm().getSizeOverview()
+        )
         this.contractsManager.DatasetProofEvm().getWallet().setDefault(caller)
         let proofCount = await handleEvmError(
             this.contractsManager
@@ -622,6 +681,12 @@ export class DatasetsAssertion implements IDatasetsAssertion {
             datasetId,
             dataType,
             Number(datasetSize.data) + sum
+        )
+        await this.getSizeOverviewAssertion(
+            sizeStatistic.data.total + BigInt(sum),
+            sizeStatistic.data.success,
+            sizeStatistic.data.ongoing + BigInt(sum),
+            sizeStatistic.data.failed
         )
     }
     /**

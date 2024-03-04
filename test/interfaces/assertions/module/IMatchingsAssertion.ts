@@ -30,6 +30,36 @@ import { MatchingBids } from "../../../../src/module/matching/bids/types"
 export interface IMatchingsAssertion {
     // Matchings
     /**
+     * Asynchronously asserts the count overview based on the expected total, success, ongoing, and failed counts.
+     * @param expectTotal The expected total count.
+     * @param expectSuccess The expected success count.
+     * @param expectOngoing The expected ongoing count.
+     * @param expectFailed The expected failed count.
+     * @returns A promise that resolves when the assertion is completed.
+     */
+    getCountOverviewAssertion(
+        expectTotal: bigint,
+        expectSuccess: bigint,
+        expectOngoing: bigint,
+        expectFailed: bigint
+    ): Promise<void>
+
+    /**
+     * Asynchronously asserts the size overview based on the expected total, success, ongoing, and failed counts.
+     * @param expectTotal The expected total count.
+     * @param expectSuccess The expected success count.
+     * @param expectOngoing The expected ongoing count.
+     * @param expectFailed The expected failed count.
+     * @returns A promise that resolves when the assertion is completed.
+     */
+    getSizeOverviewAssertion(
+        expectTotal: bigint,
+        expectSuccess: bigint,
+        expectOngoing: bigint,
+        expectFailed: bigint
+    ): Promise<void>
+
+    /**
      * Retrieves the initiator for a specific matching identified by its ID.
      * @param matchingId - The ID of the matching.
      * @param expectInitiator - The expected initiator address.

@@ -93,14 +93,14 @@ describe("StorageStatisticsInfoMongoDatastore", () => {
 })
 
 const sampleBasicStatistics: ValueFields<BasicStatistics> = {
-    totalCounts: 10,
-    successCounts: 3,
-    ongoingCounts: 6,
-    failedCounts: 1,
-    totalSize: 1000,
-    successSize: 400,
-    ongoingSize: 500,
-    failedSize: 100,
+    totalCounts: BigInt(10),
+    successCounts: BigInt(3),
+    ongoingCounts: BigInt(6),
+    failedCounts: BigInt(1),
+    totalSize: BigInt(1000),
+    successSize: BigInt(400),
+    ongoingSize: BigInt(500),
+    failedSize: BigInt(100),
     height: BigInt(1024),
 }
 
@@ -138,7 +138,7 @@ describe("DatasetsBasicStatisticsMongoDatastore", () => {
             expect(createRes.ok).to.be.true
 
             const res = await datastore.find({
-                conditions: [{ height: 1024 }],
+                conditions: [{ height: BigInt(1024) }],
             })
             expect(res.ok).to.be.true
             expect(res.data).to.be.not.undefined

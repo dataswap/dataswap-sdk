@@ -41,6 +41,52 @@ export class MatchingsAssertion implements IMatchingsAssertion {
 
     // Matchings
     /**
+     * Asynchronously asserts the count overview based on the expected total, success, ongoing, and failed counts.
+     * @param expectTotal The expected total count.
+     * @param expectSuccess The expected success count.
+     * @param expectOngoing The expected ongoing count.
+     * @param expectFailed The expected failed count.
+     * @returns A promise that resolves when the assertion is completed.
+     */
+    async getCountOverviewAssertion(
+        expectTotal: bigint,
+        expectSuccess: bigint,
+        expectOngoing: bigint,
+        expectFailed: bigint
+    ): Promise<void> {
+        const statistics = await handleEvmError(
+            this.contractsManager.MatchingMetadataEvm().getCountOverview()
+        )
+        expect(expectTotal).to.be.equal(statistics.data.total)
+        expect(expectSuccess).to.be.equal(statistics.data.success)
+        expect(expectOngoing).to.be.equal(statistics.data.ongoing)
+        expect(expectFailed).to.be.equal(statistics.data.failed)
+    }
+
+    /**
+     * Asynchronously asserts the size overview based on the expected total, success, ongoing, and failed counts.
+     * @param expectTotal The expected total count.
+     * @param expectSuccess The expected success count.
+     * @param expectOngoing The expected ongoing count.
+     * @param expectFailed The expected failed count.
+     * @returns A promise that resolves when the assertion is completed.
+     */
+    async getSizeOverviewAssertion(
+        expectTotal: bigint,
+        expectSuccess: bigint,
+        expectOngoing: bigint,
+        expectFailed: bigint
+    ): Promise<void> {
+        const statistics = await handleEvmError(
+            this.contractsManager.MatchingMetadataEvm().getSizeOverview()
+        )
+        expect(expectTotal).to.be.equal(statistics.data.total)
+        expect(expectSuccess).to.be.equal(statistics.data.success)
+        expect(expectOngoing).to.be.equal(statistics.data.ongoing)
+        expect(expectFailed).to.be.equal(statistics.data.failed)
+    }
+
+    /**
      * Retrieves the initiator for a specific matching identified by its ID.
      * @param matchingId - The ID of the matching.
      * @param expectInitiator - The expected initiator address.
@@ -136,7 +182,9 @@ export class MatchingsAssertion implements IMatchingsAssertion {
     ): Promise<number> {
         expectMatchingMetadata.initiator = process.env
             .DATASWAP_PROOFSUBMITTER as string
-
+        const countStatistic = await handleEvmError(
+            this.contractsManager.MatchingMetadataEvm().getCountOverview()
+        )
         this.contractsManager
             .MatchingMetadataEvm()
             .getWallet()
@@ -174,6 +222,12 @@ export class MatchingsAssertion implements IMatchingsAssertion {
         )
         await this.getMatchingInitiatorAssertion(matchingId, caller)
         await this.getMatchingStateAssertion(matchingId, MatchingState.None)
+        await this.getCountOverviewAssertion(
+            countStatistic.data.total + BigInt(1),
+            countStatistic.data.success,
+            countStatistic.data.ongoing + BigInt(1),
+            countStatistic.data.failed
+        )
         return matchingId
     }
 
@@ -423,6 +477,9 @@ export class MatchingsAssertion implements IMatchingsAssertion {
             expectCarsStarts,
             expectCarsEnds
         )
+        const sizeStatistic = await handleEvmError(
+            this.contractsManager.MatchingMetadataEvm().getSizeOverview()
+        )
         const carsSize = await handleEvmError(
             this.contractsManager.CarstoreEvm().getCarsSize(cars)
         )
@@ -467,6 +524,12 @@ export class MatchingsAssertion implements IMatchingsAssertion {
             await this.getMatchingStateAssertion(
                 matchingId,
                 MatchingState.InProgress
+            )
+            await this.getSizeOverviewAssertion(
+                sizeStatistic.data.total + BigInt(carsSize.data),
+                sizeStatistic.data.success,
+                sizeStatistic.data.ongoing + BigInt(carsSize.data),
+                sizeStatistic.data.failed
             )
         }
     }
