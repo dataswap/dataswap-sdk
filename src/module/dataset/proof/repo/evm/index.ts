@@ -286,6 +286,7 @@ export class DatasetProofEvm extends DatasetProofOriginEvm {
             case "submitDatasetProofRoot":
                 result.params.valid = true
                 result.params.datasetSize = BigInt(0)
+                result.params.submitter = msg.Msg.From
                 result.params.dataType = Number(
                     result.params.dataType
                 ) as DataType
@@ -314,6 +315,7 @@ export class DatasetProofEvm extends DatasetProofOriginEvm {
             case "submitDatasetProofCompleted":
                 result.datasetId = Number(result.params.datasetId)
                 result.params.datasetId = result.datasetId
+
                 break
             default:
                 console.log("method:", decodeRes.data!.method)

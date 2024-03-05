@@ -23,6 +23,7 @@ import { ValueFields, Result } from "@unipackage/utils"
 import { Member } from "../../types"
 import { MemberDocument, MemberSchema } from "./model"
 import { MongooseDataStore } from "@unipackage/datastore"
+import { MatchingTargetEvm } from "../../../../module/matching/target/repo/evm"
 
 /**
  * Class representing a MongoDB datastore for Member entities.
@@ -52,25 +53,67 @@ export class MemberMongoDatastore extends DataStore<
     /**
      * Creates or updates a member in the datastore.
      *
-     * @param update - The member information to be created or updated.
+     * @param arg - The member information to be created or updated or the options object.
      * @returns - A promise resolving to the result of the operation.
      */
-    async createOrUpdateMember(update: Member): Promise<Result<any>> {
-        try {
-            await this.lock
-            let data = await this.getMember({
-                address: update.address,
+    async createOrUpdateMember(
+        arg:
+            | Member
+            | {
+                  matchingTarget: MatchingTargetEvm
+                  update: Member
+              }
+    ): Promise<Result<any>> {
+        if ("matchingTarget" in arg && "update" in arg) {
+            const datasetId = await this.getDatasetId({
+                matchingTarget: arg.matchingTarget,
+                matchingId: arg.update.financeAccounts[0].matchingId,
             })
+            arg.update.financeAccounts[0].datasetId = datasetId
+            return await this.createOrUpdateMember(arg.update)
+        } else {
+            try {
+                await this.lock
+                let data = await this.getMember({
+                    address: arg.address,
+                })
 
-            if (data !== undefined) {
-                update.add(update, data)
+                if (data !== undefined) {
+                    arg.add(arg, data)
+                }
+                return await this.CreateOrupdateByUniqueIndexes(arg)
+            } catch (error) {
+                throw error
+            } finally {
+                this.lock = Promise.resolve()
             }
-            return await this.CreateOrupdateByUniqueIndexes(update)
-        } catch (error) {
-            throw error
-        } finally {
-            this.lock = Promise.resolve()
         }
+    }
+
+    /**
+     * Retrieves the dataset ID associated with the provided MatchingTarget and Matching ID.
+     *
+     * @param options - The options object containing MatchingTarget and Matching ID.
+     * @param options.matchingTarget - The MatchingTargetEvm instance.
+     * @param options.matchingId - The Matching ID.
+     * @returns - A promise resolving to the dataset ID.
+     * @throws Will throw an error if fetching the matching target fails.
+     */
+    private async getDatasetId(options: {
+        matchingTarget: MatchingTargetEvm
+        matchingId: number
+    }): Promise<number> {
+        const target = await options.matchingTarget.getMatchingTarget(
+            options.matchingId
+        )
+        if (!(target.ok || target.data)) {
+            throw {
+                ok: false,
+                error: new Error("get matching target failed"),
+            }
+        }
+
+        return target.data!.datasetID
     }
 
     /**
