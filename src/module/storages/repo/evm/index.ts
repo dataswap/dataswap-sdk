@@ -331,6 +331,8 @@ export class StoragesEvm extends StoragesOriginEvm {
                 result.matchingId = Number(result.params.matchingId)
                 result.params.matchingId = result.matchingId
                 break
+            case "registDataswapDatacap":
+                break
             default:
                 return {
                     ok: false,
