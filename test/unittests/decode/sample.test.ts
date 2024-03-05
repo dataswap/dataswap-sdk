@@ -40,7 +40,7 @@ import { DatasetState } from "../../../src/shared/types/datasetType"
 import { createTargetMessage } from "../../shared/utils"
 dotenv.config()
 
-describe.only("ContractMessageDecoder", () => {
+describe("ContractMessageDecoder", () => {
     const expectDecodeResult = {
         ok: true,
         data: {
