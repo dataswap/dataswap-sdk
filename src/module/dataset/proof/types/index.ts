@@ -71,6 +71,7 @@ export interface DatasetProofMetadata {
     mappingFilesAccessMethod: string
     rootHash: string
     valid: boolean
+    submitter?: string
 }
 
 /**

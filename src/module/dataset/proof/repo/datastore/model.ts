@@ -60,6 +60,9 @@ const DatasetProofMetadataSchema = new Schema<DatasetProofMetadataDocument>({
         type: Boolean,
         required: [true, "Please provide the valid status"],
     },
+    submitter: {
+        type: String,
+    },
 }).index({ datasetId: 1, dataType: 1 }, { unique: true })
 
 export { DatasetProofMetadataSchema }
