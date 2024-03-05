@@ -1,5 +1,12 @@
 
 
+## [0.22.1](https://github.com/dataswap/dataswapjs/compare/0.22.0...0.22.1) (2024-03-05)
+
+
+### Bug Fixes
+
+* 🐛 Add member missing parameter ([87924b6](https://github.com/dataswap/dataswapjs/commit/87924b6c46e78927f18185847424ca85f9c4f8c1)), closes [#301](https://github.com/dataswap/dataswapjs/issues/301)
+
 # [0.22.0](https://github.com/dataswap/dataswapjs/compare/0.21.0...0.22.0) (2024-03-05)
 
 
