@@ -1,5 +1,12 @@
 
 
+## [0.22.2](https://github.com/dataswap/dataswapjs/compare/0.22.1...0.22.2) (2024-03-05)
+
+
+### Bug Fixes
+
+* 🐛 fix evm instances ([a03b309](https://github.com/dataswap/dataswapjs/commit/a03b3094b8fa6fb03b25e49a34ad0946820c2a8f)), closes [#303](https://github.com/dataswap/dataswapjs/issues/303)
+
 ## [0.22.1](https://github.com/dataswap/dataswapjs/compare/0.22.0...0.22.1) (2024-03-05)
 
 
