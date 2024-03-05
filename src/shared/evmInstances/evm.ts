@@ -307,9 +307,9 @@ export const storagesEvm_Main = new StoragesEvm(
 /**
  * Creates a new instance of FilplusEvm for the Calibration network.
  *
- * @constant filplusEvm_Calibraion - The FilplusEvm instance for the Calibration network.
+ * @constant filplusEvm_Calibration - The FilplusEvm instance for the Calibration network.
  */
-export const filplusEvm_Calibraion = new FilplusEvm(
+export const filplusEvm_Calibration = new FilplusEvm(
     filplusAbi,
     contractAddresses({
         network: CALIBRATION_NETWORK,
@@ -335,9 +335,9 @@ export const filplusEvm_Main = new FilplusEvm(
 /**
  * Creates a new instance of FilecoinEvm for the Calibration network.
  *
- * @constant filecoinEvm_Calibraion - The FilecoinEvm instance for the Calibration network.
+ * @constant filecoinEvm_Calibration - The FilecoinEvm instance for the Calibration network.
  */
-export const filecoinEvm_Calibraion = new FilecoinEvm(
+export const filecoinEvm_Calibration = new FilecoinEvm(
     filecoinAbi,
     contractAddresses({
         network: CALIBRATION_NETWORK,
@@ -363,9 +363,9 @@ export const filecoinEvm_Main = new FilecoinEvm(
 /**
  * Creates a new instance of FinanceEvm for the Calibration network.
  *
- * @constant financeEvm_Calibraion - The FinanceEvm instance for the Calibration network.
+ * @constant financeEvm_Calibration - The FinanceEvm instance for the Calibration network.
  */
-export const financeEvm_Calibraion = new FinanceEvm(
+export const financeEvm_Calibration = new FinanceEvm(
     financeAbi,
     contractAddresses({
         network: CALIBRATION_NETWORK,

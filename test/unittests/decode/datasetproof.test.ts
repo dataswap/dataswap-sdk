@@ -52,6 +52,7 @@ describe("DatasetsProofMessageDecoder", () => {
                     mappingFilesAccessMethod: "0174kxc",
                     rootHash:
                         "0x000000000000000000000000000000000000000000000000000000000000012c",
+                    submitter: "f410fcwzis33wz3sofrlh466gog5xahlthgzqezasapy",
                     valid: true,
                     datasetSize: BigInt(0),
                 },
