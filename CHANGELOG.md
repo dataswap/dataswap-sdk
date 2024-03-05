@@ -1,5 +1,17 @@
 
 
+# [0.22.0](https://github.com/dataswap/dataswapjs/compare/0.21.0...0.22.0) (2024-03-05)
+
+
+### Bug Fixes
+
+* 🐛 datasets related types ([0503df2](https://github.com/dataswap/dataswapjs/commit/0503df2ba27df19d78411b9c00063af4f24aefc6)), closes [#299](https://github.com/dataswap/dataswapjs/issues/299)
+
+
+### Features
+
+* 🎸 Add export MemberMongoDatastore ([26f3f8c](https://github.com/dataswap/dataswapjs/commit/26f3f8c33e59d469adb5424f5192bb4835e2c738)), closes [#294](https://github.com/dataswap/dataswapjs/issues/294)
+
 # [0.21.0](https://github.com/dataswap/dataswapjs/compare/0.20.1...0.21.0) (2024-03-04)
 
 
