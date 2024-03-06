@@ -316,13 +316,10 @@ export class MatchingMetadataMongoDatastore extends DataStore<
         rule: BidSelectionRule,
         bids: MatchingBids
     ): MatchingBid {
-        if (bids.bidders.length == 0) {
-            throw new Error("bids is none")
-        }
         let best: MatchingBid = new MatchingBid({
-            bidder: bids.bidders[0],
-            amount: bids.amounts[0],
-            complyFilplusRule: bids.complyFilplusRules[0],
+            bidder: "",
+            amount: BigInt(0),
+            complyFilplusRule: false,
             matchingId: bids.matchingId,
         })
         for (let i = 0; i < bids.bidders.length; i++) {
