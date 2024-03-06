@@ -136,6 +136,8 @@ describe("MatchingMetadataMongoDatastore", () => {
 
             await datastore.updateMatchingTargetInfo({
                 matchingTarget: getContractsManager().MatchingTargetEvm(),
+                datasets: getContractsManager().DatasetMetadataEvm(),
+                finance: getContractsManager().FinanceEvm(),
                 matchingId: 3,
             })
             const updateTargetRes = await datastore.find({

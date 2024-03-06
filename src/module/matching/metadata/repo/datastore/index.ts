@@ -20,16 +20,19 @@
 
 import { DataStore, DatabaseConnection } from "@unipackage/datastore"
 import { ValueFields, Result } from "@unipackage/utils"
-import { BidSelectionRule, MatchingMetadata } from "../../types"
+import { BidSelectionRule, MatchingMetadata, MatchingState } from "../../types"
 import { MatchingMetadataDocument, MatchingMetadataSchema } from "./model"
 import { MongooseDataStore } from "@unipackage/datastore"
 import { MatchingTargetEvm } from "../../../target/repo/evm"
+import { FinanceEvm } from "../../../../../core/finance/repo/evm"
+import { DatasetMetadataEvm } from "../../../../dataset/metadata/repo/evm"
 import { MatchingMetadataEvm } from "../evm"
 import { DatasetRequirementEvm } from "../../../../dataset/requirement/repo/evm"
 import { MatchingBidsEvm } from "../../../bids/repo/evm"
 import { MatchingBid, MatchingBids } from "../../../bids/types"
 import { DatasetRequirement } from "../../../../dataset/requirement/types"
 import { delegatedFromEthAddress, CoinType } from "@glif/filecoin-address"
+import { FIL, EscrowType } from "../../../../../shared/types/financeType"
 /**
  * Class representing a MongoDB datastore for MatchingMetadata entities.
  * Extends the DataStore class with MatchingMetadata and MatchingMetadataDocument.
@@ -143,6 +146,8 @@ export class MatchingMetadataMongoDatastore extends DataStore<
      */
     async updateMatchingTargetInfo(options: {
         matchingTarget: MatchingTargetEvm
+        datasets: DatasetMetadataEvm
+        finance: FinanceEvm
         matchingId: number
     }): Promise<Result<any>> {
         try {
@@ -152,13 +157,31 @@ export class MatchingMetadataMongoDatastore extends DataStore<
             if (!target.ok) {
                 return { ok: false, error: target.error }
             }
+            const datasetMetadata = await options.datasets.getDatasetMetadata(
+                target.data!.datasetID
+            )
+
+            if (!datasetMetadata.ok) {
+                return { ok: false, error: datasetMetadata.error }
+            }
+
+            const tradingFeeSubsidy =
+                await options.finance.getEscrowRequirement(
+                    target.data!.datasetID,
+                    options.matchingId,
+                    datasetMetadata.data!.submitter!,
+                    FIL,
+                    EscrowType.EscrowDataTradingFee
+                )
+            if (!tradingFeeSubsidy.ok) {
+                return { ok: false, error: tradingFeeSubsidy.error }
+            }
 
             return await this.update(
                 { conditions: [{ matchingId: options.matchingId }] },
                 {
                     size: target.data!.size,
-                    //subsidy: target.data!.subsidy,
-                    //TODO: get subsidy from finance
+                    subsidy: tradingFeeSubsidy.data,
                 }
             )
         } catch (error) {
@@ -211,12 +234,24 @@ export class MatchingMetadataMongoDatastore extends DataStore<
      */
     async updateMatchingDataUnitPrice(options: {
         datasetRequirementEvm: DatasetRequirementEvm
+        matchingMetadata: MatchingMetadataEvm
         matchingTarget: MatchingTargetEvm
         matchingBids: MatchingBidsEvm
         matchingId: number
         height: bigint
     }): Promise<Result<any>> {
         try {
+            const state = await options.matchingMetadata.getMatchingState(
+                options.matchingId
+            )
+            if (!state.ok) {
+                return { ok: false, error: state.error }
+            }
+
+            if (state.data != MatchingState.Completed) {
+                return { ok: true }
+            }
+
             const target = await options.matchingTarget.getMatchingTarget(
                 options.matchingId
             )
