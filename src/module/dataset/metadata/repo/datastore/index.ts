@@ -27,6 +27,7 @@ import { DatasetMetadataEvm } from "../evm"
 import { DatasetChallengeEvm } from "../../../challenge/repo/evm"
 import { FinanceEvm } from "../../../../../core/finance/repo/evm"
 import { EscrowType } from "../../../../../shared/types/financeType"
+import { DatasetState } from "../../../../../shared/types/datasetType"
 
 /**
  * Class representing a MongoDB datastore for DatasetMetadata entities.
@@ -166,6 +167,17 @@ export class DatasetMetadataMongoDatastore extends DataStore<
         height: bigint
     }): Promise<Result<any>> {
         try {
+            const state = await options.datasetMetadataEvm.getDatasetState(
+                options.datasetId
+            )
+            if (!state.ok) {
+                return { ok: false, error: state.error }
+            }
+
+            if (state.data != DatasetState.Approved) {
+                return { ok: true }
+            }
+
             const submitter =
                 await options.datasetMetadataEvm.getDatasetMetadataSubmitter(
                     options.datasetId
