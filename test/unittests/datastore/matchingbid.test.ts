@@ -77,6 +77,7 @@ describe("MatchingBidMongoDatastore", () => {
             await datastore.storeMatchingBid({
                 matchingBids: getContractsManager().MatchingBidsEvm(),
                 origionMatchingBid: res.data![0] as MatchingBid,
+                network: "main",
             })
             const storedRes = await datastore.find({
                 conditions: [
