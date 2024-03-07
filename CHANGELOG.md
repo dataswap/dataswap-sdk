@@ -1,5 +1,20 @@
 
 
+# [0.23.0](https://github.com/dataswap/dataswapjs/compare/0.22.2...0.23.0) (2024-03-07)
+
+
+### Bug Fixes
+
+* 🐛 error_1:Error: cant find the bidder on chain ([70c69a0](https://github.com/dataswap/dataswapjs/commit/70c69a04c7640acc8f0d990ab8cec9ee74aaa2f6)), closes [#311](https://github.com/dataswap/dataswapjs/issues/311)
+* 🐛 error_2:Error: bids is none ([b0bb1ed](https://github.com/dataswap/dataswapjs/commit/b0bb1ed090600ba206bcd8fbe7742205a2193016)), closes [#309](https://github.com/dataswap/dataswapjs/issues/309)
+* 🐛 fix updata function of datastore ([a109ad0](https://github.com/dataswap/dataswapjs/commit/a109ad0f5d103044ded9f4a27f205963c16b9d8b)), closes [#307](https://github.com/dataswap/dataswapjs/issues/307)
+* 🐛 registDataswapDatacap decode error ([34d40cb](https://github.com/dataswap/dataswapjs/commit/34d40cb48b6d2032e01f156c3325f99c99cccadf)), closes [#305](https://github.com/dataswap/dataswapjs/issues/305)
+
+
+### Features
+
+* 🎸 update abi version to 0.6.0 ([d7a4af3](https://github.com/dataswap/dataswapjs/commit/d7a4af3e49d47297d6154d69d5341a6d1a714db4)), closes [#313](https://github.com/dataswap/dataswapjs/issues/313)
+
 ## [0.22.2](https://github.com/dataswap/dataswapjs/compare/0.22.1...0.22.2) (2024-03-05)
 
 
