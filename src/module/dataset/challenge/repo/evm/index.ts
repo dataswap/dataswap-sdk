@@ -19,7 +19,6 @@
  ********************************************************************************/
 
 import {
-    Evm,
     withCallMethod,
     withSendMethod,
     EvmOutput,
@@ -30,6 +29,7 @@ import { DataswapMessage } from "../../../../../message/types"
 import { DatasetChallenge } from "../../types"
 import { EvmEx } from "../../../../../shared/types/evmEngineType"
 import { convertToStringArray } from "../../../../../shared/arrayUtils"
+import { ethAddressFromDelegated } from "@glif/filecoin-address"
 
 /**
  * Interface for EVM calls related to DatasetChallenge.
@@ -217,7 +217,7 @@ export class DatasetChallengeEvm extends DatasetChallengeOriginEvm {
             case "submitDatasetChallengeProofs":
                 result.datasetId = Number(result.params.datasetId)
                 result.params.datasetId = result.datasetId
-                result.params.auditor = result.from
+                result.params.auditor = ethAddressFromDelegated(msg.Msg.From)
                 result.params.paths = convertToStringArray(result.params.paths)
                 break
             default:

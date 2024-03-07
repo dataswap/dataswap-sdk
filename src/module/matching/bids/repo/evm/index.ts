@@ -28,6 +28,7 @@ import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
 import { DataswapMessage } from "../../../../../message/types"
 import { MatchingBids } from "../../types"
 import { EvmEx } from "../../../../../shared/types/evmEngineType"
+import { ethAddressFromDelegated } from "@glif/filecoin-address"
 
 /**
  * Interface representing the data structure for calling matching bids in an EVM environment.
@@ -183,7 +184,7 @@ export class MatchingBidsEvm extends MatchingBidsOriginEvm {
             case "bidding":
                 result.matchingId = Number(result.params.matchingId)
                 result.params.matchingId = result.matchingId
-                result.params.bidder = msg.Msg.From
+                result.params.bidder = ethAddressFromDelegated(msg.Msg.From)
                 result.params.createdBlockNumber = BigInt(result.height)
                 break
             case "cancelMatching":

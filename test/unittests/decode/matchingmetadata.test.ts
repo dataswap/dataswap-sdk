@@ -55,7 +55,7 @@ describe("MatchingMetadataMessageDecoder", () => {
                     replicaIndex: BigInt(0),
                     storageCompletionPeriodBlocks: BigInt(100000),
                     createdBlockNumber: BigInt(1213438),
-                    initiator: "f410fcwzis33wz3sofrlh466gog5xahlthgzqezasapy",
+                    initiator: "0x15B2896f76Cee4E2C567e7bC671bB701D7339B30",
                     matchingId: 1,
                     biddingStartBlock: BigInt(1213468),
                     biddingEndBlock: BigInt(1213488),

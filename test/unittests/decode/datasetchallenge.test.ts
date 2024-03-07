@@ -44,7 +44,7 @@ describe("DatasetChallengeMessageDecoder", () => {
             const expectDecodeResout = createExpectMessage({
                 method: "submitDatasetChallengeProofs",
                 params: {
-                    auditor: "f410fcwzis33wz3sofrlh466gog5xahlthgzqezasapy",
+                    auditor: "0x15B2896f76Cee4E2C567e7bC671bB701D7339B30",
                     datasetId: 1,
                     leaves: [
                         "0xadacd58b8058f1c749ad8763f5b8e46d69ff5ae98fd6e32277c5de50f5fdff2b",

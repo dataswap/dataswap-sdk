@@ -55,7 +55,7 @@ describe("DatasetsContractMessageDecoder", () => {
                     sizeInBytes: BigInt(5120000),
                     isPublic: true,
                     version: BigInt(1),
-                    submitter: "f410fcwzis33wz3sofrlh466gog5xahlthgzqezasapy",
+                    submitter: "0x15B2896f76Cee4E2C567e7bC671bB701D7339B30",
                     createdBlockNumber: 1213438,
                     datasetId: 1,
                     status: DatasetState.MetadataSubmitted,

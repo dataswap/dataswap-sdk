@@ -40,29 +40,6 @@ import { MatchingTargetEvm } from "../../module/matching/target/repo/evm"
 import { convertToNumberArray } from "../arrayUtils"
 
 /**
- * Converts the provided eth address to filecoin address.
- *
- * @param options - An object containing the necessary parameters for conversion.
- * @returns The filecoin address.
- */
-export function convertToFilecoinAddress(options: {
-    ethAddress: string
-    network: string
-}): string {
-    if (options.network == "main") {
-        return newDelegatedEthAddress(
-            options.ethAddress,
-            CoinType.MAIN
-        ).toString()
-    } else {
-        return newDelegatedEthAddress(
-            options.ethAddress,
-            CoinType.TEST
-        ).toString()
-    }
-}
-
-/**
  * Converts the provided data to an array of CarReplica objects using the specified options.
  *
  * @param options - An object containing the necessary parameters for conversion.

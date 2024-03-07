@@ -28,12 +28,9 @@ import { Message, ContractMessageDecoder } from "@unipackage/filecoin"
 import { DataswapMessage } from "../../../../../message/types"
 import { DataType } from "../../../../../shared/types/dataType"
 import { EvmEx } from "../../../../../shared/types/evmEngineType"
-import { DatasetProofMetadata, DatasetProofs } from "../../types"
 import { DatasetState } from "../../../../../shared/types/datasetType"
-import {
-    convertToBigIntArray,
-    mergeBigIntRangesToCompleteArray,
-} from "../../../../../shared/arrayUtils"
+import { mergeBigIntRangesToCompleteArray } from "../../../../../shared/arrayUtils"
+import { ethAddressFromDelegated } from "@glif/filecoin-address"
 
 /**
  * Interface representing the Ethereum Virtual Machine (EVM) call structure for a dataset proof.
@@ -286,7 +283,7 @@ export class DatasetProofEvm extends DatasetProofOriginEvm {
             case "submitDatasetProofRoot":
                 result.params.valid = true
                 result.params.datasetSize = BigInt(0)
-                result.params.submitter = msg.Msg.From
+                result.params.submitter = ethAddressFromDelegated(msg.Msg.From)
                 result.params.dataType = Number(
                     result.params.dataType
                 ) as DataType
