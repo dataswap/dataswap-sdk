@@ -1,5 +1,12 @@
 
 
+## [0.23.1](https://github.com/dataswap/dataswapjs/compare/0.23.0...0.23.1) (2024-03-07)
+
+
+### Bug Fixes
+
+* 🐛 Error(payer account does not exist) ([6a27b24](https://github.com/dataswap/dataswapjs/commit/6a27b24c094f86365fb0c49f42d55a3dce5e4593)), closes [#315](https://github.com/dataswap/dataswapjs/issues/315)
+
 # [0.23.0](https://github.com/dataswap/dataswapjs/compare/0.22.2...0.23.0) (2024-03-07)
 
 
