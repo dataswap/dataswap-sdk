@@ -24,7 +24,7 @@ import { MatchingBid } from "../../types"
 import { MatchingBidDocument, MatchingBidSchema } from "./model"
 import { MongooseDataStore } from "@unipackage/datastore"
 import { MatchingBidsEvm } from "../evm"
-import { convertToFilecoinAddress } from "../../../../../shared/converters"
+
 /**
  * Class representing a MongoDB datastore for MatchingBid entities.
  * Extends the DataStore class with MatchingBid and MatchingBidDocument.
@@ -59,7 +59,6 @@ export class MatchingBidMongoDatastore extends DataStore<
     async storeMatchingBid(options: {
         matchingBids: MatchingBidsEvm
         origionMatchingBid: MatchingBid
-        network: string
     }): Promise<Result<any>> {
         try {
             const bids = await options.matchingBids.getMatchingBids(
@@ -70,11 +69,7 @@ export class MatchingBidMongoDatastore extends DataStore<
             }
             for (let i = 0; i < bids.data!.bidders.length; i++) {
                 if (
-                    options.origionMatchingBid.bidder ===
-                    convertToFilecoinAddress({
-                        ethAddress: bids.data!.bidders[i],
-                        network: options.network,
-                    })
+                    options.origionMatchingBid.bidder === bids.data!.bidders[i]
                 ) {
                     return await this.CreateOrupdateByUniqueIndexes(
                         new MatchingBid({

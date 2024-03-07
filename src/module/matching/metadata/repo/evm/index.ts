@@ -29,6 +29,7 @@ import { DataswapMessage } from "../../../../../message/types"
 import { MatchingMetadata, MatchingState, BidSelectionRule } from "../../types"
 import { EvmEx } from "../../../../../shared/types/evmEngineType"
 import { BasicStatisticsInfo } from "../../../../../shared/types/statisticsType"
+import { ethAddressFromDelegated } from "@glif/filecoin-address"
 
 /**
  * Interface representing the data structure for matching metadata (call EVM).
@@ -239,7 +240,7 @@ export class MatchingMetadataEvm extends MatchingMetadataOriginEvm {
                     result.params.bidSelectionRule
                 ) as BidSelectionRule
                 result.params.matchingId = result.matchingId
-                result.params.initiator = result.from
+                result.params.initiator = ethAddressFromDelegated(msg.Msg.From)
                 result.params.createdBlockNumber = BigInt(result.height)
                 result.params.biddingStartBlock =
                     result.params.createdBlockNumber +

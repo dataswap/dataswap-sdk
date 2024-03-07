@@ -30,6 +30,7 @@ import { DatasetMetadata, DatasetTimeoutParameters } from "../../types"
 import { EvmEx } from "../../../../../shared/types/evmEngineType"
 import { DatasetState } from "../../../../../shared/types/datasetType"
 import { BasicStatisticsInfo } from "../../../../../shared/types/statisticsType"
+import { ethAddressFromDelegated } from "@glif/filecoin-address"
 
 interface DatasetMetadataCallEvm {
     /**
@@ -311,7 +312,7 @@ export class DatasetMetadataEvm extends DatasetMetadataOriginEvm {
             case "submitDatasetMetadata":
                 result.datasetId = Number(result.return)
                 /*params match the DatasetMetadata struct*/
-                result.params.submitter = result.from
+                result.params.submitter = ethAddressFromDelegated(msg.Msg.From)
                 result.params.createdBlockNumber = result.height
                 result.params.datasetId = result.datasetId
                 result.params.status = DatasetState.MetadataSubmitted
