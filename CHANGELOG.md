@@ -1,5 +1,12 @@
 
 
+# [0.24.0](https://github.com/dataswap/dataswapjs/compare/0.23.1...0.24.0) (2024-03-09)
+
+
+### Features
+
+* 🎸 update evm instance contracts addresses ([9bb7e3f](https://github.com/dataswap/dataswapjs/commit/9bb7e3f71d1cf3db6fe9e8182d1b9884f2b5d90c)), closes [#317](https://github.com/dataswap/dataswapjs/issues/317)
+
 ## [0.23.1](https://github.com/dataswap/dataswapjs/compare/0.23.0...0.23.1) (2024-03-07)
 
 
