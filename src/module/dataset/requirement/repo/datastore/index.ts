@@ -150,7 +150,7 @@ export class DatasetRequirementMongoDatastore extends DataStore<
             })
 
             if (contain) {
-                return { ok: false, error: new Error("matching already exist") }
+                return { ok: true }
             }
 
             let matchings = await this.getMatchings({

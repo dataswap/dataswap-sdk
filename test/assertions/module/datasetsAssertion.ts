@@ -36,7 +36,7 @@ import {
 } from "../../../src/shared/arrayUtils"
 import { DataType } from "../../../src/shared/types/dataType"
 import { DatasetChallenge } from "../../../src/module/dataset/challenge/types"
-
+import { delay } from "@unipackage/utils"
 export class DatasetsAssertion implements IDatasetsAssertion {
     private contractsManager: IContractsManager
     constructor(_contractsManager: IContractsManager) {
@@ -234,6 +234,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
                     expectData.version
                 )
         )
+        await delay(4000)
         // Get transaction receipt and event arguments
         const receipt = await this.contractsManager
             .DatasetMetadataEvm()
@@ -370,6 +371,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
                         }
                     )
             )
+            await delay(6000)
             await this.getDatasetReplicasCountAssertion(
                 datasetId,
                 expectReplicasCount
@@ -591,6 +593,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
                         rootHash
                     )
             )
+            await delay(4000)
             await this.getDatasetProofSubmitterAssertion(
                 datasetId,
                 expectSubmitter
@@ -651,6 +654,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
                     expectCompleted
                 )
         )
+        await delay(4000)
         const carsIds = await handleEvmError(
             this.contractsManager.CarstoreEvm().getCarsIds(expectLeafHashes)
         )
@@ -705,6 +709,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
         await handleEvmError(
             this.contractsManager.DatasetProofEvm().completeEscrow(datasetId)
         )
+        await delay(4000)
         await this.getDatasetStateAssertion(datasetId, expectState)
     }
     /**
@@ -725,6 +730,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
                 .DatasetProofEvm()
                 .submitDatasetProofCompleted(datasetId)
         )
+        await delay(4000)
         await this.isDatasetProofallCompletedAssertion(
             datasetId,
             DataType.MappingFiles,
@@ -869,6 +875,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
                     }
                 )
         )
+        await delay(4000)
 
         await this.getDatasetChallengeProofsAssertion(
             datasetId,
