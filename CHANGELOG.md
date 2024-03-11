@@ -1,5 +1,12 @@
 
 
+## [0.24.1](https://github.com/dataswap/dataswapjs/compare/0.24.0...0.24.1) (2024-03-11)
+
+
+### Bug Fixes
+
+* 🐛 fix:error:matching already exist ([94026e5](https://github.com/dataswap/dataswapjs/commit/94026e5410fc2a70d91d0357139a64427a0ab542)), closes [#319](https://github.com/dataswap/dataswapjs/issues/319)
+
 # [0.24.0](https://github.com/dataswap/dataswapjs/compare/0.23.1...0.24.0) (2024-03-09)
 
 
