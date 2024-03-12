@@ -1,5 +1,13 @@
 
 
+## [0.24.2](https://github.com/dataswap/dataswapjs/compare/0.24.1...0.24.2) (2024-03-12)
+
+
+### Bug Fixes
+
+* 🐛 update abi version to 0.7.0 ([38e6182](https://github.com/dataswap/dataswapjs/commit/38e6182f6bf2fd37a69530687e6c097e4809b25e))
+* 🐛 update contract addresses in calibnet ([c411601](https://github.com/dataswap/dataswapjs/commit/c4116018e1695e11e4b44de604e11ff3fdb61505))
+
 ## [0.24.1](https://github.com/dataswap/dataswapjs/compare/0.24.0...0.24.1) (2024-03-11)
 
 
