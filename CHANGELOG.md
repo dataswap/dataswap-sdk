@@ -1,5 +1,12 @@
 
 
+# [0.25.0](https://github.com/dataswap/dataswapjs/compare/0.24.2...0.25.0) (2024-03-15)
+
+
+### Features
+
+* 🎸 update abi version to 0.8.0 ([1f4e4ec](https://github.com/dataswap/dataswapjs/commit/1f4e4ecd16215aaed53d9930639040f17c836b5d))
+
 ## [0.24.2](https://github.com/dataswap/dataswapjs/compare/0.24.1...0.24.2) (2024-03-12)
 
 
