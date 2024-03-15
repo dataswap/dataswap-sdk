@@ -63,6 +63,21 @@ export class SubmitMetadataTestKit extends DatasetsTestBase {
                     clientId,
                     datasetMetadata
                 )
+
+            const datasetRuleMinProofTimeout = await this.contractsManager
+                .FilplusEvm()
+                .datasetRuleMinProofTimeout()
+
+            const datasetRuleMinAuditTimeout = await this.contractsManager
+                .FilplusEvm()
+                .datasetRuleMinAuditTimeout()
+
+            await this.assertion.updateDatasetTimeoutParametersAssertion(
+                process.env.DATASWAP_METADATASUBMITTER as string,
+                datasetId,
+                datasetRuleMinProofTimeout.data! + BigInt(1),
+                datasetRuleMinAuditTimeout.data! + BigInt(1)
+            )
             await this.assertion.getDatasetStateAssertion(
                 datasetId,
                 DatasetState.MetadataSubmitted

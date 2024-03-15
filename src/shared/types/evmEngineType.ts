@@ -54,9 +54,13 @@ export class EvmEx extends Evm {
     /**
      * Asynchronously waits until the blockchain reaches the target block height.
      * @param targetBlockHeight The block height to wait for.
+     * @param blockPeriod The block period(ms) to wait for.
      * @returns A Promise that resolves when the blockchain reaches the target block height.
      */
-    async waitForBlockHeight(targetBlockHeight: number): Promise<void> {
+    async waitForBlockHeight(
+        targetBlockHeight: number,
+        blockPeriod: number
+    ): Promise<void> {
         const etherProvider = super.getEtherProvider()
         const web3Provider = super.getWeb3()
         while (true) {
@@ -70,7 +74,7 @@ export class EvmEx extends Evm {
             if (currentBlock >= targetBlockHeight) {
                 break
             }
-            await new Promise((resolve) => setTimeout(resolve, 4000))
+            await new Promise((resolve) => setTimeout(resolve, blockPeriod))
         }
     }
 }

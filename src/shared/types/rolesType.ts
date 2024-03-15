@@ -39,5 +39,8 @@ export enum ContractType {
     EscrowDatacapChunkLandCollateral, // EscrowDatacapChunkLandCollateral contract
     EscrowDatacapCollateral, // EscrowDatacapCollateral contract
     EscrowChallengeCommission, // EscrowChallengeCommission contract
-    Roles,
+    EscrowChallengeAuditCollateral, // EscrowChallengeAuditCollateral contract
+    EscrowDisputeAuditCollateral, // EscrowDisputeAuditCollateral contract
+    EscrowProofAuditCollateral, // EscrowProofAuditCollateral contract
+    Roles, //roles contract
 }

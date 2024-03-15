@@ -58,6 +58,7 @@ jobs:
             - name: Test
               env:
                   NETWORK_RPC_URL: ${{vars.NETWORK_RPC_URL}}
+                  BLOCK_PERIOD: ${{vars.BLOCK_PERIOD}}
               run: |
                   docker exec localnet cat /root/contract >> ./contract
                   docker exec localnet cat /root/env >> ./env
@@ -65,7 +66,7 @@ jobs:
                   source ./env
                   export DATASWAP_GOVERNANCE=0x09C6DEE9DB5e7dF2b18283c0CFCf714fEDB692d7
                   export DATASWAP_BIDDER=0xca942f0fd39185d971d1d58E151645e596FC7Eff
-                  export DATASWAP_DATASETAUDITOR=0x405741492033d32eb3f1f12aa1aba40e47a59234
+                  export DATASWAP_DATASETAUDITOR=0x405741492033D32Eb3f1F12AA1aBa40E47a59234
                   export DATASWAP_PROOFSUBMITTER=0x3D08114dD4F65B5DDCc760884249D9d1AE435Dee
                   export DATASWAP_METADATASUBMITTER=0x15B2896f76Cee4E2C567e7bC671bB701D7339B30
                   export

@@ -42,7 +42,7 @@ import { DatasetState } from "../../../src/shared/types/datasetType"
 /**
  * Test suite for the Matchings functionality.
  */
-describe.skip("matchings", async () => {
+describe("matchings", async () => {
     /**
      * Setup before running the test suite.
      */
