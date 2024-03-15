@@ -144,6 +144,12 @@ interface FinanceCallEvm {
         token: string,
         type: EscrowType
     ): Promise<EvmOutput<boolean>>
+
+    /**
+     * Retrieves the roles associated with the current user.
+     * @returns A promise that resolves with the roles of the current user.
+     */
+    roles(): Promise<EvmOutput<string>>
 }
 
 /**
@@ -238,6 +244,7 @@ export interface FinanceOriginEvm extends FinanceCallEvm, FinanceSendEvm {}
     "getAccountEscrow",
     "getEscrowRequirement",
     "isEscrowEnough",
+    "roles",
 ])
 @withSendMethod(["deposit", "withdraw", "escrow", "claimEscrow"])
 export class FinanceOriginEvm extends EvmEx {}

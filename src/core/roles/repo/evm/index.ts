@@ -157,6 +157,22 @@ interface RolesCallEvm {
      * @returns A promise that resolves to an EvmOutput<string>.
      */
     escrowDatacapCollateral(): Promise<EvmOutput<string>>
+
+    /**
+     * Retrieves data related to the EscrowChallengeAuditCollateral contract.
+     * @returns A promise that resolves to an EvmOutput<string>.
+     */
+    escrowChallengeAuditCollateral(): Promise<EvmOutput<string>>
+    /**
+     * Retrieves data related to the EscrowDisputeAuditCollateral contract.
+     * @returns A promise that resolves to an EvmOutput<string>.
+     */
+    escrowDisputeAuditCollateral(): Promise<EvmOutput<string>>
+    /**
+     * Retrieves data related to the EscrowProofAuditCollateral contract.
+     * @returns A promise that resolves to an EvmOutput<string>.
+     */
+    escrowProofAuditCollateral(): Promise<EvmOutput<string>>
 }
 
 /**
@@ -233,6 +249,9 @@ export interface RolesOriginEvm extends RolesCallEvm, RolesSendEvm {}
     "hasRole",
     "checkRole",
     "owner",
+    "escrowProofAuditCollateral",
+    "escrowDisputeAuditCollateral",
+    "escrowChallengeAuditCollateral",
     "escrowDatacapCollateral",
     "escrowDatacapChunkLandCollateral",
     "escrowChallengeCommission",

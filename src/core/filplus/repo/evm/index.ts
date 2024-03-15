@@ -210,6 +210,12 @@ interface FilplusCallEvm {
     datacapRulesMaxRemainingPercentageForNext(): Promise<EvmOutput<number>>
 
     /**
+     * @dev Retrieves the auditors' election time for dataset rules.
+     * @returns A promise resolving to the number of blocks representing the duration of the election.
+     */
+    datasetRuleAuditorsElectionTime(): Promise<EvmOutput<number>>
+
+    /**
      * @notice Check if the storage area complies with filplus rules.
      * @param regions The geolocation regions
      * @param countrys The geolocation countrys
@@ -264,6 +270,12 @@ interface FilplusCallEvm {
      * @param value The current vale
      */
     isCompliantRuleMaxReplicasPerSP(value: number): Promise<EvmOutput<boolean>>
+
+    /**
+     * Retrieves the roles associated with the current user.
+     * @returns A promise that resolves with the roles of the current user.
+     */
+    roles(): Promise<EvmOutput<string>>
 }
 
 /**
@@ -365,6 +377,12 @@ interface FilplusSendEvm {
      */
     setDatacapCollateralMaxLockDays(newValue: bigint): Promise<EvmOutput<void>>
 
+    /**
+     * Sets the time for auditors' election in terms of blocks.
+     * @param blocks The number of blocks representing the duration of the election.
+     * @returns A promise resolving to the transaction receipt.
+     */
+    setAuditorsElectionTime(blocks: number): Promise<EvmOutput<void>>
     /**
      * Sets the audit fee for challenging a proof.
      *
@@ -546,11 +564,13 @@ export interface FilplusOriginEvm extends FilplusCallEvm, FilplusSendEvm {}
     "datasetRuleMaxTotalReplicasPerDataset",
     "datacapRulesMaxAllocatedSizePerTime",
     "datacapRulesMaxRemainingPercentageForNext",
+    "datasetRuleAuditorsElectionTime",
     "isCompliantRuleGeolocation",
     "isCompliantRuleMaxProportionOfMappingFilesToDataset",
     "isCompliantRuleTotalReplicasPerDataset",
     "isCompliantRuleMinSPsPerDataset",
     "isCompliantRuleMaxReplicasPerSP",
+    "roles",
 ])
 @withSendMethod([
     "setIncomeReleaseRule",
@@ -560,6 +580,7 @@ export interface FilplusOriginEvm extends FilplusCallEvm, FilplusSendEvm {}
     "setChallengeProofsSubmiterCount",
     "setDatacapdatasetApprovedLockDays",
     "setDatacapCollateralMaxLockDays",
+    "setAuditorsElectionTime",
     "setChallengeAuditFee",
     "setProofAuditFee",
     "setDisputeAuditFee",
@@ -608,6 +629,7 @@ export class FilplusEvm extends FilplusOriginEvm {
             case "setChallengeProofsSubmiterCount":
             case "setDatacapdatasetApprovedLockDays":
             case "setDatacapCollateralMaxLockDays":
+            case "setAuditorsElectionTime":
             case "setChallengeAuditFee":
             case "setProofAuditFee":
             case "setDisputeAuditFee":

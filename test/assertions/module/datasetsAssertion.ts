@@ -37,6 +37,9 @@ import {
 import { DataType } from "../../../src/shared/types/dataType"
 import { DatasetChallenge } from "../../../src/module/dataset/challenge/types"
 import { delay } from "@unipackage/utils"
+import { EscrowType, FIL } from "../../../src/shared/types/financeType"
+import exp from "constants"
+
 export class DatasetsAssertion implements IDatasetsAssertion {
     private contractsManager: IContractsManager
     constructor(_contractsManager: IContractsManager) {
@@ -152,7 +155,31 @@ export class DatasetsAssertion implements IDatasetsAssertion {
         )
         expect(expectSubmitterClient).to.be.equal(Number(submitterClient.data))
     }
-
+    /**
+     * Asynchronously retrieves parameters for dataset timeout assertion.
+     *
+     * @param datasetId The ID of the dataset.
+     * @param expectProofBlockCount The expected number of proof blocks.
+     * @param expectAuditBlockCount The expected number of audit blocks.
+     * @returns {Promise<void>} A Promise that resolves when the parameters are retrieved.
+     */
+    async getDatasetTimeoutParametersAssersion(
+        datasetId: number,
+        expectProofBlockCount: bigint,
+        expectAuditBlockCount: bigint
+    ): Promise<void> {
+        const datasetTimeoutParameters = await handleEvmError(
+            this.contractsManager
+                .DatasetMetadataEvm()
+                .getDatasetTimeoutParameters(datasetId)
+        )
+        expect(datasetTimeoutParameters.data.proofBlockCount).to.be.equal(
+            expectProofBlockCount
+        )
+        expect(datasetTimeoutParameters.data.auditBlockCount).to.be.equal(
+            expectAuditBlockCount
+        )
+    }
     /**
      * Checks for the existence of dataset metadata and asserts the access method against the expectation.
      * @param expectAccessMethod - The expected access method.
@@ -197,6 +224,41 @@ export class DatasetsAssertion implements IDatasetsAssertion {
             this.contractsManager.DatasetMetadataEvm().governanceAddress()
         )
         expect(expectGovernance).to.be.equal(governance.data)
+    }
+
+    /**
+     * Asynchronously updates parameters for dataset timeout assertion.
+     *
+     * @param caller The caller responsible for the update.
+     * @param datasetId The ID of the dataset.
+     * @param expectProofBlockCount The expected number of proof blocks.
+     * @param expectAuditBlockCount The expected number of audit blocks.
+     * @returns {Promise<void>} A Promise that resolves when the parameters are updated.
+     */
+    async updateDatasetTimeoutParametersAssertion(
+        caller: string,
+        datasetId: number,
+        expectProofBlockCount: bigint,
+        expectAuditBlockCount: bigint
+    ): Promise<void> {
+        this.contractsManager
+            .DatasetMetadataEvm()
+            .getWallet()
+            .setDefault(caller)
+        await handleEvmError(
+            this.contractsManager
+                .DatasetMetadataEvm()
+                .updateDatasetTimeoutParameters(
+                    datasetId,
+                    expectProofBlockCount,
+                    expectAuditBlockCount
+                )
+        )
+        await this.getDatasetTimeoutParametersAssersion(
+            datasetId,
+            expectProofBlockCount,
+            expectAuditBlockCount
+        )
     }
 
     /**
@@ -830,6 +892,49 @@ export class DatasetsAssertion implements IDatasetsAssertion {
         )
         expect(expectRet).to.be.equal(ret.data)
     }
+    /**
+     * Asynchronously asserts auditor stake.
+     *
+     * @param caller The caller asserting the auditor stake.
+     * @param datasetId The ID of the dataset.
+     * @param expectAmount The amount of stake being asserted.
+     * @returns {Promise<void>} A Promise that resolves when the assertion is completed.
+     */
+    async auditorStakeAssersion(
+        caller: string,
+        datasetId: number,
+        expectAmount: bigint
+    ): Promise<void> {
+        this.contractsManager.FinanceEvm().getWallet().setDefault(caller)
+        await handleEvmError(
+            this.contractsManager
+                .FinanceEvm()
+                .deposit(datasetId, 0, caller, FIL, {
+                    value: expectAmount,
+                })
+        )
+
+        this.contractsManager
+            .DatasetChallengeEvm()
+            .getWallet()
+            .setDefault(caller)
+
+        await handleEvmError(
+            this.contractsManager
+                .DatasetChallengeEvm()
+                .auditorStake(datasetId, expectAmount)
+        )
+        const accountEscrow = await this.contractsManager
+            .FinanceEvm()
+            .getAccountEscrow(
+                datasetId,
+                0,
+                caller,
+                FIL,
+                EscrowType.EscrowChallengeAuditCollateral
+            )
+        expect(accountEscrow.data!.current).to.be.equal(expectAmount)
+    }
 
     /**
      * Asserts the submission of dataset challenge proofs against the expected parameters.
@@ -867,12 +972,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
                     randomSeed,
                     leaves,
                     siblings,
-                    paths,
-                    {
-                        from: caller,
-                        privateKey: process.env
-                            .PRIVATE_KEY_DATASETAUDITOR as string,
-                    }
+                    paths
                 )
         )
         await delay(4000)

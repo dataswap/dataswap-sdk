@@ -93,6 +93,20 @@ export interface IDatasetsAssertion {
     ): Promise<void>
 
     /**
+     * Asynchronously retrieves parameters for dataset timeout assertion.
+     *
+     * @param datasetId The ID of the dataset.
+     * @param expectProofBlockCount The expected number of proof blocks.
+     * @param expectAuditBlockCount The expected number of audit blocks.
+     * @returns {Promise<void>} A Promise that resolves when the parameters are retrieved.
+     */
+    getDatasetTimeoutParametersAssersion(
+        datasetId: number,
+        expectProofBlockCount: bigint,
+        expectAuditBlockCount: bigint
+    ): Promise<void>
+
+    /**
      * Checks for the existence of dataset metadata and asserts the access method against the expectation.
      * @param expectAccessMethod - The expected access method.
      * @returns A Promise resolving if the assertion is successful.
@@ -129,6 +143,21 @@ export interface IDatasetsAssertion {
         expectDatasetClient: number,
         expectData: DatasetMetadata
     ): Promise<number>
+
+    /**
+     * Asynchronously updates parameters for dataset timeout assertion.
+     * @param caller The caller responsible for the update.
+     * @param datasetId The ID of the dataset.
+     * @param expectProofBlockCount The expected number of proof blocks.
+     * @param expectAuditBlockCount The expected number of audit blocks.
+     * @returns {Promise<void>} A Promise that resolves when the parameters are updated.
+     */
+    updateDatasetTimeoutParametersAssertion(
+        caller: string,
+        datasetId: number,
+        expectProofBlockCount: bigint,
+        expectAuditBlockCount: bigint
+    ): Promise<void>
 
     /**
      * Asserts the count of datasets against the expected datasets count.
@@ -399,7 +428,19 @@ export interface IDatasetsAssertion {
         randomSeed: bigint,
         expectRet: boolean
     ): Promise<void>
-
+    /**
+     * Asynchronously asserts auditor stake.
+     *
+     * @param caller The caller asserting the auditor stake.
+     * @param datasetId The ID of the dataset.
+     * @param expectAmount The amount of stake being asserted.
+     * @returns {Promise<void>} A Promise that resolves when the assertion is completed.
+     */
+    auditorStakeAssersion(
+        caller: string,
+        datasetId: number,
+        expectAmount: bigint
+    ): Promise<void>
     /**
      * Asserts the submission of dataset challenge proofs against the expected parameters.
      * @param caller - The caller that to send msg

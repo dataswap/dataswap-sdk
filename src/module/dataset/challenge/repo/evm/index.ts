@@ -75,6 +75,34 @@ interface DatasetChallengeCallEvm {
     getChallengeSubmissionCount(datasetId: number): Promise<EvmOutput<number>>
 
     /**
+     * @dev Retrieves the auditor candidates for a specific dataset.
+     * @param datasetId The ID of the dataset.
+     * @returns A promise resolving to an array of auditor candidates' addresses.
+     */
+    getDatasetAuditorCandidates(datasetId: number): Promise<EvmOutput<string[]>>
+
+    /**
+     * @dev Retrieves the end height of the auditor election for a specific dataset.
+     * @param datasetId The ID of the dataset.
+     * @returns A promise resolving to the end height of the auditor election.
+     */
+    getAuditorElectionEndHeight(datasetId: number): Promise<EvmOutput<number>>
+
+    /**
+     * @dev Retrieves the challenge audit collateral requirement.
+     * @returns A promise resolving to the challenge audit collateral requirement, represented as a bigint.
+     */
+    getChallengeAuditCollateralRequirement(): Promise<EvmOutput<bigint>>
+
+    /**
+     * @dev Checks if an account is a winner for a specific dataset.
+     * @param datasetId The ID of the dataset.
+     * @param account The account address.
+     * @returns A promise resolving to a boolean indicating whether the account is a winner.
+     */
+    isWinner(datasetId: number, account: string): Promise<EvmOutput<boolean>>
+
+    /**
      * Check if a dataset challenge proof is duplicate.
      *
      * @param datasetId - ID of the dataset.
@@ -106,6 +134,14 @@ interface DatasetChallengeCallEvm {
  * Interface for EVM transactions related to DatasetChallenge.
  */
 interface DatasetChallengeSendEvm {
+    /**
+     *  Stakes an amount by the auditor for a specific dataset.
+     *
+     * @param datasetId The ID of the dataset.
+     * @param amount The amount to be staked, represented as a bigint.
+     * @returns A promise resolving to the transaction receipt.
+     */
+    auditorStake(datasetId: number, amount: bigint): Promise<EvmOutput<void>>
     /**
      * Submit proofs for a dataset challenge.
      *
@@ -142,11 +178,15 @@ export interface DatasetChallengeOriginEvm
     "getDatasetChallengeProofs",
     "getDatasetChallengeProofsCount",
     "getChallengeSubmissionCount",
+    "getDatasetAuditorCandidates",
+    "getAuditorElectionEndHeight",
+    "getChallengeAuditCollateralRequirement",
+    "isWinner",
     "isDatasetChallengeProofDuplicate",
     "isDatasetAuditTimeout",
     "roles",
 ])
-@withSendMethod(["submitDatasetChallengeProofs"])
+@withSendMethod(["auditorStake", "submitDatasetChallengeProofs"])
 export class DatasetChallengeOriginEvm extends EvmEx {}
 
 /**
@@ -220,6 +260,9 @@ export class DatasetChallengeEvm extends DatasetChallengeOriginEvm {
                 result.params.auditor = ethAddressFromDelegated(msg.Msg.From)
                 result.params.paths = convertToStringArray(result.params.paths)
                 break
+            case "auditorStake":
+                result.datasetId = Number(result.params.datasetId)
+                result.params.datasetId = result.datasetId
             default:
                 return {
                     ok: false,

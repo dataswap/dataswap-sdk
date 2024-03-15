@@ -176,6 +176,12 @@ interface CarstoreCallEvm {
      * @returns The cars count
      */
     carsCount(): Promise<EvmOutput<bigint>>
+
+    /**
+     * Retrieves the roles associated with the current user.
+     * @returns A promise that resolves with the roles of the current user.
+     */
+    roles(): Promise<EvmOutput<string>>
 }
 
 /**
@@ -211,6 +217,7 @@ export interface CarstoreOriginEvm extends CarstoreCallEvm, CarstoreSendEvm {}
     "hasCarsHashs",
     "hasCars",
     "carsCount",
+    "roles",
 ])
 export class CarstoreOriginEvm extends EvmEx {}
 

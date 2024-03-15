@@ -151,7 +151,8 @@ export class BiddingMatchingTestKit extends MatchingsTestBase {
                         meta.data.createdBlockNumber +
                             meta.data.biddingDelayBlockCount +
                             meta.data.pausedBlockCount
-                    ) + 5
+                    ) + 5,
+                    Number(process.env.BLOCK_PERIOD)
                 )
 
             await this.assertion.biddingAssertion(
@@ -234,7 +235,8 @@ export class CloseMatchingTestKit extends MatchingsTestBase {
                             meta.data.biddingDelayBlockCount +
                             meta.data.pausedBlockCount +
                             meta.data.biddingPeriodBlockCount
-                    ) + 5
+                    ) + 5,
+                    Number(process.env.BLOCK_PERIOD)
                 )
 
             await this.assertion.closeMatchingAssertion(

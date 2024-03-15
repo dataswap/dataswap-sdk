@@ -104,6 +104,13 @@ interface StoragesCallEvm {
     isAllStoredDone(matchingId: number): Promise<EvmOutput<boolean>>
 
     /**
+     * @dev Checks if storage is completed for a specific matching ID.
+     * @param matchingId The ID of the matching.
+     * @returns A promise resolving to a boolean indicating whether storage is completed.
+     */
+    isStorageCompleted(matchingId: number): Promise<EvmOutput<boolean>>
+
+    /**
      * @dev Checks if store expiration in the matchedstore.
      * @param matchingId The ID of the matching.
      */
@@ -129,6 +136,13 @@ interface StoragesCallEvm {
  * Interface for EVM transactions related to  Storages.
  */
 interface StoragesSendEvm {
+    /**
+     * @dev Completes storage for a specific matching ID with the provided array of IDs.
+     * @param matchingId The ID of the matching.
+     * @param ids An array of IDs to complete storage.
+     * @returns A promise resolving to the transaction receipt.
+     */
+    completeStorage(matchingId: number, ids: number[]): Promise<EvmOutput<void>>
     /**
      * Register a Dataswap datacap.
      * @param size The size of the datacap to register.
@@ -179,10 +193,12 @@ export interface StoragesOriginEvm extends StoragesCallEvm, StoragesSendEvm {}
     "getStoredCarCount",
     "isAllStoredDone",
     "isStorageExpiration",
+    "isStorageCompleted",
     "isNextDatacapAllocationValid",
     "roles",
 ])
 @withSendMethod([
+    "completeStorage",
     "registDataswapDatacap",
     "submitStorageClaimIds",
     "requestAllocateDatacap",
@@ -326,6 +342,7 @@ export class StoragesEvm extends StoragesOriginEvm {
         let result: DataswapMessage =
             decodeRes.data!.values() as DataswapMessage
         switch (decodeRes.data!.method) {
+            case "completeStorage":
             case "submitStorageClaimIds":
             case "requestAllocateDatacap":
                 result.matchingId = Number(result.params.matchingId)

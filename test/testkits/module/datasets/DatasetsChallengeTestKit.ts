@@ -25,7 +25,8 @@ import { IDatasetsHelper } from "../../../interfaces/helper/module/IDatasetshelp
 import { IGenerator } from "../../../interfaces/setup/IGenerator"
 import { IDatasetsAssertion } from "../../../interfaces/assertions/module/IDatasetsAssertion"
 import { DataType } from "../../../../src/shared/types/dataType"
-
+import { FIL } from "../../../../src/shared/types/financeType"
+import { handleEvmError } from "../../../shared/error"
 /**
  * Represents a test kit for submitting dataset challenge.
  * Extends from DatasetsTestBase.
@@ -72,6 +73,34 @@ export class SubmitDatasetChallengeTestKit extends DatasetsTestBase {
      */
     async action(datasetId: number): Promise<number> {
         try {
+            const auditCollateralRequirement = await this.contractsManager
+                .DatasetChallengeEvm()
+                .getChallengeAuditCollateralRequirement()
+
+            await this.assertion.auditorStakeAssersion(
+                process.env.DATASWAP_DATASETAUDITOR as string,
+                datasetId,
+                auditCollateralRequirement.data!
+            )
+            this.contractsManager
+                .FilplusEvm()
+                .getWallet()
+                .setDefault(process.env.DATASWAP_GOVERNANCE as string)
+
+            await handleEvmError(
+                this.contractsManager.FilplusEvm().setAuditorsElectionTime(5)
+            )
+            const proofCompleteHeight = await this.contractsManager
+                .DatasetProofEvm()
+                .getDatasetProofCompleteHeight(datasetId)
+
+            this.contractsManager
+                .DatasetChallengeEvm()
+                .waitForBlockHeight(
+                    Number(proofCompleteHeight.data) + 5 + 2,
+                    Number(process.env.BLOCK_PERIOD)
+                )
+
             // Getting the root hash and generating challenge proof
             const rootHash = this.generator.getProofRoot(
                 datasetId,
