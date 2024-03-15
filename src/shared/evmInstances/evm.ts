@@ -30,7 +30,7 @@ import { FilplusEvm } from "../../core/filplus/repo/evm"
 import { FilecoinEvm } from "../../core/filecoin/repo/evm"
 import { FinanceEvm } from "../../core/finance/repo/evm"
 import { RolesEvm } from "../../core/roles/repo/evm"
-
+import { Wallet } from "../types/evmEngineType"
 import carstoreAbi from "@dataswapcore/contracts/abi/v0.8/Carstore.json"
 import datasetMetaAbi from "@dataswapcore/contracts/abi/v0.8/Datasets.json"
 import datasetsRequirementAbi from "@dataswapcore/contracts/abi/v0.8/DatasetsRequirement.json"
@@ -63,7 +63,8 @@ export const carstoreEvm_Calibration = new CarstoreEvm(
         network: CALIBRATION_NETWORK,
         dataswapName: DATASWAPNAME,
     }).CarstoreAddress,
-    providerUrl(CALIBRATION_NETWORK)
+    providerUrl(CALIBRATION_NETWORK),
+    new Wallet(providerUrl(CALIBRATION_NETWORK))
 )
 
 /**
@@ -77,7 +78,8 @@ export const carstoreEvm_Main = new CarstoreEvm(
         network: MAIN_NETWORK,
         dataswapName: DATASWAPNAME,
     }).CarstoreAddress,
-    providerUrl(MAIN_NETWORK)
+    providerUrl(MAIN_NETWORK),
+    new Wallet(providerUrl(MAIN_NETWORK))
 )
 
 /**
@@ -91,7 +93,8 @@ export const datasetMetadataEvm_Calibration = new DatasetMetadataEvm(
         network: CALIBRATION_NETWORK,
         dataswapName: DATASWAPNAME,
     }).DatasetsAddress,
-    providerUrl(CALIBRATION_NETWORK)
+    providerUrl(CALIBRATION_NETWORK),
+    new Wallet(providerUrl(CALIBRATION_NETWORK))
 )
 
 /**
@@ -105,7 +108,8 @@ export const datasetMetadataEvm_Main = new DatasetMetadataEvm(
         network: MAIN_NETWORK,
         dataswapName: DATASWAPNAME,
     }).DatasetsAddress,
-    providerUrl(MAIN_NETWORK)
+    providerUrl(MAIN_NETWORK),
+    new Wallet(providerUrl(MAIN_NETWORK))
 )
 
 /**
@@ -119,7 +123,8 @@ export const datasetRequirementEvm_Calibration = new DatasetRequirementEvm(
         network: CALIBRATION_NETWORK,
         dataswapName: DATASWAPNAME,
     }).DatasetsRequirementAddress,
-    providerUrl(CALIBRATION_NETWORK)
+    providerUrl(CALIBRATION_NETWORK),
+    new Wallet(providerUrl(CALIBRATION_NETWORK))
 )
 
 /**
@@ -133,7 +138,8 @@ export const datasetRequirementEvm_Main = new DatasetRequirementEvm(
         network: MAIN_NETWORK,
         dataswapName: DATASWAPNAME,
     }).DatasetsRequirementAddress,
-    providerUrl(MAIN_NETWORK)
+    providerUrl(MAIN_NETWORK),
+    new Wallet(providerUrl(MAIN_NETWORK))
 )
 
 /**
@@ -147,7 +153,8 @@ export const datasetProofEvm_Calibration = new DatasetProofEvm(
         network: CALIBRATION_NETWORK,
         dataswapName: DATASWAPNAME,
     }).DatasetsProofAddress,
-    providerUrl(CALIBRATION_NETWORK)
+    providerUrl(CALIBRATION_NETWORK),
+    new Wallet(providerUrl(CALIBRATION_NETWORK))
 )
 
 /**
@@ -161,7 +168,8 @@ export const datasetProofEvm_Main = new DatasetProofEvm(
         network: MAIN_NETWORK,
         dataswapName: DATASWAPNAME,
     }).DatasetsProofAddress,
-    providerUrl(MAIN_NETWORK)
+    providerUrl(MAIN_NETWORK),
+    new Wallet(providerUrl(MAIN_NETWORK))
 )
 
 /**
@@ -175,7 +183,8 @@ export const datasetChallengeEvm_Calibration = new DatasetChallengeEvm(
         network: CALIBRATION_NETWORK,
         dataswapName: DATASWAPNAME,
     }).DatasetsChallengeAddress,
-    providerUrl(CALIBRATION_NETWORK)
+    providerUrl(CALIBRATION_NETWORK),
+    new Wallet(providerUrl(CALIBRATION_NETWORK))
 )
 
 /**
@@ -189,7 +198,8 @@ export const datasetChallengeEvm_Main = new DatasetChallengeEvm(
         network: MAIN_NETWORK,
         dataswapName: DATASWAPNAME,
     }).DatasetsChallengeAddress,
-    providerUrl(MAIN_NETWORK)
+    providerUrl(MAIN_NETWORK),
+    new Wallet(providerUrl(MAIN_NETWORK))
 )
 
 /**
@@ -203,7 +213,8 @@ export const matchingMetadataEvm_Calibration = new MatchingMetadataEvm(
         network: CALIBRATION_NETWORK,
         dataswapName: DATASWAPNAME,
     }).MatchingsAddress,
-    providerUrl(CALIBRATION_NETWORK)
+    providerUrl(CALIBRATION_NETWORK),
+    new Wallet(providerUrl(CALIBRATION_NETWORK))
 )
 
 /**
@@ -217,7 +228,8 @@ export const matchingMetadataEvm_Main = new MatchingMetadataEvm(
         network: MAIN_NETWORK,
         dataswapName: DATASWAPNAME,
     }).MatchingsAddress,
-    providerUrl(MAIN_NETWORK)
+    providerUrl(MAIN_NETWORK),
+    new Wallet(providerUrl(MAIN_NETWORK))
 )
 
 /**
@@ -231,7 +243,8 @@ export const matchingTargetEvm_Calibration = new MatchingTargetEvm(
         network: CALIBRATION_NETWORK,
         dataswapName: DATASWAPNAME,
     }).MatchingsTargetAddress,
-    providerUrl(CALIBRATION_NETWORK)
+    providerUrl(CALIBRATION_NETWORK),
+    new Wallet(providerUrl(CALIBRATION_NETWORK))
 )
 
 /**
@@ -245,7 +258,8 @@ export const matchingTargetEvm_Main = new MatchingTargetEvm(
         network: MAIN_NETWORK,
         dataswapName: DATASWAPNAME,
     }).MatchingsTargetAddress,
-    providerUrl(MAIN_NETWORK)
+    providerUrl(MAIN_NETWORK),
+    new Wallet(providerUrl(MAIN_NETWORK))
 )
 
 /**
@@ -259,7 +273,8 @@ export const matchingBidsEvm_Calibration = new MatchingBidsEvm(
         network: CALIBRATION_NETWORK,
         dataswapName: DATASWAPNAME,
     }).MatchingsBidsAddress,
-    providerUrl(CALIBRATION_NETWORK)
+    providerUrl(CALIBRATION_NETWORK),
+    new Wallet(providerUrl(CALIBRATION_NETWORK))
 )
 
 /**
@@ -273,7 +288,8 @@ export const matchingBidsEvm_Main = new MatchingBidsEvm(
         network: MAIN_NETWORK,
         dataswapName: DATASWAPNAME,
     }).MatchingsBidsAddress,
-    providerUrl(MAIN_NETWORK)
+    providerUrl(MAIN_NETWORK),
+    new Wallet(providerUrl(MAIN_NETWORK))
 )
 
 /**
@@ -287,7 +303,8 @@ export const storagesEvm_Calibration = new StoragesEvm(
         network: CALIBRATION_NETWORK,
         dataswapName: DATASWAPNAME,
     }).StoragesAddress,
-    providerUrl(CALIBRATION_NETWORK)
+    providerUrl(CALIBRATION_NETWORK),
+    new Wallet(providerUrl(CALIBRATION_NETWORK))
 )
 
 /**
@@ -301,7 +318,8 @@ export const storagesEvm_Main = new StoragesEvm(
         network: MAIN_NETWORK,
         dataswapName: DATASWAPNAME,
     }).StoragesAddress,
-    providerUrl(MAIN_NETWORK)
+    providerUrl(MAIN_NETWORK),
+    new Wallet(providerUrl(MAIN_NETWORK))
 )
 
 /**
@@ -315,7 +333,8 @@ export const filplusEvm_Calibration = new FilplusEvm(
         network: CALIBRATION_NETWORK,
         dataswapName: DATASWAPNAME,
     }).FilplusAddress,
-    providerUrl(CALIBRATION_NETWORK)
+    providerUrl(CALIBRATION_NETWORK),
+    new Wallet(providerUrl(CALIBRATION_NETWORK))
 )
 
 /**
@@ -329,7 +348,8 @@ export const filplusEvm_Main = new FilplusEvm(
         network: MAIN_NETWORK,
         dataswapName: DATASWAPNAME,
     }).FilplusAddress,
-    providerUrl(MAIN_NETWORK)
+    providerUrl(MAIN_NETWORK),
+    new Wallet(providerUrl(MAIN_NETWORK))
 )
 
 /**
@@ -343,7 +363,8 @@ export const filecoinEvm_Calibration = new FilecoinEvm(
         network: CALIBRATION_NETWORK,
         dataswapName: DATASWAPNAME,
     }).FilecoinAddress,
-    providerUrl(CALIBRATION_NETWORK)
+    providerUrl(CALIBRATION_NETWORK),
+    new Wallet(providerUrl(CALIBRATION_NETWORK))
 )
 
 /**
@@ -357,7 +378,8 @@ export const filecoinEvm_Main = new FilecoinEvm(
         network: MAIN_NETWORK,
         dataswapName: DATASWAPNAME,
     }).FilecoinAddress,
-    providerUrl(MAIN_NETWORK)
+    providerUrl(MAIN_NETWORK),
+    new Wallet(providerUrl(MAIN_NETWORK))
 )
 
 /**
@@ -371,7 +393,8 @@ export const financeEvm_Calibration = new FinanceEvm(
         network: CALIBRATION_NETWORK,
         dataswapName: DATASWAPNAME,
     }).FinanceAddress,
-    providerUrl(CALIBRATION_NETWORK)
+    providerUrl(CALIBRATION_NETWORK),
+    new Wallet(providerUrl(CALIBRATION_NETWORK))
 )
 
 /**
@@ -385,7 +408,8 @@ export const financeEvm_Main = new FinanceEvm(
         network: MAIN_NETWORK,
         dataswapName: DATASWAPNAME,
     }).FinanceAddress,
-    providerUrl(MAIN_NETWORK)
+    providerUrl(MAIN_NETWORK),
+    new Wallet(providerUrl(MAIN_NETWORK))
 )
 
 /**
@@ -399,7 +423,8 @@ export const rolesEvm_Calibration = new RolesEvm(
         network: CALIBRATION_NETWORK,
         dataswapName: DATASWAPNAME,
     }).RolesAddress,
-    providerUrl(CALIBRATION_NETWORK)
+    providerUrl(CALIBRATION_NETWORK),
+    new Wallet(providerUrl(CALIBRATION_NETWORK))
 )
 
 /**
@@ -413,5 +438,6 @@ export const rolesEvm_Main = new RolesEvm(
         network: MAIN_NETWORK,
         dataswapName: DATASWAPNAME,
     }).RolesAddress,
-    providerUrl(MAIN_NETWORK)
+    providerUrl(MAIN_NETWORK),
+    new Wallet(providerUrl(MAIN_NETWORK))
 )
