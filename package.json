@@ -44,7 +44,7 @@
     "@dataswapcore/contracts": "^0.8.0",
     "@glif/filecoin-address": "^2.0.43",
     "@unipackage/datastore": "^2.0.0",
-    "@unipackage/filecoin": "^2.2.0",
+    "@unipackage/filecoin": "^2.2.1",
     "@unipackage/utils": "^1.5.0",
     "dotenv": "^16.3.1",
     "rfc4648": "^1.5.3"
