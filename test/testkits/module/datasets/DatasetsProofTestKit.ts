@@ -25,7 +25,7 @@ import { IDatasetsHelper } from "../../../interfaces/helper/module/IDatasetshelp
 import { IGenerator } from "../../../interfaces/setup/IGenerator"
 import { IDatasetsAssertion } from "../../../interfaces/assertions/module/IDatasetsAssertion"
 import { DatasetsHelper } from "../../../helpers/module/datasetsHelper"
-import { handleEvmError } from "../../../shared/error"
+import { handleEvmError } from "../../../../src/shared/errors"
 import { DatasetState } from "../../../../src/shared/types/datasetType"
 
 /**

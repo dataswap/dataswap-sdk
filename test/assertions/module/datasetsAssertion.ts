@@ -20,7 +20,7 @@
 
 import { expect } from "chai"
 import { IContractsManager } from "../../interfaces/setup/IContractsManater"
-import { handleEvmError } from "../../shared/error"
+import { handleEvmError } from "../../../src/shared/errors"
 import { DatasetMetadata } from "../../../src/module/dataset/metadata/types"
 import { DatasetState } from "../../../src/shared/types/datasetType"
 import { IDatasetsAssertion } from "../../interfaces/assertions/module/IDatasetsAssertion"
@@ -64,10 +64,10 @@ export class DatasetsAssertion implements IDatasetsAssertion {
         const statistics = await handleEvmError(
             this.contractsManager.DatasetMetadataEvm().getCountOverview()
         )
-        expect(expectTotal).to.be.equal(statistics.data.total)
-        expect(expectSuccess).to.be.equal(statistics.data.success)
-        expect(expectOngoing).to.be.equal(statistics.data.ongoing)
-        expect(expectFailed).to.be.equal(statistics.data.failed)
+        expect(expectTotal).to.be.equal(statistics.total)
+        expect(expectSuccess).to.be.equal(statistics.success)
+        expect(expectOngoing).to.be.equal(statistics.ongoing)
+        expect(expectFailed).to.be.equal(statistics.failed)
     }
 
     /**
@@ -87,10 +87,10 @@ export class DatasetsAssertion implements IDatasetsAssertion {
         const statistics = await handleEvmError(
             this.contractsManager.DatasetMetadataEvm().getSizeOverview()
         )
-        expect(expectTotal).to.be.equal(statistics.data.total)
-        expect(expectSuccess).to.be.equal(statistics.data.success)
-        expect(expectOngoing).to.be.equal(statistics.data.ongoing)
-        expect(expectFailed).to.be.equal(statistics.data.failed)
+        expect(expectTotal).to.be.equal(statistics.total)
+        expect(expectSuccess).to.be.equal(statistics.success)
+        expect(expectOngoing).to.be.equal(statistics.ongoing)
+        expect(expectFailed).to.be.equal(statistics.failed)
     }
 
     /**
@@ -108,16 +108,16 @@ export class DatasetsAssertion implements IDatasetsAssertion {
                 .DatasetMetadataEvm()
                 .getDatasetMetadata(datasetId)
         )
-        expect(expectData.title).to.be.equal(metaData.data.title)
-        expect(expectData.industry).to.be.equal(metaData.data.industry)
-        expect(expectData.name).to.be.equal(metaData.data.name)
-        expect(expectData.description).to.be.equal(metaData.data.description)
-        expect(expectData.source).to.be.equal(metaData.data.source)
-        expect(expectData.accessMethod).to.be.equal(metaData.data.accessMethod)
-        expect(expectData.sizeInBytes).to.be.equal(metaData.data.sizeInBytes)
-        expect(expectData.isPublic).to.be.equal(metaData.data.isPublic)
-        expect(expectData.version).to.be.equal(metaData.data.version)
-        expect(datasetId).to.be.equal(metaData.data.datasetId)
+        expect(expectData.title).to.be.equal(metaData.title)
+        expect(expectData.industry).to.be.equal(metaData.industry)
+        expect(expectData.name).to.be.equal(metaData.name)
+        expect(expectData.description).to.be.equal(metaData.description)
+        expect(expectData.source).to.be.equal(metaData.source)
+        expect(expectData.accessMethod).to.be.equal(metaData.accessMethod)
+        expect(expectData.sizeInBytes).to.be.equal(metaData.sizeInBytes)
+        expect(expectData.isPublic).to.be.equal(metaData.isPublic)
+        expect(expectData.version).to.be.equal(metaData.version)
+        expect(datasetId).to.be.equal(metaData.datasetId)
     }
 
     /**
@@ -135,7 +135,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
                 .DatasetMetadataEvm()
                 .getDatasetMetadataSubmitter(datasetId)
         )
-        expect(expectSubmitter).to.be.equal(submitter.data)
+        expect(expectSubmitter).to.be.equal(submitter)
     }
 
     /**
@@ -153,7 +153,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
                 .DatasetMetadataEvm()
                 .getDatasetMetadataClient(datasetId)
         )
-        expect(expectSubmitterClient).to.be.equal(Number(submitterClient.data))
+        expect(expectSubmitterClient).to.be.equal(Number(submitterClient))
     }
     /**
      * Asynchronously retrieves parameters for dataset timeout assertion.
@@ -173,10 +173,10 @@ export class DatasetsAssertion implements IDatasetsAssertion {
                 .DatasetMetadataEvm()
                 .getDatasetTimeoutParameters(datasetId)
         )
-        expect(datasetTimeoutParameters.data.proofBlockCount).to.be.equal(
+        expect(datasetTimeoutParameters.proofBlockCount).to.be.equal(
             expectProofBlockCount
         )
-        expect(datasetTimeoutParameters.data.auditBlockCount).to.be.equal(
+        expect(datasetTimeoutParameters.auditBlockCount).to.be.equal(
             expectAuditBlockCount
         )
     }
@@ -193,7 +193,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
                 .DatasetMetadataEvm()
                 .hasDatasetMetadata(expectAccessMethod)
         )
-        expect(true).to.be.equal(has.data)
+        expect(true).to.be.equal(has)
     }
 
     /**
@@ -211,7 +211,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
                 .DatasetMetadataEvm()
                 .getDatasetState(datasetId)
         )
-        expect(Number(expectState)).to.be.equal(Number(state.data))
+        expect(Number(expectState)).to.be.equal(Number(state))
     }
 
     /**
@@ -223,7 +223,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
         const governance = await handleEvmError(
             this.contractsManager.DatasetMetadataEvm().governanceAddress()
         )
-        expect(expectGovernance).to.be.equal(governance.data)
+        expect(expectGovernance).to.be.equal(governance)
     }
 
     /**
@@ -300,7 +300,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
         // Get transaction receipt and event arguments
         const receipt = await this.contractsManager
             .DatasetMetadataEvm()
-            .getTransactionReceipt(tx.data.hash)
+            .getTransactionReceipt(tx.hash)
 
         const ret = this.contractsManager
             .DatasetMetadataEvm()
@@ -316,10 +316,10 @@ export class DatasetsAssertion implements IDatasetsAssertion {
         )
         await this.hasDatasetMetadataAssertion(expectData.accessMethod)
         await this.getCountOverviewAssertion(
-            countStatistic.data.total + BigInt(1),
-            countStatistic.data.success,
-            countStatistic.data.ongoing + BigInt(1),
-            countStatistic.data.failed
+            countStatistic.total + BigInt(1),
+            countStatistic.success,
+            countStatistic.ongoing + BigInt(1),
+            countStatistic.failed
         )
         return datasetId
     }
@@ -333,7 +333,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
         const datasetCount = await handleEvmError(
             this.contractsManager.DatasetMetadataEvm().datasetsCount()
         )
-        expect(expectDatasetsCount).to.equal(Number(datasetCount.data))
+        expect(expectDatasetsCount).to.equal(Number(datasetCount))
     }
 
     //DatasetsRequirement
@@ -352,7 +352,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
                 .DatasetRequirementEvm()
                 .getDatasetReplicasCount(datasetId)
         )
-        expect(expectCount).to.equal(Number(replicasCount.data))
+        expect(expectCount).to.equal(Number(replicasCount))
     }
 
     /**
@@ -374,24 +374,24 @@ export class DatasetsAssertion implements IDatasetsAssertion {
         )
         expect(true).to.equal(
             equal(
-                requirement.data?.dataPreparers as string[],
+                requirement?.dataPreparers as string[],
                 expectRequirement.dataPreparers
             )
         )
         expect(true).to.equal(
             equal(
-                requirement.data?.storageProviders as string[],
+                requirement?.storageProviders as string[],
                 expectRequirement.storageProviders
             )
         )
         expect(true).to.equal(
-            equal(requirement.data?.regionCode, expectRequirement.regionCode)
+            equal(requirement?.regionCode, expectRequirement.regionCode)
         )
         expect(true).to.equal(
-            equal(requirement.data?.countryCode, expectRequirement.countryCode)
+            equal(requirement?.countryCode, expectRequirement.countryCode)
         )
         expect(true).to.equal(
-            equal(requirement.data!.cityCodes, expectRequirement.cityCodes)
+            equal(requirement!.cityCodes, expectRequirement.cityCodes)
         )
         expect(expectRequirement.index).to.be.equal(index)
         expect(expectRequirement.datasetId).to.be.equal(datasetId)
@@ -483,7 +483,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
                 .DatasetProofEvm()
                 .getDatasetProof(datasetId, dataType, index, len)
         )
-        expect(equal(expectProof, proof.data)).to.be.true
+        expect(equal(expectProof, proof)).to.be.true
     }
 
     /**
@@ -503,7 +503,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
                 .DatasetProofEvm()
                 .getDatasetProofCount(datasetId, dataType)
         )
-        expect(expectProofCount).to.be.equal(Number(proofCount.data))
+        expect(expectProofCount).to.be.equal(Number(proofCount))
     }
 
     /**
@@ -521,7 +521,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
                 .DatasetProofEvm()
                 .getDatasetProofSubmitter(datasetId)
         )
-        expect(expectProofSubmitter).to.be.equal(proofSubmitter.data)
+        expect(expectProofSubmitter).to.be.equal(proofSubmitter)
     }
 
     /**
@@ -541,7 +541,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
                 .DatasetProofEvm()
                 .getDatasetSize(datasetId, dataType)
         )
-        expect(expectSize).to.be.equal(Number(size.data))
+        expect(expectSize).to.be.equal(Number(size))
     }
 
     /**
@@ -561,7 +561,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
                 .DatasetProofEvm()
                 .isDatasetProofallCompleted(datasetId, dataType)
         )
-        expect(expectRet).to.be.equal(ret.data)
+        expect(expectRet).to.be.equal(ret)
     }
 
     /**
@@ -581,7 +581,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
                 .DatasetProofEvm()
                 .isDatasetContainsCar(datasetId, id)
         )
-        expect(expectRet).to.be.equal(ret.data)
+        expect(expectRet).to.be.equal(ret)
     }
 
     /**
@@ -601,7 +601,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
                 .DatasetProofEvm()
                 .isDatasetContainsCars(datasetId, ids)
         )
-        expect(expectRet).to.be.equal(ret.data)
+        expect(expectRet).to.be.equal(ret)
     }
 
     /**
@@ -621,7 +621,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
                 .DatasetProofEvm()
                 .isDatasetProofSubmitter(datasetId, submitter)
         )
-        expect(expectRet).to.be.equal(ret.data)
+        expect(expectRet).to.be.equal(ret)
     }
 
     /**
@@ -722,12 +722,12 @@ export class DatasetsAssertion implements IDatasetsAssertion {
         )
         await this.isDatasetContainsCarsAssertion(
             datasetId,
-            convertToNumberArray(carsIds.data),
+            convertToNumberArray(carsIds),
             true
         )
         await this.isDatasetContainsCarAssertion(
             datasetId,
-            Number(carsIds.data[0]),
+            Number(carsIds[0]),
             true
         )
         await this.getDatasetProofAssertion(
@@ -740,19 +740,19 @@ export class DatasetsAssertion implements IDatasetsAssertion {
         await this.getDatasetProofCountAssertion(
             datasetId,
             dataType,
-            Number(proofCount.data) + expectLeafHashes.length
+            Number(proofCount) + expectLeafHashes.length
         )
         const sum = expectLeafSizes.reduce((acc, curr) => acc + curr, 0)
         await this.getDatasetSizeAssertion(
             datasetId,
             dataType,
-            Number(datasetSize.data) + sum
+            Number(datasetSize) + sum
         )
         await this.getSizeOverviewAssertion(
-            sizeStatistic.data.total + BigInt(sum),
-            sizeStatistic.data.success,
-            sizeStatistic.data.ongoing + BigInt(sum),
-            sizeStatistic.data.failed
+            sizeStatistic.total + BigInt(sum),
+            sizeStatistic.success,
+            sizeStatistic.ongoing + BigInt(sum),
+            sizeStatistic.failed
         )
     }
     /**
@@ -825,10 +825,10 @@ export class DatasetsAssertion implements IDatasetsAssertion {
                 .DatasetChallengeEvm()
                 .getDatasetChallengeProofs(datasetId, auditor)
         )
-        expect(equal(expects.leaves, challengeProof.data.leaves)).to.be.true
-        expect(equal(expects.paths, challengeProof.data.paths)).to.be.true
-        expect(equal(expects.siblings, challengeProof.data.siblings)).to.be.true
-        expect(expects.randomSeed).to.be.equal(challengeProof.data.randomSeed)
+        expect(equal(expects.leaves, challengeProof.leaves)).to.be.true
+        expect(equal(expects.paths, challengeProof.paths)).to.be.true
+        expect(equal(expects.siblings, challengeProof.siblings)).to.be.true
+        expect(expects.randomSeed).to.be.equal(challengeProof.randomSeed)
     }
 
     /**
@@ -846,7 +846,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
                 .DatasetChallengeEvm()
                 .getDatasetChallengeProofsCount(datasetId)
         )
-        expect(expectCount).to.be.equal(Number(challengeProofsCount.data))
+        expect(expectCount).to.be.equal(Number(challengeProofsCount))
     }
 
     /**
@@ -864,7 +864,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
                 .DatasetChallengeEvm()
                 .getChallengeSubmissionCount(datasetId)
         )
-        expect(expectCount).to.be.equal(Number(challengeSubmissionCount.data))
+        expect(expectCount).to.be.equal(Number(challengeSubmissionCount))
     }
 
     /**
@@ -890,7 +890,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
                     randomSeed
                 )
         )
-        expect(expectRet).to.be.equal(ret.data)
+        expect(expectRet).to.be.equal(ret)
     }
     /**
      * Asynchronously asserts auditor stake.
@@ -991,7 +991,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
         await this.getDatasetStateAssertion(datasetId, DatasetState.Approved)
         await this.getDatasetChallengeProofsCountAssertion(
             datasetId,
-            Number(count.data) + 1
+            Number(count) + 1
         )
 
         await this.isDatasetChallengeProofDuplicateAssertion(
@@ -1007,7 +1007,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
                 .DatasetProofEvm()
                 .getDatasetProofCount(datasetId, DataType.Source)
         )
-        if (Number(carsCount.data) < 1000) {
+        if (Number(carsCount) < 1000) {
             expectSubmissionCount = 1
         } else {
             expectSubmissionCount = carsCount / 1000 + 1

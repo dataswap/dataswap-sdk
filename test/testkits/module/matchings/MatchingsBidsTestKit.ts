@@ -22,7 +22,7 @@ import { IMatchingsAssertion } from "../../../interfaces/assertions/module/IMatc
 import { IMatchingsHelper } from "../../../interfaces/helper/module/IMatchingsHelper"
 import { IContractsManager } from "../../../interfaces/setup/IContractsManater"
 import { IGenerator } from "../../../interfaces/setup/IGenerator"
-import { handleEvmError } from "../../../shared/error"
+import { handleEvmError } from "../../../../src/shared/errors"
 import { DataType } from "../../../../src/shared/types/dataType"
 import { MatchingState } from "../../../../src/module/matching/metadata/types"
 
@@ -148,9 +148,9 @@ export class BiddingMatchingTestKit extends MatchingsTestBase {
                 .MatchingBidsEvm()
                 .waitForBlockHeight(
                     Number(
-                        meta.data.createdBlockNumber +
-                            meta.data.biddingDelayBlockCount +
-                            meta.data.pausedBlockCount
+                        meta.createdBlockNumber +
+                            meta.biddingDelayBlockCount +
+                            meta.pausedBlockCount
                     ) + 5,
                     Number(process.env.BLOCK_PERIOD)
                 )
@@ -158,7 +158,7 @@ export class BiddingMatchingTestKit extends MatchingsTestBase {
             await this.assertion.biddingAssertion(
                 process.env.DATASWAP_BIDDER as string,
                 matchingId,
-                BigInt(meta.data.biddingThreshold) + BigInt(10),
+                BigInt(meta.biddingThreshold) + BigInt(10),
                 MatchingState.InProgress
             )
             return matchingId
@@ -231,10 +231,10 @@ export class CloseMatchingTestKit extends MatchingsTestBase {
                 .MatchingBidsEvm()
                 .waitForBlockHeight(
                     Number(
-                        meta.data.createdBlockNumber +
-                            meta.data.biddingDelayBlockCount +
-                            meta.data.pausedBlockCount +
-                            meta.data.biddingPeriodBlockCount
+                        meta.createdBlockNumber +
+                            meta.biddingDelayBlockCount +
+                            meta.pausedBlockCount +
+                            meta.biddingPeriodBlockCount
                     ) + 5,
                     Number(process.env.BLOCK_PERIOD)
                 )

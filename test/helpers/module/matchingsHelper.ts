@@ -21,7 +21,7 @@
 import { IMatchingsHelper } from "../../interfaces/helper/module/IMatchingsHelper"
 import { BasicHelper } from "./basicHelper"
 import { MatchingState } from "../../../src/shared/types/matchingType"
-import { handleEvmError } from "../../shared/error"
+import { handleEvmError } from "../../../src/shared/errors"
 import { IGenerator } from "../../interfaces/setup/IGenerator"
 import { IContractsManager } from "../../interfaces/setup/IContractsManater"
 import { IDatasetsHelper } from "../../interfaces/helper/module/IDatasetshelper"
@@ -75,7 +75,7 @@ export class MatchingsHelper extends BasicHelper implements IMatchingsHelper {
                 .getMatchingTarget(matchingId)
         )
 
-        let datasetId = Number(target.data.datasetID)
+        let datasetId = Number(target.datasetID)
 
         if (datasetId === 0) {
             let ret = this.matchingDatasetIdMap.get(matchingId)
@@ -250,14 +250,14 @@ export class MatchingsHelper extends BasicHelper implements IMatchingsHelper {
                         datasetId!,
                         dataType,
                         0,
-                        Number(matchingCarsCount.data)
+                        Number(matchingCarsCount)
                     )
             )
             // Extracts data from car IDs
             const carsIds = await handleEvmError(
-                this.contractsManager.CarstoreEvm().getCarsIds(cars.data)
+                this.contractsManager.CarstoreEvm().getCarsIds(cars)
             )
-            const { starts, ends } = splitBigInts(carsIds.data)
+            const { starts, ends } = splitBigInts(carsIds)
 
             // Publishes the in-progress matching
             await this.assertion.publishMatchingAssertion(
@@ -349,9 +349,9 @@ export class MatchingsHelper extends BasicHelper implements IMatchingsHelper {
                 .MatchingBidsEvm()
                 .waitForBlockHeight(
                     Number(
-                        meta.data.createdBlockNumber +
-                            meta.data.biddingDelayBlockCount +
-                            meta.data.pausedBlockCount
+                        meta.createdBlockNumber +
+                            meta.biddingDelayBlockCount +
+                            meta.pausedBlockCount
                     ) + 5,
                     Number(process.env.BLOCK_PERIOD)
                 )
@@ -359,7 +359,7 @@ export class MatchingsHelper extends BasicHelper implements IMatchingsHelper {
             await this.assertion.biddingAssertion(
                 process.env.DATASWAP_BIDDER as string,
                 matchingId,
-                BigInt(meta.data.biddingThreshold) + BigInt(10),
+                BigInt(meta.biddingThreshold) + BigInt(10),
                 MatchingState.InProgress
             )
 
@@ -367,10 +367,10 @@ export class MatchingsHelper extends BasicHelper implements IMatchingsHelper {
                 .MatchingBidsEvm()
                 .waitForBlockHeight(
                     Number(
-                        meta.data.createdBlockNumber +
-                            meta.data.biddingDelayBlockCount +
-                            meta.data.pausedBlockCount +
-                            meta.data.biddingPeriodBlockCount
+                        meta.createdBlockNumber +
+                            meta.biddingDelayBlockCount +
+                            meta.pausedBlockCount +
+                            meta.biddingPeriodBlockCount
                     ) + 5,
                     Number(process.env.BLOCK_PERIOD)
                 )

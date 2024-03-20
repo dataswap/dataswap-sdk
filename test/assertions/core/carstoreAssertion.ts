@@ -20,7 +20,7 @@
 
 import { assert } from "chai"
 import { equal } from "@unipackage/utils"
-import { handleEvmError } from "../../shared/error"
+import { handleEvmError } from "../../../src/shared/errors"
 import { CarstoreEvm } from "../../../src/core/carstore/repo/evm"
 import { Car, CarReplica } from "../../../src/core/carstore/types"
 import { ICarstoreAssertion } from "../../interfaces/assertions/core/ICarstoreAssertion"
@@ -47,7 +47,7 @@ export class CarstoreAssertion implements ICarstoreAssertion {
      */
     async getCarAssertion(id: bigint, expectCar: Car): Promise<void> {
         let car = await handleEvmError(this.carstore.getCar(id))
-        assert.isTrue(equal(car.data, expectCar), "Car should be expect car")
+        assert.isTrue(equal(car, expectCar), "Car should be expect car")
     }
 
     /**
@@ -61,7 +61,7 @@ export class CarstoreAssertion implements ICarstoreAssertion {
     ): Promise<void> {
         let size = await handleEvmError(this.carstore.getCarsSize(ids))
         assert.isTrue(
-            equal(size.data, expectSize),
+            equal(size, expectSize),
             "Cars size should be expect cars size"
         )
     }
@@ -81,7 +81,7 @@ export class CarstoreAssertion implements ICarstoreAssertion {
             this.carstore.getCarReplica(id, matchingId)
         )
         assert.isTrue(
-            equal(carReplica.data, expectCarReplica),
+            equal(carReplica, expectCarReplica),
             "carReplica should be expect carReplica"
         )
     }
@@ -93,10 +93,7 @@ export class CarstoreAssertion implements ICarstoreAssertion {
      */
     async getCarIdAssertion(hash: string, expectId: bigint): Promise<void> {
         let id = await handleEvmError(this.carstore.getCarId(hash))
-        assert.isTrue(
-            equal(id.data, expectId),
-            "car id should be expect car id"
-        )
+        assert.isTrue(equal(id, expectId), "car id should be expect car id")
     }
 
     /**
@@ -109,10 +106,7 @@ export class CarstoreAssertion implements ICarstoreAssertion {
         expectIds: bigint[]
     ): Promise<void> {
         let ids = await handleEvmError(this.carstore.getCarsIds(hashs))
-        assert.isTrue(
-            equal(ids.data, expectIds),
-            "car ids should be expect car ids"
-        )
+        assert.isTrue(equal(ids, expectIds), "car ids should be expect car ids")
     }
 
     /**
@@ -120,7 +114,7 @@ export class CarstoreAssertion implements ICarstoreAssertion {
      */
     async carsCountAssertion(): Promise<void> {
         let count = await handleEvmError(this.carstore.carsCount())
-        assert.isTrue(count.data != 0, "cars count shouldn't be 0")
+        assert.isTrue(count != 0, "cars count shouldn't be 0")
     }
 
     /**
@@ -131,7 +125,7 @@ export class CarstoreAssertion implements ICarstoreAssertion {
     async hasCarHashAssertion(hash: string, expectHas: boolean): Promise<void> {
         let has = await handleEvmError(this.carstore.hasCarHash(hash))
         assert.isTrue(
-            equal(has.data, expectHas),
+            equal(has, expectHas),
             "has car hash should be expect value"
         )
     }
@@ -143,10 +137,7 @@ export class CarstoreAssertion implements ICarstoreAssertion {
      */
     async hasCarAssertion(id: bigint, expectHas: boolean): Promise<void> {
         let has = await handleEvmError(this.carstore.hasCar(id))
-        assert.isTrue(
-            equal(has.data, expectHas),
-            "has car should be expect value"
-        )
+        assert.isTrue(equal(has, expectHas), "has car should be expect value")
     }
 
     /**
@@ -164,7 +155,7 @@ export class CarstoreAssertion implements ICarstoreAssertion {
             this.carstore.hasCarReplica(id, matchingId)
         )
         assert.isTrue(
-            equal(has.data, expectHas),
+            equal(has, expectHas),
             "has car replica should be expect value"
         )
     }
@@ -180,7 +171,7 @@ export class CarstoreAssertion implements ICarstoreAssertion {
     ): Promise<void> {
         let has = await handleEvmError(this.carstore.hasCarsHashs(hashs))
         assert.isTrue(
-            equal(has.data, expectHas),
+            equal(has, expectHas),
             "has cars hashs should be expect value"
         )
     }
@@ -192,9 +183,6 @@ export class CarstoreAssertion implements ICarstoreAssertion {
      */
     async hasCarsAssertion(ids: bigint[], expectHas: boolean): Promise<void> {
         let has = await handleEvmError(this.carstore.hasCars(ids))
-        assert.isTrue(
-            equal(has.data, expectHas),
-            "has cars should be expect value"
-        )
+        assert.isTrue(equal(has, expectHas), "has cars should be expect value")
     }
 }

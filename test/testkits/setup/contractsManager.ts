@@ -32,7 +32,7 @@ import { MatchingTargetEvm } from "../../../src/module/matching/target/repo/evm"
 import { RolesEvm } from "../../../src/core/roles/repo/evm"
 import { StoragesEvm } from "../../../src/module/storages/repo/evm"
 import { ethers } from "ethers"
-import { handleEvmError } from "../../shared/error"
+import { handleEvmError } from "../../../src/shared/errors"
 import { IContractsManager } from "../../interfaces/setup/IContractsManater"
 import * as utils from "../../shared/utils"
 import { Wallet } from "../../../src/shared/types/evmEngineType"
@@ -149,7 +149,7 @@ export class ContractsManager implements IContractsManager {
             const ret = await handleEvmError(
                 this.RolesEvm().hasRole(hash, contractAddress)
             )
-            if (ret.data) {
+            if (ret) {
                 // Role already set up
                 return
             }
