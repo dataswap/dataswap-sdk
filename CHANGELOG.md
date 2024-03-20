@@ -1,5 +1,15 @@
 
 
+## [0.25.1](https://github.com/dataswap/dataswapjs/compare/0.25.0...0.25.1) (2024-03-20)
+
+
+### Bug Fixes
+
+* 🐛 Optimize error log output ([f5db9dc](https://github.com/dataswap/dataswapjs/commit/f5db9dce35dcf52f018b50008b68b8ed6ecc700c)), closes [#329](https://github.com/dataswap/dataswapjs/issues/329)
+* 🐛 Supporting dataset auditor election functionality ([af63307](https://github.com/dataswap/dataswapjs/commit/af6330772f90701f6c888926f9cf66c1dc7dd952)), closes [#325](https://github.com/dataswap/dataswapjs/issues/325)
+* 🐛 update calibnet contracts address ([5f23066](https://github.com/dataswap/dataswapjs/commit/5f23066aad0e97d80a5d736bf90aede0dab30cf3))
+* 🐛 update filecoin version to 2.2.1 ([8928dc4](https://github.com/dataswap/dataswapjs/commit/8928dc4cbd00aea9d28e0303d6b880fe09c567ce))
+
 # [0.25.0](https://github.com/dataswap/dataswapjs/compare/0.24.2...0.25.0) (2024-03-15)
 
 
