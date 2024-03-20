@@ -22,7 +22,7 @@ import { IMatchingsAssertion } from "../../../interfaces/assertions/module/IMatc
 import { IMatchingsHelper } from "../../../interfaces/helper/module/IMatchingsHelper"
 import { IContractsManager } from "../../../interfaces/setup/IContractsManater"
 import { IGenerator } from "../../../interfaces/setup/IGenerator"
-import { handleEvmError } from "../../../shared/error"
+import { handleEvmError } from "../../../../src/shared/errors"
 import { DataType } from "../../../../src/shared/types/dataType"
 import { MatchingState } from "../../../../src/module/matching/metadata/types"
 import { DatasetState } from "../../../../src/shared/types/datasetType"
@@ -83,7 +83,7 @@ export class CreateMatchingsMetadataTestKit extends MatchingsTestBase {
                     .DatasetMetadataEvm()
                     .getDatasetState(datasetId)
             )
-            if (Number(datasetState.data) == Number(DatasetState.Approved)) {
+            if (Number(datasetState) == Number(DatasetState.Approved)) {
                 this.matchingsHelper
                     .getDatasetsHelper()
                     .updateWorkflowTargetState(datasetId, DatasetState.Approved)

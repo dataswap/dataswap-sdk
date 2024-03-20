@@ -22,7 +22,7 @@ import { IMatchingsAssertion } from "../../../interfaces/assertions/module/IMatc
 import { IMatchingsHelper } from "../../../interfaces/helper/module/IMatchingsHelper"
 import { IContractsManager } from "../../../interfaces/setup/IContractsManater"
 import { IGenerator } from "../../../interfaces/setup/IGenerator"
-import { handleEvmError } from "../../../shared/error"
+import { handleEvmError } from "../../../../src/shared/errors"
 import { DataType } from "../../../../src/shared/types/dataType"
 import { MatchingState } from "../../../../src/module/matching/metadata/types"
 import { DatasetState } from "../../../../src/shared/types/datasetType"
@@ -176,14 +176,14 @@ export class PublishMatchingTestKit extends MatchingsTestBase {
                         datasetId!,
                         DataType.MappingFiles,
                         0,
-                        Number(matchingCarsCount.data)
+                        Number(matchingCarsCount)
                     )
             )
             // Extracts data from car IDs
             const carsIds = await handleEvmError(
-                this.contractsManager.CarstoreEvm().getCarsIds(cars.data)
+                this.contractsManager.CarstoreEvm().getCarsIds(cars)
             )
-            const { starts, ends } = splitBigInts(carsIds.data)
+            const { starts, ends } = splitBigInts(carsIds)
 
             // Publishes the in-progress matching
             await this.assertion.publishMatchingAssertion(

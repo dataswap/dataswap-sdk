@@ -20,7 +20,7 @@
 
 import { describe } from "mocha"
 import { dataCommitmentV1ToCID } from "../../../src/shared/converters"
-import { handleEvmError } from "../../shared/error"
+import { handleEvmError } from "../../../src/shared/errors"
 import { Car, CarReplica } from "../../../src/core/carstore/types"
 import { CarstoreEvm } from "../../../src/core/carstore/repo/evm"
 import { getContractsManager, getGenerator } from "../../fixtures"
@@ -70,13 +70,13 @@ describe.skip("carstore", () => {
         await carstoreAssertion.getCarAssertion(
             BigInt(1),
             new Car({
-                hash: hash.data,
+                hash: hash,
                 carId: BigInt(1),
-                datasetId: datasetId.data,
-                size: size.data,
-                replicasCount: replicasCount.data,
-                matchingIds: matchingIds.data,
-                cid: await dataCommitmentV1ToCID(hash.data),
+                datasetId: datasetId,
+                size: size,
+                replicasCount: replicasCount,
+                matchingIds: matchingIds,
+                cid: await dataCommitmentV1ToCID(hash),
             })
         )
     })
@@ -92,15 +92,15 @@ describe.skip("carstore", () => {
         size += await handleEvmError(carstore.getCarSize(BigInt(2)))
 
         await Promise.all([
-            carstoreAssertion.getCarIdAssertion(hashs.data[0], BigInt(1)),
-            carstoreAssertion.getCarsIdsAssertion(hashs.data, [
+            carstoreAssertion.getCarIdAssertion(hashs[0], BigInt(1)),
+            carstoreAssertion.getCarsIdsAssertion(hashs, [
                 BigInt(1),
                 BigInt(2),
             ]),
             carstoreAssertion.hasCarAssertion(BigInt(1), true),
-            carstoreAssertion.hasCarHashAssertion(hashs.data[0], true),
+            carstoreAssertion.hasCarHashAssertion(hashs[0], true),
             carstoreAssertion.hasCarsAssertion([BigInt(1), BigInt(2)], true),
-            carstoreAssertion.hasCarsHashsAssertion(hashs.data, true),
+            carstoreAssertion.hasCarsHashsAssertion(hashs, true),
             carstoreAssertion.getCarsSizeAssertion(
                 [BigInt(1), BigInt(2)],
                 size
@@ -132,8 +132,8 @@ describe.skip("carstore", () => {
             1,
             new CarReplica({
                 matchingId: 1,
-                filecoinClaimId: claimId.data,
-                state: state.data,
+                filecoinClaimId: claimId,
+                state: state,
             })
         )
     })

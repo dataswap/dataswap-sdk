@@ -21,7 +21,7 @@
 import { IStoragesAssertion } from "../../interfaces/assertions/module/IStoragesAssertion"
 import { IContractsManager } from "../../interfaces/setup/IContractsManater"
 import { expect } from "chai"
-import { handleEvmError } from "../../shared/error"
+import { handleEvmError } from "../../../src/shared/errors"
 import { equal } from "@unipackage/utils"
 import { convertToNumberArray } from "../../../src/shared/arrayUtils"
 
@@ -48,10 +48,10 @@ export class StoragesAssertion implements IStoragesAssertion {
         const statistics = await handleEvmError(
             this.contractsManager.StoragesEvm().getCountOverview()
         )
-        expect(expectTotal).to.be.equal(statistics.data.total)
-        expect(expectSuccess).to.be.equal(statistics.data.success)
-        expect(expectOngoing).to.be.equal(statistics.data.ongoing)
-        expect(expectFailed).to.be.equal(statistics.data.failed)
+        expect(expectTotal).to.be.equal(statistics.total)
+        expect(expectSuccess).to.be.equal(statistics.success)
+        expect(expectOngoing).to.be.equal(statistics.ongoing)
+        expect(expectFailed).to.be.equal(statistics.failed)
     }
 
     /**
@@ -71,10 +71,10 @@ export class StoragesAssertion implements IStoragesAssertion {
         const statistics = await handleEvmError(
             this.contractsManager.StoragesEvm().getSizeOverview()
         )
-        expect(expectTotal).to.be.equal(statistics.data.total)
-        expect(expectSuccess).to.be.equal(statistics.data.success)
-        expect(expectOngoing).to.be.equal(statistics.data.ongoing)
-        expect(expectFailed).to.be.equal(statistics.data.failed)
+        expect(expectTotal).to.be.equal(statistics.total)
+        expect(expectSuccess).to.be.equal(statistics.success)
+        expect(expectOngoing).to.be.equal(statistics.ongoing)
+        expect(expectFailed).to.be.equal(statistics.failed)
     }
 
     /**
@@ -90,7 +90,7 @@ export class StoragesAssertion implements IStoragesAssertion {
         let cars = await handleEvmError(
             this.contractsManager.StoragesEvm().getStoredCars(matchingId)
         )
-        expect(equal(expectCarIds, convertToNumberArray(cars.data))).to.be.true
+        expect(equal(expectCarIds, convertToNumberArray(cars))).to.be.true
     }
 
     /**
@@ -106,7 +106,7 @@ export class StoragesAssertion implements IStoragesAssertion {
         let carCount = await handleEvmError(
             this.contractsManager.StoragesEvm().getStoredCarCount(matchingId)
         )
-        expect(expectCarCount).to.be.equal(Number(carCount.data))
+        expect(expectCarCount).to.be.equal(Number(carCount))
     }
 
     /**
@@ -122,7 +122,7 @@ export class StoragesAssertion implements IStoragesAssertion {
         let ret = await handleEvmError(
             this.contractsManager.StoragesEvm().isAllStoredDone(matchingId)
         )
-        expect(expectRet).to.be.equal(ret.data)
+        expect(expectRet).to.be.equal(ret)
     }
 
     /**
@@ -138,7 +138,7 @@ export class StoragesAssertion implements IStoragesAssertion {
         let ret = await handleEvmError(
             this.contractsManager.StoragesEvm().isStorageExpiration(matchingId)
         )
-        expect(expectRet).to.be.equal(ret.data)
+        expect(expectRet).to.be.equal(ret)
     }
 
     /**
@@ -156,7 +156,7 @@ export class StoragesAssertion implements IStoragesAssertion {
                 .StoragesEvm()
                 .isNextDatacapAllocationValid(matchingId)
         )
-        expect(expectRet).to.be.equal(ret.data)
+        expect(expectRet).to.be.equal(ret)
     }
 
     /**
@@ -198,7 +198,7 @@ export class StoragesAssertion implements IStoragesAssertion {
 
             this.getStoredCarCountAssertion(
                 matchingId,
-                Number(count.data) + ids.length
+                Number(count) + ids.length
             ),
         ])
     }

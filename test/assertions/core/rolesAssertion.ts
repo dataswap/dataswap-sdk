@@ -22,7 +22,7 @@ import { assert } from "chai"
 import { equal } from "@unipackage/utils"
 import * as utils from "../../shared/utils"
 import { RolesEvm } from "../../../src/core/roles/repo/evm"
-import { handleEvmError } from "../../shared/error"
+import { handleEvmError } from "../../../src/shared/errors"
 import { IRolesAssertion } from "../../interfaces/assertions/core/IRolesAssertion"
 
 /**
@@ -60,7 +60,7 @@ export class RolesAssertion implements IRolesAssertion {
     async ownerAssertion(expectAddress: string): Promise<void> {
         let data = await handleEvmError(this.roles.owner())
         assert.isTrue(
-            equal(expectAddress, data.data),
+            equal(expectAddress, data),
             "owner should be expect address"
         )
     }
@@ -79,7 +79,7 @@ export class RolesAssertion implements IRolesAssertion {
     ): Promise<void> {
         let data = await handleEvmError(this.roles.hasRole(role, account))
         assert.isTrue(
-            equal(expectHas, data.data),
+            equal(expectHas, data),
             "account should be has expect role"
         )
     }
@@ -91,7 +91,7 @@ export class RolesAssertion implements IRolesAssertion {
      */
     async acceptOwnershipAssertion(newOwner: string): Promise<void> {
         let data = await handleEvmError(this.roles.owner())
-        this.roles.getWallet().setDefault(data.data)
+        this.roles.getWallet().setDefault(data)
 
         await this.transferOwnershipAssertion(newOwner)
         this.roles.getWallet().setDefault(newOwner)
@@ -100,8 +100,8 @@ export class RolesAssertion implements IRolesAssertion {
         await this.ownerAssertion(newOwner)
 
         // revert operate
-        await this.transferOwnershipAssertion(data.data)
-        this.roles.getWallet().setDefault(data.data)
+        await this.transferOwnershipAssertion(data)
+        this.roles.getWallet().setDefault(data)
         await handleEvmError(this.roles.acceptOwnership())
     }
 
@@ -143,8 +143,8 @@ export class RolesAssertion implements IRolesAssertion {
             )
 
             assert.isTrue(
-                equal(expectAddress, address.data),
-                `${methods[i]} address should be expect address(${expectAddress}, ${address.data})`
+                equal(expectAddress, address),
+                `${methods[i]} address should be expect address(${expectAddress}, ${address})`
             )
         }
     }

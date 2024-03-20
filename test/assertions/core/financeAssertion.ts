@@ -30,7 +30,7 @@ import {
     AccountIncome,
     AccountEscrow,
 } from "../../../src/core/finance/types"
-import { handleEvmError } from "../../shared/error"
+import { handleEvmError } from "../../../src/shared/errors"
 import { IFinanceAssertion } from "../../interfaces/assertions/core/IFinanceAssertion"
 
 /**
@@ -62,7 +62,7 @@ export class FinanceAssertion implements IFinanceAssertion {
             this.finance.datasetOverview(token)
         )
         assert.isTrue(
-            equal(expectDatasetOverview, datasetOverview.data),
+            equal(expectDatasetOverview, datasetOverview),
             "datasetOverview should be expect expectDatasetOverview"
         )
     }
@@ -81,7 +81,7 @@ export class FinanceAssertion implements IFinanceAssertion {
             this.finance.matchingOverview(token)
         )
         assert.isTrue(
-            equal(expectMatchingOverview, matchingOverview.data),
+            equal(expectMatchingOverview, matchingOverview),
             "matchingOverview should be expect expectMatchingOverview"
         )
     }
@@ -100,7 +100,7 @@ export class FinanceAssertion implements IFinanceAssertion {
             this.finance.storageOverview(token)
         )
         assert.isTrue(
-            equal(expectStorageOverview, storageOverview.data),
+            equal(expectStorageOverview, storageOverview),
             "storageOverview should be expect expectStorageOverview"
         )
     }
@@ -125,7 +125,7 @@ export class FinanceAssertion implements IFinanceAssertion {
             this.finance.getAccountOverview(datasetId, matchingId, owner, token)
         )
         assert.isTrue(
-            equal(expectAccountOverview, accountOverview.data),
+            equal(expectAccountOverview, accountOverview),
             "Owner accountOverview should be expect AccountOverview"
         )
     }
@@ -158,7 +158,7 @@ export class FinanceAssertion implements IFinanceAssertion {
             )
         )
         assert.isTrue(
-            equal(expectAccountIncome, accountIncome.data),
+            equal(expectAccountIncome, accountIncome),
             "Owner accountIncome should be expect accountIncome"
         )
     }
@@ -190,9 +190,9 @@ export class FinanceAssertion implements IFinanceAssertion {
                 type
             )
         )
-        expectAccountEscrow.latestHeight = accountEscrow.data.latestHeight // skip latestHeight
+        expectAccountEscrow.latestHeight = accountEscrow.latestHeight // skip latestHeight
         assert.isTrue(
-            equal(expectAccountEscrow, accountEscrow.data),
+            equal(expectAccountEscrow, accountEscrow),
             "Owner accountEscrow should be expect accountEscrow"
         )
     }
@@ -225,7 +225,7 @@ export class FinanceAssertion implements IFinanceAssertion {
             )
         )
         assert.isTrue(
-            equal(expectAmount, amount.data),
+            equal(expectAmount, amount),
             "Owner amount should be expect amount"
         )
     }
@@ -258,7 +258,7 @@ export class FinanceAssertion implements IFinanceAssertion {
             )
         )
         assert.isTrue(
-            equal(expectValue, value.data),
+            equal(expectValue, value),
             "Owner value should be expect value"
         )
     }
@@ -293,16 +293,16 @@ export class FinanceAssertion implements IFinanceAssertion {
             })
         )
 
-        accountOverview.data.deposited += amount
-        accountOverview.data.balance += amount
-        accountOverview.data.available += amount
+        accountOverview.deposited += amount
+        accountOverview.balance += amount
+        accountOverview.available += amount
 
         await this.getAccountOverviewAssertion(
             datasetId,
             matchingId,
             owner,
             token,
-            accountOverview.data
+            accountOverview
         )
     }
 
@@ -334,16 +334,16 @@ export class FinanceAssertion implements IFinanceAssertion {
             this.finance.withdraw(datasetId, matchingId, owner, token, amount)
         )
 
-        accountOverview.data.balance -= amount
-        accountOverview.data.available -= amount
-        accountOverview.data.withdrawn += amount
+        accountOverview.balance -= amount
+        accountOverview.available -= amount
+        accountOverview.withdrawn += amount
 
         await this.getAccountOverviewAssertion(
             datasetId,
             matchingId,
             owner,
             token,
-            accountOverview.data
+            accountOverview
         )
     }
 

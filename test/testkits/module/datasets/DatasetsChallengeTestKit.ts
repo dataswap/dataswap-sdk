@@ -26,7 +26,7 @@ import { IGenerator } from "../../../interfaces/setup/IGenerator"
 import { IDatasetsAssertion } from "../../../interfaces/assertions/module/IDatasetsAssertion"
 import { DataType } from "../../../../src/shared/types/dataType"
 import { FIL } from "../../../../src/shared/types/financeType"
-import { handleEvmError } from "../../../shared/error"
+import { handleEvmError } from "../../../../src/shared/errors"
 /**
  * Represents a test kit for submitting dataset challenge.
  * Extends from DatasetsTestBase.
@@ -97,7 +97,7 @@ export class SubmitDatasetChallengeTestKit extends DatasetsTestBase {
             this.contractsManager
                 .DatasetChallengeEvm()
                 .waitForBlockHeight(
-                    Number(proofCompleteHeight.data) + 5 + 2,
+                    Number(proofCompleteHeight) + 5 + 2,
                     Number(process.env.BLOCK_PERIOD)
                 )
 

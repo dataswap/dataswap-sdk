@@ -21,7 +21,7 @@
 import { assert } from "chai"
 import { equal } from "@unipackage/utils"
 import { FilecoinEvm } from "../../../src/core/filecoin/repo/evm"
-import { handleEvmError } from "../../shared/error"
+import { handleEvmError } from "../../../src/shared/errors"
 import { DealState } from "../../../src/shared/types/filecoinType"
 import { IFilecoinAssertion } from "../../interfaces/assertions/core/IFilecoinAssertion"
 
@@ -55,7 +55,7 @@ export class FilecoinAssertion implements IFilecoinAssertion {
             this.filecoin.getReplicaDealState(cid, claimId)
         )
         assert.isTrue(
-            expectState == state.data,
+            expectState == state,
             "ReplicaDealState should be expect state"
         )
     }
@@ -76,7 +76,7 @@ export class FilecoinAssertion implements IFilecoinAssertion {
             this.filecoin.getReplicaClaimData(provider, claimId)
         )
         assert.isTrue(
-            equal(expectData, data.data),
+            equal(expectData, data),
             "ReplicaClaimData should be expect data"
         )
     }

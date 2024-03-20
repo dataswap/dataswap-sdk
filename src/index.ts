@@ -18,6 +18,7 @@
  *  limitations under the respective licenses.
  ********************************************************************************/
 
+export { handleEvmError } from "./shared/errors"
 export { Car, CarReplica } from "./core/carstore/types"
 export { DataswapMessage } from "./message/types"
 export {

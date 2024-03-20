@@ -21,7 +21,7 @@
 import { assert } from "chai"
 import { equal } from "@unipackage/utils"
 import { FilplusEvm } from "../../../src/core/filplus/repo/evm"
-import { handleEvmError } from "../../shared/error"
+import { handleEvmError } from "../../../src/shared/errors"
 import { IFilplusAssertion } from "../../interfaces/assertions/core/IFilplusAssertion"
 
 import { ReleaseRule } from "../../../src/core/finance/types"
@@ -59,7 +59,7 @@ export class FilplusAssertion implements IFilplusAssertion {
             this.filplus.getIncomeReleaseRule(type)
         )
         assert.isTrue(
-            expectReleaseRule.equal(releaseRule.data),
+            expectReleaseRule.equal(releaseRule),
             "releaseRule should be expect"
         )
     }
@@ -79,7 +79,7 @@ export class FilplusAssertion implements IFilplusAssertion {
             this.filplus.getEscrowReleaseRule(type)
         )
         assert.isTrue(
-            expectReleaseRule.equal(releaseRule.data),
+            expectReleaseRule.equal(releaseRule),
             "releaseRule should be expect"
         )
     }
@@ -92,10 +92,7 @@ export class FilplusAssertion implements IFilplusAssertion {
      */
     async getBurnAddressAssertion(expectAddress: string): Promise<void> {
         let address = await handleEvmError(this.filplus.getBurnAddress())
-        assert.isTrue(
-            equal(expectAddress, address.data),
-            "address should be expect"
-        )
+        assert.isTrue(equal(expectAddress, address), "address should be expect")
     }
 
     /**
@@ -106,10 +103,7 @@ export class FilplusAssertion implements IFilplusAssertion {
      */
     async getPerDayBlocknumberAssertion(exceptNumber: bigint): Promise<void> {
         let number = await handleEvmError(this.filplus.getPerDayBlocknumber())
-        assert.isTrue(
-            equal(exceptNumber, number.data),
-            "number should be expect"
-        )
+        assert.isTrue(equal(exceptNumber, number), "number should be expect")
     }
 
     /**
@@ -124,7 +118,7 @@ export class FilplusAssertion implements IFilplusAssertion {
         let days = await handleEvmError(
             this.filplus.getDatacapdatasetApprovedLockDays()
         )
-        assert.isTrue(equal(exceptDays, days.data), "days should be expect")
+        assert.isTrue(equal(exceptDays, days), "days should be expect")
     }
 
     /**
@@ -139,7 +133,7 @@ export class FilplusAssertion implements IFilplusAssertion {
         let days = await handleEvmError(
             this.filplus.getDatacapCollateralMaxLockDays()
         )
-        assert.isTrue(equal(exceptDays, days.data), "days should be expect")
+        assert.isTrue(equal(exceptDays, days), "days should be expect")
     }
 
     /**
@@ -150,7 +144,7 @@ export class FilplusAssertion implements IFilplusAssertion {
      */
     async getChallengeAuditFeeAssertion(exceptFee: bigint): Promise<void> {
         let fee = await handleEvmError(this.filplus.getChallengeAuditFee())
-        assert.isTrue(equal(exceptFee, fee.data), "fee should be expect")
+        assert.isTrue(equal(exceptFee, fee), "fee should be expect")
     }
 
     /**
@@ -161,7 +155,7 @@ export class FilplusAssertion implements IFilplusAssertion {
      */
     async getProofAuditFeeAssertion(exceptFee: bigint): Promise<void> {
         let fee = await handleEvmError(this.filplus.getProofAuditFee())
-        assert.isTrue(equal(exceptFee, fee.data), "fee should be expect")
+        assert.isTrue(equal(exceptFee, fee), "fee should be expect")
     }
 
     /**
@@ -172,7 +166,7 @@ export class FilplusAssertion implements IFilplusAssertion {
      */
     async getDisputeAuditFeeAssertion(exceptFee: bigint): Promise<void> {
         let fee = await handleEvmError(this.filplus.getDisputeAuditFee())
-        assert.isTrue(equal(exceptFee, fee.data), "fee should be expect")
+        assert.isTrue(equal(exceptFee, fee), "fee should be expect")
     }
 
     /**
@@ -187,7 +181,7 @@ export class FilplusAssertion implements IFilplusAssertion {
         let price = await handleEvmError(
             this.filplus.getChallengeProofsPricePrePoint()
         )
-        assert.isTrue(equal(exceptPrice, price.data), "price should be expect")
+        assert.isTrue(equal(exceptPrice, price), "price should be expect")
     }
 
     /**
@@ -202,7 +196,7 @@ export class FilplusAssertion implements IFilplusAssertion {
         let count = await handleEvmError(
             this.filplus.getChallengeProofsSubmiterCount()
         )
-        assert.isTrue(equal(exceptCount, count.data), "count should be expect")
+        assert.isTrue(equal(exceptCount, count), "count should be expect")
     }
 
     /**
@@ -217,7 +211,7 @@ export class FilplusAssertion implements IFilplusAssertion {
         let price = await handleEvmError(
             this.filplus.getDatacapChunkLandPricePreByte()
         )
-        assert.isTrue(equal(exceptPrice, price.data), "price should be expect")
+        assert.isTrue(equal(exceptPrice, price), "price should be expect")
     }
 
     /**
@@ -228,7 +222,7 @@ export class FilplusAssertion implements IFilplusAssertion {
      */
     async getDatacapPricePreByteAssertion(exceptPrice: bigint): Promise<void> {
         let price = await handleEvmError(this.filplus.getDatacapPricePreByte())
-        assert.isTrue(equal(exceptPrice, price.data), "price should be expect")
+        assert.isTrue(equal(exceptPrice, price), "price should be expect")
     }
 
     /**
@@ -243,10 +237,7 @@ export class FilplusAssertion implements IFilplusAssertion {
         let timeout = await handleEvmError(
             this.filplus.datasetRuleMinProofTimeout()
         )
-        assert.isTrue(
-            equal(exceptTimeout, timeout.data),
-            "timeout should be expect"
-        )
+        assert.isTrue(equal(exceptTimeout, timeout), "timeout should be expect")
     }
 
     /**
@@ -261,10 +252,7 @@ export class FilplusAssertion implements IFilplusAssertion {
         let timeout = await handleEvmError(
             this.filplus.datasetRuleMinAuditTimeout()
         )
-        assert.isTrue(
-            equal(exceptTimeout, timeout.data),
-            "timeout should be expect"
-        )
+        assert.isTrue(equal(exceptTimeout, timeout), "timeout should be expect")
     }
 
     /**
@@ -279,10 +267,7 @@ export class FilplusAssertion implements IFilplusAssertion {
         let timeout = await handleEvmError(
             this.filplus.datasetRuleRequirementTimeout()
         )
-        assert.isTrue(
-            equal(exceptTimeout, timeout.data),
-            "timeout should be expect"
-        )
+        assert.isTrue(equal(exceptTimeout, timeout), "timeout should be expect")
     }
 
     /**
@@ -300,7 +285,7 @@ export class FilplusAssertion implements IFilplusAssertion {
             this.filplus.getDatasetRuleMaxReplicasInCountry(countryCode)
         )
         assert.isTrue(
-            equal(expectCount, count.data),
+            equal(expectCount, count),
             "Dataset rule max replicas in country should be expect count"
         )
     }
@@ -318,7 +303,7 @@ export class FilplusAssertion implements IFilplusAssertion {
             this.filplus.datasetRuleMinRegionsPerDataset()
         )
         assert.isTrue(
-            equal(expectCount, count.data),
+            equal(expectCount, count),
             "Dataset rule min regions per dataset should be expect count"
         )
     }
@@ -336,7 +321,7 @@ export class FilplusAssertion implements IFilplusAssertion {
             this.filplus.datasetRuleDefaultMaxReplicasPerCountry()
         )
         assert.isTrue(
-            equal(expectCount, count.data),
+            equal(expectCount, count),
             "Dataset rule default max replicas per country should be expect count"
         )
     }
@@ -354,7 +339,7 @@ export class FilplusAssertion implements IFilplusAssertion {
             this.filplus.datasetRuleMaxReplicasPerCity()
         )
         assert.isTrue(
-            equal(expectCount, count.data),
+            equal(expectCount, count),
             "Dataset rule max replicas per city should be expect count"
         )
     }
@@ -372,7 +357,7 @@ export class FilplusAssertion implements IFilplusAssertion {
             this.filplus.datasetRuleMaxProportionOfMappingFilesToDataset()
         )
         assert.isTrue(
-            equal(expectProportion, count.data),
+            equal(expectProportion, count),
             "Dataset rule max proportion of mappingFiles to dataset should be expect count"
         )
     }
@@ -390,7 +375,7 @@ export class FilplusAssertion implements IFilplusAssertion {
             this.filplus.datasetRuleMinSPsPerDataset()
         )
         assert.isTrue(
-            equal(expectCount, count.data),
+            equal(expectCount, count),
             "Dataset rule min SPs per dataset should be expect count"
         )
     }
@@ -408,7 +393,7 @@ export class FilplusAssertion implements IFilplusAssertion {
             this.filplus.datasetRuleMaxReplicasPerSP()
         )
         assert.isTrue(
-            equal(expectCount, count.data),
+            equal(expectCount, count),
             "Dataset rule max replicas per SP should be expect count"
         )
     }
@@ -426,7 +411,7 @@ export class FilplusAssertion implements IFilplusAssertion {
             this.filplus.datasetRuleMinTotalReplicasPerDataset()
         )
         assert.isTrue(
-            equal(expectCount, count.data),
+            equal(expectCount, count),
             "Dataset rule min total replicas per dataset should be expect count"
         )
     }
@@ -444,7 +429,7 @@ export class FilplusAssertion implements IFilplusAssertion {
             this.filplus.datasetRuleMaxTotalReplicasPerDataset()
         )
         assert.isTrue(
-            equal(expectCount, count.data),
+            equal(expectCount, count),
             "Dataset rule max total replicas per dataset should be expect count"
         )
     }
@@ -462,7 +447,7 @@ export class FilplusAssertion implements IFilplusAssertion {
             this.filplus.datacapRulesMaxAllocatedSizePerTime()
         )
         assert.isTrue(
-            equal(expectSize, count.data),
+            equal(expectSize, count),
             "Dataset rule max allocated size per time should be expect count"
         )
     }
@@ -480,7 +465,7 @@ export class FilplusAssertion implements IFilplusAssertion {
             this.filplus.datacapRulesMaxRemainingPercentageForNext()
         )
         assert.isTrue(
-            equal(expectPercentage, count.data),
+            equal(expectPercentage, count),
             "Dataset rule max remaining percentage for next should be expect count"
         )
     }
@@ -504,7 +489,7 @@ export class FilplusAssertion implements IFilplusAssertion {
             this.filplus.isCompliantRuleGeolocation(regions, countrys, citys)
         )
         assert.isTrue(
-            equal(expectHas, count.data),
+            equal(expectHas, count),
             "Is compliant rule geolocation should be expect"
         )
     }
@@ -529,7 +514,7 @@ export class FilplusAssertion implements IFilplusAssertion {
             )
         )
         assert.isTrue(
-            equal(expectHas, count.data),
+            equal(expectHas, count),
             "Is compliant rule max proportion of mappingFiles to dataset should be expect"
         )
     }
@@ -563,7 +548,7 @@ export class FilplusAssertion implements IFilplusAssertion {
             )
         )
         assert.isTrue(
-            equal(expectHas, count.data),
+            equal(expectHas, count),
             "Is compliant rule total replicas per dataset should be expect"
         )
     }
@@ -591,7 +576,7 @@ export class FilplusAssertion implements IFilplusAssertion {
             )
         )
         assert.isTrue(
-            equal(expectHas, count.data),
+            equal(expectHas, count),
             "Is compliant rule min SPs per dataset should be expect"
         )
     }
@@ -611,7 +596,7 @@ export class FilplusAssertion implements IFilplusAssertion {
             this.filplus.isCompliantRuleMaxReplicasPerSP(value)
         )
         assert.isTrue(
-            equal(expectHas, count.data),
+            equal(expectHas, count),
             "Is compliant rule max replicas per SP should be expect"
         )
     }
