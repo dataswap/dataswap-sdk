@@ -31,7 +31,6 @@ import { DatasetRequirementEvm } from "../../../../dataset/requirement/repo/evm"
 import { MatchingBidsEvm } from "../../../bids/repo/evm"
 import { MatchingBid, MatchingBids } from "../../../bids/types"
 import { DatasetRequirement } from "../../../../dataset/requirement/types"
-import { delegatedFromEthAddress, CoinType } from "@glif/filecoin-address"
 import { FIL, EscrowType } from "../../../../../shared/types/financeType"
 /**
  * Class representing a MongoDB datastore for MatchingMetadata entities.
@@ -209,10 +208,7 @@ export class MatchingMetadataMongoDatastore extends DataStore<
                 return await this.update(
                     { conditions: [{ matchingId: options.matchingId }] },
                     {
-                        winner: delegatedFromEthAddress(
-                            winner.data!,
-                            CoinType.MAIN
-                        ),
+                        winner: winner.data!,
                     }
                 )
             }
