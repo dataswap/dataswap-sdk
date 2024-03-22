@@ -78,63 +78,65 @@ interface FilplusCallEvm {
      *
      * @returns A promise with the EVM output containing the datacap dataset approved lock days.
      */
-    getDatacapdatasetApprovedLockDays(): Promise<EvmOutput<bigint>>
+    financeRuleDatacapDatasetApprovedLockDays(): Promise<EvmOutput<bigint>>
 
     /**
      * Retrieves the maximum lock days for datacap collateral.
      *
      * @returns A promise with the EVM output containing the datacap collateral maximum lock days.
      */
-    getDatacapCollateralMaxLockDays(): Promise<EvmOutput<bigint>>
+    financeRuleDatacapCollateralMaxLockDays(): Promise<EvmOutput<bigint>>
 
     /**
      * Retrieves the audit fee for challenging a proof.
      *
      * @returns A promise with the EVM output containing the challenge audit fee.
      */
-    getChallengeAuditFee(): Promise<EvmOutput<bigint>>
+    finaceRuleDatasetChallengeProofCollateral(): Promise<EvmOutput<bigint>>
 
     /**
      * Retrieves the audit fee for proof submission.
      *
      * @returns A promise with the EVM output containing the proof audit fee.
      */
-    getProofAuditFee(): Promise<EvmOutput<bigint>>
+    finaceRuleDatasetProofCollateral(): Promise<EvmOutput<bigint>>
 
     /**
      * Retrieves the audit fee for dispute resolution.
      *
      * @returns A promise with the EVM output containing the dispute audit fee.
      */
-    getDisputeAuditFee(): Promise<EvmOutput<bigint>>
+    financeRuleDisputeAuditCollateral(): Promise<EvmOutput<bigint>>
 
     /**
      * Retrieves the price per point for challenging proofs.
      *
      * @returns A promise with the EVM output containing the challenge proofs price per point.
      */
-    getChallengeProofsPricePrePoint(): Promise<EvmOutput<bigint>>
+    financeRuleChallengeProofsPricePrePoint(): Promise<EvmOutput<bigint>>
 
     /**
      * Retrieves the count of challenge proofs submitter.
      *
      * @returns A promise with the EVM output containing the count of challenge proofs submitter.
      */
-    getChallengeProofsSubmiterCount(): Promise<EvmOutput<number>>
+    datasetRuleMaxChallengeProofsSubmitersPerDataset(): Promise<
+        EvmOutput<number>
+    >
 
     /**
      * Retrieves the price per byte for datacap chunks of land.
      *
      * @returns A promise with the EVM output containing the datacap chunk land price per byte.
      */
-    getDatacapChunkLandPricePreByte(): Promise<EvmOutput<bigint>>
+    financeRuleDatacapChunkLandPricePreByte(): Promise<EvmOutput<bigint>>
 
     /**
      * Retrieves the price per byte for datacap.
      *
      * @returns A promise with the EVM output containing the datacap price per byte.
      */
-    getDatacapPricePreByte(): Promise<EvmOutput<bigint>>
+    financeRuleDatacapPricePreByte(): Promise<EvmOutput<bigint>>
 
     /**
      * Retrieves the minimum proof timeout for dataset rules.
@@ -202,12 +204,12 @@ interface FilplusCallEvm {
     /**
      * @notice Get datacap rules max allocated size per time
      */
-    datacapRulesMaxAllocatedSizePerTime(): Promise<EvmOutput<number>>
+    datacapRuleMaxAllocatedSizePerTime(): Promise<EvmOutput<number>>
 
     /**
      * @notice Get datacap rules max remaining percentage for next
      */
-    datacapRulesMaxRemainingPercentageForNext(): Promise<EvmOutput<number>>
+    datacapRuleMaxRemainingPercentageForNext(): Promise<EvmOutput<number>>
 
     /**
      * @dev Retrieves the auditors' election time for dataset rules.
@@ -341,7 +343,9 @@ interface FilplusSendEvm {
      * @param newValue - The new value for datacap price per byte.
      * @returns A promise with the EVM output indicating the success of the operation.
      */
-    setDatacapPricePreByte(newValue: bigint): Promise<EvmOutput<void>>
+    setFinanceRuleDatacapPricePreByte(
+        newValue: bigint
+    ): Promise<EvmOutput<void>>
 
     /**
      * Sets the price per byte for datacap chunks of land.
@@ -349,7 +353,9 @@ interface FilplusSendEvm {
      * @param newValue - The new value for datacap chunk land price per byte.
      * @returns A promise with the EVM output indicating the success of the operation.
      */
-    setDatacapChunkLandPricePreByte(newValue: bigint): Promise<EvmOutput<void>>
+    setFinanceRuleDatacapChunkLandPricePreByte(
+        newValue: bigint
+    ): Promise<EvmOutput<void>>
 
     /**
      * Sets the count of challenge proofs submitter.
@@ -357,7 +363,9 @@ interface FilplusSendEvm {
      * @param newValue - The new value for the count of challenge proofs submitter.
      * @returns A promise with the EVM output indicating the success of the operation.
      */
-    setChallengeProofsSubmiterCount(newValue: number): Promise<EvmOutput<void>>
+    setDatasetRuleMaxChallengeProofsSubmitersPerDataset(
+        newValue: number
+    ): Promise<EvmOutput<void>>
 
     /**
      * Sets the lock days for datacap dataset approval.
@@ -365,7 +373,7 @@ interface FilplusSendEvm {
      * @param newValue - The new value for datacap dataset approved lock days.
      * @returns A promise with the EVM output indicating the success of the operation.
      */
-    setDatacapdatasetApprovedLockDays(
+    setFinanceRuleDatacapDatasetApprovedLockDays(
         newValue: bigint
     ): Promise<EvmOutput<void>>
 
@@ -375,7 +383,9 @@ interface FilplusSendEvm {
      * @param newValue - The new value for datacap collateral maximum lock days.
      * @returns A promise with the EVM output indicating the success of the operation.
      */
-    setDatacapCollateralMaxLockDays(newValue: bigint): Promise<EvmOutput<void>>
+    setFinanceRuleDatacapCollateralMaxLockDays(
+        newValue: bigint
+    ): Promise<EvmOutput<void>>
 
     /**
      * Sets the time for auditors' election in terms of blocks.
@@ -389,7 +399,9 @@ interface FilplusSendEvm {
      * @param newValue - The new value for the challenge audit fee.
      * @returns A promise with the EVM output indicating the success of the operation.
      */
-    setChallengeAuditFee(newValue: bigint): Promise<EvmOutput<void>>
+    setFinaceRuleDatasetChallengeProofCollateral(
+        newValue: bigint
+    ): Promise<EvmOutput<void>>
 
     /**
      * Sets the audit fee for proof submission.
@@ -397,7 +409,9 @@ interface FilplusSendEvm {
      * @param newValue - The new value for the proof audit fee.
      * @returns A promise with the EVM output indicating the success of the operation.
      */
-    setProofAuditFee(newValue: bigint): Promise<EvmOutput<void>>
+    setFinaceRuleDatasetProofCollateral(
+        newValue: bigint
+    ): Promise<EvmOutput<void>>
 
     /**
      * Sets the audit fee for dispute resolution.
@@ -405,7 +419,9 @@ interface FilplusSendEvm {
      * @param newValue - The new value for the dispute audit fee.
      * @returns A promise with the EVM output indicating the success of the operation.
      */
-    setDisputeAuditFee(newValue: bigint): Promise<EvmOutput<void>>
+    setFinanceRuleDisputeAuditCollateral(
+        newValue: bigint
+    ): Promise<EvmOutput<void>>
 
     /**
      * Sets the price per point for challenging proofs.
@@ -413,7 +429,9 @@ interface FilplusSendEvm {
      * @param newValue - The new value for the challenge proofs price per point.
      * @returns A promise with the EVM output indicating the success of the operation.
      */
-    setChallengeProofsPricePrePoint(newValue: bigint): Promise<EvmOutput<void>>
+    setFinanceRuleChallengeProofsPricePrePoint(
+        newValue: bigint
+    ): Promise<EvmOutput<void>>
 
     /**
      * @notice Set dataset rule min regions per dataset
@@ -512,7 +530,7 @@ interface FilplusSendEvm {
      * @param newValue The set value
      * @param options The options of transaction.
      */
-    setDatacapRulesMaxAllocatedSizePerTime(
+    setDatacapRuleMaxAllocatedSizePerTime(
         newValue: number,
         options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
@@ -522,7 +540,7 @@ interface FilplusSendEvm {
      * @param newValue The set value
      * @param options The options of transaction.
      */
-    setDatacapRulesMaxRemainingPercentageForNext(
+    setDatacapRuleMaxRemainingPercentageForNext(
         newValue: number,
         options?: EvmTransactionOptions
     ): Promise<EvmOutput<void>>
@@ -541,15 +559,15 @@ export interface FilplusOriginEvm extends FilplusCallEvm, FilplusSendEvm {}
     "getEscrowReleaseRule",
     "getBurnAddress",
     "getPerDayBlocknumber",
-    "getDatacapdatasetApprovedLockDays",
-    "getDatacapCollateralMaxLockDays",
-    "getChallengeAuditFee",
-    "getProofAuditFee",
-    "getDisputeAuditFee",
-    "getChallengeProofsPricePrePoint",
-    "getChallengeProofsSubmiterCount",
-    "getDatacapChunkLandPricePreByte",
-    "getDatacapPricePreByte",
+    "financeRuleDatacapDatasetApprovedLockDays",
+    "financeRuleDatacapCollateralMaxLockDays",
+    "finaceRuleDatasetChallengeProofCollateral",
+    "finaceRuleDatasetProofCollateral",
+    "financeRuleDisputeAuditCollateral",
+    "financeRuleChallengeProofsPricePrePoint",
+    "datasetRuleMaxChallengeProofsSubmitersPerDataset",
+    "financeRuleDatacapChunkLandPricePreByte",
+    "financeRuleDatacapPricePreByte",
     "datasetRuleMinProofTimeout",
     "datasetRuleMinAuditTimeout",
     "datasetRuleRequirementTimeout",
@@ -562,8 +580,8 @@ export interface FilplusOriginEvm extends FilplusCallEvm, FilplusSendEvm {}
     "datasetRuleMaxReplicasPerSP",
     "datasetRuleMinTotalReplicasPerDataset",
     "datasetRuleMaxTotalReplicasPerDataset",
-    "datacapRulesMaxAllocatedSizePerTime",
-    "datacapRulesMaxRemainingPercentageForNext",
+    "datacapRuleMaxAllocatedSizePerTime",
+    "datacapRuleMaxRemainingPercentageForNext",
     "datasetRuleAuditorsElectionTime",
     "isCompliantRuleGeolocation",
     "isCompliantRuleMaxProportionOfMappingFilesToDataset",
@@ -575,16 +593,16 @@ export interface FilplusOriginEvm extends FilplusCallEvm, FilplusSendEvm {}
 @withSendMethod([
     "setIncomeReleaseRule",
     "setEscrowReleaseRule",
-    "setDatacapPricePreByte",
-    "setDatacapChunkLandPricePreByte",
-    "setChallengeProofsSubmiterCount",
-    "setDatacapdatasetApprovedLockDays",
-    "setDatacapCollateralMaxLockDays",
+    "setFinanceRuleDatacapPricePreByte",
+    "setFinanceRuleDatacapChunkLandPricePreByte",
+    "setDatasetRuleMaxChallengeProofsSubmitersPerDataset",
+    "setFinanceRuleDatacapDatasetApprovedLockDays",
+    "setFinanceRuleDatacapCollateralMaxLockDays",
     "setAuditorsElectionTime",
-    "setChallengeAuditFee",
-    "setProofAuditFee",
-    "setDisputeAuditFee",
-    "setChallengeProofsPricePrePoint",
+    "setFinaceRuleDatasetChallengeProofCollateral",
+    "setFinaceRuleDatasetProofCollateral",
+    "setFinanceRuleDisputeAuditCollateral",
+    "setFinanceRuleChallengeProofsPricePrePoint",
     "setDatasetRuleMinRegionsPerDataset",
     "setDatasetRuleMinProofTimeout",
     "setDatasetRuleMinAuditTimeout",
@@ -597,8 +615,8 @@ export interface FilplusOriginEvm extends FilplusCallEvm, FilplusSendEvm {}
     "setDatasetRuleMaxReplicasPerSP",
     "setDatasetRuleMinTotalReplicasPerDataset",
     "setDatasetRuleMaxTotalReplicasPerDataset",
-    "setDatacapRulesMaxAllocatedSizePerTime",
-    "setDatacapRulesMaxRemainingPercentageForNext",
+    "setDatacapRuleMaxAllocatedSizePerTime",
+    "setDatacapRuleMaxRemainingPercentageForNext",
 ])
 export class FilplusOriginEvm extends EvmEx {}
 
@@ -624,16 +642,16 @@ export class FilplusEvm extends FilplusOriginEvm {
         switch (decodeRes.data!.method) {
             case "setIncomeReleaseRule":
             case "setEscrowReleaseRule":
-            case "setDatacapPricePreByte":
-            case "setDatacapChunkLandPricePreByte":
-            case "setChallengeProofsSubmiterCount":
-            case "setDatacapdatasetApprovedLockDays":
-            case "setDatacapCollateralMaxLockDays":
+            case "setFinanceRuleDatacapPricePreByte":
+            case "setFinanceRuleDatacapChunkLandPricePreByte":
+            case "setDatasetRuleMaxChallengeProofsSubmitersPerDataset":
+            case "setFinanceRuleDatacapDatasetApprovedLockDays":
+            case "setFinanceRuleDatacapCollateralMaxLockDays":
             case "setAuditorsElectionTime":
-            case "setChallengeAuditFee":
-            case "setProofAuditFee":
-            case "setDisputeAuditFee":
-            case "setChallengeProofsPricePrePoint":
+            case "setFinaceRuleDatasetChallengeProofCollateral":
+            case "setFinaceRuleDatasetProofCollateral":
+            case "setFinanceRuleDisputeAuditCollateral":
+            case "setFinanceRuleChallengeProofsPricePrePoint":
             case "setDatasetRuleMinProofTimeout":
             case "setDatasetRuleMinAuditTimeout":
             case "setDatasetRuleRequirementTimeout":
@@ -646,8 +664,8 @@ export class FilplusEvm extends FilplusOriginEvm {
             case "setDatasetRuleMaxReplicasPerSP":
             case "setDatasetRuleMinTotalReplicasPerDataset":
             case "setDatasetRuleMaxTotalReplicasPerDataset":
-            case "setDatacapRulesMaxAllocatedSizePerTime":
-            case "setDatacapRulesMaxRemainingPercentageForNext":
+            case "setDatacapRuleMaxAllocatedSizePerTime":
+            case "setDatacapRuleMaxRemainingPercentageForNext":
                 break
             default:
                 return {
