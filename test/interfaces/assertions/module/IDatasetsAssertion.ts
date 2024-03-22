@@ -436,7 +436,7 @@ export interface IDatasetsAssertion {
      * @param expectAmount The amount of stake being asserted.
      * @returns {Promise<void>} A Promise that resolves when the assertion is completed.
      */
-    auditorStakeAssersion(
+    nominateAsDatasetAuditorCandidateAssersion(
         caller: string,
         datasetId: number,
         expectAmount: bigint

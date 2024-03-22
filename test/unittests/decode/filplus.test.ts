@@ -259,18 +259,18 @@ describe("FilplusContractMessageDecoder", () => {
         })
 
         /**
-         * Test case for setDatacapRulesMaxAllocatedSizePerTime decode functionality.
+         * Test case for setDatacapRuleMaxAllocatedSizePerTime decode functionality.
          */
-        it("setDatacapRulesMaxAllocatedSizePerTime Decode", async function () {
+        it("setDatacapRuleMaxAllocatedSizePerTime Decode", async function () {
             const expectMessage = createExpectMessage({
-                method: "setDatacapRulesMaxAllocatedSizePerTime",
+                method: "setDatacapRuleMaxAllocatedSizePerTime",
                 params: {
                     newValue: BigInt(5),
                 },
                 returns: "0x",
             })
             const targetMessage = createTargetMessage({
-                params: "WCQubiGBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU=",
+                params: "WCSnCWuNAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU==",
                 returns: "QA==",
             })
 
@@ -283,18 +283,18 @@ describe("FilplusContractMessageDecoder", () => {
         })
 
         /**
-         * Test case for setDatacapRulesMaxRemainingPercentageForNext decode functionality.
+         * Test case for setDatacapRuleMaxRemainingPercentageForNext decode functionality.
          */
-        it("setDatacapRulesMaxRemainingPercentageForNext Decode", async function () {
+        it("setDatacapRuleMaxRemainingPercentageForNext Decode", async function () {
             const expectMessage = createExpectMessage({
-                method: "setDatacapRulesMaxRemainingPercentageForNext",
+                method: "setDatacapRuleMaxRemainingPercentageForNext",
                 params: {
                     newValue: BigInt(5),
                 },
                 returns: "0x",
             })
             const targetMessage = createTargetMessage({
-                params: "WCSQF+XaAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU=",
+                params: "WCR0TgsjAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU=",
                 returns: "QA==",
             })
 

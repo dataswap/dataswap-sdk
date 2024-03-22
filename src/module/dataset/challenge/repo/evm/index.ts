@@ -89,12 +89,6 @@ interface DatasetChallengeCallEvm {
     getAuditorElectionEndHeight(datasetId: number): Promise<EvmOutput<number>>
 
     /**
-     * @dev Retrieves the challenge audit collateral requirement.
-     * @returns A promise resolving to the challenge audit collateral requirement, represented as a bigint.
-     */
-    getChallengeAuditCollateralRequirement(): Promise<EvmOutput<bigint>>
-
-    /**
      * @dev Checks if an account is a winner for a specific dataset.
      * @param datasetId The ID of the dataset.
      * @param account The account address.
@@ -138,10 +132,11 @@ interface DatasetChallengeSendEvm {
      *  Stakes an amount by the auditor for a specific dataset.
      *
      * @param datasetId The ID of the dataset.
-     * @param amount The amount to be staked, represented as a bigint.
      * @returns A promise resolving to the transaction receipt.
      */
-    auditorStake(datasetId: number, amount: bigint): Promise<EvmOutput<void>>
+    nominateAsDatasetAuditorCandidate(
+        datasetId: number
+    ): Promise<EvmOutput<void>>
     /**
      * Submit proofs for a dataset challenge.
      *
@@ -180,13 +175,15 @@ export interface DatasetChallengeOriginEvm
     "getChallengeSubmissionCount",
     "getDatasetAuditorCandidates",
     "getAuditorElectionEndHeight",
-    "getChallengeAuditCollateralRequirement",
     "isWinner",
     "isDatasetChallengeProofDuplicate",
     "isDatasetAuditTimeout",
     "roles",
 ])
-@withSendMethod(["auditorStake", "submitDatasetChallengeProofs"])
+@withSendMethod([
+    "nominateAsDatasetAuditorCandidate",
+    "submitDatasetChallengeProofs",
+])
 export class DatasetChallengeOriginEvm extends EvmEx {}
 
 /**
@@ -260,7 +257,7 @@ export class DatasetChallengeEvm extends DatasetChallengeOriginEvm {
                 result.params.auditor = ethAddressFromDelegated(msg.Msg.From)
                 result.params.paths = convertToStringArray(result.params.paths)
                 break
-            case "auditorStake":
+            case "nominateAsDatasetAuditorCandidate":
                 result.datasetId = Number(result.params.datasetId)
                 result.params.datasetId = result.datasetId
             default:

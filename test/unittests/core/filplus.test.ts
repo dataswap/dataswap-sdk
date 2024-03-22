@@ -110,7 +110,7 @@ describe("filplus", () => {
     /**
      * Test case for setting the datacap price pre byte.
      */
-    it("setDatacapPricePreByte", async function () {
+    it("setFinanceRuleDatacapPricePreByte", async function () {
         await filplusAssertion.setDatacapPricePreByteAssertion(BigInt(1))
         await filplusAssertion.setDatacapPricePreByteAssertion(
             BigInt(
@@ -123,7 +123,7 @@ describe("filplus", () => {
     /**
      * Test case for setting the datacap chunkland price pre byte.
      */
-    it("setDatacapChunkLandPricePreByte", async function () {
+    it("setFinanceRuleDatacapChunkLandPricePreByte", async function () {
         await filplusAssertion.setDatacapChunkLandPricePreByteAssertion(
             BigInt(1)
         )
@@ -138,7 +138,7 @@ describe("filplus", () => {
     /**
      * Test case for setting the challenge proofs submiter count.
      */
-    it("setChallengeProofsSubmiterCount", async function () {
+    it("setDatasetRuleMaxChallengeProofsSubmitersPerDataset", async function () {
         await filplusAssertion.setChallengeProofsSubmiterCountAssertion(1)
         await filplusAssertion.setChallengeProofsSubmiterCountAssertion(10)
     })
@@ -146,7 +146,7 @@ describe("filplus", () => {
     /**
      * Test case for setting the datacap dataset approved lock days.
      */
-    it("setDatacapdatasetApprovedLockDays", async function () {
+    it("setFinanceRuleDatacapDatasetApprovedLockDays", async function () {
         await filplusAssertion.setDatacapdatasetApprovedLockDaysAssertion(
             BigInt(1)
         )
@@ -158,7 +158,7 @@ describe("filplus", () => {
     /**
      * Test case for setting the datacap collateral max lock days.
      */
-    it("setDatacapCollateralMaxLockDays", async function () {
+    it("setFinanceRuleDatacapCollateralMaxLockDays", async function () {
         await filplusAssertion.setDatacapCollateralMaxLockDaysAssertion(
             BigInt(1)
         )
@@ -170,7 +170,7 @@ describe("filplus", () => {
     /**
      * Test case for setting the challenge audit fee.
      */
-    it("setChallengeAuditFee", async function () {
+    it("setFinaceRuleDatasetChallengeProofCollateral", async function () {
         await filplusAssertion.setChallengeAuditFeeAssertion(BigInt(1))
         await filplusAssertion.setChallengeAuditFeeAssertion(
             BigInt("1000000000000000000")
@@ -180,7 +180,7 @@ describe("filplus", () => {
     /**
      * Test case for setting the proof audit fee.
      */
-    it("setProofAuditFee", async function () {
+    it("setFinaceRuleDatasetProofCollateral", async function () {
         await filplusAssertion.setProofAuditFeeAssertion(BigInt(1))
         await filplusAssertion.setProofAuditFeeAssertion(
             BigInt("1000000000000000000")
@@ -190,7 +190,7 @@ describe("filplus", () => {
     /**
      * Test case for setting the dispute audit fee.
      */
-    it("setDisputeAuditFee", async function () {
+    it("setFinanceRuleDisputeAuditCollateral", async function () {
         await filplusAssertion.setDisputeAuditFeeAssertion(BigInt(1))
         await filplusAssertion.setDisputeAuditFeeAssertion(
             BigInt("1000000000000000000")
@@ -200,7 +200,7 @@ describe("filplus", () => {
     /**
      * Test case for setting the challenge proofs price pre point.
      */
-    it("setChallengeProofsPricePrePoint", async function () {
+    it("setFinanceRuleChallengeProofsPricePrePoint", async function () {
         await filplusAssertion.setChallengeProofsPricePrePointAssertion(
             BigInt(1)
         )
@@ -283,7 +283,7 @@ describe("filplus", () => {
     /**
      * Test case for setting the maximum allocated size per time rule in datacap.
      */
-    it("setDatacapRulesMaxAllocatedSizePerTime", async function () {
+    it("setDatacapRuleMaxAllocatedSizePerTime", async function () {
         await filplusAssertion.setDatacapRulesMaxAllocatedSizePerTimeAssertion(
             5
         )
@@ -292,7 +292,7 @@ describe("filplus", () => {
     /**
      * Test case for setting the maximum remaining percentage for the next rule in datacap.
      */
-    it("setDatacapRulesMaxRemainingPercentageForNext", async function () {
+    it("setDatacapRuleMaxRemainingPercentageForNext", async function () {
         await filplusAssertion.setDatacapRulesMaxRemainingPercentageForNextAssertion(
             5
         )

@@ -25,7 +25,7 @@ import { IDatasetsHelper } from "../../../interfaces/helper/module/IDatasetshelp
 import { IGenerator } from "../../../interfaces/setup/IGenerator"
 import { IDatasetsAssertion } from "../../../interfaces/assertions/module/IDatasetsAssertion"
 import { DataType } from "../../../../src/shared/types/dataType"
-import { FIL } from "../../../../src/shared/types/financeType"
+import { EscrowType, FIL } from "../../../../src/shared/types/financeType"
 import { handleEvmError } from "../../../../src/shared/errors"
 /**
  * Represents a test kit for submitting dataset challenge.
@@ -74,10 +74,16 @@ export class SubmitDatasetChallengeTestKit extends DatasetsTestBase {
     async action(datasetId: number): Promise<number> {
         try {
             const auditCollateralRequirement = await this.contractsManager
-                .DatasetChallengeEvm()
-                .getChallengeAuditCollateralRequirement()
+                .FinanceEvm()
+                .getEscrowRequirement(
+                    datasetId,
+                    0,
+                    process.env.DATASWAP_DATASETAUDITOR as string,
+                    FIL,
+                    EscrowType.EscrowChallengeAuditCollateral
+                )
 
-            await this.assertion.auditorStakeAssersion(
+            await this.assertion.nominateAsDatasetAuditorCandidateAssersion(
                 process.env.DATASWAP_DATASETAUDITOR as string,
                 datasetId,
                 auditCollateralRequirement.data!

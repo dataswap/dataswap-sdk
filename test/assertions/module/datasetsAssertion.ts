@@ -900,7 +900,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
      * @param expectAmount The amount of stake being asserted.
      * @returns {Promise<void>} A Promise that resolves when the assertion is completed.
      */
-    async auditorStakeAssersion(
+    async nominateAsDatasetAuditorCandidateAssersion(
         caller: string,
         datasetId: number,
         expectAmount: bigint
@@ -922,7 +922,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
         await handleEvmError(
             this.contractsManager
                 .DatasetChallengeEvm()
-                .auditorStake(datasetId, expectAmount)
+                .nominateAsDatasetAuditorCandidate(datasetId)
         )
         const accountEscrow = await this.contractsManager
             .FinanceEvm()

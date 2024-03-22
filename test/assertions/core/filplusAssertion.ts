@@ -116,7 +116,7 @@ export class FilplusAssertion implements IFilplusAssertion {
         exceptDays: bigint
     ): Promise<void> {
         let days = await handleEvmError(
-            this.filplus.getDatacapdatasetApprovedLockDays()
+            this.filplus.financeRuleDatacapDatasetApprovedLockDays()
         )
         assert.isTrue(equal(exceptDays, days), "days should be expect")
     }
@@ -131,7 +131,7 @@ export class FilplusAssertion implements IFilplusAssertion {
         exceptDays: bigint
     ): Promise<void> {
         let days = await handleEvmError(
-            this.filplus.getDatacapCollateralMaxLockDays()
+            this.filplus.financeRuleDatacapCollateralMaxLockDays()
         )
         assert.isTrue(equal(exceptDays, days), "days should be expect")
     }
@@ -143,7 +143,9 @@ export class FilplusAssertion implements IFilplusAssertion {
      * @returns A promise indicating whether the assertion passed or not.
      */
     async getChallengeAuditFeeAssertion(exceptFee: bigint): Promise<void> {
-        let fee = await handleEvmError(this.filplus.getChallengeAuditFee())
+        let fee = await handleEvmError(
+            this.filplus.finaceRuleDatasetChallengeProofCollateral()
+        )
         assert.isTrue(equal(exceptFee, fee), "fee should be expect")
     }
 
@@ -154,7 +156,9 @@ export class FilplusAssertion implements IFilplusAssertion {
      * @returns A promise indicating whether the assertion passed or not.
      */
     async getProofAuditFeeAssertion(exceptFee: bigint): Promise<void> {
-        let fee = await handleEvmError(this.filplus.getProofAuditFee())
+        let fee = await handleEvmError(
+            this.filplus.finaceRuleDatasetProofCollateral()
+        )
         assert.isTrue(equal(exceptFee, fee), "fee should be expect")
     }
 
@@ -165,7 +169,9 @@ export class FilplusAssertion implements IFilplusAssertion {
      * @returns A promise indicating whether the assertion passed or not.
      */
     async getDisputeAuditFeeAssertion(exceptFee: bigint): Promise<void> {
-        let fee = await handleEvmError(this.filplus.getDisputeAuditFee())
+        let fee = await handleEvmError(
+            this.filplus.financeRuleDisputeAuditCollateral()
+        )
         assert.isTrue(equal(exceptFee, fee), "fee should be expect")
     }
 
@@ -179,7 +185,7 @@ export class FilplusAssertion implements IFilplusAssertion {
         exceptPrice: bigint
     ): Promise<void> {
         let price = await handleEvmError(
-            this.filplus.getChallengeProofsPricePrePoint()
+            this.filplus.financeRuleChallengeProofsPricePrePoint()
         )
         assert.isTrue(equal(exceptPrice, price), "price should be expect")
     }
@@ -194,7 +200,7 @@ export class FilplusAssertion implements IFilplusAssertion {
         exceptCount: number
     ): Promise<void> {
         let count = await handleEvmError(
-            this.filplus.getChallengeProofsSubmiterCount()
+            this.filplus.datasetRuleMaxChallengeProofsSubmitersPerDataset()
         )
         assert.isTrue(equal(exceptCount, count), "count should be expect")
     }
@@ -209,7 +215,7 @@ export class FilplusAssertion implements IFilplusAssertion {
         exceptPrice: bigint
     ): Promise<void> {
         let price = await handleEvmError(
-            this.filplus.getDatacapChunkLandPricePreByte()
+            this.filplus.financeRuleDatacapChunkLandPricePreByte()
         )
         assert.isTrue(equal(exceptPrice, price), "price should be expect")
     }
@@ -221,7 +227,9 @@ export class FilplusAssertion implements IFilplusAssertion {
      * @returns A promise indicating whether the assertion passed or not.
      */
     async getDatacapPricePreByteAssertion(exceptPrice: bigint): Promise<void> {
-        let price = await handleEvmError(this.filplus.getDatacapPricePreByte())
+        let price = await handleEvmError(
+            this.filplus.financeRuleDatacapPricePreByte()
+        )
         assert.isTrue(equal(exceptPrice, price), "price should be expect")
     }
 
@@ -444,7 +452,7 @@ export class FilplusAssertion implements IFilplusAssertion {
         expectSize: number
     ): Promise<void> {
         let count = await handleEvmError(
-            this.filplus.datacapRulesMaxAllocatedSizePerTime()
+            this.filplus.datacapRuleMaxAllocatedSizePerTime()
         )
         assert.isTrue(
             equal(expectSize, count),
@@ -462,7 +470,7 @@ export class FilplusAssertion implements IFilplusAssertion {
         expectPercentage: number
     ): Promise<void> {
         let count = await handleEvmError(
-            this.filplus.datacapRulesMaxRemainingPercentageForNext()
+            this.filplus.datacapRuleMaxRemainingPercentageForNext()
         )
         assert.isTrue(
             equal(expectPercentage, count),
@@ -708,7 +716,9 @@ export class FilplusAssertion implements IFilplusAssertion {
      * @returns A promise indicating the success of the operation.
      */
     async setDatacapPricePreByteAssertion(newValue: bigint): Promise<void> {
-        await handleEvmError(this.filplus.setDatacapPricePreByte(newValue))
+        await handleEvmError(
+            this.filplus.setFinanceRuleDatacapPricePreByte(newValue)
+        )
         this.getDatacapPricePreByteAssertion(newValue)
     }
 
@@ -722,7 +732,7 @@ export class FilplusAssertion implements IFilplusAssertion {
         newValue: bigint
     ): Promise<void> {
         await handleEvmError(
-            this.filplus.setDatacapChunkLandPricePreByte(newValue)
+            this.filplus.setFinanceRuleDatacapChunkLandPricePreByte(newValue)
         )
         this.getDatacapChunkLandPricePreByteAssertion(newValue)
     }
@@ -737,7 +747,9 @@ export class FilplusAssertion implements IFilplusAssertion {
         newValue: number
     ): Promise<void> {
         await handleEvmError(
-            this.filplus.setChallengeProofsSubmiterCount(newValue)
+            this.filplus.setDatasetRuleMaxChallengeProofsSubmitersPerDataset(
+                newValue
+            )
         )
         this.getChallengeProofsSubmiterCountAssertion(newValue)
     }
@@ -752,7 +764,7 @@ export class FilplusAssertion implements IFilplusAssertion {
         newValue: bigint
     ): Promise<void> {
         await handleEvmError(
-            this.filplus.setDatacapdatasetApprovedLockDays(newValue)
+            this.filplus.setFinanceRuleDatacapDatasetApprovedLockDays(newValue)
         )
         this.getDatacapdatasetApprovedLockDaysAssertion(newValue)
     }
@@ -767,7 +779,7 @@ export class FilplusAssertion implements IFilplusAssertion {
         newValue: bigint
     ): Promise<void> {
         await handleEvmError(
-            this.filplus.setDatacapCollateralMaxLockDays(newValue)
+            this.filplus.setFinanceRuleDatacapCollateralMaxLockDays(newValue)
         )
         this.getDatacapCollateralMaxLockDaysAssertion(newValue)
     }
@@ -779,7 +791,9 @@ export class FilplusAssertion implements IFilplusAssertion {
      * @returns A promise indicating the success of the operation.
      */
     async setChallengeAuditFeeAssertion(newValue: bigint): Promise<void> {
-        await handleEvmError(this.filplus.setChallengeAuditFee(newValue))
+        await handleEvmError(
+            this.filplus.setFinaceRuleDatasetChallengeProofCollateral(newValue)
+        )
         this.getChallengeAuditFeeAssertion(newValue)
     }
 
@@ -790,7 +804,9 @@ export class FilplusAssertion implements IFilplusAssertion {
      * @returns A promise indicating the success of the operation.
      */
     async setProofAuditFeeAssertion(newValue: bigint): Promise<void> {
-        await handleEvmError(this.filplus.setProofAuditFee(newValue))
+        await handleEvmError(
+            this.filplus.setFinaceRuleDatasetProofCollateral(newValue)
+        )
         this.getProofAuditFeeAssertion(newValue)
     }
 
@@ -801,7 +817,9 @@ export class FilplusAssertion implements IFilplusAssertion {
      * @returns A promise indicating the success of the operation.
      */
     async setDisputeAuditFeeAssertion(newValue: bigint): Promise<void> {
-        await handleEvmError(this.filplus.setDisputeAuditFee(newValue))
+        await handleEvmError(
+            this.filplus.setFinanceRuleDisputeAuditCollateral(newValue)
+        )
         this.getDisputeAuditFeeAssertion(newValue)
     }
 
@@ -815,7 +833,7 @@ export class FilplusAssertion implements IFilplusAssertion {
         newValue: bigint
     ): Promise<void> {
         await handleEvmError(
-            this.filplus.setChallengeProofsPricePrePoint(newValue)
+            this.filplus.setFinanceRuleChallengeProofsPricePrePoint(newValue)
         )
         this.getChallengeProofsPricePrePointAssertion(newValue)
     }
@@ -972,7 +990,7 @@ export class FilplusAssertion implements IFilplusAssertion {
         newValue: number
     ): Promise<void> {
         await handleEvmError(
-            this.filplus.setDatacapRulesMaxAllocatedSizePerTime(newValue)
+            this.filplus.setDatacapRuleMaxAllocatedSizePerTime(newValue)
         )
         this.datacapRulesMaxAllocatedSizePerTimeAssertion(newValue)
     }
@@ -987,7 +1005,7 @@ export class FilplusAssertion implements IFilplusAssertion {
         newValue: number
     ): Promise<void> {
         await handleEvmError(
-            this.filplus.setDatacapRulesMaxRemainingPercentageForNext(newValue)
+            this.filplus.setDatacapRuleMaxRemainingPercentageForNext(newValue)
         )
         this.datacapRulesMaxRemainingPercentageForNextAssertion(newValue)
     }
