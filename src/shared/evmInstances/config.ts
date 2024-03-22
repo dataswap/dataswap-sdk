@@ -46,7 +46,7 @@ export const CALIBRATION_CONTRACT_ADDRESSES: Record<string, ContractAddresses> =
         Hylocereus: {
             RolesAddress: "0xa6A70CCBE00F6D3cB1aE5690949D2641030ba983",
             FilecoinAddress: "0x1eD93e30f1213e0db59790EE52710720bE5AcBAF",
-            FilplusAddress: "0xE681CE9a66ddC066e402C378716a1A095EbDB12d",
+            FilplusAddress: "0x949979803Cbe3e1a4024bFBC3F31AD985445CCF2",
             MerkleUtilsAddress: "0xa7c9869BE574e109bE4d700AFF7d810AA5BFD882",
             CarstoreAddress: "0x051Ac205719649d437a893b1DDFD4BCF5f946BeF",
             EscrowDatacapCollateralAddress:
