@@ -33,6 +33,7 @@ import { BasicStatistics } from "../../../../shared/types/statisticsType"
 import { DatasetMetadataEvm } from "../../../../module/dataset/metadata/repo/evm"
 import { MatchingMetadataEvm } from "../../../../module/matching/metadata/repo/evm"
 import { ChainFilecoinRPC, CidProperty } from "@unipackage/filecoin"
+import { EvmEx } from "../../../../shared/types/evmEngineType"
 
 /**
  * Class representing a MongoDB datastore for MatchingStorageStatisticsInfo entities.
@@ -121,16 +122,16 @@ export class MatchingStorageStatisticsInfoMongoDatastore extends DataStore<
 }
 
 /**
- * Class representing a MongoDB datastore for DatasetsBasicStatistics entities.
+ * Class representing a MongoDB datastore for DatasetsStatistics entities.
  * Extends the DataStore class with BasicStatistics and BasicStatisticsDocument.
  * @class
  */
-export class DatasetsBasicStatisticsMongoDatastore extends DataStore<
+export class DatasetsStatisticsMongoDatastore extends DataStore<
     ValueFields<BasicStatistics>,
     BasicStatisticsDocument
 > {
     /**
-     * Creates an instance of DatasetsBasicStatisticsMongoDatastore.
+     * Creates an instance of DatasetsStatisticsMongoDatastore.
      * @param {string} connection - The MongoDB connection.
      * @constructor
      */
@@ -139,20 +140,20 @@ export class DatasetsBasicStatisticsMongoDatastore extends DataStore<
             new MongooseDataStore<
                 ValueFields<BasicStatistics>,
                 BasicStatisticsDocument
-            >("DatasetsBasicStatistics", BasicStatisticsSchema, connection)
+            >("DatasetsStatistics", BasicStatisticsSchema, connection)
         )
     }
 
     /**
-     * Stores basic statistics in the DatasetsBasicStatisticsDatastore and updates the matching target.
+     * Stores data statistics in the DatasetsStatisticsDatastore and updates the matching target.
      * @param options - Object containing necessary parameters.
-     * @param options.datasets - Datasets to be updated with the stored basic statistics info.
-     * @param options.height - .
+     * @param options.evm - Instance of EvmEx.
+     * @param chainFilecoinRPC: Instance of ChainFilecoinRPC.
+     * @param msgCid: Property representing the Cid.
      * @returns A Promise resolving to a Result indicating the success or failure of the operation.
      */
-    async updateBasicStatisticss(options: {
-        datasets: DatasetMetadataEvm
-        height: bigint
+    async updateStatisticss(options: {
+        evm: EvmEx
         chainFilecoinRPC: ChainFilecoinRPC
         msgCid: CidProperty
     }): Promise<Result<any>> {
@@ -163,74 +164,63 @@ export class DatasetsBasicStatisticsMongoDatastore extends DataStore<
                 )
 
             if (!txHash.ok) {
-                console.log(
-                    "get datasets statistics tx hash failed:",
-                    txHash.error
-                )
+                console.log("get data statistics tx hash failed:", txHash.error)
                 return { ok: true }
             }
             // Get transaction receipt and event arguments
-            const receipt = await options.datasets.getTransactionReceipt(
+            const receipt = await options.evm.getTransactionReceipt(
                 txHash.data!
             )
 
             if (receipt == null) {
-                console.log("get datasets statistics receipt failed:")
+                console.log("get data statistics receipt failed:")
                 return { ok: true }
             }
 
-            const sizeStatistics = options.datasets.getEvmEventArgs(
+            const dataStatisticsEvent = options.evm.getEvmEventArgs(
                 receipt!,
-                "SizeStatistics"
+                "DataStatistics"
             )
 
-            const countStatistics = options.datasets.getEvmEventArgs(
-                receipt!,
-                "CountStatistics"
-            )
-
-            if (!countStatistics.ok) {
+            if (!dataStatisticsEvent.ok) {
                 console.log(
-                    "get datasets countStatistics failed:",
-                    countStatistics.error
+                    "get dataStatistics failed:",
+                    dataStatisticsEvent.error
                 )
                 return { ok: true }
             }
-            if (!countStatistics.data) {
-                console.log("get datasets count statistics failed")
+            if (!dataStatisticsEvent.data) {
+                console.log("get data statistics failed")
                 return { ok: true }
             }
-            if (!sizeStatistics.ok) {
-                console.log(
-                    "get datasets sizeStatistics failed:",
-                    sizeStatistics.error
-                )
-                return { ok: true }
-            }
-            if (!sizeStatistics.data) {
-                console.log("get datasets size statistics failed")
-                return { ok: true }
-            }
-            let basicStatistics = new BasicStatistics({
-                totalCounts: countStatistics.data.total,
-                successCounts: countStatistics.data.success,
-                ongoingCounts: countStatistics.data.ongoing,
-                failedCounts: countStatistics.data.failed,
-                totalSize: sizeStatistics.data.total,
-                successSize: sizeStatistics.data.success,
-                ongoingSize: sizeStatistics.data.ongoing,
-                failedSize: sizeStatistics.data.failed,
-                height: options.height,
+
+            let dataStatistics = new BasicStatistics({
+                totalCounts: dataStatisticsEvent.data.totalCount,
+                successCounts: dataStatisticsEvent.data.successCount,
+                ongoingCounts: BigInt(
+                    dataStatisticsEvent.data.totalCount -
+                        dataStatisticsEvent.data.successCount -
+                        dataStatisticsEvent.data.failedCount
+                ),
+                failedCounts: dataStatisticsEvent.data.failedCount,
+                totalSize: dataStatisticsEvent.data.totalSize,
+                successSize: dataStatisticsEvent.data.successSize,
+                ongoingSize: BigInt(
+                    dataStatisticsEvent.data.totalSize -
+                        dataStatisticsEvent.data.successSize -
+                        dataStatisticsEvent.data.failedSize
+                ),
+                failedSize: dataStatisticsEvent.data.failedSize,
+                height: dataStatisticsEvent.data.height,
             })
-            const ret =
-                await this.CreateOrupdateByUniqueIndexes(basicStatistics)
+            const ret = await this.CreateOrupdateByUniqueIndexes(dataStatistics)
             if (!ret.ok) {
                 return {
                     ok: false,
                     error: new Error(`store error:${ret.error}`),
                 }
             }
-            return { ok: true, data: basicStatistics }
+            return { ok: true, data: dataStatistics }
         } catch (error) {
             throw error
         }
@@ -238,16 +228,16 @@ export class DatasetsBasicStatisticsMongoDatastore extends DataStore<
 }
 
 /**
- * Class representing a MongoDB datastore for MatchingsBasicStatistics entities.
+ * Class representing a MongoDB datastore for MatchingsStatistics entities.
  * Extends the DataStore class with BasicStatistics and BasicStatisticsDocument.
  * @class
  */
-export class MatchingsBasicStatisticsMongoDatastore extends DataStore<
+export class MatchingsStatisticsMongoDatastore extends DataStore<
     ValueFields<BasicStatistics>,
     BasicStatisticsDocument
 > {
     /**
-     * Creates an instance of MatchingsBasicStatisticsMongoDatastore.
+     * Creates an instance of MatchingsStatisticsMongoDatastore.
      * @param {string} connection - The MongoDB connection.
      * @constructor
      */
@@ -256,20 +246,20 @@ export class MatchingsBasicStatisticsMongoDatastore extends DataStore<
             new MongooseDataStore<
                 ValueFields<BasicStatistics>,
                 BasicStatisticsDocument
-            >("MatchingsBasicStatistics", BasicStatisticsSchema, connection)
+            >("MatchingsStatistics", BasicStatisticsSchema, connection)
         )
     }
 
     /**
-     * Stores basic statistics in the MatchingsBasicStatisticsDatastore and updates the matching target.
+     * Stores basic statistics in the MatchingsStatisticsDatastore and updates the matching target.
      * @param options - Object containing necessary parameters.
-     * @param options.matchings - matchings to be updated with the stored basic statistics info.
-     * @param options.height - .
+     * @param options.evm - Instance of EvmEx.
+     * @param chainFilecoinRPC: Instance of ChainFilecoinRPC.
+     * @param msgCid: Property representing the Cid.
      * @returns A Promise resolving to a Result indicating the success or failure of the operation.
      */
-    async updateBasicStatisticss(options: {
-        matchings: MatchingMetadataEvm
-        height: bigint
+    async updateStatisticss(options: {
+        evm: EvmEx
         chainFilecoinRPC: ChainFilecoinRPC
         msgCid: CidProperty
     }): Promise<Result<any>> {
@@ -280,74 +270,63 @@ export class MatchingsBasicStatisticsMongoDatastore extends DataStore<
                 )
 
             if (!txHash.ok) {
-                console.log(
-                    "get matchings statistics tx hash failed:",
-                    txHash.error
-                )
+                console.log("get data statistics tx hash failed:", txHash.error)
                 return { ok: true }
             }
             // Get transaction receipt and event arguments
-            const receipt = await options.matchings.getTransactionReceipt(
+            const receipt = await options.evm.getTransactionReceipt(
                 txHash.data!
             )
 
             if (receipt == null) {
-                console.log("get matchings statistics receipt failed:")
+                console.log("get data statistics receipt failed:")
                 return { ok: true }
             }
 
-            const sizeStatistics = options.matchings.getEvmEventArgs(
+            const dataStatisticsEvent = options.evm.getEvmEventArgs(
                 receipt!,
-                "SizeStatistics"
+                "DataStatistics"
             )
 
-            const countStatistics = options.matchings.getEvmEventArgs(
-                receipt!,
-                "CountStatistics"
-            )
-
-            if (!countStatistics.ok) {
+            if (!dataStatisticsEvent.ok) {
                 console.log(
-                    "get matchings countStatistics failed:",
-                    countStatistics.error
+                    "get dataStatistics failed:",
+                    dataStatisticsEvent.error
                 )
                 return { ok: true }
             }
-            if (!countStatistics.data) {
-                console.log("get matchings count statistics failed")
+            if (!dataStatisticsEvent.data) {
+                console.log("get data statistics failed")
                 return { ok: true }
             }
-            if (!sizeStatistics.ok) {
-                console.log(
-                    "get matchings sizeStatistics failed:",
-                    sizeStatistics.error
-                )
-                return { ok: true }
-            }
-            if (!sizeStatistics.data) {
-                console.log("get matchings size statistics failed")
-                return { ok: true }
-            }
-            let basicStatistics = new BasicStatistics({
-                totalCounts: countStatistics.data.total,
-                successCounts: countStatistics.data.success,
-                ongoingCounts: countStatistics.data.ongoing,
-                failedCounts: countStatistics.data.failed,
-                totalSize: sizeStatistics.data.total,
-                successSize: sizeStatistics.data.success,
-                ongoingSize: sizeStatistics.data.ongoing,
-                failedSize: sizeStatistics.data.failed,
-                height: options.height,
+
+            let dataStatistics = new BasicStatistics({
+                totalCounts: dataStatisticsEvent.data.totalCount,
+                successCounts: dataStatisticsEvent.data.successCount,
+                ongoingCounts: BigInt(
+                    dataStatisticsEvent.data.totalCount -
+                        dataStatisticsEvent.data.successCount -
+                        dataStatisticsEvent.data.failedCount
+                ),
+                failedCounts: dataStatisticsEvent.data.failedCount,
+                totalSize: dataStatisticsEvent.data.totalSize,
+                successSize: dataStatisticsEvent.data.successSize,
+                ongoingSize: BigInt(
+                    dataStatisticsEvent.data.totalSize -
+                        dataStatisticsEvent.data.successSize -
+                        dataStatisticsEvent.data.failedSize
+                ),
+                failedSize: dataStatisticsEvent.data.failedSize,
+                height: dataStatisticsEvent.data.height,
             })
-            const ret =
-                await this.CreateOrupdateByUniqueIndexes(basicStatistics)
+            const ret = await this.CreateOrupdateByUniqueIndexes(dataStatistics)
             if (!ret.ok) {
                 return {
                     ok: false,
                     error: new Error(`store error:${ret.error}`),
                 }
             }
-            return { ok: true, data: basicStatistics }
+            return { ok: true, data: dataStatistics }
         } catch (error) {
             throw error
         }
@@ -355,16 +334,16 @@ export class MatchingsBasicStatisticsMongoDatastore extends DataStore<
 }
 
 /**
- * Class representing a MongoDB datastore for StoragesBasicStatistics entities.
+ * Class representing a MongoDB datastore for StoragesStatistics entities.
  * Extends the DataStore class with BasicStatistics and BasicStatisticsDocument.
  * @class
  */
-export class StoragesBasicStatisticsMongoDatastore extends DataStore<
+export class StoragesStatisticsMongoDatastore extends DataStore<
     ValueFields<BasicStatistics>,
     BasicStatisticsDocument
 > {
     /**
-     * Creates an instance of StoragesBasicStatisticsMongoDatastore.
+     * Creates an instance of StoragesStatisticsMongoDatastore.
      * @param {string} connection - The MongoDB connection.
      * @constructor
      */
@@ -373,20 +352,20 @@ export class StoragesBasicStatisticsMongoDatastore extends DataStore<
             new MongooseDataStore<
                 ValueFields<BasicStatistics>,
                 BasicStatisticsDocument
-            >("StoragesBasicStatistics", BasicStatisticsSchema, connection)
+            >("StoragesStatistics", BasicStatisticsSchema, connection)
         )
     }
 
     /**
-     * Stores basic statistics in the StoragesBasicStatisticsDatastore and updates the matching target.
+     * Stores basic statistics in the MatchingsStatisticsDatastore and updates the matching target.
      * @param options - Object containing necessary parameters.
-     * @param options.storages - storages to be updated with the stored basic statistics info.
-     * @param options.height - .
+     * @param options.evm - Instance of EvmEx.
+     * @param chainFilecoinRPC: Instance of ChainFilecoinRPC.
+     * @param msgCid: Property representing the Cid.
      * @returns A Promise resolving to a Result indicating the success or failure of the operation.
      */
-    async updateBasicStatisticss(options: {
-        storages: StoragesEvm
-        height: bigint
+    async updateStatisticss(options: {
+        evm: EvmEx
         chainFilecoinRPC: ChainFilecoinRPC
         msgCid: CidProperty
     }): Promise<Result<any>> {
@@ -397,74 +376,63 @@ export class StoragesBasicStatisticsMongoDatastore extends DataStore<
                 )
 
             if (!txHash.ok) {
-                console.log(
-                    "get storages statistics tx hash failed:",
-                    txHash.error
-                )
+                console.log("get data statistics tx hash failed:", txHash.error)
                 return { ok: true }
             }
             // Get transaction receipt and event arguments
-            const receipt = await options.storages.getTransactionReceipt(
+            const receipt = await options.evm.getTransactionReceipt(
                 txHash.data!
             )
 
             if (receipt == null) {
-                console.log("get storages statistics receipt failed:")
+                console.log("get data statistics receipt failed:")
                 return { ok: true }
             }
 
-            const sizeStatistics = options.storages.getEvmEventArgs(
+            const dataStatisticsEvent = options.evm.getEvmEventArgs(
                 receipt!,
-                "SizeStatistics"
+                "DataStatistics"
             )
 
-            const countStatistics = options.storages.getEvmEventArgs(
-                receipt!,
-                "CountStatistics"
-            )
-
-            if (!countStatistics.ok) {
+            if (!dataStatisticsEvent.ok) {
                 console.log(
-                    "get storages countStatistics failed:",
-                    countStatistics.error
+                    "get dataStatistics failed:",
+                    dataStatisticsEvent.error
                 )
                 return { ok: true }
             }
-            if (!countStatistics.data) {
-                console.log("get storages count statistics failed")
+            if (!dataStatisticsEvent.data) {
+                console.log("get data statistics failed")
                 return { ok: true }
             }
-            if (!sizeStatistics.ok) {
-                console.log(
-                    "get storages sizeStatistics failed:",
-                    sizeStatistics.error
-                )
-                return { ok: true }
-            }
-            if (!sizeStatistics.data) {
-                console.log("get storages size statistics failed")
-                return { ok: true }
-            }
-            let basicStatistics = new BasicStatistics({
-                totalCounts: countStatistics.data.total,
-                successCounts: countStatistics.data.success,
-                ongoingCounts: countStatistics.data.ongoing,
-                failedCounts: countStatistics.data.failed,
-                totalSize: sizeStatistics.data.total,
-                successSize: sizeStatistics.data.success,
-                ongoingSize: sizeStatistics.data.ongoing,
-                failedSize: sizeStatistics.data.failed,
-                height: options.height,
+
+            let dataStatistics = new BasicStatistics({
+                totalCounts: dataStatisticsEvent.data.totalCount,
+                successCounts: dataStatisticsEvent.data.successCount,
+                ongoingCounts: BigInt(
+                    dataStatisticsEvent.data.totalCount -
+                        dataStatisticsEvent.data.successCount -
+                        dataStatisticsEvent.data.failedCount
+                ),
+                failedCounts: dataStatisticsEvent.data.failedCount,
+                totalSize: dataStatisticsEvent.data.totalSize,
+                successSize: dataStatisticsEvent.data.successSize,
+                ongoingSize: BigInt(
+                    dataStatisticsEvent.data.totalSize -
+                        dataStatisticsEvent.data.successSize -
+                        dataStatisticsEvent.data.failedSize
+                ),
+                failedSize: dataStatisticsEvent.data.failedSize,
+                height: dataStatisticsEvent.data.height,
             })
-            const ret =
-                await this.CreateOrupdateByUniqueIndexes(basicStatistics)
+            const ret = await this.CreateOrupdateByUniqueIndexes(dataStatistics)
             if (!ret.ok) {
                 return {
                     ok: false,
                     error: new Error(`store error:${ret.error}`),
                 }
             }
-            return { ok: true, data: basicStatistics }
+            return { ok: true, data: dataStatistics }
         } catch (error) {
             throw error
         }

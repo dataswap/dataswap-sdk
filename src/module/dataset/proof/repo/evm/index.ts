@@ -89,6 +89,17 @@ interface DatasetProofCallEvm {
     getDatasetProofCompleteHeight(datasetId: number): Promise<EvmOutput<number>>
 
     /**
+     * Retrieves the Merkle root hash of the dataset for the specified dataset ID and data type.
+     * @param datasetId The ID of the dataset for which to retrieve the Merkle root hash.
+     * @param dataType The type of data for which to retrieve the Merkle root hash.
+     * @returns A Promise that resolves to an EvmOutput<string> containing the Merkle root hash.
+     */
+    getDatasetProofRootHash(
+        datasetId: number,
+        dataType: DataType
+    ): Promise<EvmOutput<string>>
+
+    /**
      * Checks if a specific car is present in a dataset identified by its ID.
      * @param datasetId - The ID of the dataset.
      * @param id - The ID of the car to check.
@@ -249,6 +260,7 @@ export interface DatasetProofOriginEvm
     "getDatasetProofSubmitter",
     "getDatasetSize",
     "getDatasetProofCompleteHeight",
+    "getDatasetProofRootHash",
     "isDatasetProofallCompleted",
     "isDatasetContainsCar",
     "isDatasetContainsCars",

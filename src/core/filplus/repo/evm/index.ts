@@ -392,7 +392,7 @@ interface FilplusSendEvm {
      * @param blocks The number of blocks representing the duration of the election.
      * @returns A promise resolving to the transaction receipt.
      */
-    setAuditorsElectionTime(blocks: number): Promise<EvmOutput<void>>
+    setDatasetRuleAuditorsElectionTime(blocks: number): Promise<EvmOutput<void>>
     /**
      * Sets the audit fee for challenging a proof.
      *
@@ -598,7 +598,7 @@ export interface FilplusOriginEvm extends FilplusCallEvm, FilplusSendEvm {}
     "setDatasetRuleMaxChallengeProofsSubmitersPerDataset",
     "setFinanceRuleDatacapDatasetApprovedLockDays",
     "setFinanceRuleDatacapCollateralMaxLockDays",
-    "setAuditorsElectionTime",
+    "setDatasetRuleAuditorsElectionTime",
     "setFinaceRuleDatasetChallengeProofCollateral",
     "setFinaceRuleDatasetProofCollateral",
     "setFinanceRuleDisputeAuditCollateral",

@@ -20,7 +20,7 @@
 import chai from "chai"
 import {
     MatchingStorageStatisticsInfoMongoDatastore,
-    DatasetsBasicStatisticsMongoDatastore,
+    DatasetsStatisticsMongoDatastore,
 } from "../../../src/core/statistics/repo/datastore"
 import {
     MatchingStorageStatisticsInfo,
@@ -104,11 +104,11 @@ const sampleBasicStatistics: ValueFields<BasicStatistics> = {
     height: BigInt(1024),
 }
 
-describe("DatasetsBasicStatisticsMongoDatastore", () => {
+describe("DatasetsStatisticsMongoDatastore", () => {
     const connection = DatabaseConnection.getInstance(
         "mongodb://127.0.0.1:27017/datastore"
     )
-    const datastore = new DatasetsBasicStatisticsMongoDatastore(connection)
+    const datastore = new DatasetsStatisticsMongoDatastore(connection)
 
     beforeEach(async () => {
         const res = await datastore.connect()
@@ -121,16 +121,16 @@ describe("DatasetsBasicStatisticsMongoDatastore", () => {
     })
 
     describe("constructor", () => {
-        it("should create an instance of DatasetsBasicStatisticsMongoDatastore", () => {
+        it("should create an instance of DatasetsStatisticsMongoDatastore", () => {
             expect(datastore).to.be.an.instanceOf(
-                DatasetsBasicStatisticsMongoDatastore
+                DatasetsStatisticsMongoDatastore
             )
         })
     })
 
     describe("save", () => {
         //@note: Testing individually is normal, but there are issues when integrated into the CI testing environment."
-        it.skip("should save a DatasetsBasicStatistics to the datastore", async () => {
+        it.skip("should save a DatasetsStatistics to the datastore", async () => {
             const createRes = await datastore.CreateOrupdateByUniqueIndexes(
                 sampleBasicStatistics
             )
