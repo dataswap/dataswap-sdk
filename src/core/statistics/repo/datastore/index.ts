@@ -32,6 +32,7 @@ import { MatchingTargetEvm } from "../../../../module/matching/target/repo/evm"
 import { BasicStatistics } from "../../../../shared/types/statisticsType"
 import { DatasetMetadataEvm } from "../../../../module/dataset/metadata/repo/evm"
 import { MatchingMetadataEvm } from "../../../../module/matching/metadata/repo/evm"
+import { ChainFilecoinRPC, CidProperty } from "@unipackage/filecoin"
 
 /**
  * Class representing a MongoDB datastore for MatchingStorageStatisticsInfo entities.
@@ -152,27 +153,63 @@ export class DatasetsBasicStatisticsMongoDatastore extends DataStore<
     async updateBasicStatisticss(options: {
         datasets: DatasetMetadataEvm
         height: bigint
+        chainFilecoinRPC: ChainFilecoinRPC
+        msgCid: CidProperty
     }): Promise<Result<any>> {
         try {
-            const countStatistics = await options.datasets.getCountOverview()
+            const txHash =
+                await options.chainFilecoinRPC.EthGetTransactionHashByCid(
+                    options.msgCid
+                )
+
+            if (!txHash.ok) {
+                console.log(
+                    "get datasets statistics tx hash failed:",
+                    txHash.error
+                )
+                return { ok: true }
+            }
+            // Get transaction receipt and event arguments
+            const receipt = await options.datasets.getTransactionReceipt(
+                txHash.data!
+            )
+
+            if (receipt == null) {
+                console.log("get datasets statistics receipt failed:")
+                return { ok: true }
+            }
+
+            const sizeStatistics = options.datasets.getEvmEventArgs(
+                receipt!,
+                "SizeStatistics"
+            )
+
+            const countStatistics = options.datasets.getEvmEventArgs(
+                receipt!,
+                "CountStatistics"
+            )
+
             if (!countStatistics.ok) {
-                return { ok: false, error: countStatistics.error }
+                console.log(
+                    "get datasets countStatistics failed:",
+                    countStatistics.error
+                )
+                return { ok: true }
             }
             if (!countStatistics.data) {
-                return {
-                    ok: false,
-                    error: new Error("get datasets count statistics failed"),
-                }
+                console.log("get datasets count statistics failed")
+                return { ok: true }
             }
-            const sizeStatistics = await options.datasets.getSizeOverview()
             if (!sizeStatistics.ok) {
-                return { ok: false, error: sizeStatistics.error }
+                console.log(
+                    "get datasets sizeStatistics failed:",
+                    sizeStatistics.error
+                )
+                return { ok: true }
             }
             if (!sizeStatistics.data) {
-                return {
-                    ok: false,
-                    error: new Error("get datasets size statistics failed"),
-                }
+                console.log("get datasets size statistics failed")
+                return { ok: true }
             }
             let basicStatistics = new BasicStatistics({
                 totalCounts: countStatistics.data.total,
@@ -233,27 +270,63 @@ export class MatchingsBasicStatisticsMongoDatastore extends DataStore<
     async updateBasicStatisticss(options: {
         matchings: MatchingMetadataEvm
         height: bigint
+        chainFilecoinRPC: ChainFilecoinRPC
+        msgCid: CidProperty
     }): Promise<Result<any>> {
         try {
-            const countStatistics = await options.matchings.getCountOverview()
+            const txHash =
+                await options.chainFilecoinRPC.EthGetTransactionHashByCid(
+                    options.msgCid
+                )
+
+            if (!txHash.ok) {
+                console.log(
+                    "get matchings statistics tx hash failed:",
+                    txHash.error
+                )
+                return { ok: true }
+            }
+            // Get transaction receipt and event arguments
+            const receipt = await options.matchings.getTransactionReceipt(
+                txHash.data!
+            )
+
+            if (receipt == null) {
+                console.log("get matchings statistics receipt failed:")
+                return { ok: true }
+            }
+
+            const sizeStatistics = options.matchings.getEvmEventArgs(
+                receipt!,
+                "SizeStatistics"
+            )
+
+            const countStatistics = options.matchings.getEvmEventArgs(
+                receipt!,
+                "CountStatistics"
+            )
+
             if (!countStatistics.ok) {
-                return { ok: false, error: countStatistics.error }
+                console.log(
+                    "get matchings countStatistics failed:",
+                    countStatistics.error
+                )
+                return { ok: true }
             }
             if (!countStatistics.data) {
-                return {
-                    ok: false,
-                    error: new Error("get matchings count statistics failed"),
-                }
+                console.log("get matchings count statistics failed")
+                return { ok: true }
             }
-            const sizeStatistics = await options.matchings.getSizeOverview()
             if (!sizeStatistics.ok) {
-                return { ok: false, error: sizeStatistics.error }
+                console.log(
+                    "get matchings sizeStatistics failed:",
+                    sizeStatistics.error
+                )
+                return { ok: true }
             }
             if (!sizeStatistics.data) {
-                return {
-                    ok: false,
-                    error: new Error("get matchings size statistics failed"),
-                }
+                console.log("get matchings size statistics failed")
+                return { ok: true }
             }
             let basicStatistics = new BasicStatistics({
                 totalCounts: countStatistics.data.total,
@@ -314,27 +387,63 @@ export class StoragesBasicStatisticsMongoDatastore extends DataStore<
     async updateBasicStatisticss(options: {
         storages: StoragesEvm
         height: bigint
+        chainFilecoinRPC: ChainFilecoinRPC
+        msgCid: CidProperty
     }): Promise<Result<any>> {
         try {
-            const countStatistics = await options.storages.getCountOverview()
+            const txHash =
+                await options.chainFilecoinRPC.EthGetTransactionHashByCid(
+                    options.msgCid
+                )
+
+            if (!txHash.ok) {
+                console.log(
+                    "get storages statistics tx hash failed:",
+                    txHash.error
+                )
+                return { ok: true }
+            }
+            // Get transaction receipt and event arguments
+            const receipt = await options.storages.getTransactionReceipt(
+                txHash.data!
+            )
+
+            if (receipt == null) {
+                console.log("get storages statistics receipt failed:")
+                return { ok: true }
+            }
+
+            const sizeStatistics = options.storages.getEvmEventArgs(
+                receipt!,
+                "SizeStatistics"
+            )
+
+            const countStatistics = options.storages.getEvmEventArgs(
+                receipt!,
+                "CountStatistics"
+            )
+
             if (!countStatistics.ok) {
-                return { ok: false, error: countStatistics.error }
+                console.log(
+                    "get storages countStatistics failed:",
+                    countStatistics.error
+                )
+                return { ok: true }
             }
             if (!countStatistics.data) {
-                return {
-                    ok: false,
-                    error: new Error("get storages count statistics failed"),
-                }
+                console.log("get storages count statistics failed")
+                return { ok: true }
             }
-            const sizeStatistics = await options.storages.getSizeOverview()
             if (!sizeStatistics.ok) {
-                return { ok: false, error: sizeStatistics.error }
+                console.log(
+                    "get storages sizeStatistics failed:",
+                    sizeStatistics.error
+                )
+                return { ok: true }
             }
             if (!sizeStatistics.data) {
-                return {
-                    ok: false,
-                    error: new Error("get storages size statistics failed"),
-                }
+                console.log("get storages size statistics failed")
+                return { ok: true }
             }
             let basicStatistics = new BasicStatistics({
                 totalCounts: countStatistics.data.total,
