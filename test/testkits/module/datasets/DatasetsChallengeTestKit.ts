@@ -94,7 +94,9 @@ export class SubmitDatasetChallengeTestKit extends DatasetsTestBase {
                 .setDefault(process.env.DATASWAP_GOVERNANCE as string)
 
             await handleEvmError(
-                this.contractsManager.FilplusEvm().setAuditorsElectionTime(5)
+                this.contractsManager
+                    .FilplusEvm()
+                    .setDatasetRuleAuditorsElectionTime(5)
             )
             const proofCompleteHeight = await this.contractsManager
                 .DatasetProofEvm()

@@ -77,9 +77,9 @@ export { MatchingBidMongoDatastore } from "./module/matching/bids/repo/datastore
 
 export {
     MatchingStorageStatisticsInfoMongoDatastore,
-    DatasetsBasicStatisticsMongoDatastore,
-    MatchingsBasicStatisticsMongoDatastore,
-    StoragesBasicStatisticsMongoDatastore,
+    DatasetsStatisticsMongoDatastore,
+    MatchingsStatisticsMongoDatastore,
+    StoragesStatisticsMongoDatastore,
 } from "./core/statistics/repo/datastore"
 export { MemberMongoDatastore } from "./core/community/repo/datastore"
 
