@@ -1,5 +1,16 @@
 
 
+## [0.25.2](https://github.com/dataswap/dataswapjs/compare/0.25.1...0.25.2) (2024-03-25)
+
+
+### Bug Fixes
+
+* 🐛 change winner to ethaddress in matchingmetadata ([e508032](https://github.com/dataswap/dataswapjs/commit/e50803282e784304f27fdeafdff501ca605cb193)), closes [#323](https://github.com/dataswap/dataswapjs/issues/323)
+* 🐛 update abi version to 0.9.0 ([aa9f677](https://github.com/dataswap/dataswapjs/commit/aa9f677e7d2e3e4d10c2efdf99c3a7014ce03438)), closes [#332](https://github.com/dataswap/dataswapjs/issues/332)
+* 🐛 update calibnet filplus address ([4482a8b](https://github.com/dataswap/dataswapjs/commit/4482a8bbca6771bfca1b21c179d9e353c213a812))
+* 🐛 update filecoin version to 2.3.0 ([4d59438](https://github.com/dataswap/dataswapjs/commit/4d59438e4c0adc500657d86bc409acfe2428a7d4)), closes [#335](https://github.com/dataswap/dataswapjs/issues/335)
+* 🐛 update statistics from events ([a731ca9](https://github.com/dataswap/dataswapjs/commit/a731ca9184507084b82be0468a1f74d4bc3f41ab)), closes [#328](https://github.com/dataswap/dataswapjs/issues/328)
+
 ## [0.25.1](https://github.com/dataswap/dataswapjs/compare/0.25.0...0.25.1) (2024-03-20)
 
 
