@@ -164,6 +164,8 @@ export class DatasetRequirementEvm extends DatasetRequirementOriginEvm {
                 result.datasetId = Number(result.params.datasetId)
                 result.params.datasetId = result.datasetId
                 break
+            case "upgradeTo":
+                break
             default:
                 return {
                     ok: false,

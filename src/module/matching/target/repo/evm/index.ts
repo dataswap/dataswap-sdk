@@ -233,6 +233,8 @@ export class MatchingTargetEvm extends MatchingTargetOriginEvm {
                     result.matchingId = Number(result.params.matchingId)
                 }
                 break
+            case "upgradeTo":
+                break
             default:
                 return {
                     ok: false,

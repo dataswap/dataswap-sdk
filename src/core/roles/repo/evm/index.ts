@@ -306,6 +306,7 @@ export class RolesEvm extends RolesOriginEvm {
             case "renounceOwnership":
             case "transferOwnership":
             case "registerContract":
+            case "upgradeTo":
                 break
             default:
                 return {
