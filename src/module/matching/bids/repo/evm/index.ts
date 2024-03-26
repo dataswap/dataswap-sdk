@@ -192,7 +192,7 @@ export class MatchingBidsEvm extends MatchingBidsOriginEvm {
                 result.matchingId = Number(result.params.matchingId)
                 result.params.matchingId = result.matchingId
                 break
-            case "initDependencies":
+            case "upgradeTo":
                 break
             default:
                 return {

@@ -331,6 +331,9 @@ export class DatasetMetadataEvm extends DatasetMetadataOriginEvm {
                 result.datasetId = Number(result.params.datasetId)
                 result.params.datasetId = result.datasetId
                 break
+
+            case "upgradeTo":
+                break
             default:
                 return {
                     ok: false,

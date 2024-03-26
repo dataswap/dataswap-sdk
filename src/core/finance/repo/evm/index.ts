@@ -278,6 +278,8 @@ export class FinanceEvm extends FinanceOriginEvm {
                 result.matchingId = Number(result.params.matchingId)
                 result.params.matchingId = result.matchingId
                 break
+            case "upgradeTo":
+                break
             default:
                 return {
                     ok: false,

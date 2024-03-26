@@ -260,6 +260,8 @@ export class DatasetChallengeEvm extends DatasetChallengeOriginEvm {
             case "nominateAsDatasetAuditorCandidate":
                 result.datasetId = Number(result.params.datasetId)
                 result.params.datasetId = result.datasetId
+            case "upgradeTo":
+                break
             default:
                 return {
                     ok: false,

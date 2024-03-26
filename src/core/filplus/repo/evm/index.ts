@@ -666,6 +666,7 @@ export class FilplusEvm extends FilplusOriginEvm {
             case "setDatasetRuleMaxTotalReplicasPerDataset":
             case "setDatacapRuleMaxAllocatedSizePerTime":
             case "setDatacapRuleMaxRemainingPercentageForNext":
+            case "upgradeTo":
                 break
             default:
                 return {

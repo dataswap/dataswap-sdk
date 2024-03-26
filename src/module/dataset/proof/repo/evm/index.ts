@@ -326,6 +326,9 @@ export class DatasetProofEvm extends DatasetProofOriginEvm {
                 result.params.datasetId = result.datasetId
 
                 break
+
+            case "upgradeTo":
+                break
             default:
                 console.log("method:", decodeRes.data!.method)
                 return {
