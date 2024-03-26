@@ -77,4 +77,20 @@ export class EvmEx extends Evm {
             await new Promise((resolve) => setTimeout(resolve, blockPeriod))
         }
     }
+
+    /**
+     * Asynchronously retrieves the current block height.
+     * @returns A Promise that resolves to the current block height as a number.
+     */
+    async getBlockHeight(): Promise<number> {
+        const etherProvider = super.getEtherProvider()
+        const web3Provider = super.getWeb3()
+        let currentBlock: number = 0
+        if (etherProvider) {
+            currentBlock = await etherProvider.getBlockNumber()
+        } else if (web3Provider) {
+            currentBlock = Number(await web3Provider.eth.getBlockNumber())
+        }
+        return currentBlock
+    }
 }

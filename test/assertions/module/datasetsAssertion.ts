@@ -892,6 +892,27 @@ export class DatasetsAssertion implements IDatasetsAssertion {
         )
         expect(expectRet).to.be.equal(ret)
     }
+
+    /**
+     * Asynchronously checks if an auditor is expected to be a winner for a dataset.
+     * @param datasetId The ID of the dataset.
+     * @param caller The address of the auditor to check.
+     * @param expectRet The expected result indicating whether the auditor is a winner.
+     * @returns A Promise that resolves to void.
+     */
+    async isWinnerAssertion(
+        caller: string,
+        datasetId: number,
+        expectRet: boolean
+    ): Promise<void> {
+        const ret = await handleEvmError(
+            this.contractsManager
+                .DatasetChallengeEvm()
+                .isWinner(datasetId, caller)
+        )
+        expect(expectRet).to.be.equal(ret)
+    }
+
     /**
      * Asynchronously asserts auditor stake.
      *
