@@ -41,7 +41,7 @@
   },
   "homepage": "https://github.com/dataswap/dataswapjs#readme",
   "dependencies": {
-    "@dataswapcore/contracts": "^0.9.1",
+    "@dataswapcore/contracts": "^0.9.2",
     "@glif/filecoin-address": "^2.0.43",
     "@unipackage/datastore": "^2.0.0",
     "@unipackage/filecoin": "^2.3.0",

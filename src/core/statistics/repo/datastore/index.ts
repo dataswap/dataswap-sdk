@@ -164,7 +164,10 @@ export class DatasetsStatisticsMongoDatastore extends DataStore<
                 )
 
             if (!txHash.ok) {
-                console.log("get data statistics tx hash failed:", txHash.error)
+                console.log(
+                    "get datasets statistics tx hash failed:",
+                    txHash.error
+                )
                 return { ok: true }
             }
             // Get transaction receipt and event arguments
@@ -173,24 +176,24 @@ export class DatasetsStatisticsMongoDatastore extends DataStore<
             )
 
             if (receipt == null) {
-                console.log("get data statistics receipt failed:")
+                console.log("get datasets statistics receipt failed:")
                 return { ok: true }
             }
 
             const dataStatisticsEvent = options.evm.getEvmEventArgs(
                 receipt!,
-                "DataStatistics"
+                "DatasetsStatistics"
             )
 
             if (!dataStatisticsEvent.ok) {
                 console.log(
-                    "get dataStatistics failed:",
+                    "get datasetsStatistics failed:",
                     dataStatisticsEvent.error
                 )
                 return { ok: true }
             }
             if (!dataStatisticsEvent.data) {
-                console.log("get data statistics failed")
+                console.log("get datasets statistics failed")
                 return { ok: true }
             }
 
@@ -270,7 +273,10 @@ export class MatchingsStatisticsMongoDatastore extends DataStore<
                 )
 
             if (!txHash.ok) {
-                console.log("get data statistics tx hash failed:", txHash.error)
+                console.log(
+                    "get matchings statistics tx hash failed:",
+                    txHash.error
+                )
                 return { ok: true }
             }
             // Get transaction receipt and event arguments
@@ -279,24 +285,24 @@ export class MatchingsStatisticsMongoDatastore extends DataStore<
             )
 
             if (receipt == null) {
-                console.log("get data statistics receipt failed:")
+                console.log("get matchings statistics receipt failed:")
                 return { ok: true }
             }
 
             const dataStatisticsEvent = options.evm.getEvmEventArgs(
                 receipt!,
-                "DataStatistics"
+                "MatchingsStatistics"
             )
 
             if (!dataStatisticsEvent.ok) {
                 console.log(
-                    "get dataStatistics failed:",
+                    "get matchingsStatistics failed:",
                     dataStatisticsEvent.error
                 )
                 return { ok: true }
             }
             if (!dataStatisticsEvent.data) {
-                console.log("get data statistics failed")
+                console.log("get matchings statistics failed")
                 return { ok: true }
             }
 
@@ -376,7 +382,10 @@ export class StoragesStatisticsMongoDatastore extends DataStore<
                 )
 
             if (!txHash.ok) {
-                console.log("get data statistics tx hash failed:", txHash.error)
+                console.log(
+                    "get storages statistics tx hash failed:",
+                    txHash.error
+                )
                 return { ok: true }
             }
             // Get transaction receipt and event arguments
@@ -385,24 +394,24 @@ export class StoragesStatisticsMongoDatastore extends DataStore<
             )
 
             if (receipt == null) {
-                console.log("get data statistics receipt failed:")
+                console.log("get storages statistics receipt failed:")
                 return { ok: true }
             }
 
             const dataStatisticsEvent = options.evm.getEvmEventArgs(
                 receipt!,
-                "DataStatistics"
+                "StoragesStatistics"
             )
 
             if (!dataStatisticsEvent.ok) {
                 console.log(
-                    "get dataStatistics failed:",
+                    "get storagesStatistics failed:",
                     dataStatisticsEvent.error
                 )
                 return { ok: true }
             }
             if (!dataStatisticsEvent.data) {
-                console.log("get data statistics failed")
+                console.log("get storages statistics failed")
                 return { ok: true }
             }
 

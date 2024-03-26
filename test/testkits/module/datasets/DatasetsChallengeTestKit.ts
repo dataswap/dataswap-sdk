@@ -109,6 +109,11 @@ export class SubmitDatasetChallengeTestKit extends DatasetsTestBase {
                     Number(process.env.BLOCK_PERIOD)
                 )
 
+            await this.assertion.isWinnerAssertion(
+                process.env.DATASWAP_DATASETAUDITOR as string,
+                datasetId,
+                true
+            )
             // Getting the root hash and generating challenge proof
             const rootHash = this.generator.getProofRoot(
                 datasetId,

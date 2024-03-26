@@ -428,6 +428,20 @@ export interface IDatasetsAssertion {
         randomSeed: bigint,
         expectRet: boolean
     ): Promise<void>
+
+    /**
+     * Asynchronously checks if an auditor is expected to be a winner for a dataset.
+     * @param datasetId The ID of the dataset.
+     * @param caller The address of the auditor to check.
+     * @param expectRet The expected result indicating whether the auditor is a winner.
+     * @returns A Promise that resolves to void.
+     */
+    isWinnerAssertion(
+        caller: string,
+        datasetId: number,
+        expectRet: boolean
+    ): Promise<void>
+
     /**
      * Asynchronously asserts auditor stake.
      *
