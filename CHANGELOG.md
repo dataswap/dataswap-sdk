@@ -1,5 +1,12 @@
 
 
+## [0.25.5](https://github.com/dataswap/dataswapjs/compare/0.25.4...0.25.5) (2024-03-26)
+
+
+### Bug Fixes
+
+* 🐛 add upgradeTo to decodeMessage ([b1a0caa](https://github.com/dataswap/dataswapjs/commit/b1a0caaa9669a5c8e0fe97217add0f6cd52f7000)), closes [#342](https://github.com/dataswap/dataswapjs/issues/342)
+
 ## [0.25.4](https://github.com/dataswap/dataswapjs/compare/0.25.3...0.25.4) (2024-03-26)
 
 
