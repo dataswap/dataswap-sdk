@@ -1,5 +1,12 @@
 
 
+## [0.25.4](https://github.com/dataswap/dataswapjs/compare/0.25.3...0.25.4) (2024-03-26)
+
+
+### Bug Fixes
+
+* 🐛 update abi version to 0.9.2 ([af86ac9](https://github.com/dataswap/dataswapjs/commit/af86ac92d39fa535c4decbe5f94771ef2ee587d1)), closes [#340](https://github.com/dataswap/dataswapjs/issues/340)
+
 ## [0.25.3](https://github.com/dataswap/dataswapjs/compare/0.25.2...0.25.3) (2024-03-26)
 
 
