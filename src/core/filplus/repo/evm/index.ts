@@ -647,7 +647,7 @@ export class FilplusEvm extends FilplusOriginEvm {
             case "setDatasetRuleMaxChallengeProofsSubmitersPerDataset":
             case "setFinanceRuleDatacapDatasetApprovedLockDays":
             case "setFinanceRuleDatacapCollateralMaxLockDays":
-            case "setAuditorsElectionTime":
+            case "setDatasetRuleAuditorsElectionTime":
             case "setFinaceRuleDatasetChallengeProofCollateral":
             case "setFinaceRuleDatasetProofCollateral":
             case "setFinanceRuleDisputeAuditCollateral":
