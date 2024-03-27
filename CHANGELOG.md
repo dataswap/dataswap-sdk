@@ -1,5 +1,12 @@
 
 
+## [0.25.6](https://github.com/dataswap/dataswapjs/compare/0.25.5...0.25.6) (2024-03-27)
+
+
+### Bug Fixes
+
+* 🐛 The issue with decoding the parameters of the Filplus ([7f07e27](https://github.com/dataswap/dataswapjs/commit/7f07e272f172b78245048d57b3961deeb71fdf5b)), closes [#345](https://github.com/dataswap/dataswapjs/issues/345)
+
 ## [0.25.5](https://github.com/dataswap/dataswapjs/compare/0.25.4...0.25.5) (2024-03-26)
 
 
