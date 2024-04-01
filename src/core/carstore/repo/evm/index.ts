@@ -50,6 +50,20 @@ interface CarstoreCallEvm {
     getCarsSize(carIds: bigint[]): Promise<EvmOutput<bigint>>
 
     /**
+     * Retrieves the piece size for a given car ID.
+     * @param carId The ID of the car.
+     * @returns A promise that resolves to the piece size of the car.
+     */
+    getPieceSize(carId: bigint): Promise<EvmOutput<bigint>>
+
+    /**
+     * Retrieves the total piece size for an array of car IDs.
+     * @param carIds An array containing the IDs of cars.
+     * @returns A promise that resolves to the total piece size of the cars.
+     */
+
+    getPiecesSize(carIds: bigint[]): Promise<EvmOutput<bigint>>
+    /**
      * @notice Get the dataset ID associated with a car.
      * @param carId Car ID to check.
      * @return The dataset ID of the car.
@@ -201,6 +215,8 @@ export interface CarstoreOriginEvm extends CarstoreCallEvm, CarstoreSendEvm {}
     "getCar",
     "getCarSize",
     "getCarsSize",
+    "getPieceSize",
+    "getPiecesSize",
     "getCarDatasetId",
     "getCarMatchingIds",
     "getCarReplica",

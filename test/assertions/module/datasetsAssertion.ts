@@ -742,7 +742,20 @@ export class DatasetsAssertion implements IDatasetsAssertion {
             dataType,
             Number(proofCount) + expectLeafHashes.length
         )
-        const sum = expectLeafSizes.reduce((acc, curr) => acc + curr, 0)
+
+        let sum: number = 0
+        for (let i = 0; i < expectLeafHashes.length; i++) {
+            const carId = await handleEvmError(
+                this.contractsManager
+                    .CarstoreEvm()
+                    .getCarId(expectLeafHashes[i])
+            )
+            const pieceSize = await handleEvmError(
+                this.contractsManager.CarstoreEvm().getPieceSize(carId)
+            )
+            sum += Number(pieceSize)
+        }
+        //const sum = expectLeafSizes.reduce((acc, curr) => acc + curr, 0)
         await this.getDatasetSizeAssertion(
             datasetId,
             dataType,
@@ -837,16 +850,16 @@ export class DatasetsAssertion implements IDatasetsAssertion {
      * @param expectCount - The expected count of challenge proofs.
      * @returns A Promise resolving if the assertion is successful.
      */
-    async getDatasetChallengeProofsCountAssertion(
+    async getChallengeAuditorsCountSubmittedAssertion(
         datasetId: number,
-        expectCount: number
+        expectCount: bigint
     ): Promise<void> {
         const challengeProofsCount = await handleEvmError(
             this.contractsManager
                 .DatasetChallengeEvm()
-                .getDatasetChallengeProofsCount(datasetId)
+                .getChallengeAuditorsCountSubmitted(datasetId)
         )
-        expect(expectCount).to.be.equal(Number(challengeProofsCount))
+        expect(expectCount).to.be.equal(challengeProofsCount)
     }
 
     /**
@@ -855,18 +868,35 @@ export class DatasetsAssertion implements IDatasetsAssertion {
      * @param expectCount - The expected count of challenge submissions.
      * @returns A Promise resolving if the assertion is successful.
      */
-    async getChallengeSubmissionCountAssertion(
+    async getChallengePointsCountRequirementAssertion(
         datasetId: number,
-        expectCount: number
+        expectCount: bigint
     ): Promise<void> {
         const challengeSubmissionCount = await handleEvmError(
             this.contractsManager
                 .DatasetChallengeEvm()
-                .getChallengeSubmissionCount(datasetId)
+                .getChallengePointsCountRequirement(datasetId)
         )
-        expect(expectCount).to.be.equal(Number(challengeSubmissionCount))
+        expect(expectCount).to.be.equal(challengeSubmissionCount)
     }
 
+    /**
+     * Asserts the required number of auditors for challenging a dataset.
+     * @param datasetId The ID of the dataset.
+     * @param expectCount The expected number of auditors required for challenging.
+     * @returns A promise that resolves to void.
+     */
+    async getChallengeAuditorsCountRequirementAssertion(
+        datasetId: number,
+        expectCount: bigint
+    ): Promise<void> {
+        const challengeSubmissionCount = await handleEvmError(
+            this.contractsManager
+                .DatasetChallengeEvm()
+                .getChallengeAuditorsCountRequirement(datasetId)
+        )
+        expect(expectCount).to.be.equal(challengeSubmissionCount)
+    }
     /**
      * Asserts whether a dataset's challenge proof is duplicate based on the provided parameters.
      * @param datasetId - The ID of the dataset.
@@ -978,7 +1008,7 @@ export class DatasetsAssertion implements IDatasetsAssertion {
         const count = await handleEvmError(
             this.contractsManager
                 .DatasetChallengeEvm()
-                .getDatasetChallengeProofsCount(datasetId)
+                .getChallengeAuditorsCountSubmitted(datasetId)
         )
         this.contractsManager
             .DatasetChallengeEvm()
@@ -1010,9 +1040,9 @@ export class DatasetsAssertion implements IDatasetsAssertion {
         )
 
         await this.getDatasetStateAssertion(datasetId, DatasetState.Approved)
-        await this.getDatasetChallengeProofsCountAssertion(
+        await this.getChallengeAuditorsCountSubmittedAssertion(
             datasetId,
-            Number(count) + 1
+            count + BigInt(1)
         )
 
         await this.isDatasetChallengeProofDuplicateAssertion(
@@ -1022,20 +1052,31 @@ export class DatasetsAssertion implements IDatasetsAssertion {
             true
         )
 
-        let expectSubmissionCount: number
-        const carsCount = await handleEvmError(
+        let pointsRequirement: bigint
+        const unpadSize = await handleEvmError(
             this.contractsManager
                 .DatasetProofEvm()
-                .getDatasetProofCount(datasetId, DataType.Source)
+                .getDatasetUnpadSize(datasetId, DataType.Source)
         )
-        if (Number(carsCount) < 1000) {
-            expectSubmissionCount = 1
-        } else {
-            expectSubmissionCount = carsCount / 1000 + 1
-        }
-        await this.getChallengeSubmissionCountAssertion(
+        const smallDataSet = BigInt(1099511627776) //1 point per 1TB
+        const securePoints =
+            (unpadSize + smallDataSet - BigInt(1)) / smallDataSet
+        const pointsPerAuditor = await handleEvmError(
+            this.contractsManager
+                .FilplusEvm()
+                .datasetRuleChallengePointsPerAuditor()
+        )
+        const auditorsRequirement =
+            (securePoints + pointsPerAuditor - BigInt(1)) / pointsPerAuditor
+
+        pointsRequirement = auditorsRequirement * pointsPerAuditor
+        await this.getChallengePointsCountRequirementAssertion(
             datasetId,
-            expectSubmissionCount
+            pointsRequirement
+        )
+        await this.getChallengeAuditorsCountRequirementAssertion(
+            datasetId,
+            auditorsRequirement
         )
     }
 }

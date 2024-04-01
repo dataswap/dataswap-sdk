@@ -57,22 +57,31 @@ interface DatasetChallengeCallEvm {
     ): Promise<EvmOutput<any>>
 
     /**
-     * Get the count of proofs for a dataset challenge.
-     *
-     * @param datasetId - ID of the dataset.
-     * @returns EvmOutput containing the number of proofs.
+     * Retrieves the number of auditors who have submitted challenges for a given dataset ID.
+     * @param datasetId The ID of the dataset.
+     * @returns A promise that resolves to the number of auditors who have submitted challenges.
      */
-    getDatasetChallengeProofsCount(
+    getChallengeAuditorsCountSubmitted(
         datasetId: number
-    ): Promise<EvmOutput<number>>
+    ): Promise<EvmOutput<bigint>>
 
     /**
-     * Get the count of challenges for a dataset.
-     *
-     * @param datasetId - ID of the dataset.
-     * @returns EvmOutput containing the number of challenges.
+     * Retrieves the required number of auditors for challenging a given dataset ID.
+     * @param datasetId The ID of the dataset.
+     * @returns A promise that resolves to the required number of auditors for challenging.
      */
-    getChallengeSubmissionCount(datasetId: number): Promise<EvmOutput<number>>
+    getChallengeAuditorsCountRequirement(
+        datasetId: number
+    ): Promise<EvmOutput<bigint>>
+
+    /**
+     * Retrieves the required number of challenge points for a given dataset ID.
+     * @param datasetId The ID of the dataset.
+     * @returns A promise that resolves to the required number of challenge points.
+     */
+    getChallengePointsCountRequirement(
+        datasetId: number
+    ): Promise<EvmOutput<bigint>>
 
     /**
      * @dev Retrieves the auditor candidates for a specific dataset.
@@ -171,8 +180,9 @@ export interface DatasetChallengeOriginEvm
 @withCallMethod([
     "getDatasetChallengeProofsSubmitters",
     "getDatasetChallengeProofs",
-    "getDatasetChallengeProofsCount",
-    "getChallengeSubmissionCount",
+    "getChallengeAuditorsCountSubmitted",
+    "getChallengeAuditorsCountRequirement",
+    "getChallengePointsCountRequirement",
     "getDatasetAuditorCandidates",
     "getAuditorElectionEndHeight",
     "isWinner",

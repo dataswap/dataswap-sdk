@@ -120,13 +120,13 @@ export interface IFilplusAssertion {
     getChallengeProofsPricePrePointAssertion(exceptPrice: bigint): Promise<void>
 
     /**
-     * Asserts that the challenge proofs submitter count matches the expected count.
-     *
-     * @param exceptCount - The expected challenge proofs submitter count.
-     * @returns A promise indicating whether the assertion passed or not.
+     * Asserts the dataset rule challenge points per auditor.
+     * @param exceptCount The expected count of dataset rule challenge points per auditor.
+     * @returns A promise that resolves to void.
      */
-    getChallengeProofsSubmiterCountAssertion(exceptCount: number): Promise<void>
-
+    datasetRuleChallengePointsPerAuditorAssertion(
+        exceptCount: number
+    ): Promise<void>
     /**
      * Asserts that the datacap chunk land price per byte matches the expected price.
      *
@@ -381,12 +381,13 @@ export interface IFilplusAssertion {
     setDatacapChunkLandPricePreByteAssertion(newValue: bigint): Promise<void>
 
     /**
-     * Sets the count of challenge proofs submitter.
-     *
-     * @param newValue - The new value for the challenge proofs submitter count.
-     * @returns A promise indicating the success of the operation.
+     * Sets the dataset rule challenge points per auditor assertion.
+     * @param newValue The new value for the dataset rule challenge points per auditor.
+     * @returns A promise that resolves to void.
      */
-    setChallengeProofsSubmiterCountAssertion(newValue: number): Promise<void>
+    setDatasetRuleChallengePointsPerAuditorAssertion(
+        newValue: number
+    ): Promise<void>
 
     /**
      * Sets the lock duration in days for approved datasets in datacap.

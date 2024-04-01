@@ -44,33 +44,33 @@ export interface ContractAddresses {
 export const CALIBRATION_CONTRACT_ADDRESSES: Record<string, ContractAddresses> =
     {
         Hylocereus: {
-            RolesAddress: "0xa6A70CCBE00F6D3cB1aE5690949D2641030ba983",
+            RolesAddress: "0x93AFF7872f20EB474704DCFe7B87CA0883b756F0",
             FilecoinAddress: "0x1eD93e30f1213e0db59790EE52710720bE5AcBAF",
-            FilplusAddress: "0x949979803Cbe3e1a4024bFBC3F31AD985445CCF2",
-            MerkleUtilsAddress: "0xa7c9869BE574e109bE4d700AFF7d810AA5BFD882",
-            CarstoreAddress: "0x051Ac205719649d437a893b1DDFD4BCF5f946BeF",
+            FilplusAddress: "0x1Ca9494313391689Bd7020022b33f3a1A5106bf6",
+            MerkleUtilsAddress: "0x202d2A1EE226a95B329398534cED5BEf8eA85510",
+            CarstoreAddress: "0x0643888AEf33c91C8a67a0D50eE4841C677c34b0",
             EscrowDatacapCollateralAddress:
-                "0xD9e50468a99a5e3cc9E85DD0F105A3844de36009",
+                "0x32c37C980Cf1414378d49055Bcf7465f56008d97",
             EscrowDataTradingFeeAddress:
-                "0x78c24BD261B7eb5C317961E335C23cFfe401ABb1",
+                "0x7283f0C053D5331A8A09f0119F4fb520000A169b",
             EscrowDatacapChunkLandCollateralAddress:
-                "0xe252f12deD2a38f751c4cC89A24129c3F521EbAb",
+                "0x999D1718279B370Ea0930F6b04eEE4aF7638AB34",
             EscrowChallengeCommissionAddress:
-                "0x706b258e47d9D620088D9a57ebbB39A0b22D0069",
+                "0xE0ba37b81b7b82003c6A14969e4CadFF21aB34c4",
             EscrowChallengeAuditCollateralAddress:
-                "0x58060a076115645F1dFcCEa57AFD272401d2CEc7",
-            FinanceAddress: "0x4785D6a4D232b1E0EBD7337065Eb43C124A2b35C",
-            DatasetsAddress: "0x213a2D7D8fa03c4C1adCCd695890873E8efe7E13",
+                "0x02d2e537390Dda4a86C068B8883bA8779414A365",
+            FinanceAddress: "0xB0d20d3dBFF9529c2acD97Ec27a948ad1b91293f",
+            DatasetsAddress: "0xD5EDCbd48bBe189A854577F14b4f3015c2bD3296",
             DatasetsRequirementAddress:
-                "0x90F9Fdcd370ba256584E755253c2bd6371bb5529",
-            DatasetsProofAddress: "0xD4A7C0b809f2353b58639e1bC72F7A1d2bf74694",
+                "0x06a52caE4FbcD269E8CA6728755D14b311D24A1c",
+            DatasetsProofAddress: "0x3a5447E29414D5F2b15efb5c80f4B0fA103e2797",
             DatasetsChallengeAddress:
-                "0xc1f15762da15C345A3DD691520617baf2B36b3b2",
-            MatchingsAddress: "0x9b4B40d39c2777FD86c3625B69605efEc80D1111",
+                "0xbbd0f850375a44040f0cd5C00B9654aE89D74629",
+            MatchingsAddress: "0x81504da4648557EC775df1BA9e067d5B9d3eA3b5",
             MatchingsTargetAddress:
-                "0xB7db3921b1082413553a131FBCa5938FeA31900a",
-            MatchingsBidsAddress: "0x926b4E24E918aFb3bfE618E2194fDBb611B6cDd5",
-            StoragesAddress: "0x7A9b3826c813Ec02740eCE5C2f5CfA1e4bCb3ffF",
+                "0xdaEE655849133a984409137c40e696bcD3D874AD",
+            MatchingsBidsAddress: "0xc35BCe2D4c1927ee5ce83cf1D63996E2495aa288",
+            StoragesAddress: "0x6dFacB1082e50174d5446064861CbbF4A1Bea2a4",
         },
     }
 

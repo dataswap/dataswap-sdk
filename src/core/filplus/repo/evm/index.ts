@@ -116,13 +116,10 @@ interface FilplusCallEvm {
     financeRuleChallengeProofsPricePrePoint(): Promise<EvmOutput<bigint>>
 
     /**
-     * Retrieves the count of challenge proofs submitter.
-     *
-     * @returns A promise with the EVM output containing the count of challenge proofs submitter.
+     * Retrieves the challenge points per auditor for dataset rules.
+     * @returns A promise that resolves to the challenge points per auditor.
      */
-    datasetRuleMaxChallengeProofsSubmitersPerDataset(): Promise<
-        EvmOutput<number>
-    >
+    datasetRuleChallengePointsPerAuditor(): Promise<EvmOutput<bigint>>
 
     /**
      * Retrieves the price per byte for datacap chunks of land.
@@ -358,12 +355,11 @@ interface FilplusSendEvm {
     ): Promise<EvmOutput<void>>
 
     /**
-     * Sets the count of challenge proofs submitter.
-     *
-     * @param newValue - The new value for the count of challenge proofs submitter.
-     * @returns A promise with the EVM output indicating the success of the operation.
+     * Sets the challenge points per auditor for dataset rules.
+     * @param newValue The new value for the challenge points per auditor.
+     * @returns A promise that resolves to void.
      */
-    setDatasetRuleMaxChallengeProofsSubmitersPerDataset(
+    setDatasetRuleChallengePointsPerAuditor(
         newValue: number
     ): Promise<EvmOutput<void>>
 
@@ -565,7 +561,7 @@ export interface FilplusOriginEvm extends FilplusCallEvm, FilplusSendEvm {}
     "finaceRuleDatasetProofCollateral",
     "financeRuleDisputeAuditCollateral",
     "financeRuleChallengeProofsPricePrePoint",
-    "datasetRuleMaxChallengeProofsSubmitersPerDataset",
+    "datasetRuleChallengePointsPerAuditor",
     "financeRuleDatacapChunkLandPricePreByte",
     "financeRuleDatacapPricePreByte",
     "datasetRuleMinProofTimeout",
@@ -595,7 +591,7 @@ export interface FilplusOriginEvm extends FilplusCallEvm, FilplusSendEvm {}
     "setEscrowReleaseRule",
     "setFinanceRuleDatacapPricePreByte",
     "setFinanceRuleDatacapChunkLandPricePreByte",
-    "setDatasetRuleMaxChallengeProofsSubmitersPerDataset",
+    "setDatasetRuleChallengePointsPerAuditor",
     "setFinanceRuleDatacapDatasetApprovedLockDays",
     "setFinanceRuleDatacapCollateralMaxLockDays",
     "setDatasetRuleAuditorsElectionTime",
@@ -644,7 +640,7 @@ export class FilplusEvm extends FilplusOriginEvm {
             case "setEscrowReleaseRule":
             case "setFinanceRuleDatacapPricePreByte":
             case "setFinanceRuleDatacapChunkLandPricePreByte":
-            case "setDatasetRuleMaxChallengeProofsSubmitersPerDataset":
+            case "setDatasetRuleChallengePointsPerAuditor":
             case "setFinanceRuleDatacapDatasetApprovedLockDays":
             case "setFinanceRuleDatacapCollateralMaxLockDays":
             case "setDatasetRuleAuditorsElectionTime":

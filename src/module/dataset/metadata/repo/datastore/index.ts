@@ -198,7 +198,7 @@ export class DatasetMetadataMongoDatastore extends DataStore<
             }
 
             const challengeCount =
-                await options.datasetChallengeEvm.getChallengeSubmissionCount(
+                await options.datasetChallengeEvm.getChallengePointsCountRequirement(
                     options.datasetId
                 )
             if (!challengeCount.ok) {
