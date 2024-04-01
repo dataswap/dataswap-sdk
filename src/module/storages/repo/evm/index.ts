@@ -34,6 +34,7 @@ import {
     DatasetStorageStatisticsInfo,
     MatchingStorageStatisticsInfo,
 } from "../../../../shared/types/statisticsType"
+import { convertToNumberArray } from "../../../../shared/arrayUtils"
 
 /**
  * Interface for EVM calls related to  Storages.
@@ -317,6 +318,9 @@ export class StoragesEvm extends StoragesOriginEvm {
             let data = new MatchingStorageStatisticsInfo({
                 ...res.data,
             })
+            data.storageProviders = convertToNumberArray(
+                res.data.storageProviders!
+            )
             data.matchingId = matchingId
             return {
                 ok: true,
