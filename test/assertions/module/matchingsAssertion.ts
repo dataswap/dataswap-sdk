@@ -480,6 +480,9 @@ export class MatchingsAssertion implements IMatchingsAssertion {
         const carsSize = await handleEvmError(
             this.contractsManager.CarstoreEvm().getCarsSize(cars)
         )
+        const piecesSize = await handleEvmError(
+            this.contractsManager.CarstoreEvm().getPiecesSize(cars)
+        )
         const target = await handleEvmError(
             this.contractsManager
                 .MatchingTargetEvm()
@@ -523,9 +526,9 @@ export class MatchingsAssertion implements IMatchingsAssertion {
                 MatchingState.InProgress
             )
             await this.getSizeOverviewAssertion(
-                sizeStatistic.total + BigInt(carsSize),
+                sizeStatistic.total + BigInt(piecesSize),
                 sizeStatistic.success,
-                sizeStatistic.ongoing + BigInt(carsSize),
+                sizeStatistic.ongoing + BigInt(piecesSize),
                 sizeStatistic.failed
             )
         }

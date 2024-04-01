@@ -138,9 +138,13 @@ describe("filplus", () => {
     /**
      * Test case for setting the challenge proofs submiter count.
      */
-    it("setDatasetRuleMaxChallengeProofsSubmitersPerDataset", async function () {
-        await filplusAssertion.setChallengeProofsSubmiterCountAssertion(1)
-        await filplusAssertion.setChallengeProofsSubmiterCountAssertion(10)
+    it("setDatasetRuleChallengePointsPerAuditor", async function () {
+        await filplusAssertion.setDatasetRuleChallengePointsPerAuditorAssertion(
+            2
+        )
+        await filplusAssertion.setDatasetRuleChallengePointsPerAuditorAssertion(
+            5
+        )
     })
 
     /**
@@ -245,6 +249,9 @@ describe("filplus", () => {
     it("setDatasetRuleMaxProportionOfMappingFilesToDataset", async function () {
         await filplusAssertion.setDatasetRuleMaxProportionOfMappingFilesToDatasetAssertion(
             5
+        )
+        await filplusAssertion.setDatasetRuleMaxProportionOfMappingFilesToDatasetAssertion(
+            40
         )
     })
 

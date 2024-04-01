@@ -191,16 +191,15 @@ export class FilplusAssertion implements IFilplusAssertion {
     }
 
     /**
-     * Asserts that the challenge proofs submitter count matches the expected count.
-     *
-     * @param exceptCount - The expected challenge proofs submitter count.
-     * @returns A promise indicating whether the assertion passed or not.
+     * Asserts the dataset rule challenge points per auditor.
+     * @param exceptCount The expected count of dataset rule challenge points per auditor.
+     * @returns A promise that resolves to void.
      */
-    async getChallengeProofsSubmiterCountAssertion(
+    async datasetRuleChallengePointsPerAuditorAssertion(
         exceptCount: number
     ): Promise<void> {
         let count = await handleEvmError(
-            this.filplus.datasetRuleMaxChallengeProofsSubmitersPerDataset()
+            this.filplus.datasetRuleChallengePointsPerAuditor()
         )
         assert.isTrue(equal(exceptCount, count), "count should be expect")
     }
@@ -738,20 +737,17 @@ export class FilplusAssertion implements IFilplusAssertion {
     }
 
     /**
-     * Sets the count of challenge proofs submitter.
-     *
-     * @param newValue - The new value for the challenge proofs submitter count.
-     * @returns A promise indicating the success of the operation.
+     * Sets the dataset rule challenge points per auditor assertion.
+     * @param newValue The new value for the dataset rule challenge points per auditor.
+     * @returns A promise that resolves to void.
      */
-    async setChallengeProofsSubmiterCountAssertion(
+    async setDatasetRuleChallengePointsPerAuditorAssertion(
         newValue: number
     ): Promise<void> {
         await handleEvmError(
-            this.filplus.setDatasetRuleMaxChallengeProofsSubmitersPerDataset(
-                newValue
-            )
+            this.filplus.setDatasetRuleChallengePointsPerAuditor(newValue)
         )
-        this.getChallengeProofsSubmiterCountAssertion(newValue)
+        this.datasetRuleChallengePointsPerAuditorAssertion(newValue)
     }
 
     /**

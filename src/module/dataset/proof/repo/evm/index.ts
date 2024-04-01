@@ -82,6 +82,17 @@ interface DatasetProofCallEvm {
     ): Promise<EvmOutput<bigint>>
 
     /**
+     * Retrieves the unpadded size of the dataset for a given dataset ID and data type.
+     * @param datasetId The ID of the dataset.
+     * @param dataType The data type for which to retrieve the unpadded size.
+     * @returns A promise that resolves to the unpadded size of the dataset.
+     */
+    getDatasetUnpadSize(
+        datasetId: number,
+        dataType: DataType
+    ): Promise<EvmOutput<bigint>>
+
+    /**
      * Retrieves the complete height of the dataset proof.
      * @param datasetId The ID of the dataset.
      * @returns A promise resolving to the complete height of the dataset proof.
@@ -259,6 +270,7 @@ export interface DatasetProofOriginEvm
     "getDatasetProofCount",
     "getDatasetProofSubmitter",
     "getDatasetSize",
+    "getDatasetUnpadSize",
     "getDatasetProofCompleteHeight",
     "getDatasetProofRootHash",
     "isDatasetProofallCompleted",

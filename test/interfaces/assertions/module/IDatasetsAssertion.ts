@@ -398,9 +398,9 @@ export interface IDatasetsAssertion {
      * @param expectCount - The expected count of challenge proofs.
      * @returns A Promise resolving if the assertion is successful.
      */
-    getDatasetChallengeProofsCountAssertion(
+    getChallengeAuditorsCountSubmittedAssertion(
         datasetId: number,
-        expectCount: number
+        expectCount: bigint
     ): Promise<void>
 
     /**
@@ -409,9 +409,20 @@ export interface IDatasetsAssertion {
      * @param expectCount - The expected count of challenge submissions.
      * @returns A Promise resolving if the assertion is successful.
      */
-    getChallengeSubmissionCountAssertion(
+    getChallengePointsCountRequirementAssertion(
         datasetId: number,
-        expectCount: number
+        expectCount: bigint
+    ): Promise<void>
+
+    /**
+     * Asserts the required number of auditors for challenging a dataset.
+     * @param datasetId The ID of the dataset.
+     * @param expectCount The expected number of auditors required for challenging.
+     * @returns A promise that resolves to void.
+     */
+    getChallengeAuditorsCountRequirementAssertion(
+        datasetId: number,
+        expectCount: bigint
     ): Promise<void>
 
     /**
