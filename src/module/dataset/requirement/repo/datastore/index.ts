@@ -109,7 +109,7 @@ export class DatasetRequirementMongoDatastore extends DataStore<
         }
 
         if (res.data!.length == 0) {
-            throw new Error("the matchings is none")
+            return []
         }
 
         return res.data![0].matchings!
