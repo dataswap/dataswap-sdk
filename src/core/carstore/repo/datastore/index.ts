@@ -149,6 +149,16 @@ export class CarMongoDatastore extends DataStore<
             if (!car.ok) {
                 return { ok: false, error: car.error }
             }
+
+            if (
+                !car.data ||
+                car.data.length == 0 ||
+                !car.data[0].replicaInfos
+            ) {
+                console.log("find car replica failed")
+                return { ok: true }
+            }
+
             if (options.replicaIndex >= car.data![0].replicaInfos!.length) {
                 return {
                     ok: false,
