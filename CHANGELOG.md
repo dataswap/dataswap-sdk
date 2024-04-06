@@ -1,5 +1,15 @@
 
 
+## [0.25.7](https://github.com/dataswap/dataswapjs/compare/0.25.6...0.25.7) (2024-04-06)
+
+
+### Bug Fixes
+
+* 🐛 fix updateReplica of CarMongoDatastore ([beffbb2](https://github.com/dataswap/dataswapjs/commit/beffbb2e7c3f46b9862790f6a8f8a9477de714b6)), closes [#348](https://github.com/dataswap/dataswapjs/issues/348)
+* 🐛 getMatchings of DatasetRequirementMongoDatastore ([30b610f](https://github.com/dataswap/dataswapjs/commit/30b610fcb8c41ca9b14a9e5932d48cdf4b0405c2)), closes [#349](https://github.com/dataswap/dataswapjs/issues/349)
+* 🐛 getMatchingStorageOverview bug ([f21adc5](https://github.com/dataswap/dataswapjs/commit/f21adc53b9eac25696dd654de10d7bb5ceaac42e)), closes [#350](https://github.com/dataswap/dataswapjs/issues/350)
+* 🐛 update abi version to 0.9.7 ([8112c87](https://github.com/dataswap/dataswapjs/commit/8112c87efbe0eef1e02d9b4a6c66adda05a3b505)), closes [#351](https://github.com/dataswap/dataswapjs/issues/351)
+
 ## [0.25.6](https://github.com/dataswap/dataswapjs/compare/0.25.5...0.25.6) (2024-03-27)
 
 
